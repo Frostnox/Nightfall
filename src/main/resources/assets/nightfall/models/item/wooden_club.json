@@ -1,0 +1,102 @@
+{
+  "loader": "nightfall:animated-item",
+  "swapSpeed": 0.75,
+  "swapYOffset": -0.2,
+  "base": {
+    "credit": "Made with Blockbench",
+    "texture_size": [32, 32],
+    "textures": {
+      "base": "nightfall:item/wooden_club",
+      "particle": "nightfall:item/wooden_club_inventory"
+    },
+    "elements": [
+      {
+        "from": [7, 4, 7],
+        "to": [9, 12, 9],
+        "rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+        "faces": {
+          "north": {"uv": [7, 5.5, 8, 9.5], "texture": "#base"},
+          "east": {"uv": [6, 5.5, 7, 9.5], "texture": "#base"},
+          "south": {"uv": [9, 5.5, 10, 9.5], "texture": "#base"},
+          "west": {"uv": [8, 5.5, 9, 9.5], "texture": "#base"},
+          "up": {"uv": [8, 5.5, 7, 4.5], "texture": "#base"},
+          "down": {"uv": [9, 4.5, 8, 5.5], "texture": "#base"}
+        }
+      },
+      {
+        "from": [6.5, 12, 6.5],
+        "to": [9.5, 16, 9.5],
+        "rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+        "faces": {
+          "north": {"uv": [1.5, 6, 3, 8], "texture": "#base"},
+          "east": {"uv": [0, 6, 1.5, 8], "texture": "#base"},
+          "south": {"uv": [4.5, 6, 6, 8], "texture": "#base"},
+          "west": {"uv": [3, 6, 4.5, 8], "texture": "#base"},
+          "up": {"uv": [3, 6, 1.5, 4.5], "texture": "#base"},
+          "down": {"uv": [4.5, 4.5, 3, 6], "texture": "#base"}
+        }
+      },
+      {
+        "from": [6, 16, 6],
+        "to": [10, 21, 10],
+        "rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+        "faces": {
+          "north": {"uv": [2, 2, 4, 4.5], "texture": "#base"},
+          "east": {"uv": [0, 2, 2, 4.5], "texture": "#base"},
+          "south": {"uv": [6, 2, 8, 4.5], "texture": "#base"},
+          "west": {"uv": [4, 2, 6, 4.5], "texture": "#base"},
+          "up": {"uv": [4, 2, 2, 0], "texture": "#base"},
+          "down": {"uv": [6, 0, 4, 2], "texture": "#base"}
+        }
+      }
+    ],
+    "display": {
+      "thirdperson_righthand": {
+        "rotation": [0, 90, 0],
+        "translation": [0, -2, 2]
+      },
+      "thirdperson_lefthand": {
+        "rotation": [0, -90, 0],
+        "translation": [0, -2, 2]
+      },
+      "firstperson_righthand": {
+        "rotation": [-4, 85, 0],
+        "translation": [4, -1.5, -2]
+      },
+      "firstperson_lefthand": {
+        "rotation": [-4, -85, 0],
+        "translation": [4, -1.5, -2]
+      },
+      "ground": {
+        "rotation": [90, 0, 0],
+        "translation": [0, -1, -5]
+      },
+      "gui": {
+        "rotation": [0, -15, -45],
+        "translation": [-3.5, -3.5, 0],
+        "scale": [0.8, 0.8, 0.8]
+      },
+      "nightfall:rack": {
+        "translation": [0.25, 2.4, 0]
+      },
+      "fixed": {
+        "translation": [0, -6, -1]
+      }
+    },
+    "groups": [
+      {
+        "name": "group",
+        "origin": [8, 8, 8],
+        "color": 0,
+        "children": [0, 1, 2]
+      }
+    ]
+  },
+  "inventory": {
+    "parent": "minecraft:item/generated",
+    "textures": {
+      "layer0": "nightfall:item/wooden_club_inventory",
+      "particle": "nightfall:item/wooden_club_inventory"
+    }
+  }
+}

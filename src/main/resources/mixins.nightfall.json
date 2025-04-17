@@ -1,0 +1,48 @@
+{
+  "required": true,
+  "package": "frostnox.nightfall.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "mixins.nightfall.refmap.json",
+  "mixins": [
+    "DimensionTypeMixin",
+    "LivingEntityMixin",
+    "EntityMixin",
+    "InventoryMixin",
+    "PlayerMixin",
+    "LevelMixin",
+    "HeightmapTypesMixin",
+    "ServerGamePacketListenerImplMixin",
+    "ServerChunkCacheMixin",
+    "PrimaryLevelDataMixin",
+    "WeatherCommandMixin",
+    "FoodDataMixin",
+    "ChestMenuMixin",
+    "ServerLevelMixin",
+    "DerivedLevelDataMixin",
+    "LevelChunkMixin"
+  ],
+  "client": [
+    "KeyboardHandlerMixin",
+    "LightTextureMixin",
+    "CameraMixin",
+    "LocalPlayerMixin",
+    "GuiMixin",
+    "SkinCustomizationScreenMixin",
+    "GameRendererMixin",
+    "RenderStateShardMixin",
+    "LevelRendererMixin",
+    "TitleScreenMixin",
+    "EntityRendererMixin",
+    "BlockRenderDispatcherMixin",
+    "ToastInstanceMixin",
+    "WorldGenSettingsComponentMixin",
+    "ClientLevelDataMixin",
+    "OptionsScreenMixin",
+    "CreateWorldScreenMixin",
+    "MinecraftMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8"
+}

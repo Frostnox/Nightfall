@@ -1,0 +1,36 @@
+{
+    "targets": [
+		"translucent",
+        "swap"
+    ],
+    "passes": [
+        {
+            "name": "nightfall:water",
+            "intarget": "minecraft:main",
+            "outtarget": "swap",
+            "auxtargets": [
+                {
+                    "name": "DiffuseSampler",
+                    "id": "minecraft:main"
+                },
+                {
+                    "name": "DiffuseDepthSampler",
+                    "id": "minecraft:main:depth"
+                },
+                {
+                    "name": "TranslucentSampler",
+                    "id": "translucent"
+                },
+                {
+                    "name": "TranslucentDepthSampler",
+                    "id": "translucent:depth"
+                }
+            ]
+        },
+        {
+            "name": "blit",
+            "intarget": "swap",
+            "outtarget": "minecraft:main"
+        }
+    ]
+}

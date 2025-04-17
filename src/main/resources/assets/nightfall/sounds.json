@@ -1,0 +1,484 @@
+{
+  "silent": {
+    "sounds": ["nightfall:silent"]
+  },
+  "block.sand_fall": {
+    "subtitle": "nightfall.block.fall",
+    "sounds": ["nightfall:block/sand_fall_0", "nightfall:block/sand_fall_1", "nightfall:block/sand_fall_2", "nightfall:block/sand_fall_3"]
+  },
+  "block.dirt_fall": {
+    "subtitle": "nightfall.block.fall",
+    "sounds": ["nightfall:block/dirt_fall_0", "nightfall:block/dirt_fall_1", "nightfall:block/dirt_fall_2", "nightfall:block/dirt_fall_3"]
+  },
+  "block.gravel_fall": {
+    "subtitle": "nightfall.block.fall",
+    "sounds": ["nightfall:block/gravel_fall_0", "nightfall:block/gravel_fall_1", "nightfall:block/gravel_fall_2", "nightfall:block/gravel_fall_3"]
+  },
+  "block.wet_soil_fall": {
+    "subtitle": "nightfall.block.fall",
+    "sounds": ["nightfall:block/wet_soil_fall_0", "nightfall:block/wet_soil_fall_1", "nightfall:block/wet_soil_fall_2", "nightfall:block/wet_soil_fall_3"]
+  },
+  "block.sizzle": {
+    "subtitle": "nightfall.block.sizzle",
+    "sounds": ["nightfall:block/sizzle_0", "nightfall:block/sizzle_1", "nightfall:block/sizzle_2"]
+  },
+  "block.anvil.strike": {
+    "subtitle": "nightfall.block.anvil.strike",
+    "sounds": ["nightfall:block/anvil/strike_0", "nightfall:block/anvil/strike_1", "nightfall:block/anvil/strike_2"]
+  },
+  "block.ceramic.break": {
+    "subtitle": "subtitles.block.generic.break",
+    "sounds": ["nightfall:block/ceramic/break_0", "nightfall:block/ceramic/break_1", "nightfall:block/ceramic/break_2", "nightfall:block/ceramic/break_3", "nightfall:block/ceramic/break_4", "nightfall:block/ceramic/break_5"]
+  },
+  "block.ceramic.step": {
+    "subtitle": "subtitles.block.generic.footsteps",
+    "sounds": ["nightfall:block/ceramic/step_0", "nightfall:block/ceramic/step_1", "nightfall:block/ceramic/step_2", "nightfall:block/ceramic/step_3", "nightfall:block/ceramic/step_4", "nightfall:block/ceramic/step_5"]
+  },
+  "block.ceramic.place": {
+    "subtitle": "subtitles.block.generic.place",
+    "sounds": ["nightfall:block/ceramic/place_0", "nightfall:block/ceramic/place_1", "nightfall:block/ceramic/place_2", "nightfall:block/ceramic/place_3", "nightfall:block/ceramic/place_4"]
+  },
+  "block.ceramic.hit": {
+    "subtitle": "subtitles.block.generic.hit",
+    "sounds": ["nightfall:block/ceramic/hit_0", "nightfall:block/ceramic/hit_1", "nightfall:block/ceramic/hit_2", "nightfall:block/ceramic/hit_3", "nightfall:block/ceramic/hit_4"]
+  },
+  "block.ceramic.fall": {
+    "subtitle": "subtitles.block.generic.footsteps",
+    "sounds": ["nightfall:block/ceramic/step_0", "nightfall:block/ceramic/step_1", "nightfall:block/ceramic/step_2", "nightfall:block/ceramic/step_3", "nightfall:block/ceramic/step_4", "nightfall:block/ceramic/step_5"]
+  },
+  "block.ceramic.open_large": {
+    "subtitle": "nightfall.block.ceramic.open",
+    "sounds": ["nightfall:block/ceramic/open_large"]
+  },
+  "block.ceramic.open_small": {
+    "subtitle": "nightfall.block.ceramic.open",
+    "sounds": ["nightfall:block/ceramic/open_small"]
+  },
+  "block.sturdy_ceramic.break": {
+    "subtitle": "subtitles.block.generic.break",
+    "sounds": ["nightfall:block/ceramic/place_0", "nightfall:block/ceramic/place_1", "nightfall:block/ceramic/place_2", "nightfall:block/ceramic/place_3", "nightfall:block/ceramic/place_4"]
+  },
+  "block.firewood.break": {
+    "subtitle": "subtitles.block.generic.break",
+    "sounds": ["nightfall:block/firewood/place_0", "nightfall:block/firewood/place_1", "nightfall:block/firewood/place_2", "nightfall:block/firewood/place_3", "nightfall:block/firewood/place_4"]
+  },
+  "block.firewood.step": {
+    "subtitle": "subtitles.block.generic.footsteps",
+    "sounds": ["nightfall:block/firewood/step_0", "nightfall:block/firewood/step_1", "nightfall:block/firewood/step_2", "nightfall:block/firewood/step_3", "nightfall:block/firewood/step_4", "nightfall:block/firewood/step_5"]
+  },
+  "block.firewood.place": {
+    "subtitle": "subtitles.block.generic.place",
+    "sounds": ["nightfall:block/firewood/place_0", "nightfall:block/firewood/place_1", "nightfall:block/firewood/place_2", "nightfall:block/firewood/place_3", "nightfall:block/firewood/place_4"]
+  },
+  "block.firewood.hit": {
+    "subtitle": "subtitles.block.generic.hit",
+    "sounds": ["nightfall:block/firewood/hit_0", "nightfall:block/firewood/hit_1", "nightfall:block/firewood/hit_2", "nightfall:block/firewood/hit_3", "nightfall:block/firewood/hit_4"]
+  },
+  "block.firewood.fall": {
+    "subtitle": "subtitles.block.generic.footsteps",
+    "sounds": ["nightfall:block/firewood/step_0", "nightfall:block/firewood/step_1", "nightfall:block/firewood/step_2", "nightfall:block/firewood/step_3", "nightfall:block/firewood/step_4", "nightfall:block/firewood/step_5"]
+  },
+  "block.mud.break": {
+    "subtitle": "subtitles.block.generic.break",
+    "sounds": ["nightfall:block/mud/step_0", "nightfall:block/mud/step_1", "nightfall:block/mud/step_2", "nightfall:block/mud/step_3", "nightfall:block/mud/step_4"]
+  },
+  "block.mud.step": {
+    "subtitle": "subtitles.block.generic.footsteps",
+    "sounds": ["nightfall:block/mud/step_0", "nightfall:block/mud/step_1", "nightfall:block/mud/step_2", "nightfall:block/mud/step_3", "nightfall:block/mud/step_4", "nightfall:block/mud/step_5"]
+  },
+  "block.mud.place": {
+    "subtitle": "subtitles.block.generic.place",
+    "sounds": ["nightfall:block/mud/step_0", "nightfall:block/mud/step_1", "nightfall:block/mud/step_2", "nightfall:block/mud/step_3", "nightfall:block/mud/step_4"]
+  },
+  "block.mud.hit": {
+    "subtitle": "subtitles.block.generic.hit",
+    "sounds": ["nightfall:block/mud/hit_0", "nightfall:block/mud/hit_1", "nightfall:block/mud/hit_2", "nightfall:block/mud/hit_3", "nightfall:block/mud/hit_4"]
+  },
+  "block.mud.fall": {
+    "subtitle": "subtitles.block.generic.footsteps",
+    "sounds": ["nightfall:block/mud/fall_0", "nightfall:block/mud/fall_1", "nightfall:block/mud/fall_2"]
+  },
+  "block.moon_essence.break": {
+    "subtitle": "subtitles.block.generic.break",
+    "sounds": ["nightfall:block/moon_essence/place_0", "nightfall:block/moon_essence/place_1", "nightfall:block/moon_essence/place_2", "nightfall:block/moon_essence/place_3", "nightfall:block/moon_essence/place_4"]
+  },
+  "block.moon_essence.place": {
+    "subtitle": "subtitles.block.generic.place",
+    "sounds": ["nightfall:block/moon_essence/place_0", "nightfall:block/moon_essence/place_1", "nightfall:block/moon_essence/place_2", "nightfall:block/moon_essence/place_3", "nightfall:block/moon_essence/place_4"]
+  },
+  "block.bowl.wooden_crush": {
+    "subtitle": "subtitles.block.bowl.wooden_crush",
+    "sounds": ["nightfall:block/bowl/wooden_crush_0"]
+  },
+  "block.crucible.pour": {
+    "subtitle": "subtitles.block.crucible.pour",
+    "sounds": ["nightfall:block/crucible/pour_0", "nightfall:block/crucible/pour_1", "nightfall:block/crucible/pour_2", "nightfall:block/crucible/pour_3", "nightfall:block/crucible/pour_4"]
+  },
+  "block.fire_crackle": {
+    "subtitle": "subtitles.block.fire_crackle",
+    "sounds": ["block/furnace/fire_crackle1", "block/furnace/fire_crackle2", "block/furnace/fire_crackle3", "block/furnace/fire_crackle4", "block/furnace/fire_crackle5"]
+  },
+  "action.swing": {
+    "subtitle": "nightfall.action.swing",
+    "sounds": ["nightfall:action/swing_0", "nightfall:action/swing_1", "nightfall:action/swing_2"]
+  },
+  "action.swing_charged": {
+    "subtitle": "nightfall.action.swing_charged",
+    "sounds": ["nightfall:action/swing_charged"]
+  },
+  "action.blade_swing": {
+    "subtitle": "nightfall.action.blade_swing",
+    "sounds": ["nightfall:action/blade_swing_0", "nightfall:action/blade_swing_1", "nightfall:action/blade_swing_2"]
+  },
+  "action.blade_swing_charged": {
+    "subtitle": "nightfall.action.blade_swing_charged",
+    "sounds": ["nightfall:action/blade_swing_charged"]
+  },
+  "action.short_blade_swing": {
+    "subtitle": "nightfall.action.short_blade_swing",
+    "sounds": ["nightfall:action/short_blade_swing_0", "nightfall:action/short_blade_swing_1", "nightfall:action/short_blade_swing_2"]
+  },
+  "action.short_blade_swing_charged": {
+    "subtitle": "nightfall.action.short_blade_swing_charged",
+    "sounds": ["nightfall:action/short_blade_swing_charged"]
+  },
+  "action.long_blade_swing": {
+    "subtitle": "nightfall.action.long_blade_swing",
+    "sounds": ["nightfall:action/long_blade_swing_0", "nightfall:action/long_blade_swing_1", "nightfall:action/long_blade_swing_2"]
+  },
+  "action.long_blade_swing_charged": {
+    "subtitle": "nightfall.action.long_blade_swing_charged",
+    "sounds": ["nightfall:action/long_blade_swing_charged"]
+  },
+  "action.heavy_blade_swing": {
+    "subtitle": "nightfall.action.heavy_blade_swing",
+    "sounds": ["nightfall:action/heavy_blade_swing_0", "nightfall:action/heavy_blade_swing_1", "nightfall:action/heavy_blade_swing_2"]
+  },
+  "action.heavy_blade_swing_charged": {
+    "subtitle": "nightfall.action.heavy_blade_swing_charged",
+    "sounds": ["nightfall:action/heavy_blade_swing_charged"]
+  },
+  "action.hammer_chisel_hit": {
+    "subtitle": "nightfall.action.hammer_chisel_hit",
+    "sounds": ["nightfall:action/hammer_chisel_hit_0", "nightfall:action/hammer_chisel_hit_1", "nightfall:action/hammer_chisel_hit_2"]
+  },
+  "action.hammer_flint_chisel_hit": {
+    "subtitle": "nightfall.action.hammer_flint_chisel_hit",
+    "sounds": ["nightfall:action/hammer_flint_chisel_hit_0", "nightfall:action/hammer_flint_chisel_hit_1", "nightfall:action/hammer_flint_chisel_hit_2"]
+  },
+  "action.bandage_heal": {
+    "subtitle": "nightfall.action.bandage_heal",
+    "sounds": ["nightfall:action/bandage_heal_0", "nightfall:action/bandage_heal_1"]
+  },
+  "action.bow_pull": {
+    "subtitle": "nightfall.action.bow_pull",
+    "sounds": ["nightfall:action/bow_pull"]
+  },
+  "action.bow_shoot": {
+    "subtitle": "nightfall.action.bow_shoot",
+    "sounds": ["nightfall:action/bow_shoot"]
+  },
+  "action.bow_shoot_charged": {
+    "subtitle": "nightfall.action.bow_shoot_charged",
+    "sounds": ["nightfall:action/bow_shoot_charged_0", "nightfall:action/bow_shoot_charged_1"]
+  },
+  "action.weapon_block": {
+    "subtitle": "nightfall.action.weapon_block",
+    "sounds": ["nightfall:action/weapon_block"]
+  },
+  "action.slash_flesh": {
+    "subtitle": "nightfall.action.slash_flesh",
+    "sounds": ["nightfall:action/slash_flesh_0", "nightfall:action/slash_flesh_1", "nightfall:action/slash_flesh_2"]
+  },
+  "action.slash_armor": {
+    "subtitle": "nightfall.action.slash_armor",
+    "sounds": ["nightfall:action/slash_armor_0", "nightfall:action/slash_armor_1", "nightfall:action/slash_armor_2"]
+  },
+  "action.slash_bone": {
+    "subtitle": "nightfall.action.slash_bone",
+    "sounds": ["nightfall:action/slash_bone_0", "nightfall:action/slash_bone_1", "nightfall:action/slash_bone_2"]
+  },
+  "action.slash_stone": {
+    "subtitle": "nightfall.action.slash_stone",
+    "sounds": ["nightfall:action/slash_stone_0", "nightfall:action/slash_stone_1", "nightfall:action/slash_stone_2"]
+  },
+  "action.pierce_flesh": {
+    "subtitle": "nightfall.action.pierce_flesh",
+    "sounds": ["nightfall:action/pierce_flesh_0", "nightfall:action/pierce_flesh_1", "nightfall:action/pierce_flesh_2"]
+  },
+  "action.pierce_armor": {
+    "subtitle": "nightfall.action.pierce_armor",
+    "sounds": ["nightfall:action/pierce_armor_0", "nightfall:action/pierce_armor_1", "nightfall:action/pierce_armor_2"]
+  },
+  "action.pierce_bone": {
+    "subtitle": "nightfall.action.pierce_bone",
+    "sounds": ["nightfall:action/pierce_bone_0", "nightfall:action/pierce_bone_1", "nightfall:action/pierce_bone_2"]
+  },
+  "action.pierce_stone": {
+    "subtitle": "nightfall.action.pierce_stone",
+    "sounds": ["nightfall:action/pierce_stone_0", "nightfall:action/pierce_stone_1", "nightfall:action/pierce_stone_2"]
+  },
+  "action.strike_flesh": {
+    "subtitle": "nightfall.action.strike_flesh",
+    "sounds": ["nightfall:action/strike_flesh_0", "nightfall:action/strike_flesh_1", "nightfall:action/strike_flesh_2"]
+  },
+  "action.strike_armor": {
+    "subtitle": "nightfall.action.strike_armor",
+    "sounds": ["nightfall:action/strike_armor_0", "nightfall:action/strike_armor_1", "nightfall:action/strike_armor_2"]
+  },
+  "action.strike_bone": {
+    "subtitle": "nightfall.action.strike_bone",
+    "sounds": ["nightfall:action/strike_bone_0", "nightfall:action/strike_bone_1", "nightfall:action/strike_bone_2"]
+  },
+  "action.strike_stone": {
+    "subtitle": "nightfall.action.strike_stone",
+    "sounds": ["nightfall:action/strike_stone_0", "nightfall:action/strike_stone_1", "nightfall:action/strike_stone_2"]
+  },
+  "action.bleeding_hit": {
+    "subtitle": "nightfall.action.bleeding_hit",
+    "sounds": ["damage/hit1", "damage/hit2", "damage/hit3"]
+  },
+  "tool_action.till_soil": {
+    "subtitle": "nightfall.tool_action.till_soil",
+    "sounds": ["item/hoe/till1", "item/hoe/till2", "item/hoe/till3", "item/hoe/till4"]
+  },
+  "tool_action.strip_wood": {
+    "subtitle": "nightfall.tool_action.strip_wood",
+    "sounds": ["item/axe/strip1", "item/axe/strip2", "item/axe/strip3", "item/axe/strip4"]
+  },
+  "tool_action.skin_flesh": {
+    "subtitle": "nightfall.tool_action.skin_flesh",
+    "sounds": ["nightfall:tool_action/skin_flesh_0", "nightfall:tool_action/skin_flesh_1", "nightfall:tool_action/skin_flesh_2"]
+  },
+  "action.poison_hit": {
+    "subtitle": "nightfall.action.poison_hit",
+    "sounds": ["nightfall:action/poison_hit_0", "nightfall:action/poison_hit_1", "nightfall:action/poison_hit_2"]
+  },
+  "entity.deer.death": {
+    "subtitle": "nightfall.entity.deer.death",
+    "sounds": ["nightfall:entity/deer/hurt_0", "nightfall:entity/deer/hurt_1", "nightfall:entity/deer/hurt_2"]
+  },
+  "entity.deer.hurt": {
+    "subtitle": "nightfall.entity.deer.hurt",
+    "sounds": ["nightfall:entity/deer/hurt_0", "nightfall:entity/deer/hurt_1", "nightfall:entity/deer/hurt_2"]
+  },
+  "entity.deer.step": {
+    "subtitle": "nightfall.entity.deer.step",
+    "sounds": ["mob/llama/step1", "mob/llama/step2", "mob/llama/step3", "mob/llama/step4", "mob/llama/step5"]
+  },
+  "entity.dreg.ambient": {
+    "subtitle": "nightfall.entity.dreg.ambient",
+    "sounds": ["nightfall:entity/dreg/ambient_0", "nightfall:entity/dreg/ambient_1", "nightfall:entity/dreg/ambient_2", "nightfall:entity/dreg/ambient_3", "nightfall:entity/dreg/ambient_4"]
+  },
+  "entity.dreg.death": {
+    "subtitle": "nightfall.entity.dreg.death",
+    "sounds": ["nightfall:entity/dreg/death"]
+  },
+  "entity.dreg.hurt": {
+    "subtitle": "nightfall.entity.dreg.hurt",
+    "sounds": ["nightfall:entity/dreg/hurt_0", "nightfall:entity/dreg/hurt_1", "nightfall:entity/dreg/hurt_2"]
+  },
+  "entity.dreg.step": {
+    "subtitle": "nightfall.entity.dreg.step",
+    "sounds": ["nightfall:entity/dreg/step_0", "nightfall:entity/dreg/step_1", "nightfall:entity/dreg/step_2", "nightfall:entity/dreg/step_3", "nightfall:entity/dreg/step_4", "nightfall:entity/dreg/step_5"]
+  },
+  "entity.dreg.resurrect": {
+    "subtitle": "nightfall.entity.dreg.resurrect",
+    "sounds": ["nightfall:entity/dreg/resurrect"]
+  },
+  "entity.husk.ambient": {
+    "subtitle": "nightfall.entity.husk.ambient",
+    "sounds": ["nightfall:entity/husk/ambient_0", "nightfall:entity/husk/ambient_1", "nightfall:entity/husk/ambient_2", "nightfall:entity/husk/ambient_3", "nightfall:entity/husk/ambient_4"]
+  },
+  "entity.husk.death": {
+    "subtitle": "nightfall.entity.husk.death",
+    "sounds": ["nightfall:entity/husk/death_0", "nightfall:entity/husk/death_1"]
+  },
+  "entity.husk.hurt": {
+    "subtitle": "nightfall.entity.husk.hurt",
+    "sounds": ["nightfall:entity/husk/hurt_0", "nightfall:entity/husk/hurt_1", "nightfall:entity/husk/hurt_2"]
+  },
+  "entity.husk.step": {
+    "subtitle": "nightfall.entity.husk.step",
+    "sounds": ["nightfall:entity/husk/step_0", "nightfall:entity/husk/step_1", "nightfall:entity/husk/step_2", "nightfall:entity/husk/step_3", "nightfall:entity/husk/step_4", "nightfall:entity/husk/step_5"]
+  },
+  "entity.husk.swing": {
+    "subtitle": "nightfall.entity.husk.swing",
+    "sounds": ["nightfall:entity/husk/swing_0", "nightfall:entity/husk/swing_1", "nightfall:entity/husk/swing_2"]
+  },
+  "entity.skeleton.ambient": {
+    "subtitle": "nightfall.entity.skeleton.ambient",
+    "sounds": ["nightfall:entity/skeleton/ambient_0", "nightfall:entity/skeleton/ambient_1", "nightfall:entity/skeleton/ambient_2", "nightfall:entity/skeleton/ambient_3", "nightfall:entity/skeleton/ambient_4"]
+  },
+  "entity.skeleton.death": {
+    "subtitle": "nightfall.entity.skeleton.death",
+    "sounds": ["nightfall:entity/skeleton/death"]
+  },
+  "entity.skeleton.hurt": {
+    "subtitle": "nightfall.entity.skeleton.hurt",
+    "sounds": ["nightfall:entity/skeleton/hurt_0", "nightfall:entity/skeleton/hurt_1", "nightfall:entity/skeleton/hurt_2"]
+  },
+  "entity.skeleton.step": {
+    "subtitle": "nightfall.entity.skeleton.step",
+    "sounds": ["nightfall:entity/skeleton/step_0", "nightfall:entity/skeleton/step_1", "nightfall:entity/skeleton/step_2", "nightfall:entity/skeleton/step_3", "nightfall:entity/skeleton/step_4", "nightfall:entity/skeleton/step_5"]
+  },
+  "entity.skeleton.thrust": {
+    "subtitle": "nightfall.entity.skeleton.thrust",
+    "sounds": ["nightfall:entity/skeleton/thrust_0", "nightfall:entity/skeleton/thrust_1", "nightfall:entity/skeleton/thrust_2"]
+  },
+  "entity.skeleton.bow_pull": {
+    "subtitle": "nightfall.entity.skeleton.bow_pull",
+    "sounds": ["nightfall:entity/skeleton/bow_pull"]
+  },
+  "entity.skeleton.bow_shoot": {
+    "subtitle": "nightfall.entity.skeleton.bow_shoot",
+    "sounds": ["nightfall:entity/skeleton/bow_shoot"]
+  },
+  "entity.cockatrice.ambient": {
+    "subtitle": "nightfall.entity.cockatrice.ambient",
+    "sounds": ["nightfall:entity/cockatrice/ambient_0", "nightfall:entity/cockatrice/ambient_1", "nightfall:entity/cockatrice/ambient_2"]
+  },
+  "entity.cockatrice.death": {
+    "subtitle": "nightfall.entity.cockatrice.death",
+    "sounds": ["nightfall:entity/cockatrice/death"]
+  },
+  "entity.cockatrice.hurt": {
+    "subtitle": "nightfall.entity.cockatrice.hurt",
+    "sounds": ["nightfall:entity/cockatrice/hurt_0", "nightfall:entity/cockatrice/hurt_1", "nightfall:entity/cockatrice/hurt_2"]
+  },
+  "entity.cockatrice.step": {
+    "subtitle": "nightfall.entity.cockatrice.step",
+    "sounds": ["nightfall:entity/cockatrice/step_0", "nightfall:entity/cockatrice/step_1", "nightfall:entity/cockatrice/step_2", "nightfall:entity/cockatrice/step_3", "nightfall:entity/cockatrice/step_4", "nightfall:entity/cockatrice/step_5"]
+  },
+  "entity.cockatrice.flap": {
+    "subtitle": "nightfall.entity.cockatrice.flap",
+    "sounds": ["nightfall:entity/cockatrice/flap_0", "nightfall:entity/cockatrice/flap_1", "nightfall:entity/cockatrice/flap_2"]
+  },
+  "entity.cockatrice.bite": {
+    "subtitle": "nightfall.entity.cockatrice.bite",
+    "sounds": ["nightfall:entity/cockatrice/bite_0", "nightfall:entity/cockatrice/bite_1", "nightfall:entity/cockatrice/bite_2"]
+  },
+  "entity.cockatrice.spit": {
+    "subtitle": "nightfall.entity.cockatrice.spit",
+    "sounds": ["nightfall:entity/cockatrice/spit_0", "nightfall:entity/cockatrice/spit_1", "nightfall:entity/cockatrice/spit_2"]
+  },
+  "entity.spider.bite": {
+    "subtitle": "nightfall.entity.spider.bite",
+    "sounds": ["nightfall:entity/spider/bite_0", "nightfall:entity/spider/bite_1", "nightfall:entity/spider/bite_2"]
+  },
+  "entity.projectile.poison_impact": {
+    "subtitle": "nightfall.entity.projectile.poison_impact",
+    "sounds": ["nightfall:entity/projectile/poison_impact"]
+  },
+  "entity.projectile.rock_impact": {
+    "subtitle": "nightfall.entity.projectile.rock_impact",
+    "sounds": ["step/stone1", "step/stone2", "step/stone3", "step/stone4", "step/stone5", "step/stone6"]
+  },
+  "entity.player.warp": {
+    "subtitle": "nightfall.entity.player.warp",
+    "sounds": ["nightfall:entity/player/warp"]
+  },
+  "entity.undead_warp": {
+    "subtitle": "nightfall.entity.undead_warp",
+    "sounds": ["nightfall:entity/undead_warp_0", "nightfall:entity/undead_warp_1", "nightfall:entity/undead_warp_2"]
+  },
+  "environment.log_fall": {
+    "subtitle": "nightfall.environment.log_fall",
+    "sounds": ["nightfall:environment/log_fall_0", "nightfall:environment/log_fall_1"]
+  },
+  "environment.big_tree_fall": {
+    "subtitle": "nightfall.environment.big_tree_fall",
+    "sounds": ["nightfall:environment/big_tree_fall"]
+  },
+  "environment.small_tree_fall": {
+    "subtitle": "nightfall.environment.small_tree_fall",
+    "sounds": ["nightfall:environment/small_tree_fall"]
+  },
+  "environment.fire_whoosh": {
+    "subtitle": "nightfall.environment.fire_whoosh",
+    "sounds": ["nightfall:environment/fire_whoosh_0", "nightfall:environment/fire_whoosh_1", "nightfall:environment/fire_whoosh_2"]
+  },
+  "item.armor.equip_light": {
+    "subtitle": "nightfall.item.armor.equip_light",
+    "sounds": ["item/armor/equip_leather1", "item/armor/equip_leather2", "item/armor/equip_leather3", "item/armor/equip_leather4", "item/armor/equip_leather5", "item/armor/equip_leather6"]
+  },
+  "item.armor.equip_scale": {
+    "subtitle": "nightfall.item.armor.equip_scale",
+    "sounds": ["item/armor/equip_iron1", "item/armor/equip_iron2", "item/armor/equip_iron3", "item/armor/equip_iron4", "item/armor/equip_iron5", "item/armor/equip_iron6"]
+  },
+  "item.armor.equip_plate": {
+    "subtitle": "nightfall.item.armor.equip_plate",
+    "sounds": ["item/armor/equip_netherite1", "item/armor/equip_netherite2", "item/armor/equip_netherite3", "item/armor/equip_netherite4"]
+  },
+  "item.carve_wood": {
+    "subtitle": "nightfall.item.carve_wood",
+    "sounds": ["nightfall:item/carve_wood_0", "nightfall:item/carve_wood_1", "nightfall:item/carve_wood_2", "nightfall:item/carve_wood_3", "nightfall:item/carve_wood_4"]
+  },
+  "item.carve_stone": {
+    "subtitle": "nightfall.item.carve_stone",
+    "sounds": ["nightfall:item/carve_stone_0", "nightfall:item/carve_stone_1", "nightfall:item/carve_stone_2", "nightfall:item/carve_stone_3", "nightfall:item/carve_stone_4"]
+  },
+  "item.stick_fire_strike": {
+    "subtitle": "nightfall.item.stick_fire_strike",
+    "sounds": ["nightfall:item/stick_fire_strike_0", "nightfall:item/stick_fire_strike_1", "nightfall:item/stick_fire_strike_2", "nightfall:item/stick_fire_strike_3"]
+  },
+  "item.quench": {
+    "subtitle": "nightfall.item.quench",
+    "sounds": ["nightfall:item/quench_0", "nightfall:item/quench_1", "nightfall:item/quench_2", "nightfall:item/quench_3"]
+  },
+  "item.metal_break": {
+    "subtitle": "nightfall.item.metal_break",
+    "sounds": ["nightfall:item/metal_break_0", "nightfall:item/metal_break_1"]
+  },
+  "gui.category_revealed": {
+    "sounds": ["nightfall:gui/category_revealed"]
+  },
+  "gui.entry_updated": {
+    "sounds": ["nightfall:gui/entry_updated_0", "nightfall:gui/entry_updated_1"]
+  },
+  "gui.experiment_survival_fail": {
+    "sounds": ["nightfall:gui/experiment_survival_fail_0", "nightfall:gui/experiment_survival_fail_1"]
+  },
+  "gui.experiment_survival_success": {
+    "sounds": ["nightfall:gui/experiment_survival_success_0", "nightfall:gui/experiment_survival_success_1"]
+  },
+  "gui.experiment_metallurgy_fail": {
+    "sounds": ["nightfall:gui/experiment_metallurgy_fail_0", "nightfall:gui/experiment_metallurgy_fail_1"]
+  },
+  "gui.experiment_metallurgy_success": {
+    "sounds": ["nightfall:gui/experiment_metallurgy_success_0", "nightfall:gui/experiment_metallurgy_success_1"]
+  },
+  "gui.discovery": {
+    "sounds": ["nightfall:gui/discovery"]
+  },
+  "gui.discovery_ominous": {
+    "sounds": ["nightfall:gui/discovery_ominous"]
+  },
+  "nightfall.music.menu": {
+    "sounds": ["music/menu/menu3"]
+  },
+  "nightfall.music.spring": {
+    "sounds": ["music/game/creative/creative2", "music/game/hal4", "music/game/hal3", "music/game/hal2", "music/game/calm1", "music/menu/menu3"]
+  },
+  "nightfall.music.summer": {
+    "sounds": ["music/game/creative/creative4", "music/game/creative/creative6", "music/game/piano3", "music/menu/menu2", "music/game/creative/creative5", "music/game/piano2"]
+  },
+  "nightfall.music.fall": {
+    "sounds": ["music/menu/menu1", "music/game/creative/creative3", "music/game/hal1", "music/game/calm3", "music/game/nuance2", "music/game/piano1"]
+  },
+  "nightfall.music.winter": {
+    "sounds": ["music/menu/menu4", "music/game/creative/creative1", "music/game/calm2", "music/game/nuance1", "music/game/floating_dream", "music/game/an_ordinary_day"]
+  },
+  "nightfall.music.ocean": {
+    "sounds": ["music/game/water/axolotl", "music/game/water/dragon_fish", "music/game/water/shuniji"]
+  },
+  "nightfall.music.tunnels": {
+    "sounds": ["music/game/wending", "music/game/nether/nether2", "music/game/nether/crimson_forest/chrysopoeia"]
+  },
+  "nightfall.music.caverns": {
+    "sounds": ["music/game/nether/nether1", "music/game/nether/soulsand_valley/so_below", "music/game/end/boss"]
+  },
+  "nightfall.music.depths": {
+    "sounds": ["music/game/nether/nether4", "music/game/nether/nether3", "music/game/nether/nether_wastes/rubedo"]
+  }
+}

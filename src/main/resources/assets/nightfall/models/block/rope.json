@@ -1,0 +1,27 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "nightfall:block/rope",
+		"particle": "nightfall:block/rope"
+	},
+	"elements": [
+		{
+			"from": [8, 0, 7],
+			"to": [8, 16, 9],
+			"rotation": {"angle": -45, "axis": "y", "origin": [8, 8, 8], "rescale": true},
+			"faces": {
+				"east": {"uv": [0, 0, 2, 16], "texture": "#0"},
+				"west": {"uv": [2, 0, 4, 16], "texture": "#0"}
+			}
+		},
+		{
+			"from": [7, 0, 8],
+			"to": [9, 16, 8],
+			"rotation": {"angle": -45, "axis": "y", "origin": [8, 8, 8], "rescale": true},
+			"faces": {
+				"north": {"uv": [2, 0, 4, 16], "texture": "#0"},
+				"south": {"uv": [4, 0, 6, 16], "texture": "#0"}
+			}
+		}
+	]
+}

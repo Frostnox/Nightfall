@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "nightfall:deserted_camp",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "salt": 827259918,
+    "spacing": 36,
+    "separation": 10,
+    "type": "minecraft:random_spread"
+  }
+}

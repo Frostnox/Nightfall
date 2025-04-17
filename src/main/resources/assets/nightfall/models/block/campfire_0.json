@@ -1,0 +1,27 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "block/block",
+	"textures": {
+		"1": "nightfall:block/ash_block"
+	},
+	"elements": [
+		{
+			"from": [2, 0, 2],
+			"to": [14, 1, 14],
+			"rotation": {"angle": 0, "axis": "y", "origin": [2, 0, 2]},
+			"faces": {
+				"north": {"uv": [0, 0, 12, 1], "texture": "#1"},
+				"east": {"uv": [0, 1, 12, 2], "texture": "#1"},
+				"south": {"uv": [0, 2, 12, 3], "texture": "#1"},
+				"west": {"uv": [0, 3, 12, 4], "texture": "#1"},
+				"up": {"uv": [2, 2, 14, 14], "texture": "#1"},
+				"down": {"uv": [2, 2, 14, 14], "texture": "#1", "cullface": "down"}
+			}
+		}
+	],
+	"display": {
+		"head": {
+			"translation": [0, 10.5, 0]
+		}
+	}
+}

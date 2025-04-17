@@ -1,0 +1,6 @@
+{
+  "config": {},
+  "biomes": "#nightfall:has_structure/slayer_ruins",
+  "spawn_overrides": {},
+  "type": "nightfall:slayer_ruins"
+}

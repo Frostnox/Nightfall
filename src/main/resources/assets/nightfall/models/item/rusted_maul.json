@@ -1,0 +1,126 @@
+{
+  "loader": "nightfall:animated-item",
+  "swapSpeed": 0.75,
+  "swapYOffset": -0.2,
+  "base": {
+    "credit": "Made with Blockbench",
+    "texture_size": [32, 32],
+    "textures": {
+      "base": "nightfall:item/rusted_maul",
+      "particle": "nightfall:item/rusted_maul_inventory"
+    },
+    "elements": [
+      {
+        "from": [7.5, 4, 7.5],
+        "to": [8.5, 21, 8.5],
+        "rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+        "faces": {
+          "north": {"uv": [0.5, 0.5, 1, 9], "texture": "#base"},
+          "east": {"uv": [0, 0.5, 0.5, 9], "texture": "#base"},
+          "south": {"uv": [1.5, 0.5, 2, 9], "texture": "#base"},
+          "west": {"uv": [1, 0.5, 1.5, 9], "texture": "#base"},
+          "up": {"uv": [1, 0.5, 0.5, 0], "texture": "#base"},
+          "down": {"uv": [1.5, 0, 1, 0.5], "texture": "#base"}
+        }
+      },
+      {
+        "from": [6.5, 17, 6.5],
+        "to": [10.5, 20, 9.5],
+        "rotation": {"angle": 0, "axis": "y", "origin": [7.5, 7, 7.5]},
+        "faces": {
+          "north": {"uv": [3.5, 1.5, 5.5, 3], "texture": "#base"},
+          "east": {"uv": [2, 1.5, 3.5, 3], "texture": "#base"},
+          "south": {"uv": [7, 1.5, 9, 3], "texture": "#base"},
+          "west": {"uv": [5.5, 1.5, 7, 3], "texture": "#base"},
+          "up": {"uv": [5.5, 1.5, 3.5, 0], "texture": "#base"},
+          "down": {"uv": [7.5, 0, 5.5, 1.5], "texture": "#base"}
+        }
+      },
+      {
+        "from": [12.5, 17, 7.5],
+        "to": [13.5, 20, 8.5],
+        "rotation": {"angle": 0, "axis": "y", "origin": [2.5, 0, 0]},
+        "faces": {
+          "north": {"uv": [2.5, 6, 3, 7.5], "texture": "#base"},
+          "east": {"uv": [2, 6, 2.5, 7.5], "texture": "#base"},
+          "south": {"uv": [3.5, 6, 4, 7.5], "texture": "#base"},
+          "west": {"uv": [3, 6, 3.5, 7.5], "texture": "#base"},
+          "up": {"uv": [3, 6, 2.5, 5.5], "texture": "#base"},
+          "down": {"uv": [3.5, 5.5, 3, 6], "texture": "#base"}
+        }
+      },
+      {
+        "from": [10.5, 17, 7],
+        "to": [12.5, 20, 9],
+        "rotation": {"angle": 0, "axis": "y", "origin": [0.5, 0, -0.5]},
+        "faces": {
+          "north": {"uv": [3, 4, 4, 5.5], "texture": "#base"},
+          "east": {"uv": [2, 4, 3, 5.5], "texture": "#base"},
+          "south": {"uv": [5, 4, 6, 5.5], "texture": "#base"},
+          "west": {"uv": [4, 4, 5, 5.5], "texture": "#base"},
+          "up": {"uv": [4, 4, 3, 3], "texture": "#base"},
+          "down": {"uv": [5, 3, 4, 4], "texture": "#base"}
+        }
+      }
+    ],
+    "display": {
+      "thirdperson_righthand": {
+        "rotation": [0, 90, 0],
+        "translation": [0, -2, 2]
+      },
+      "thirdperson_lefthand": {
+        "rotation": [0, -90, 0],
+        "translation": [0, -2, 2]
+      },
+      "firstperson_righthand": {
+        "rotation": [-5, 95, 0],
+        "translation": [3, -1.5, -1]
+      },
+      "firstperson_lefthand": {
+        "rotation": [-5, -85, 0],
+        "translation": [3, -1.5, -1]
+      },
+      "ground": {
+        "rotation": [90, 0, 0],
+        "translation": [0, -1, -4.5]
+      },
+      "gui": {
+        "rotation": [0, -15, -45],
+        "translation": [-3, -3, 0],
+        "scale": [0.8, 0.8, 0.8]
+      },
+      "head": {
+        "translation": [0, -6, 0]
+      },
+      "nightfall:rack": {
+        "translation": [0.25, 1.4, 0]
+      },
+      "fixed": {
+        "translation": [0, -4.5, -1]
+      }
+    },
+    "groups": [
+      {
+        "name": "group",
+        "origin": [8, 8, 8],
+        "color": 0,
+        "children": [
+          0,
+          {
+            "name": "metal",
+            "origin": [8, 8, 8],
+            "color": 0,
+            "children": [1, 2, 3]
+          }
+        ]
+      }
+    ]
+  },
+  "inventory": {
+    "parent": "minecraft:item/generated",
+    "textures": {
+      "layer0": "nightfall:item/rusted_maul_inventory",
+      "particle": "nightfall:item/rusted_maul_inventory"
+    }
+  }
+}

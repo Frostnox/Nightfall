@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "nightfall:cottage_ruins",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "salt": 761900964,
+    "spacing": 26,
+    "separation": 8,
+    "type": "minecraft:random_spread"
+  }
+}

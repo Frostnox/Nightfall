@@ -1,0 +1,6 @@
+{
+  "config": {},
+  "biomes": "#nightfall:has_structure/deserted_camp",
+  "spawn_overrides": {},
+  "type": "nightfall:deserted_camp"
+}

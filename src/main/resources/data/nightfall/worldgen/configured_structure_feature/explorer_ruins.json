@@ -1,0 +1,6 @@
+{
+  "config": {},
+  "biomes": "#nightfall:has_structure/explorer_ruins",
+  "spawn_overrides": {},
+  "type": "nightfall:explorer_ruins"
+}

@@ -1,0 +1,124 @@
+{
+  "loader": "nightfall:animated-item",
+  "swapSpeed": 0.6,
+  "swapYOffset": -0.6,
+  "base": {
+    "credit": "Made with Blockbench",
+    "texture_size": [32, 32],
+    "textures": {
+      "base": "nightfall:item/flint_shovel",
+      "particle": "nightfall:item/flint_shovel_inventory"
+    },
+    "elements": [
+      {
+        "from": [7.5, 4, 7.5],
+        "to": [8.5, 19, 8.5],
+        "rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+        "faces": {
+          "north": {"uv": [1, 1, 2, 16], "texture": "#base"},
+          "east": {"uv": [0, 1, 1, 16], "texture": "#base"},
+          "south": {"uv": [3, 1, 4, 16], "texture": "#base"},
+          "west": {"uv": [2, 1, 3, 16], "texture": "#base"},
+          "up": {"uv": [2, 1, 1, 0], "texture": "#base"},
+          "down": {"uv": [3, 0, 2, 1], "texture": "#base"}
+        }
+      },
+      {
+        "from": [7.5, 20, 9],
+        "to": [8.5, 23, 10],
+        "rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+        "faces": {
+          "north": {"uv": [5, 8, 6, 11], "texture": "#base"},
+          "east": {"uv": [4, 8, 5, 11], "texture": "#base"},
+          "south": {"uv": [7, 8, 8, 11], "texture": "#base"},
+          "west": {"uv": [6, 8, 7, 11], "texture": "#base"},
+          "up": {"uv": [6, 8, 5, 7], "texture": "#base"},
+          "down": {"uv": [7, 7, 6, 8], "texture": "#base"}
+        }
+      },
+      {
+        "from": [7.5, 20, 6],
+        "to": [8.5, 23, 7],
+        "rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+        "faces": {
+          "north": {"uv": [5, 12, 6, 15], "texture": "#base"},
+          "east": {"uv": [4, 12, 5, 15], "texture": "#base"},
+          "south": {"uv": [7, 12, 8, 15], "texture": "#base"},
+          "west": {"uv": [6, 12, 7, 15], "texture": "#base"},
+          "up": {"uv": [6, 12, 5, 11], "texture": "#base"},
+          "down": {"uv": [7, 11, 6, 12], "texture": "#base"}
+        }
+      },
+      {
+        "from": [7.5, 19, 7],
+        "to": [8.5, 24, 9],
+        "rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+        "faces": {
+          "north": {"uv": [6, 2, 7, 7], "texture": "#base"},
+          "east": {"uv": [4, 2, 6, 7], "texture": "#base"},
+          "south": {"uv": [9, 2, 10, 7], "texture": "#base"},
+          "west": {"uv": [7, 2, 9, 7], "texture": "#base"},
+          "up": {"uv": [7, 2, 6, 0], "texture": "#base"},
+          "down": {"uv": [8, 0, 7, 2], "texture": "#base"}
+        }
+      }
+    ],
+    "display": {
+      "thirdperson_righthand": {
+        "rotation": [0, 90, 0],
+        "translation": [0, -2, 2]
+      },
+      "thirdperson_lefthand": {
+        "rotation": [0, -90, 0],
+        "translation": [0, -2, 2]
+      },
+      "firstperson_righthand": {
+        "rotation": [-5, 85, 0],
+        "translation": [3, -1.5, -1]
+      },
+      "firstperson_lefthand": {
+        "rotation": [-5, -85, 0],
+        "translation": [3, -1.5, -1]
+      },
+      "ground": {
+        "rotation": [90, 0, 0],
+        "translation": [0, -1, -4.5]
+      },
+      "gui": {
+        "rotation": [0, -15, -45],
+        "translation": [-3, -3, 0],
+        "scale": [0.8, 0.8, 0.8]
+      },
+      "nightfall:rack": {
+        "rotation": [0, 90, 0],
+        "translation": [0.25, 0, 0]
+      },
+      "fixed": {
+        "translation": [0, -4.5, -1]
+      }
+    },
+    "groups": [
+      {
+        "name": "group",
+        "origin": [8, 8, 8],
+        "color": 0,
+        "children": [
+          0,
+          {
+            "name": "stone",
+            "origin": [8, 8, 8],
+            "color": 0,
+            "children": [1, 2, 3]
+          }
+        ]
+      }
+    ]
+  },
+  "inventory": {
+    "parent": "minecraft:item/generated",
+    "textures": {
+      "layer0": "nightfall:item/flint_shovel_inventory",
+      "particle": "nightfall:item/flint_shovel_inventory"
+    }
+  }
+}

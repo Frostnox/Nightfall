@@ -1,0 +1,59 @@
+-----------------------------------------------------------------------------------------------------------------------------
+SOURCE CODE & TEXT ASSETS
+
+Source code means any file within the directory "src/main/java" or "src/main/resources/assets/nightfall/shaders" or "src/main/resources/assets/minecraft/shaders".
+Text asset means any file formatted as JSON.
+The source code and text assets in this project are licensed under the Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0) license unless explicitly stated otherwise in the file.
+
+You are free to:
+Share — copy and redistribute the material in any medium or format.
+Adapt — remix, transform, and build upon the material.
+
+Under the following terms:
+Attribution — You must give appropriate credit, provide a link to the license, and indicate if changes were made.
+NonCommercial — You may not use the material for commercial purposes.
+ShareAlike — If you remix, transform, or build upon the material, you must distribute your contributions under the same license.
+No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
+
+For details, see: https://creativecommons.org/licenses/by-nc-sa/4.0/
+-----------------------------------------------------------------------------------------------------------------------------
+SOUNDS
+
+Sound asset means any audio file, including but not limited to files formatted as OGG.
+The following sound assets in this project are licensed under the Attribution-NonCommercial 4.0 International (CC BY-NC 4.0) license:
+In sounds/action:
+slash_armor_0.ogg, slash_armor_1.ogg, slash_armor_2.ogg, slash_bone_0.ogg, slash_bone_1.ogg, slash_bone_2.ogg, 
+slash_flesh_0.ogg, slash_flesh_1.ogg, slash_flesh_2.ogg, slash_stone_0.ogg, slash_stone_1.ogg, slash_stone_2.ogg
+In sounds/entity/deer:
+hurt_0.ogg, hurt_1.ogg, hurt_2.ogg
+
+You are free to:
+Share — copy and redistribute the material in any medium or format.
+Adapt — remix, transform, and build upon the material.
+
+Under the following terms:
+Attribution — You must give appropriate credit, provide a link to the license, and indicate if changes were made.
+NonCommercial — You may not use the material for commercial purposes.
+No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
+
+For details, see: https://creativecommons.org/licenses/by-nc/4.0/
+
+
+All other sound assets in this project are licensed under the Attribution 4.0 International (CC BY 4.0) license.
+
+You are free to:
+Share — copy and redistribute the material in any medium or format.
+Adapt — remix, transform, and build upon the material for any purpose, including commercial use.
+
+Under the following terms:
+Attribution — You must give appropriate credit, provide a link to the license, and indicate if changes were made.
+No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
+
+For details, see: https://creativecommons.org/licenses/by/4.0/
+-----------------------------------------------------------------------------------------------------------------------------
+OTHER ASSETS
+
+Other assets means any file that is not source code, a text asset, or a sound asset, including but not limited to image files.
+All other assets included in this project are All Rights Reserved.
+You may not copy, modify, distribute, or use these other assets in any way without explicit permission from the author.
+-----------------------------------------------------------------------------------------------------------------------------

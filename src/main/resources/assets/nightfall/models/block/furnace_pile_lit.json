@@ -1,0 +1,5 @@
+{   "parent": "nightfall:block/test_pile_lit",
+    "textures": {
+        "base": "nightfall:block/furnace_pile"
+    }
+}

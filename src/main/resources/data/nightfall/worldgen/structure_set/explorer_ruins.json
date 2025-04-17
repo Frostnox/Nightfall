@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "nightfall:explorer_ruins",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "salt": 277177392,
+    "spacing": 32,
+    "separation": 8,
+    "type": "minecraft:random_spread"
+  }
+}

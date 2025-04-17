@@ -1,0 +1,6 @@
+{
+  "config": {},
+  "biomes": "#nightfall:has_structure/cottage_ruins",
+  "spawn_overrides": {},
+  "type": "nightfall:cottage_ruins"
+}

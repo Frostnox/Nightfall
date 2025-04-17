@@ -1,0 +1,129 @@
+{
+  "loader": "nightfall:animated-item",
+  "swapSpeed": 0.7,
+  "swapYOffset": -0.2,
+  "base": {
+    "credit": "Made with Blockbench",
+    "texture_size": [32, 32],
+    "textures": {
+      "base": "nightfall:item/flint_hammer",
+      "particle": "nightfall:item/flint_hammer_inventory"
+    },
+    "elements": [
+      {
+        "from": [7.5, 4, 7.5],
+        "to": [8.5, 21, 8.5],
+        "rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+        "faces": {
+          "north": {"uv": [0.5, 0.5, 1, 9], "texture": "#base"},
+          "east": {"uv": [0, 0.5, 0.5, 9], "texture": "#base"},
+          "south": {"uv": [1.5, 0.5, 2, 9], "texture": "#base"},
+          "west": {"uv": [1, 0.5, 1.5, 9], "texture": "#base"},
+          "up": {"uv": [1, 0.5, 0.5, 0], "texture": "#base"},
+          "down": {"uv": [1.5, 0, 1, 0.5], "texture": "#base"}
+        }
+      },
+      {
+        "from": [9, 17, 7],
+        "to": [11, 20, 9],
+        "rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+        "faces": {
+          "north": {"uv": [3, 6.5, 4, 8], "texture": "#base"},
+          "east": {"uv": [2, 6.5, 3, 8], "texture": "#base"},
+          "south": {"uv": [5, 6.5, 6, 8], "texture": "#base"},
+          "west": {"uv": [4, 6.5, 5, 8], "texture": "#base"},
+          "up": {"uv": [4, 6.5, 3, 5.5], "texture": "#base"},
+          "down": {"uv": [5, 5.5, 4, 6.5], "texture": "#base"}
+        }
+      },
+      {
+        "from": [7, 17, 6.5],
+        "to": [9, 20, 9.5],
+        "rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+        "faces": {
+          "north": {"uv": [3.5, 1.5, 4.5, 3], "texture": "#base"},
+          "east": {"uv": [2, 1.5, 3.5, 3], "texture": "#base"},
+          "south": {"uv": [6, 1.5, 7, 3], "texture": "#base"},
+          "west": {"uv": [4.5, 1.5, 6, 3], "texture": "#base"},
+          "up": {"uv": [4.5, 1.5, 3.5, 0], "texture": "#base"},
+          "down": {"uv": [5.5, 0, 4.5, 1.5], "texture": "#base"}
+        }
+      },
+      {
+        "from": [5, 17, 7],
+        "to": [7, 20, 9],
+        "rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+        "faces": {
+          "north": {"uv": [3, 4, 4, 5.5], "texture": "#base"},
+          "east": {"uv": [2, 4, 3, 5.5], "texture": "#base"},
+          "south": {"uv": [5, 4, 6, 5.5], "texture": "#base"},
+          "west": {"uv": [4, 4, 5, 5.5], "texture": "#base"},
+          "up": {"uv": [4, 4, 3, 3], "texture": "#base"},
+          "down": {"uv": [5, 3, 4, 4], "texture": "#base"}
+        }
+      }
+    ],
+    "display": {
+      "thirdperson_righthand": {
+        "rotation": [0, 87, 0],
+        "translation": [0, -2, 2]
+      },
+      "thirdperson_lefthand": {
+        "rotation": [0, -90, 0],
+        "translation": [0, -2, 2]
+      },
+      "firstperson_righthand": {
+        "rotation": [-5, 85, 0],
+        "translation": [3, -1.5, -1]
+      },
+      "firstperson_lefthand": {
+        "rotation": [-5, -85, 0],
+        "translation": [3, -1.5, -1]
+      },
+      "ground": {
+        "rotation": [90, 0, 0],
+        "translation": [0, -1, -4.5]
+      },
+      "gui": {
+        "rotation": [0, -15, -45],
+        "translation": [-3, -3, 0],
+        "scale": [0.8, 0.8, 0.8]
+      },
+      "nightfall:rack": {
+        "translation": [0.25, 1.4, 0]
+      },
+      "fixed": {
+        "translation": [0, -4.5, -1]
+      }
+    },
+    "groups": [
+      {
+        "name": "group",
+        "origin": [8, 8, 8],
+        "color": 0,
+        "children": [
+          0,
+          {
+            "name": "stone",
+            "origin": [8, 8, 8],
+            "color": 0,
+            "children": [1, 2, 3]
+          },
+          {
+            "name": "metal",
+            "origin": [8, 8, 8],
+            "color": 0,
+            "children": [4]
+          }
+        ]
+      }
+    ]
+  },
+  "inventory": {
+    "parent": "minecraft:item/generated",
+    "textures": {
+      "layer0": "nightfall:item/flint_hammer_inventory",
+      "particle": "nightfall:item/flint_hammer_inventory"
+    }
+  }
+}

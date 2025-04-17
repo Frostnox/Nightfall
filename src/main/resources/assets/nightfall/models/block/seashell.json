@@ -1,0 +1,24 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "block/block",
+	"ambientocclusion": false,
+	"textures": {
+		"0": "nightfall:block/seashell_0",
+		"particle": "nightfall:block/seashell_0"
+	},
+	"elements": [
+		{
+			"from": [6, 0, 6],
+			"to": [10, 1, 10],
+			"faces": {
+				"north": {"uv": [0, 3, 4, 4], "texture": "#0"},
+				"east": {"uv": [0, 0, 1, 4], "rotation": 270, "texture": "#0"},
+				"south": {"uv": [4, 0, 0, 1], "texture": "#0"},
+				"west": {"uv": [3, 0, 4, 4], "rotation": 90, "texture": "#0"},
+				"up": {"uv": [4, 4, 0, 0], "texture": "#0"},
+				"down": {"uv": [4, 0, 0, 4], "texture": "#0", "cullface": "down"}
+			}
+		}
+	],
+	"display": {}
+}

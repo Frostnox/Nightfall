@@ -1,0 +1,34 @@
+package frostnox.nightfall.data.recipe;
+
+import frostnox.nightfall.Nightfall;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraftforge.fluids.FluidStack;
+
+public class CampfireRecipe extends SingleRecipe {
+    public static final RecipeType<CampfireRecipe> TYPE = RecipeType.register(Nightfall.MODID + ":campfire");
+    public static final Serializer<CampfireRecipe> SERIALIZER = new Serializer<>(CampfireRecipe::new, "campfire");
+
+    public CampfireRecipe(ResourceLocation id, ResourceLocation requirement, Ingredient input, ItemStack output, FluidStack fluidOutput, int cookTime) {
+        super(id, requirement, input, output, fluidOutput, cookTime);
+    }
+
+    @Override
+    public RecipeSerializer<?> getSerializer() {
+        return SERIALIZER;
+    }
+
+    @Override
+    public RecipeType<?> getType() {
+        return TYPE;
+    }
+
+    @Override
+    public TranslatableComponent getTitle() {
+        return new TranslatableComponent(Nightfall.MODID + ".campfire");
+    }
+}
