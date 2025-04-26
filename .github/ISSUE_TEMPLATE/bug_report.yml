@@ -14,13 +14,15 @@ body:
     id: forge-version
     attributes:
       label: Forge version
+      description: |
+        Identified in main menu
       placeholder: "40.3.0"
     validations:
       required: true
   - type: input
     id: modpack
     attributes:
-      label: Custom modpack info
+      label: Modpack info
       description: |
         Name and version of modpack (if using a private pack, list all mods in issue description)
       placeholder: "Nightfall: Definitive Edition - 1.0.0b"
@@ -47,7 +49,7 @@ body:
     id: log-file
     attributes:
       label: "Log file"
-      description: "The associated log file in your .minecraft/logs. If you just played, this will be latest.log"
+      description: "The associated log file in your logs folder. If you just played, this will be latest.log"
       placeholder: "Attach your log file here"
     validations:
       required: true
