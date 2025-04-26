@@ -18,16 +18,22 @@ body:
     validations:
       required: true
   - type: input
-    id: custom-modpack
+    id: modpack
     attributes:
       label: Custom modpack info
       description: |
-        If the modpack is not Definitive Edition, post a link to it here
+        Name and version of modpack (if using a private pack, list all mods in issue description)
+      placeholder: "Nightfall: Definitive Edition - 1.0.0b"
+      validations:
+        required: true
   - type: textarea
     id: description
     attributes:
       label: Issue description
-      placeholder: "A description of the issue"
+      description: |
+        Describe what happened in as much detail as possible.
+        State what game behavior you expected to occur and why you believe the resulting behavior is a bug.
+        Screenshots and videos are encouraged when applicable.
     validations:
       required: true
   - type: textarea
