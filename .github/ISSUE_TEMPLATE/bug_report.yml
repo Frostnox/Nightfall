@@ -1,0 +1,47 @@
+name: Bug Report
+description: Report a bug or crash you believe is caused by Nightfall
+body:
+  - type: input
+    id: mod-version
+    attributes:
+      label: Nightfall version
+      description: |
+        Identified in main menu under mods or jar file name
+      placeholder: "1.0.0b"
+    validations:
+      required: true
+  - type: input
+    id: forge-version
+    attributes:
+      label: Forge version
+      placeholder: "40.3.0"
+    validations:
+      required: true
+  - type: input
+    id: custom-modpack
+    attributes:
+      label: Custom modpack info
+      description: |
+        If the modpack is not Definitive Edition, post a link to it here
+  - type: textarea
+    id: description
+    attributes:
+      label: Issue description
+      placeholder: "A description of the issue"
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction-steps
+    attributes:
+      label: Steps to reproduce if possible
+      placeholder: |
+        1. First step
+        2. Second step...
+  - type: textarea
+    id: log-file
+    attributes:
+      label: "Log file"
+      description: "The associated log file in your .minecraft/logs. If you just played, this will be latest.log"
+      placeholder: "Attach your log file here"
+    validations:
+      required: true
