@@ -24,7 +24,7 @@ body:
       description: |
         Name and version of modpack (if using a private pack, list all mods in issue description)
       placeholder: "Nightfall: Definitive Edition - 1.0.0b"
-      validations:
+    validations:
         required: true
   - type: textarea
     id: description
