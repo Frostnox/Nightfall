@@ -209,7 +209,7 @@ public class ClientEngine {
         WINTER_MUSIC = new Music(SoundsNF.MUSIC_WINTER.get(), 20 * 60 * 5, 20 * 60 * 10, false);
         NO_MUSIC = new Music(SoundsNF.SILENT.get(), 20 * 60 * 5, 20 * 60 * 10, false);
         //Setup encyclopedia
-        WYLDERY = new EncyclopediaCategory("nightfall.category.wyldery", itemLoc(ItemsNF.CAMPFIRE),
+        WYLDERY = new EncyclopediaCategory("nightfall.category.wyldery", modLoc("textures/gui/icon/wyldery.png"),
                 modLoc("textures/gui/encyclopedia/background/wyldery.png"), EntriesNF.TOOLS.getId(),
                 SoundsNF.EXPERIMENT_SURVIVAL_FAIL, SoundsNF.EXPERIMENT_SURVIVAL_SUCCESS);
         registerCategory(WYLDERY);
@@ -233,7 +233,7 @@ public class ClientEngine {
         registerEntry(WYLDERY, EntriesNF.WARDING_EFFIGY, 0, 4, new ItemStack(ItemsNF.WARDING_EFFIGY.get()), null,
                 null, image(90, 90, imageLoc("warding_effigy")), false);
 
-        METALLURGY = new EncyclopediaCategory("nightfall.category.metallurgy", itemLoc(ItemsNF.INGOTS.get(Metal.IRON)),
+        METALLURGY = new EncyclopediaCategory("nightfall.category.metallurgy", modLoc("textures/gui/icon/metallurgy.png"),
                 modLoc("textures/gui/encyclopedia/background/metallurgy.png"), EntriesNF.CASTING.getId(),
                 SoundsNF.EXPERIMENT_METALLURGY_FAIL, SoundsNF.EXPERIMENT_METALLURGY_SUCCESS);
         registerCategory(METALLURGY);

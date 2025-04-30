@@ -123,7 +123,7 @@ public class BlocksNF {
                     soil.getBaseColor()).strength(soil.getStrength(), soil.getExplosionResistance()).sound(soil.getSound()))));
 
     public static final RegistryObject<SnowBlock> SNOW = BLOCKS.register("snow", () -> new SnowBlock(BlockBehaviour.Properties.of(Material.TOP_SNOW)
-            .strength(0.2F).noCollission().requiresCorrectToolForDrops().randomTicks().sound(SoundType.SNOW)));
+            .strength(0.1F).noCollission().requiresCorrectToolForDrops().randomTicks().sound(SoundType.SNOW)));
     public static final RegistryObject<MeltableBlock> PACKED_SNOW = BLOCKS.register("packed_snow", () -> new MeltableBlock(BlocksNF.WATER, 0.3F,
             BlockBehaviour.Properties.of(Material.SNOW).strength(2F).requiresCorrectToolForDrops().randomTicks().sound(SoundType.SNOW)));
     public static final RegistryObject<UnstableBlock> MUD = BLOCKS.register("mud_block", () -> new UnstableBlock(SoundsNF.WET_SOIL_FALL,

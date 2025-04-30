@@ -57,13 +57,13 @@ public class BuildingMaterialItem extends ScreenCacheItem implements IModifiable
     public void inventoryTick(ItemStack stack, Level worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
         if(worldIn.isClientSide) {
             if(isSelected) {
-                if(entityIn instanceof Player player) {
+                if(entityIn instanceof Player player && PlayerData.isPresent(player)) {
                     ClientEngine.get().canUseModifiableMain =
                             canUseSelectedItem(ClientEngine.get().getModifiableIndexMain(), worldIn, player, InteractionHand.MAIN_HAND);
                 }
             }
             else if(itemSlot == 0) {
-                if(entityIn instanceof Player player) {
+                if(entityIn instanceof Player player && PlayerData.isPresent(player)) {
                     ClientEngine.get().canUseModifiableOff =
                             canUseSelectedItem(ClientEngine.get().getModifiableIndexOff(), worldIn, player, InteractionHand.OFF_HAND);
                 }
