@@ -501,7 +501,7 @@ public class BlocksNF {
 
     //Survival
     public static final RegistryObject<DryingUnstableBlock> WET_MUD_BRICKS = BLOCKS.register("wet_mud_bricks", () -> new DryingUnstableBlock(MUD_BRICKS,
-            (int) ContinentalWorldType.DAY_LENGTH, 13, SoundsNF.WET_SOIL_FALL, fullCopy(MUD.get()).speedFactor(1).jumpFactor(1)));
+            (int) ContinentalWorldType.DAY_LENGTH, 10, SoundsNF.WET_SOIL_FALL, fullCopy(MUD.get()).speedFactor(1).jumpFactor(1)));
     public static final RegistryObject<FireableBlock> CLAY_BRICKS = BLOCKS.register("clay_bricks", () -> new SimpleFireableBlock(
             20 * 60 * 8, TieredHeat.ORANGE, BRICKS, fullCopy(CLAY.get())));
     public static final RegistryObject<FireableBlock> FIRE_CLAY_BRICKS = BLOCKS.register("fire_clay_bricks", () -> new SimpleFireableBlock(

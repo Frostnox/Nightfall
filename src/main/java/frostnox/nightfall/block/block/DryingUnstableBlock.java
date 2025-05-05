@@ -48,16 +48,16 @@ public class DryingUnstableBlock extends UnstableBlock implements EntityBlock, I
                 boolean canDry = false;
                 BlockPos.MutableBlockPos neighborPos = pos.mutable();
                 for(AxisDirection dir : AxisDirection.values()) {
-                    if(!level.getFluidState(neighborPos.set(pos.getX() + dir.x, pos.getY() + dir.y, pos.getZ() + dir.z)).is(FluidTags.WATER)
-                            && level.getRawBrightness(neighborPos, 0) >= minLightToDry) {
-                        canDry = true;
+                    if(level.getFluidState(neighborPos.set(pos.getX() + dir.x, pos.getY() + dir.y, pos.getZ() + dir.z)).is(FluidTags.WATER)) {
+                        canDry = false;
                         break;
                     }
+                    if(!canDry && level.getRawBrightness(neighborPos, 0) >= minLightToDry) canDry = true;
                 }
                 if(canDry) {
                     LevelChunk chunk = level.getChunkAt(pos);
                     float humidity = ChunkData.isPresent(chunk) ? ChunkData.get(chunk).getHumidity(pos) : 0.5F;
-                    if(level.getGameTime() - entity.lastProcessedTick >= ticksToDry * (1.5 - humidity)) {
+                    if(level.getGameTime() - entity.lastProcessedTick >= ticksToDry * (0.5 + humidity)) {
                         level.setBlock(pos, dryBlock.get().defaultBlockState(), 3);
                     }
                 }
