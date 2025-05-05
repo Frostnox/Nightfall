@@ -2,7 +2,6 @@ package frostnox.nightfall.block.block.chest;
 
 import frostnox.nightfall.block.BlockStatePropertiesNF;
 import frostnox.nightfall.block.ICustomPathfindable;
-import frostnox.nightfall.block.IFallable;
 import frostnox.nightfall.block.IWaterloggedBlock;
 import frostnox.nightfall.block.ITree;
 import frostnox.nightfall.entity.ai.pathfinding.NodeManager;
@@ -11,7 +10,6 @@ import frostnox.nightfall.registry.forge.BlockEntitiesNF;
 import frostnox.nightfall.util.LevelUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.InteractionHand;
@@ -179,6 +177,6 @@ public class ChestBlockNF extends ChestBlock implements IWaterloggedBlock, ICust
 
     @Override
     public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player) {
-        return LevelUtil.pickBuildingMaterial(state.getBlock(), player.level);
+        return LevelUtil.pickCloneItem(state.getBlock(), player);
     }
 }

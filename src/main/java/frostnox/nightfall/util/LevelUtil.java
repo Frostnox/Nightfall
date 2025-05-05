@@ -504,8 +504,9 @@ public class LevelUtil {
                 : PlayerData.get(player).getCachedModifiableIndex();
     }
 
-    public static ItemStack pickBuildingMaterial(Block block, Level level) {
-        for(BuildingRecipe recipe : level.getRecipeManager().getAllRecipesFor(BuildingRecipe.TYPE)) {
+    public static ItemStack pickCloneItem(Block block, Player player) {
+        if(player.isCreative() && ClientEngine.get().isCtrlHeld()) return new ItemStack(block);
+        for(BuildingRecipe recipe : player.level.getRecipeManager().getAllRecipesFor(BuildingRecipe.TYPE)) {
             if(recipe.output instanceof BlockItem blockItem && blockItem.getBlock() == block) return new ItemStack(recipe.baseItem);
         }
         return new ItemStack(block);

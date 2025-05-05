@@ -192,7 +192,7 @@ public class BlocksNF {
             Fertility.POOR, 0.25F, 1F, 0.2F, 0.85F, 8, (int) (ContinentalWorldType.DAY_LENGTH * 6F/8F / 2F),
             ItemsNF.CARROT_SEEDS, false, BlockBehaviour.Properties.of(Material.PLANT).noCollission().strength(0.6F).sound(SoundType.CROP)));
     public static final RegistryObject<CropBlockNF> FLAX = BLOCKS.register("flax", () -> new CropBlockNF(
-            Fertility.RICH, 0.5F, 1F, 0.2F, 1F, 13, (int) (ContinentalWorldType.DAY_LENGTH / 2F),
+            Fertility.POOR, 0.05F, 0.85F, 0.1F, 1F, 13, (int) (ContinentalWorldType.DAY_LENGTH / 2F),
             ItemsNF.FLAX_SEEDS, false, BlockBehaviour.Properties.of(Material.PLANT).noCollission().strength(0.6F).sound(SoundType.CROP)));
     public static final RegistryObject<CropBlockNF> YARROW = BLOCKS.register("yarrow", () -> new CropBlockNF(
             Fertility.POOR, 0.1F, 0.8F, 0.1F, 1F, 11, (int) (ContinentalWorldType.DAY_LENGTH * 6F/8F / 2F),

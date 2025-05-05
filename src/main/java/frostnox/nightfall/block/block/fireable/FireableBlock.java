@@ -36,19 +36,16 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.ticks.TickPriority;
-import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Random;
-import java.util.function.BiFunction;
 
 public abstract class FireableBlock extends BaseEntityBlock implements IAdjustableNodeType {
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
@@ -223,6 +220,6 @@ public abstract class FireableBlock extends BaseEntityBlock implements IAdjustab
 
     @Override
     public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player) {
-        return LevelUtil.pickBuildingMaterial(state.getBlock(), player.level);
+        return LevelUtil.pickCloneItem(state.getBlock(), player);
     }
 }

@@ -738,6 +738,10 @@ public class ClientEngine {
         return InputConstants.isKeyDown(mc.getWindow().getWindow(), InputConstants.KEY_LSHIFT) || InputConstants.isKeyDown(mc.getWindow().getWindow(), InputConstants.KEY_RSHIFT);
     }
 
+    public boolean isCtrlHeld() {
+        return Screen.hasControlDown();
+    }
+
     public Component getAttackKeyName() {
         return mc.options.keyAttack.getKey().getDisplayName();
     }

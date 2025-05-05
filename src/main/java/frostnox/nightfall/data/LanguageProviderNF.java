@@ -465,20 +465,20 @@ public class LanguageProviderNF extends LanguageProvider {
         addAttack("maul", "%1$s was mauled by %2$s");
 
         addItemClues(EntriesNF.TOOLS, "A hard, brittle rock", "A wooden handle", "A binding");
-        addItemClues(EntriesNF.SLING, "Tightened fibers", "A round projectile");
+        addItemClues(EntriesNF.SLING, "Twisted fibers", "A round projectile");
         addItemClues(EntriesNF.WOODCARVING, "Fallen timber");
-        addItemClues(EntriesNF.WOODWORKING, "A cleanly split plank of wood");
+        addItemClues(EntriesNF.WOODWORKING, "A split plank of clean wood");
         addItemClues(EntriesNF.ADVANCED_WOODWORKING, "A plank of soft wood", "A plank of hard wood", "A plank of wood neither hard nor soft");
         addItemClues(EntriesNF.WOODEN_SHIELD, "A plank of exceptional hardness");
         addItemClues(EntriesNF.TANNING, "An animal hide or pelt", "Clean water", "Purifying earths", "Seeping wood");
-        addKnowledgeClues(EntriesNF.CAMPFIRE, "Use items to spark a fire");
+        addKnowledgeClues(EntriesNF.CAMPFIRE, "Use a pair of items to spark a fire");
         addItemClues(EntriesNF.CAMPFIRE, "A split piece of timber");
         addKnowledgeClues(EntriesNF.POTTERY, "Find wet clay");
         addItemClues(EntriesNF.POTTERY, "An earthy material resistant to at least tier 1 heat");
         addConditionClues(EntriesNF.POTTERY, "A nearby heat source");
         addKnowledgeClues(EntriesNF.COOKING, "Collect water", "Roast a meat", "Roast a vegetable");
-        addItemClues(EntriesNF.WEAVING, "Strong plant fibers");
-        addItemClues(EntriesNF.MEDICINAL_BANDAGE, "A regenerative substance, ground");
+        addItemClues(EntriesNF.WEAVING, "Hardy plant fibers");
+        addItemClues(EntriesNF.MEDICINAL_BANDAGE, "A flowery herb, crushed");
         addItemClues(EntriesNF.BOW_AND_ARROW, "A plank of hard yet flexible wood", "An arrow fletching");
         addItemClues(EntriesNF.WARDING_CHARM, "A lingering presence... a desire to carve...");
         addItemClues(EntriesNF.WARDING_EFFIGY, "A structure...", "An essence...", "A body...");

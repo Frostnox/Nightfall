@@ -258,7 +258,7 @@ public class StairBlockNF extends StairBlock implements IWaterloggedBlock, ICust
 
     @Override
     public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player) {
-        return LevelUtil.pickBuildingMaterial(state.getBlock(), player.level);
+        return LevelUtil.pickCloneItem(state.getBlock(), player);
     }
 
     @Override
