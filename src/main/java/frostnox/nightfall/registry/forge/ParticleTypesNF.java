@@ -15,9 +15,12 @@ import java.util.function.Function;
 public class ParticleTypesNF {
     public static final DeferredRegister<ParticleType<?>> PARTICLES = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, Nightfall.MODID);
     public static final RegistryObject<ParticleType<BlockParticleOption>> LEAF_BIRCH = PARTICLES.register("leaf_birch", () -> blockParticle());
+    public static final RegistryObject<ParticleType<BlockParticleOption>> LEAF_CAEDTAR = PARTICLES.register("leaf_caedtar", () -> blockParticle());
     public static final RegistryObject<ParticleType<BlockParticleOption>> LEAF_IRONWOOD = PARTICLES.register("leaf_ironwood", () -> blockParticle());
     public static final RegistryObject<ParticleType<BlockParticleOption>> LEAF_JUNGLE = PARTICLES.register("leaf_jungle", () -> blockParticle());
+    public static final RegistryObject<ParticleType<BlockParticleOption>> LEAF_MAPLE = PARTICLES.register("leaf_maple", () -> blockParticle());
     public static final RegistryObject<ParticleType<BlockParticleOption>> LEAF_OAK = PARTICLES.register("leaf_oak", () -> blockParticle());
+    public static final RegistryObject<ParticleType<BlockParticleOption>> LEAF_WILLOW = PARTICLES.register("leaf_willow", () -> blockParticle());
     public static final RegistryObject<SimpleParticleType> FLAME_RED = PARTICLES.register("flame_red", () -> new SimpleParticleType(false));
     public static final RegistryObject<SimpleParticleType> FLAME_ORANGE = PARTICLES.register("flame_orange", () -> new SimpleParticleType(false));
     public static final RegistryObject<SimpleParticleType> FLAME_YELLOW = PARTICLES.register("flame_yellow", () -> new SimpleParticleType(false));

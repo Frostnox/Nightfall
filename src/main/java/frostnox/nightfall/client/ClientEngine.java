@@ -133,6 +133,10 @@ public class ClientEngine {
     private int[] birchLeavesCache = new int[256];
     private int[] jungleLeavesCache = new int[256];
     private int[] larchLeavesCache = new int[256];
+    private int[] mapleLeavesCache = new int[256];
+    private int[] willowLeavesCache = new int[256];
+    private int[] acaciaLeavesCache = new int[256];
+    private int[] caedtarLeavesCache = new int[256];
 
     //Shaders
     private final ResourceLocation waterPostLocation = ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "shaders/post/water.json");
@@ -635,6 +639,10 @@ public class ClientEngine {
             case JUNGLE -> getJungleLeavesColor(season);
             case LARCH -> getLarchLeavesColor(season);
             case OAK -> getOakLeavesColor(season);
+            case MAPLE -> getMapleLeavesColor(season);
+            case WILLOW -> getWillowLeavesColor(season);
+            case ACACIA -> getAcaciaLeavesColor(season);
+            case CAEDTAR -> getCaedtarLeavesColor(season);
             default -> 0xFFFFFF;
         };
     }
@@ -673,6 +681,42 @@ public class ClientEngine {
     private int getLarchLeavesColor(float season) {
         if(season < 0F || season > 1F) return larchLeavesCache[0];
         return larchLeavesCache[(int) (season * 255D)];
+    }
+
+    private void fillMapleLeavesCache(int[] colors) {
+        mapleLeavesCache = colors;
+    }
+
+    private int getMapleLeavesColor(float season) {
+        if(season < 0F || season > 1F) return mapleLeavesCache[0];
+        return mapleLeavesCache[(int) (season * 255D)];
+    }
+
+    private void fillWillowLeavesCache(int[] colors) {
+        willowLeavesCache = colors;
+    }
+
+    private int getWillowLeavesColor(float season) {
+        if(season < 0F || season > 1F) return willowLeavesCache[0];
+        return willowLeavesCache[(int) (season * 255D)];
+    }
+
+    private void fillAcaciaLeavesCache(int[] colors) {
+        acaciaLeavesCache = colors;
+    }
+
+    private int getAcaciaLeavesColor(float season) {
+        if(season < 0F || season > 1F) return acaciaLeavesCache[0];
+        return acaciaLeavesCache[(int) (season * 255D)];
+    }
+
+    private void fillCaedtarLeavesCache(int[] colors) {
+        caedtarLeavesCache = colors;
+    }
+
+    private int getCaedtarLeavesColor(float season) {
+        if(season < 0F || season > 1F) return caedtarLeavesCache[0];
+        return caedtarLeavesCache[(int) (season * 255D)];
     }
 
     public Player getPlayer() {
@@ -1040,6 +1084,54 @@ public class ClientEngine {
             @Override
             protected void apply(int[] pObject, ResourceManager pResourceManager, ProfilerFiller pProfiler) {
                 ClientEngine.get().fillLarchLeavesCache(pObject);
+            }
+        });
+        event.registerReloadListener(new SimplePreparableReloadListener<int[]>() {
+            private static final ResourceLocation LOCATION = ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "textures/colormap/maple_leaves.png");
+            @Override
+            protected int[] prepare(ResourceManager pResourceManager, ProfilerFiller pProfiler) {
+                try { return LegacyStuffWrapper.getPixels(pResourceManager, LOCATION); }
+                catch (IOException ioexception) { throw new IllegalStateException("Failed to load maple leaves color texture", ioexception);}
+            }
+            @Override
+            protected void apply(int[] pObject, ResourceManager pResourceManager, ProfilerFiller pProfiler) {
+                ClientEngine.get().fillMapleLeavesCache(pObject);
+            }
+        });
+        event.registerReloadListener(new SimplePreparableReloadListener<int[]>() {
+            private static final ResourceLocation LOCATION = ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "textures/colormap/willow_leaves.png");
+            @Override
+            protected int[] prepare(ResourceManager pResourceManager, ProfilerFiller pProfiler) {
+                try { return LegacyStuffWrapper.getPixels(pResourceManager, LOCATION); }
+                catch (IOException ioexception) { throw new IllegalStateException("Failed to load willow leaves color texture", ioexception);}
+            }
+            @Override
+            protected void apply(int[] pObject, ResourceManager pResourceManager, ProfilerFiller pProfiler) {
+                ClientEngine.get().fillWillowLeavesCache(pObject);
+            }
+        });
+        event.registerReloadListener(new SimplePreparableReloadListener<int[]>() {
+            private static final ResourceLocation LOCATION = ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "textures/colormap/acacia_leaves.png");
+            @Override
+            protected int[] prepare(ResourceManager pResourceManager, ProfilerFiller pProfiler) {
+                try { return LegacyStuffWrapper.getPixels(pResourceManager, LOCATION); }
+                catch (IOException ioexception) { throw new IllegalStateException("Failed to load acacia leaves color texture", ioexception);}
+            }
+            @Override
+            protected void apply(int[] pObject, ResourceManager pResourceManager, ProfilerFiller pProfiler) {
+                ClientEngine.get().fillAcaciaLeavesCache(pObject);
+            }
+        });
+        event.registerReloadListener(new SimplePreparableReloadListener<int[]>() {
+            private static final ResourceLocation LOCATION = ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "textures/colormap/caedtar_leaves.png");
+            @Override
+            protected int[] prepare(ResourceManager pResourceManager, ProfilerFiller pProfiler) {
+                try { return LegacyStuffWrapper.getPixels(pResourceManager, LOCATION); }
+                catch (IOException ioexception) { throw new IllegalStateException("Failed to load caedtar leaves color texture", ioexception);}
+            }
+            @Override
+            protected void apply(int[] pObject, ResourceManager pResourceManager, ProfilerFiller pProfiler) {
+                ClientEngine.get().fillCaedtarLeavesCache(pObject);
             }
         });
     }

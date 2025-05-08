@@ -102,7 +102,7 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
 
         tag(TagsNF.FLUX).add(ItemsNF.LIME.get(), ItemsNF.SOILS.get(Soil.SAND).get(), ItemsNF.SOILS.get(Soil.WHITE_SAND).get());
         tag(TagsNF.TANNIN).addTag(TagsNF.LUMBER_TANNIN);
-        tag(TagsNF.LUMBER_TANNIN).add(ItemsNF.LOGS.get(Tree.OAK).get(), ItemsNF.LOGS.get(Tree.LARCH).get(), ItemsNF.LOGS.get(Tree.BIRCH).get(), ItemsNF.LOGS.get(Tree.IRONWOOD).get());
+        tag(TagsNF.LUMBER_TANNIN).add(ItemsNF.LOGS.get(Tree.OAK).get(), ItemsNF.LOGS.get(Tree.LARCH).get(), ItemsNF.LOGS.get(Tree.BIRCH).get(), ItemsNF.LOGS.get(Tree.IRONWOOD).get(), ItemsNF.LOGS.get(Tree.ACACIA).get());
         for(var item : ItemsNF.BARRELS.values()) tag(Tags.Items.BARRELS_WOODEN).add(item.get());
         for(var item : ItemsNF.CHESTS.values()) tag(Tags.Items.CHESTS_WOODEN).add(item.get());
 

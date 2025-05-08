@@ -554,9 +554,12 @@ public class Nightfall {
         public static void onParticleFactoryRegisterEvent(ParticleFactoryRegisterEvent event) {
             ParticleEngine engine = Minecraft.getInstance().particleEngine;
             engine.register(ParticleTypesNF.LEAF_BIRCH.get(), LeafParticle.Provider::new);
+            engine.register(ParticleTypesNF.LEAF_CAEDTAR.get(), LeafParticle.Provider::new);
             engine.register(ParticleTypesNF.LEAF_IRONWOOD.get(), LeafParticle.Provider::new);
             engine.register(ParticleTypesNF.LEAF_JUNGLE.get(), LeafParticle.Provider::new);
+            engine.register(ParticleTypesNF.LEAF_MAPLE.get(), LeafParticle.Provider::new);
             engine.register(ParticleTypesNF.LEAF_OAK.get(), LeafParticle.Provider::new);
+            engine.register(ParticleTypesNF.LEAF_WILLOW.get(), LeafParticle.Provider::new);
             engine.register(ParticleTypesNF.FLAME_RED.get(), FlameParticleNF.Provider::new);
             engine.register(ParticleTypesNF.FLAME_ORANGE.get(), FlameParticleNF.Provider::new);
             engine.register(ParticleTypesNF.FLAME_YELLOW.get(), FlameParticleNF.Provider::new);

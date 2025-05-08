@@ -18,32 +18,47 @@ import javax.annotation.Nullable;
 import java.util.Random;
 
 public enum Tree implements ITree {
+    ACACIA(1.6F, 0.7F, 0.2F, 0.5F, 1F, 0F, 0.35F, MaterialColor.TERRACOTTA_LIGHT_GRAY,
+            MaterialColor.COLOR_ORANGE, new OakTreeGenerator(6, 5, 3, 3, 2),
+            240, true, "patterned", null),
     BIRCH(1.2F, 0.55F, 0.6F, 0.4F, 0.75F, 0.4F, 0.85F, MaterialColor.QUARTZ,
             MaterialColor.SAND, new BirchTreeGenerator(5, 7, 1, 0, 2),
             200, true, "simple", ParticleTypesNF.LEAF_BIRCH),
-    IRONWOOD(2.4F, 0.5F, -0.4F, 0.1F, 1F, 0.1F, 1F, MaterialColor.COLOR_GRAY,
-            MaterialColor.TERRACOTTA_BLACK, new IronwoodTreeGenerator(8, 9, 2, 3, 1),
+    CAEDTAR(1.8F, 0.6F, 0.85F, 0.1F, 1F, 0.7F, 1F, MaterialColor.TERRACOTTA_BLACK,
+            MaterialColor.TERRACOTTA_PINK, new OakTreeGenerator(6, 5, 3, 3, 2),
+            500, true, "ornate", ParticleTypesNF.LEAF_CAEDTAR),
+    IRONWOOD(2.4F, 0.5F, 0.4F, 0.1F, 1F, 0.1F, 1F, MaterialColor.TERRACOTTA_GRAY,
+            MaterialColor.TERRACOTTA_BROWN, new IronwoodTreeGenerator(8, 9, 2, 3, 1),
             600, false, "ornate", ParticleTypesNF.LEAF_IRONWOOD),
-    JUNGLE(1F, 0.6F, 0.75F, 0.45F, 0.65F, 0.6F, 1F, MaterialColor.PODZOL,
+    JUNGLE(1F, 0.6F, 0.75F, 0.45F, 0.65F, 0.6F, 1F, MaterialColor.TERRACOTTA_BROWN,
             MaterialColor.DIRT, new JungleTreeGenerator(7, 10, 3, 4, 1, 0.7, false),
             240, true, "rustic", ParticleTypesNF.LEAF_JUNGLE),
     LARCH(0.8F, 0.25F, 0.45F, 0F, 0.4F, 0.1F, 0.8F, MaterialColor.TERRACOTTA_GRAY,
-            MaterialColor.QUARTZ, new LarchTreeGenerator(7, 6, 2),
+            MaterialColor.PODZOL, new LarchTreeGenerator(7, 6, 2),
             400, true, "medieval", null),
-    OAK(1.6F, 0.5F, 0.55F, 0.35F, 1F, 0.3F, 1F, MaterialColor.PODZOL,
+    MAPLE(1.4F, 0.5F, 0.6F, 0.3F, 0.7F, 0.2F, 1F, MaterialColor.TERRACOTTA_LIGHT_GRAY,
+            MaterialColor.DIRT, new OakTreeGenerator(6, 5, 3, 3, 2),
+            280, true, "simple", ParticleTypesNF.LEAF_MAPLE),
+    OAK(1.6F, 0.5F, 0.55F, 0.35F, 1F, 0.3F, 1F, MaterialColor.TERRACOTTA_BROWN,
             MaterialColor.WOOD, new OakTreeGenerator(6, 5, 3, 3, 2),
             340, true, "simple", ParticleTypesNF.LEAF_OAK),
-    PALM(1.8F, 0.65F, 0.8F, 0.45F, 0.75F, 0.7F, 1F, MaterialColor.WOOD,
+    PALM(1.8F, 0.65F, 0.8F, 0.45F, 0.75F, 0.7F, 1F, MaterialColor.TERRACOTTA_LIGHT_GRAY,
             MaterialColor.SAND, new PalmTreeGenerator(7, 8, 0.6, true),
             260, false, "patterned", null),
+    REDWOOD(0.6F, 0.2F, 0.75F, 0F, 0.35F, 0.5F, 1F, MaterialColor.TERRACOTTA_ORANGE,
+            MaterialColor.CRIMSON_HYPHAE, new OakTreeGenerator(6, 5, 3, 3, 2),
+            700, false, "medieval", null),
     SPRUCE(0.8F, 0.35F, 0.5F, 0F, 0.6F, 0.4F, 1F, MaterialColor.COLOR_BROWN,
-            MaterialColor.PODZOL, new SpruceTreeGenerator(6, 6, 2),
-            360, false, "medieval", null);
+            MaterialColor.QUARTZ, new SpruceTreeGenerator(6, 6, 2),
+            360, false, "medieval", null),
+    WILLOW(0.6F, 0.8F, 0.8F, 0.45F, 1F, 0.65F, 1F, MaterialColor.TERRACOTTA_BROWN,
+            MaterialColor.TERRACOTTA_LIGHT_GREEN, new OakTreeGenerator(6, 5, 3, 3, 2),
+            240, true, "rustic", ParticleTypesNF.LEAF_WILLOW);
 
     public static final Tree[] PRIMARY_TREES = new Tree[] {BIRCH, JUNGLE, LARCH};
-    public static final Tree[] SECONDARY_TREES = new Tree[] {SPRUCE};
-    public static final Tree[] TERTIARY_TREES = new Tree[] {OAK};
-    public static final Tree[] QUATERNARY_TREES = new Tree[] {IRONWOOD, PALM};
+    public static final Tree[] SECONDARY_TREES = new Tree[] {MAPLE, SPRUCE, WILLOW};
+    public static final Tree[] TERTIARY_TREES = new Tree[] {ACACIA, CAEDTAR, OAK};
+    public static final Tree[] QUATERNARY_TREES = new Tree[] {IRONWOOD, PALM, REDWOOD};
 
     public final float idealTemp, idealHumidity;
     private final float strength, explosionResistance, minTemp, maxTemp, minHumidity, maxHumidity;
