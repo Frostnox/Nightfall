@@ -11,10 +11,7 @@ import frostnox.nightfall.block.block.cauldron.Task;
 import frostnox.nightfall.block.block.fireable.FireablePartialBlock;
 import frostnox.nightfall.block.block.nest.OverlayBurrowBlock;
 import frostnox.nightfall.block.block.pile.PileBlock;
-import frostnox.nightfall.block.block.tree.TreeLeavesBlock;
-import frostnox.nightfall.block.block.tree.TreeSeedBlock;
-import frostnox.nightfall.block.block.tree.TreeStemBlock;
-import frostnox.nightfall.block.block.tree.TreeTrunkBlock;
+import frostnox.nightfall.block.block.tree.*;
 import frostnox.nightfall.item.Armament;
 import frostnox.nightfall.registry.forge.BlocksNF;
 import it.unimi.dsi.fastutil.Pair;
@@ -183,18 +180,36 @@ public class BlockStateProviderNF extends BlockStateProvider {
     }
 
     public void crossLeavesBlock(Block block) {
-        getVariantBuilder(block).partialState().with(TreeLeavesBlock.ALTERNATE, false).addModels(ConfiguredModel.builder().modelFile(
+        getVariantBuilder(block).partialState().with(TreeBranchesBlock.ALTERNATE, false).addModels(ConfiguredModel.builder().modelFile(
                 models().withExistingParent(name(block), resource("leaves_cross")).texture("all",
                         resource(block)).texture("cross", resource(block, "_cross"))).build());
-        getVariantBuilder(block).partialState().with(TreeLeavesBlock.ALTERNATE, true).addModels(ConfiguredModel.builder().modelFile(
+        getVariantBuilder(block).partialState().with(TreeBranchesBlock.ALTERNATE, true).addModels(ConfiguredModel.builder().modelFile(
                 models().withExistingParent(name(block) + "_alt", resource("leaves_cross_alt")).texture("all",
                         resource(block)).texture("cross", resource(block, "_cross"))).build());
     }
 
+    public void fruitLeavesBlock(Block base, Block block) {
+        getVariantBuilder(block).partialState().with(TreeBranchesBlock.ALTERNATE, false).addModels(ConfiguredModel.builder().modelFile(
+                models().withExistingParent(name(block), resource("leaves_cross")).texture("all",
+                        resource(base)).texture("cross", resource(block, "_cross"))).build());
+        getVariantBuilder(block).partialState().with(TreeBranchesBlock.ALTERNATE, true).addModels(ConfiguredModel.builder().modelFile(
+                models().withExistingParent(name(block) + "_alt", resource("leaves_cross_alt")).texture("all",
+                        resource(base)).texture("cross", resource(block, "_cross"))).build());
+    }
+
+    public void tintedFruitLeavesBlock(Block base, Block block) {
+        getVariantBuilder(block).partialState().with(TreeBranchesBlock.ALTERNATE, false).addModels(ConfiguredModel.builder().modelFile(
+                models().withExistingParent(name(block), resource("leaves_double_cross")).texture("all",
+                        resource(base)).texture("cross2", resource(block, "_cross")).texture("cross", resource(block, "_foliage_cross"))).build());
+        getVariantBuilder(block).partialState().with(TreeBranchesBlock.ALTERNATE, true).addModels(ConfiguredModel.builder().modelFile(
+                models().withExistingParent(name(block) + "_alt", resource("leaves_double_cross_alt")).texture("all",
+                        resource(base)).texture("cross2", resource(block, "_cross")).texture("cross", resource(block, "_foliage_cross"))).build());
+    }
+
     public void rotatedLeavesBlock(Block block) {
-        getVariantBuilder(block).partialState().with(TreeLeavesBlock.ALTERNATE, false).addModels(ConfiguredModel.builder().modelFile(
+        getVariantBuilder(block).partialState().with(TreeBranchesBlock.ALTERNATE, false).addModels(ConfiguredModel.builder().modelFile(
                 models().withExistingParent(name(block), "leaves").texture("all", resource(block))).build());
-        getVariantBuilder(block).partialState().with(TreeLeavesBlock.ALTERNATE, true).addModels(ConfiguredModel.builder().modelFile(
+        getVariantBuilder(block).partialState().with(TreeBranchesBlock.ALTERNATE, true).addModels(ConfiguredModel.builder().modelFile(
                 models().withExistingParent(name(block) + "_alt", resource("leaves_rotated")).texture("all", resource(block))).build());
     }
 
@@ -968,6 +983,11 @@ public class BlockStateProviderNF extends BlockStateProvider {
                     templateModel(BlocksNF.SHELVES.get(type).get(), resource("shelf_simple"), Pair.of("all", resource(BlocksNF.SHELVES.get(type).get()))),
                     0);
         }
+        for(Tree type : BlocksNF.FRUIT_LEAVES.keySet()) {
+            if(type.isDeciduous()) tintedFruitLeavesBlock(BlocksNF.LEAVES.get(type).get(), BlocksNF.FRUIT_LEAVES.get(type).get());
+            else fruitLeavesBlock(BlocksNF.LEAVES.get(type).get(), BlocksNF.FRUIT_LEAVES.get(type).get());
+        }
+        for(Tree type : BlocksNF.BRANCHES.keySet()) crossLeavesBlock(BlocksNF.BRANCHES.get(type).get());
         simpleBlock(BlocksNF.GLASS_BLOCK.get());
         ResourceLocation glass = resource(BlocksNF.GLASS_BLOCK.get());
         slabBlock(BlocksNF.GLASS_SLAB.get(), glass, resource(BlocksNF.GLASS_SLAB.get()), glass, glass);

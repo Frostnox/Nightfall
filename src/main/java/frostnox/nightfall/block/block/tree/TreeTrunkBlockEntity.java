@@ -14,6 +14,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
@@ -112,9 +113,10 @@ public class TreeTrunkBlockEntity extends BlockEntity {
         for(BlockPos pos : simulatedData.collectLeaves()) {
             if(!currentTree.contains(pos)) {
                 BlockState state = serverLevel.getBlockState(pos);
-                if(state.is(trunk.leavesBlock) && !nearbyTrees.contains(pos)) {
-                    LevelUtil.uncheckedDropDestroyBlockNoSound(level, pos, state, null, 3);
-                    leavesDestroyed++;
+                boolean isLeaves = state.is(trunk.leavesBlock);
+                if((isLeaves || state.is(trunk.branchesBlock)) && !nearbyTrees.contains(pos)) {
+                    LevelUtil.uncheckedDropDestroyBlockNoSound(level, pos, state, Blocks.AIR.defaultBlockState(), null, 3);
+                    if(isLeaves) leavesDestroyed++;
                 }
             }
         }
@@ -124,7 +126,7 @@ public class TreeTrunkBlockEntity extends BlockEntity {
                 if(!currentTree.contains(pos)) {
                     BlockState state = serverLevel.getBlockState(pos);
                     if(state.is(trunk.stemBlock) && !nearbyTrees.contains(pos)) {
-                        LevelUtil.uncheckedDropDestroyBlockNoSound(level, pos, state, null, 3);
+                        LevelUtil.uncheckedDropDestroyBlockNoSound(level, pos, state, Blocks.AIR.defaultBlockState(), null, 3);
                         woodDestroyed++;
                     }
                 }

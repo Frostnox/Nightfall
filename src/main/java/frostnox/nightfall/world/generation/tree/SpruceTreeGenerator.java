@@ -97,7 +97,7 @@ public class SpruceTreeGenerator extends TreeGenerator {
             BlockState state = d.level.getBlockState(pos);
             if(i == radius - 1) {
                 if(!d.woodOnly) {
-                    if(!d.noPlacement && lastState.is(d.trunk.stemBlock) && d.maxSeasonalLeavesDist > 0 && lastState.getValue(TreeStemBlock.TYPE) == TreeStemBlock.Type.END) {
+                    if(!d.noPlacement && lastState.is(d.trunk.stemBlock) && lastState.getValue(TreeStemBlock.TYPE) == TreeStemBlock.Type.END) {
                         d.level.setBlock(pos, d.createLeaves(isAltLeaves(d, pos)), BLOCK_SET_FLAG);
                         placed++;
                     }

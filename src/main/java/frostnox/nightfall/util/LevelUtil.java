@@ -201,10 +201,10 @@ public class LevelUtil {
     /**
      * @param level must be server level
      */
-    public static void uncheckedDropDestroyBlockNoSound(Level level, BlockPos pos, BlockState state, @Nullable Entity entity, int flags) {
+    public static void uncheckedDropDestroyBlockNoSound(Level level, BlockPos pos, BlockState state, BlockState replaceState, @Nullable Entity entity, int flags) {
         NetworkHandler.toAllTrackingChunk(level.getChunkAt(pos), new DestroyBlockNoSoundToClient(pos, Block.getId(state)));
         Block.dropResources(state, level, pos, null, entity, ItemStack.EMPTY);
-        level.setBlock(pos, Blocks.AIR.defaultBlockState(), flags);
+        level.setBlock(pos, replaceState, flags);
     }
 
     public static boolean destroyBlockNoSound(LevelAccessor level, BlockPos pos, boolean dropBlock) {

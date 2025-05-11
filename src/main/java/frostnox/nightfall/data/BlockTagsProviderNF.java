@@ -106,6 +106,10 @@ public class BlockTagsProviderNF extends BlockTagsProvider {
             tag(TagsNF.WOODEN_BARRELS).add(BlocksNF.BARRELS.get(type).get());
             tag(BlockTags.CLIMBABLE).add(BlocksNF.PLANK_LADDERS.get(type).get());
         }
+        for(var block : BlocksNF.FRUIT_LEAVES.values()) tag(BlockTags.LEAVES).add(block.get());
+        tag(TagsNF.BRANCHES_OR_LEAVES).addTag(BlockTags.LEAVES);
+        for(var block : BlocksNF.BRANCHES.values()) tag(TagsNF.BRANCHES_OR_LEAVES).add(block.get());
+
         tag(BlockTags.LOGS).addTag(BlockTags.LOGS_THAT_BURN);
 
         for(var block : BlocksNF.METAL_BLOCKS.values()) tag(TagsNF.METAL_BLOCKS).add(block.get());
@@ -119,7 +123,7 @@ public class BlockTagsProviderNF extends BlockTagsProvider {
         tag(TagsNF.FULLY_CLIMBABLE).addTags(BlockTags.STAIRS, BlockTags.SLABS);
         tag(TagsNF.CAN_IGNITE_ITEMS).add(BlocksNF.TORCH.get(), BlocksNF.WALL_TORCH.get());
         for(var block : BlocksNF.LANTERNS.values()) tag(TagsNF.CAN_IGNITE_ITEMS).add(block.get());
-        tag(TagsNF.UNCLIMBABLE).addTags(BlockTags.LEAVES, BlockTags.FENCES, BlockTags.WALLS, BlockTags.FENCE_GATES);
+        tag(TagsNF.UNCLIMBABLE).addTags(TagsNF.BRANCHES_OR_LEAVES, BlockTags.FENCES, BlockTags.WALLS, BlockTags.FENCE_GATES);
         tag(TagsNF.HEAT_RESISTANT_1).add(BlocksNF.TERRACOTTA.get(), BlocksNF.TERRACOTTA_TILES.get(), BlocksNF.TERRACOTTA_MOSAIC.get(), BlocksNF.MUD_BRICKS.get());
         tag(TagsNF.HEAT_RESISTANT_2).add(BlocksNF.BRICKS.get());
         tag(TagsNF.HEAT_RESISTANT_3).add(BlocksNF.FIRE_BRICKS.get());
@@ -132,7 +136,7 @@ public class BlockTagsProviderNF extends BlockTagsProvider {
         tag(TagsNF.MINEABLE_WITH_ADZE).addTags(BlockTags.MINEABLE_WITH_SHOVEL, BlockTags.MINEABLE_WITH_AXE);
         tag(TagsNF.MINEABLE_WITH_MAUL).addTags(BlockTags.MINEABLE_WITH_SHOVEL, BlockTags.MINEABLE_WITH_AXE, BlockTags.MINEABLE_WITH_PICKAXE);
 
-        tag(TagsNF.MINEABLE_WITH_SICKLE).addTags(BlockTags.LEAVES, BlockTags.MINEABLE_WITH_HOE, BlockTags.REPLACEABLE_PLANTS, BlockTags.CROPS);
+        tag(TagsNF.MINEABLE_WITH_SICKLE).addTags(TagsNF.BRANCHES_OR_LEAVES, BlockTags.MINEABLE_WITH_HOE, BlockTags.REPLACEABLE_PLANTS, BlockTags.CROPS);
         tag(TagsNF.MINEABLE_WITH_SICKLE).add(BlocksNF.DEAD_PLANT.get(), BlocksNF.THATCH.get(), BlocksNF.THATCH_STAIRS.get(), BlocksNF.THATCH_SLAB.get(),
                 BlocksNF.THATCH_SIDING.get(), BlocksNF.ROPE.get(), BlocksNF.MOON_ESSENCE.get(), BlocksNF.SPIDER_WEB.get(), BlocksNF.SPIDER_NEST.get());
         for(var block : BlocksNF.TREE_SEEDS.values()) tag(TagsNF.MINEABLE_WITH_SICKLE).add(block.get());
@@ -150,7 +154,7 @@ public class BlockTagsProviderNF extends BlockTagsProvider {
         tag(BlockTags.MINEABLE_WITH_AXE).addTags(BlockTags.LOGS, BlockTags.WOODEN_STAIRS, BlockTags.WOODEN_SLABS, TagsNF.WOODEN_SIDINGS,
                 BlockTags.WOODEN_FENCES, TagsNF.WOODEN_FENCE_GATES, BlockTags.WOODEN_DOORS, BlockTags.WOODEN_TRAPDOORS, TagsNF.WOODEN_HATCHES,
                 TagsNF.WOODEN_LADDERS, TagsNF.WOODEN_BARRELS, TagsNF.WOODEN_CHESTS, TagsNF.WOODEN_RACKS, TagsNF.WOODEN_SHELVES,
-                Tags.Blocks.GLASS, BlockTags.LEAVES);
+                Tags.Blocks.GLASS, TagsNF.BRANCHES_OR_LEAVES);
         tag(BlockTags.MINEABLE_WITH_AXE).add(BlocksNF.DEAD_BUSH.get(), BlocksNF.CAMPFIRE.get(), BlocksNF.FIREWOOD.get(), BlocksNF.FIREWOOD_BURNING.get(),
                 BlocksNF.MOON_ESSENCE.get());
         for(var block : BlocksNF.ANVILS_LOG.values()) tag(BlockTags.MINEABLE_WITH_AXE).add(block.get());

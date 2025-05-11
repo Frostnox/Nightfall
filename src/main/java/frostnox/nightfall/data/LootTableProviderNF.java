@@ -208,6 +208,7 @@ public class LootTableProviderNF extends LootTableProvider {
                 dropOther(BlocksNF.TRUNKS.get(type).get(), BlocksNF.LOGS.get(type).get(), 1);
                 dropOther(BlocksNF.STEMS.get(type).get(), BlocksNF.LOGS.get(type).get(), 1);
                 dropLeaves(BlocksNF.LEAVES.get(type).get(), ItemsNF.TREE_SEEDS.get(type).get(), LEAVES_COMMON, 1, 1, ItemsNF.STICK.get(), -1, 1);
+                if(BlocksNF.BRANCHES.containsKey(type)) dropBranches(BlocksNF.BRANCHES.get(type).get(), ItemsNF.STICK.get(), -1, 1);
                 dropSpecialAction(BlocksNF.LOGS.get(type).get(), BlocksNF.LOGS.get(type).get(), 1,
                         TagsNF.CHOPPING_ACTION, ItemsNF.FIREWOOD.get(), 4);
                 dropSpecialAction(BlocksNF.STRIPPED_LOGS.get(type).get(), BlocksNF.STRIPPED_LOGS.get(type).get(), 1,
@@ -227,6 +228,9 @@ public class LootTableProviderNF extends LootTableProvider {
                 dropOther(BlocksNF.RACKS.get(type).get(), ItemsNF.PLANKS.get(type).get(), 4);
                 dropOther(BlocksNF.SHELVES.get(type).get(), ItemsNF.PLANKS.get(type).get(), 8);
             }
+            dropFruitLeaves(BlocksNF.FRUIT_LEAVES.get(Tree.JUNGLE).get(), ItemsNF.TREE_SEEDS.get(Tree.JUNGLE).get(), LEAVES_COMMON, 1, 1, ItemsNF.STICK.get(), -1, 1, ItemsNF.COCOA_POD.get());
+            dropFruitLeaves(BlocksNF.FRUIT_LEAVES.get(Tree.OAK).get(), ItemsNF.TREE_SEEDS.get(Tree.OAK).get(), LEAVES_COMMON, 1, 1, ItemsNF.STICK.get(), -1, 1, ItemsNF.APPLE.get());
+            dropFruitLeaves(BlocksNF.FRUIT_LEAVES.get(Tree.PALM).get(), ItemsNF.TREE_SEEDS.get(Tree.PALM).get(), LEAVES_COMMON, 1, 1, ItemsNF.STICK.get(), -1, 1, ItemsNF.COCONUT.get());
 
             for(Stone type : Stone.values()) {
                 dropStone(BlocksNF.TILED_STONE.get(type).get(), type, 4);
@@ -371,6 +375,30 @@ public class LootTableProviderNF extends LootTableProvider {
                     .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
                             .add(LootItem.lootTableItem(pDrop)
                             .apply(SetItemCountFunction.setCount(UniformGenerator.between(pMin, pMax))))
+                            .when(LootItemEntityCondition.of(LootItemEntityCondition.Test.LIVING_PRESENT)))));
+        }
+
+        protected void dropFruitLeaves(Block block, ItemLike drop, int rMin, int rMax, int rRolls, ItemLike pDrop, int pMin, int pMax, ItemLike fruit) {
+            add(block, applyExplosionDecay(block, LootTable.lootTable()
+                    //Seed
+                    .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(rRolls))
+                            .add(LootItem.lootTableItem(drop)
+                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(rMin, rMax)))))
+                    //Fruit
+                    .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                            .add(LootItem.lootTableItem(fruit)))
+                    //Stick
+                    .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                            .add(LootItem.lootTableItem(pDrop)
+                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(pMin, pMax))))
+                            .when(LootItemEntityCondition.of(LootItemEntityCondition.Test.LIVING_PRESENT)))));
+        }
+
+        protected void dropBranches(Block block, ItemLike pDrop, int pMin, int pMax) {
+            add(block, applyExplosionDecay(block, LootTable.lootTable()
+                    .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+                            .add(LootItem.lootTableItem(pDrop)
+                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(pMin, pMax))))
                             .when(LootItemEntityCondition.of(LootItemEntityCondition.Test.LIVING_PRESENT)))));
         }
 

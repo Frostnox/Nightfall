@@ -166,29 +166,29 @@ public abstract class ToolIngredientRecipe extends EncyclopediaRecipe<RecipeWrap
         }
     }
 
-    public static void saveBowl(Ingredient input, Ingredient tool, ItemLike output, @Nullable ResourceLocation requirement, Consumer<FinishedRecipe> consumer) {
-        saveBowl(input, tool, output, requirement, consumer, Nightfall.MODID);
+    public static void saveBowl(Ingredient input, Ingredient tool, ItemLike output, int count, @Nullable ResourceLocation requirement, Consumer<FinishedRecipe> consumer) {
+        saveBowl(input, tool, output, count, requirement, consumer, Nightfall.MODID);
     }
 
-    public static void saveBowl(Ingredient input, Ingredient tool, ItemLike output, @Nullable ResourceLocation requirement, Consumer<FinishedRecipe> consumer, String namespace) {
-        save(BowlCrushingRecipe.SERIALIZER, input, tool, output, requirement, consumer, namespace);
+    public static void saveBowl(Ingredient input, Ingredient tool, ItemLike output, int count, @Nullable ResourceLocation requirement, Consumer<FinishedRecipe> consumer, String namespace) {
+        save(BowlCrushingRecipe.SERIALIZER, input, tool, output, count, requirement, consumer, namespace);
     }
 
-    public static void saveHeldTool(Ingredient input, Ingredient tool, ItemLike output, @Nullable ResourceLocation requirement, Consumer<FinishedRecipe> consumer) {
-        saveHeldTool(input, tool, output, requirement, consumer, Nightfall.MODID);
+    public static void saveHeldTool(Ingredient input, Ingredient tool, ItemLike output, int count, @Nullable ResourceLocation requirement, Consumer<FinishedRecipe> consumer) {
+        saveHeldTool(input, tool, output, count, requirement, consumer, Nightfall.MODID);
     }
 
-    public static void saveHeldTool(Ingredient input, Ingredient tool, ItemLike output, @Nullable ResourceLocation requirement, Consumer<FinishedRecipe> consumer, String namespace) {
-        save(HeldToolRecipe.SERIALIZER, input, tool, output, requirement, consumer, namespace);
+    public static void saveHeldTool(Ingredient input, Ingredient tool, ItemLike output, int count, @Nullable ResourceLocation requirement, Consumer<FinishedRecipe> consumer, String namespace) {
+        save(HeldToolRecipe.SERIALIZER, input, tool, output, count, requirement, consumer, namespace);
     }
 
-    public static void save(Serializer<?> serializer, Ingredient input, Ingredient tool, ItemLike output, @Nullable ResourceLocation requirement, Consumer<FinishedRecipe> consumer, String namespace) {
+    public static void save(Serializer<?> serializer, Ingredient input, Ingredient tool, ItemLike output, int count, @Nullable ResourceLocation requirement, Consumer<FinishedRecipe> consumer, String namespace) {
         Item outputItem = output.asItem();
         ResourceLocation id = ResourceLocation.fromNamespaceAndPath (namespace, serializer.getRegistryName().getPath() + "_" +
                 ForgeRegistries.ITEMS.getKey(outputItem).getPath());
         if(input.isEmpty()) throw new IllegalStateException("No ingredient defined for held tool recipe " + id);
         if(tool.isEmpty()) throw new IllegalStateException("No tool defined for held tool recipe " + id);
-        consumer.accept(new Result(serializer, id, requirement, input, tool, outputItem));
+        consumer.accept(new Result(serializer, id, requirement, input, tool, outputItem, count));
     }
 
     public static class Result implements FinishedRecipe {
@@ -196,14 +196,16 @@ public abstract class ToolIngredientRecipe extends EncyclopediaRecipe<RecipeWrap
         private final ResourceLocation id, requirement;
         private final Ingredient input, tool;
         private final Item output;
+        private final int count;
 
-        public Result(Serializer<?> serializer, ResourceLocation id, ResourceLocation requirement, Ingredient input, Ingredient tool, Item output) {
+        public Result(Serializer<?> serializer, ResourceLocation id, ResourceLocation requirement, Ingredient input, Ingredient tool, Item output, int count) {
             this.serializer = serializer;
             this.id = id;
             this.requirement = requirement;
             this.input = input;
             this.tool = tool;
             this.output = output;
+            this.count = count;
         }
 
         @Override
@@ -212,6 +214,7 @@ public abstract class ToolIngredientRecipe extends EncyclopediaRecipe<RecipeWrap
             json.add("tool", tool.toJson());
             JsonObject result = new JsonObject();
             result.addProperty("item", ForgeRegistries.ITEMS.getKey(output).toString());
+            if(this.count > 1) result.addProperty("count", this.count);
             json.add("output", result);
             if(requirement != null) json.addProperty("requirement", requirement.toString());
         }

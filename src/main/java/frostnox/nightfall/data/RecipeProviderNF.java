@@ -82,7 +82,7 @@ public class RecipeProviderNF extends RecipeProvider {
             BuildingRecipeBuilder.base(brick, 3, ItemsNF.STONE_BRICK_STAIRS.get(type).get()).order(1).save(consumer);
             BuildingRecipeBuilder.base(brick, 2, ItemsNF.STONE_BRICK_SLABS.get(type).get()).order(2).save(consumer);
             BuildingRecipeBuilder.base(brick, 2, ItemsNF.STONE_BRICK_SIDINGS.get(type).get()).order(3).save(consumer);
-            HeldToolRecipe.saveHeldTool(Ingredient.of(rock), Ingredient.of(TagsNF.CHISEL_METAL), brick, null, consumer);
+            HeldToolRecipe.saveHeldTool(Ingredient.of(rock), Ingredient.of(TagsNF.CHISEL_METAL), brick, 1, null, consumer);
         }
         for(Tree type : Tree.values()) {
             Item plank = ItemsNF.PLANKS.get(type).get();
@@ -164,11 +164,12 @@ public class RecipeProviderNF extends RecipeProvider {
                 .addIngredient(TagsNF.VEGETABLE, 1, Float.MAX_VALUE)
                 .unitsPerOutput(4).cookTime(CauldronRecipe.COOK_TIME).requirement(knowledge(ItemsNF.HEARTY_STEW)).saveCauldron(consumer);
 
-        BowlCrushingRecipe.saveBowl(Ingredient.of(ItemsNF.YARROW.get()), Ingredient.of(TagsNF.CHISEL), ItemsNF.YARROW_POWDER.get(), EntriesNF.WOODCARVING.getId(), consumer);
-        BowlCrushingRecipe.saveBowl(Ingredient.of(TagsNF.CRUSHABLE_TO_LIME), Ingredient.of(TagsNF.CHISEL), ItemsNF.LIME.get(), EntriesNF.WOODCARVING.getId(), consumer);
+        BowlCrushingRecipe.saveBowl(Ingredient.of(ItemsNF.YARROW.get()), Ingredient.of(TagsNF.CHISEL), ItemsNF.YARROW_POWDER.get(), 1, EntriesNF.WOODCARVING.getId(), consumer);
+        BowlCrushingRecipe.saveBowl(Ingredient.of(TagsNF.CRUSHABLE_TO_LIME), Ingredient.of(TagsNF.CHISEL), ItemsNF.LIME.get(), 1, EntriesNF.WOODCARVING.getId(), consumer);
 
-        HeldToolRecipe.saveHeldTool(Ingredient.of(ItemTags.LOGS), Ingredient.of(TagsNF.ADZE), ItemsNF.WOODEN_BOWL.get(), EntriesNF.WOODCARVING.getId(), consumer);
-        HeldToolRecipe.saveHeldTool(Ingredient.of(ItemTags.LOGS), Ingredient.of(TagsNF.AXE), ItemsNF.WOODEN_CLUB.get(), EntriesNF.WOODCARVING.getId(), consumer);
+        HeldToolRecipe.saveHeldTool(Ingredient.of(ItemTags.LOGS), Ingredient.of(TagsNF.ADZE), ItemsNF.WOODEN_BOWL.get(), 1, EntriesNF.WOODCARVING.getId(), consumer);
+        HeldToolRecipe.saveHeldTool(Ingredient.of(ItemTags.LOGS), Ingredient.of(TagsNF.AXE), ItemsNF.WOODEN_CLUB.get(), 1, EntriesNF.WOODCARVING.getId(), consumer);
+        HeldToolRecipe.saveHeldTool(Ingredient.of(ItemsNF.COCONUT.get()), Ingredient.of(TagsNF.DAGGER), ItemsNF.COCONUT_HALF.get(), 2, null, consumer);
 
         CraftingRecipeBuilder.base(ItemsNF.FLINT_ADZE.get(), EntriesNF.TOOLS).define('F', ItemsNF.FLINT.get()).define('X', ItemsNF.PLANT_FIBERS.get()).define('S', ItemsNF.STICK.get()).pattern(" X").pattern("FS").save(consumer);
         CraftingRecipeBuilder.base(ItemsNF.FLINT_AXE.get(), EntriesNF.TOOLS).define('F', ItemsNF.FLINT.get()).define('X', ItemsNF.PLANT_FIBERS.get()).define('S', ItemsNF.STICK.get()).pattern("FX").pattern(" S").save(consumer);

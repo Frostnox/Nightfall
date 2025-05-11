@@ -200,8 +200,14 @@ public class ItemsNF {
             meat(5, 0.35F)).tab(FOOD_TAB).stacksTo(4)));
     public static final RegistryObject<Item> BERRIES = ITEMS.register("berries", () -> new Item(new Item.Properties().food(
             foodBuilder(1, 0F).build()).tab(FOOD_TAB).stacksTo(8)));
-    public static final RegistryObject<Item> BURNT_FOOD = ITEMS.register("burnt_food", () -> new Item(new Item.Properties().food(
-            food(1, 0F)).tab(FOOD_TAB).stacksTo(4)));
+    public static final RegistryObject<Item> APPLE = ITEMS.register("apple", () -> new Item(new Item.Properties().food(
+            foodBuilder(4, 0.1F).build()).tab(FOOD_TAB).stacksTo(4)));
+    public static final RegistryObject<Item> COCONUT = ITEMS.register("coconut", () -> new Item(new Item.Properties().stacksTo(4).tab(INGREDIENTS_TAB)));
+    public static final RegistryObject<Item> COCONUT_HALF = ITEMS.register("coconut_half", () -> new Item(new Item.Properties().food(
+            foodBuilder(2, 0.25F).build()).tab(FOOD_TAB).stacksTo(4)));
+    public static final RegistryObject<Item> COCOA_POD = ITEMS.register("cocoa_pod", () -> new ChangeOnUseFinishItem(ItemsNF.COCOA_BEANS,
+            new Item.Properties().food(foodBuilder(2, 0F).build()).tab(FOOD_TAB).stacksTo(4)));
+    public static final RegistryObject<Item> COCOA_BEANS = register("cocoa_beans", INGREDIENTS_TAB);
     public static final RegistryObject<Item> MEAT_STEW = ITEMS.register("meat_stew", () -> new ChangeOnUseFinishItem(ItemsNF.WOODEN_BOWL,
             new Item.Properties().food(food(7, 0.4F)).tab(FOOD_TAB).stacksTo(1)));
     public static final RegistryObject<Item> VEGETABLE_STEW = ITEMS.register("vegetable_stew", () -> new ChangeOnUseFinishItem(ItemsNF.WOODEN_BOWL,
@@ -211,6 +217,8 @@ public class ItemsNF {
     public static final RegistryObject<Item> SUSPICIOUS_STEW = ITEMS.register("suspicious_stew", () -> new ChangeOnUseFinishItem(ItemsNF.WOODEN_BOWL,
             new Item.Properties().food(foodBuilder(3, 0.1F).effect(() -> new MobEffectInstance(EffectsNF.POISON.get(),
                     30 * 20, 0), 0.5F).build()).tab(FOOD_TAB).stacksTo(1)));
+    public static final RegistryObject<Item> BURNT_FOOD = ITEMS.register("burnt_food", () -> new Item(new Item.Properties().food(
+            food(1, 0F)).tab(FOOD_TAB).stacksTo(4)));
     //Seeds
     public static final RegistryObject<Item> POTATO_SEEDS = ITEMS.register("potato_seeds", () -> new ItemNameBlockItem(BlocksNF.POTATOES.get(), ingredient()));
     public static final RegistryObject<Item> CARROT_SEEDS = ITEMS.register("carrot_seeds", () -> new ItemNameBlockItem(BlocksNF.CARROTS.get(), ingredient()));
@@ -364,6 +372,10 @@ public class ItemsNF {
             register(BlocksNF.STRIPPED_LOGS.get(tree), BUILDING_TAB));
     public static final Map<Tree, RegistryObject<BlockItemNF>> LEAVES = DataUtil.mapEnum(Tree.class, tree ->
             register(BlocksNF.LEAVES.get(tree), NATURAL_TAB));
+    public static final Map<Tree, RegistryObject<BlockItemNF>> FRUIT_LEAVES = DataUtil.mapEnum(Tree.class, tree -> !BlocksNF.FRUIT_LEAVES.containsKey(tree), tree ->
+            register(BlocksNF.FRUIT_LEAVES.get(tree), NATURAL_TAB));
+    public static final Map<Tree, RegistryObject<BlockItemNF>> BRANCHES = DataUtil.mapEnum(Tree.class, tree -> !BlocksNF.BRANCHES.containsKey(tree), tree ->
+            register(BlocksNF.BRANCHES.get(tree), NATURAL_TAB));
     public static final Map<Tree, RegistryObject<BlockItemNF>> TREE_SEEDS = DataUtil.mapEnum(Tree.class, tree ->
             register(BlocksNF.TREE_SEEDS.get(tree), INGREDIENTS_TAB));
     //Building

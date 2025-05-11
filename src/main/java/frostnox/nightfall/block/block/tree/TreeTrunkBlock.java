@@ -8,12 +8,9 @@ import frostnox.nightfall.capability.IChunkData;
 import frostnox.nightfall.capability.LevelData;
 import frostnox.nightfall.registry.forge.BlockEntitiesNF;
 import frostnox.nightfall.util.MathUtil;
-import frostnox.nightfall.world.generation.ContinentalChunkGenerator;
 import frostnox.nightfall.world.generation.tree.TreeGenerator;
-import it.unimi.dsi.fastutil.objects.ObjectSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -31,13 +28,17 @@ import java.util.Random;
 public class TreeTrunkBlock extends BaseEntityBlock implements ITimeSimulatedBlock {
     public final TreeStemBlock stemBlock;
     public final TreeLeavesBlock leavesBlock;
+    public final @Nullable TreeBranchesBlock branchesBlock;
+    public final @Nullable TreeLeavesBlock fruitBlock;
     public final TreeGenerator treeGenerator;
     public final ITree type;
 
-    public TreeTrunkBlock(TreeStemBlock stemBlock, TreeLeavesBlock leavesBlock, TreeGenerator treeGenerator, Properties properties) {
+    public TreeTrunkBlock(TreeStemBlock stemBlock, TreeLeavesBlock leavesBlock, @Nullable TreeBranchesBlock branchesBlock, @Nullable TreeLeavesBlock fruitBlock, TreeGenerator treeGenerator, Properties properties) {
         super(properties);
         this.stemBlock = stemBlock;
         this.leavesBlock = leavesBlock;
+        this.branchesBlock = branchesBlock;
+        this.fruitBlock = fruitBlock;
         this.treeGenerator = treeGenerator;
         this.type = leavesBlock.type;
     }
@@ -45,14 +46,7 @@ public class TreeTrunkBlock extends BaseEntityBlock implements ITimeSimulatedBlo
     @Override
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random) {
         if(level.getBlockEntity(pos) instanceof TreeTrunkBlockEntity trunk) {
-            if(level.getGameTime() - trunk.lastTick < type.getGrowthIntervalTicks()) return;
-            //Make sure no one is breaking this tree before growing
-            ObjectSet<BlockPos> wood = treeGenerator.getWood(level, trunk, false).collectWood();
-            for(ServerPlayer player : level.players()) {
-                if(player.gameMode.isDestroyingBlock || player.gameMode.destroyProgressStart == player.gameMode.gameTicks) {
-                    if(wood.contains(player.gameMode.destroyPos)) return;
-                }
-            }
+            //if(level.getGameTime() - trunk.lastTick < type.getGrowthIntervalTicks()) return; TODO: temp
             TreeTrunkBlockEntity.updating = true;
             treeGenerator.grow(level, trunk, false);
             TreeTrunkBlockEntity.updating = false;

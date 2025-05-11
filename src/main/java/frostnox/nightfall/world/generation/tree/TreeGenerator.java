@@ -1,9 +1,6 @@
 package frostnox.nightfall.world.generation.tree;
 
-import frostnox.nightfall.block.block.tree.TreeLeavesBlock;
-import frostnox.nightfall.block.block.tree.TreeStemBlock;
-import frostnox.nightfall.block.block.tree.TreeTrunkBlock;
-import frostnox.nightfall.block.block.tree.TreeTrunkBlockEntity;
+import frostnox.nightfall.block.block.tree.*;
 import frostnox.nightfall.capability.LevelData;
 import frostnox.nightfall.data.TagsNF;
 import frostnox.nightfall.network.NetworkHandler;
@@ -13,6 +10,7 @@ import frostnox.nightfall.util.data.WrappedInt;
 import frostnox.nightfall.util.math.OctalDirection;
 import frostnox.nightfall.world.Season;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import it.unimi.dsi.fastutil.objects.ObjectList;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import it.unimi.dsi.fastutil.objects.ObjectSet;
 import net.minecraft.core.BlockPos;
@@ -40,16 +38,18 @@ public class TreeGenerator {
 
     public static class Data {
         public final List<BlockPos> trunkWood;
-        public final ObjectSet<BlockPos> trunkLeaves, otherWood, branchLeaves, oldTrunkLeaves, decayingLeaves, notDecayingLeaves;
+        public final ObjectSet<BlockPos> trunkLeaves, otherWood, branchLeaves, oldTrunkLeaves;
+        public final ObjectList<BlockPos> changingLeaves;
         protected final WorldGenLevel level;
         protected final TreeTrunkBlock trunk;
         protected final BlockPos trunkPos;
-        public final boolean generating, leavesDecaying, woodOnly, forceGrowth, simulateDetection;
+        protected final BlockState newLeaves;
+        public final boolean generating, decaying, woodOnly, forceGrowth, simulateDetection;
         public boolean noPlacement;
-        public int ticks, stemsPlaced, height, maxHeight, maxSeasonalLeavesDist;
+        public int ticks, stemsPlaced, height, maxHeight;
         public int[] intData = null;
 
-        protected Data(WorldGenLevel level, TreeTrunkBlock trunk, BlockPos trunkPos, int ticks, int maxSeasonalLeavesDist, int stemsPlaced, int height, int maxHeight, boolean simulateDetection, boolean woodOnly, boolean forceGrowth) {
+        protected Data(WorldGenLevel level, TreeTrunkBlock trunk, BlockPos trunkPos, int ticks, boolean decaying, int stemsPlaced, int height, int maxHeight, boolean simulateDetection, boolean woodOnly, boolean forceGrowth) {
             this.level = level;
             this.trunk = trunk;
             this.trunkPos = trunkPos;
@@ -65,12 +65,11 @@ public class TreeGenerator {
             this.otherWood =new ObjectOpenHashSet<>();
             this.branchLeaves = new ObjectOpenHashSet<>();
             this.oldTrunkLeaves = new ObjectOpenHashSet<>();
-            this.maxSeasonalLeavesDist = maxSeasonalLeavesDist;
-            this.leavesDecaying = maxSeasonalLeavesDist != Integer.MAX_VALUE;
-            this.decayingLeaves = leavesDecaying ? new ObjectOpenHashSet<>() : null;
-            this.notDecayingLeaves = leavesDecaying ? new ObjectOpenHashSet<>() : null;
+            this.decaying = decaying;
+            this.changingLeaves = new ObjectArrayList<>();
             this.noPlacement = ticks == 0;
             this.generating = ticks == Integer.MAX_VALUE;
+            newLeaves = (decaying ? (trunk.branchesBlock == null ? trunk.leavesBlock : trunk.branchesBlock) : trunk.leavesBlock).defaultBlockState();
         }
 
         public ObjectSet<BlockPos> collectLeaves() {
@@ -90,25 +89,30 @@ public class TreeGenerator {
             else return trunkLeaves.contains(pos);
         }
 
-        protected void collectDecayingLeaves(BlockPos pos, int dist) {
-            if(leavesDecaying && !generating && !notDecayingLeaves.contains(pos)) {
-                if(dist > maxSeasonalLeavesDist) decayingLeaves.add(pos);
-                else notDecayingLeaves.add(pos);
-            }
+        protected void collectChangingLeaves(BlockPos pos, BlockState state) {
+            if(!generating && !isCurrentTreeLeaves(state)) changingLeaves.add(pos);
         }
 
         protected boolean isTreeWood(BlockState state) {
             return simulateDetection || trunk.isTreeBase(state);
         }
 
+        protected boolean isTreeLeaves(BlockState state) {
+            return state.is(trunk.leavesBlock) || state.is(trunk.branchesBlock);
+        }
+
+        protected boolean isCurrentTreeLeaves(BlockState state) {
+            return state.is(newLeaves.getBlock());
+        }
+
         protected boolean canPlaceWood(BlockState state) {
             if(noPlacement) return false;
-            return state.isAir() || state.is(trunk.leavesBlock);
+            return state.isAir() || isTreeLeaves(state);
         }
 
         protected boolean canPlaceWood(BlockState state, @Nullable BlockState lastState) {
             if(noPlacement) return false;
-            if(state.isAir() || state.is(trunk.leavesBlock)) {
+            if(state.isAir() || isTreeLeaves(state)) {
                 if(lastState == null || !lastState.is(trunk.stemBlock)) return forceGrowth;
                 else if(lastState.getValue(TreeStemBlock.TYPE) == TreeStemBlock.Type.END) return true;
                 else return forceGrowth;
@@ -117,7 +121,7 @@ public class TreeGenerator {
         }
 
         protected BlockState createLeaves(boolean alt) {
-            return trunk.leavesBlock.defaultBlockState().setValue(TreeLeavesBlock.ALTERNATE, alt);
+            return newLeaves.setValue(TreeBranchesBlock.ALTERNATE, alt);
         }
 
         protected BlockState createStem(TreeStemBlock.Type type) {
@@ -202,20 +206,14 @@ public class TreeGenerator {
 
     protected Data tick(WorldGenLevel level, TreeTrunkBlockEntity entity, int ticks, long seasonTime, boolean simulateDetection, boolean woodOnly, boolean forceGrowth) {
         TreeTrunkBlock trunkBlock = (TreeTrunkBlock) entity.getBlockState().getBlock();
-        int maxLeavesDist;
+        boolean decaying;
         if(ticks > 0 && trunkBlock.type.isDeciduous()) {
             Season season = Season.get(seasonTime);
-            if(season == Season.FALL) {
-                float progress = season.getProgress(seasonTime);
-                if(progress < 0.5F) maxLeavesDist = Integer.MAX_VALUE;
-                else if(progress < 0.75F) maxLeavesDist = maxLeavesRadius / 2;
-                else maxLeavesDist = maxLeavesRadius / 3;
-            }
-            else if(season == Season.WINTER) maxLeavesDist = 0;
-            else maxLeavesDist = Integer.MAX_VALUE;
+            if(season == Season.FALL) decaying = season.getProgress(seasonTime) < 0.5F;
+            else decaying = season == Season.WINTER;
         }
-        else maxLeavesDist = Integer.MAX_VALUE;
-        Data d = new Data(level, trunkBlock, entity.getBlockPos(), ticks, maxLeavesDist, 0, 0, 0, simulateDetection, woodOnly, forceGrowth);
+        else decaying = false;
+        Data d = new Data(level, trunkBlock, entity.getBlockPos(), ticks, decaying, 0, 0, 0, simulateDetection, woodOnly, forceGrowth);
         Random random = new Random(entity.getSeed());
         d.maxHeight = baseHeight + ((random.nextInt() & Integer.MAX_VALUE) % randHeight);
         setupData(d, new Random(random.nextLong()));
@@ -233,7 +231,7 @@ public class TreeGenerator {
                 d.height += d.stemsPlaced;
             }
             if(d.height >= entity.maxHeight) tickTrunkLeaves(d, false);
-            else if(d.leavesDecaying) {
+            else if(d.decaying) {
                 boolean noPlacement = d.noPlacement;
                 d.noPlacement = true;
                 tickTrunkLeaves(d, false);
@@ -254,11 +252,16 @@ public class TreeGenerator {
                 else updateLeaves(d, d.level.getBlockState(pos), pos);
             }
         }
-        if(d.leavesDecaying) {
-            for(BlockPos pos : d.decayingLeaves) {
-                if(!d.notDecayingLeaves.contains(pos)) {
-                    LevelUtil.uncheckedDropDestroyBlockNoSound((Level) level, pos, level.getBlockState(pos), null, BLOCK_SET_FLAG);
-                }
+        if(ticks > 0 && !d.generating && !d.changingLeaves.isEmpty()) {
+            int limit = Math.min(d.changingLeaves.size(), (int) (0.26 * (d.trunkLeaves.size() + d.branchLeaves.size())));
+            if(d.decaying) for(int i = 0; i < limit; i++) {
+                BlockPos pos = d.changingLeaves.remove(level.getRandom().nextInt(d.changingLeaves.size()));
+                BlockState state = level.getBlockState(pos);
+                LevelUtil.uncheckedDropDestroyBlockNoSound((Level) level, pos, state, d.createLeaves(isAltLeaves(d, pos)), null, BLOCK_SET_FLAG);
+            }
+            else for(int i = 0; i < limit; i++) {
+                BlockPos pos = d.changingLeaves.remove(level.getRandom().nextInt(d.changingLeaves.size()));
+                level.setBlock(pos, d.createLeaves(isAltLeaves(d, pos)), BLOCK_SET_FLAG);
             }
         }
         if(!d.noPlacement) {
@@ -452,18 +455,17 @@ public class TreeGenerator {
             BlockState state = d.level.getBlockState(pos);
             int roundedDistSqr = Mth.ceil(distSqr);
             if(!d.generating && roundedDistSqr > shortestPlaced.val) {
-                if(d.leavesDecaying && state.is(d.trunk.leavesBlock)) {
-                    d.collectDecayingLeaves(pos, dist);
+                if(d.isTreeLeaves(state)) {
+                    d.collectChangingLeaves(pos, state);
                 }
                 return false; //Only grow one layer of leaves per tick
             }
-            if(state.is(d.trunk.leavesBlock)) {
+            if(d.isTreeLeaves(state)) {
                 d.branchLeaves.add(pos);
-                d.collectDecayingLeaves(pos, dist);
+                d.collectChangingLeaves(pos, state);
             }
-            else if(state.isAir() && !d.noPlacement && dist <= d.maxSeasonalLeavesDist) {
+            else if(state.isAir() && !d.noPlacement) {
                 d.branchLeaves.add(pos);
-                if(d.leavesDecaying) d.notDecayingLeaves.add(pos);
                 d.level.setBlock(pos, d.createLeaves(isAltLeaves(d, pos)), BLOCK_SET_FLAG);
                 if(!d.generating && roundedDistSqr >= minShortestPlacedSqr) shortestPlaced.val = roundedDistSqr;
             }
@@ -510,7 +512,7 @@ public class TreeGenerator {
         if(old) {
             if(!d.branchLeaves.contains(pos)) {
                 BlockState state = d.level.getBlockState(pos);
-                if(state.is(d.trunk.leavesBlock)) d.oldTrunkLeaves.add(pos);
+                if(d.isTreeLeaves(state)) d.oldTrunkLeaves.add(pos);
             }
             return true;
         }
@@ -519,17 +521,16 @@ public class TreeGenerator {
                 d.trunkLeaves.add(pos);
                 return true;
             }
+            BlockState state = d.level.getBlockState(pos);
             if(!d.generating && !d.noPlacement && dist > shortestPlaced.val) {
-                if(d.leavesDecaying && d.level.getBlockState(pos).is(d.trunk.leavesBlock)) {
-                    d.collectDecayingLeaves(pos, dist);
+                if(d.isTreeLeaves(state)) {
+                    d.collectChangingLeaves(pos, state);
                 }
                 return false; //Only grow one layer of leaves per tick
             }
-            BlockState state = d.level.getBlockState(pos);
             if(state.isAir()) {
-                if(!d.noPlacement && dist <= d.maxSeasonalLeavesDist) {
+                if(!d.noPlacement) {
                     d.level.setBlock(pos, d.createLeaves(isAltLeaves(d, pos)), BLOCK_SET_FLAG);
-                    if(d.leavesDecaying) d.notDecayingLeaves.add(pos);
                     d.trunkLeaves.add(pos);
                     if(!d.generating && dist >= minShortestPlaced) {
                         shortestPlaced.val = dist;
@@ -538,9 +539,9 @@ public class TreeGenerator {
                 }
                 else return false;
             }
-            else if(state.is(d.trunk.leavesBlock)) {
+            else if(d.isTreeLeaves(state)) {
                 d.trunkLeaves.add(pos);
-                d.collectDecayingLeaves(pos, dist);
+                d.collectChangingLeaves(pos, state);
                 return true;
             }
             else return false;
@@ -550,8 +551,8 @@ public class TreeGenerator {
     protected void updateLeaves(Data d, BlockState state, BlockPos pos) {
         if(!d.noPlacement) {
             boolean alt = isAltLeaves(d, pos);
-            if(state.getValue(TreeLeavesBlock.ALTERNATE) != alt) {
-                d.level.setBlock(pos, state.setValue(TreeLeavesBlock.ALTERNATE, alt), BLOCK_SET_FLAG);
+            if(state.getValue(TreeBranchesBlock.ALTERNATE) != alt) {
+                d.level.setBlock(pos, state.setValue(TreeBranchesBlock.ALTERNATE, alt), BLOCK_SET_FLAG);
             }
         }
     }

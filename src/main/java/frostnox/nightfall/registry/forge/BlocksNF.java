@@ -29,10 +29,7 @@ import frostnox.nightfall.block.block.pot.PotBlock;
 import frostnox.nightfall.block.block.rack.RackBlock;
 import frostnox.nightfall.block.block.shelf.ShelfBlock;
 import frostnox.nightfall.block.block.strangesoil.StrangeSoilBlock;
-import frostnox.nightfall.block.block.tree.TreeLeavesBlock;
-import frostnox.nightfall.block.block.tree.TreeSeedBlock;
-import frostnox.nightfall.block.block.tree.TreeStemBlock;
-import frostnox.nightfall.block.block.tree.TreeTrunkBlock;
+import frostnox.nightfall.block.block.tree.*;
 import frostnox.nightfall.capability.LevelData;
 import frostnox.nightfall.data.TagsNF;
 import frostnox.nightfall.item.Armament;
@@ -271,20 +268,21 @@ public class BlocksNF {
     public static final Map<Tree, RegistryObject<TreeLeavesBlock>> LEAVES = DataUtil.mapEnum(Tree.class, tree ->
             register(tree.getName() + "_leaves", () -> new TreeLeavesBlock(tree, BlockBehaviour.Properties.of(Material.LEAVES)
                     .strength(1F).speedFactor(0.6F).jumpFactor(0.9F).sound(SoundType.AZALEA_LEAVES)
-                    .dynamicShape().noOcclusion().isSuffocating(BlocksNF::never).isViewBlocking(BlocksNF::never)) {
-                @Override
-                public int getFireSpreadSpeed(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
-                    return 30;
-                }
+                    .dynamicShape().noOcclusion().isSuffocating(BlocksNF::never).isViewBlocking(BlocksNF::never))));
 
-                @Override
-                public int getFlammability(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
-                    return 60;
-                }
-            }));
+    public static final Map<Tree, RegistryObject<TreeLeavesBlock>> FRUIT_LEAVES = DataUtil.mapEnum(Tree.class, tree -> tree != Tree.JUNGLE && tree != Tree.OAK && tree != Tree.PALM, tree ->
+            register(tree.getName() + "_fruit_leaves", () -> new TreeLeavesBlock(tree, BlockBehaviour.Properties.of(Material.LEAVES)
+                    .strength(1F).speedFactor(0.6F).jumpFactor(0.9F).sound(SoundType.AZALEA_LEAVES)
+                    .dynamicShape().noOcclusion().isSuffocating(BlocksNF::never).isViewBlocking(BlocksNF::never))));
+
+    public static final Map<Tree, RegistryObject<TreeBranchesBlock>> BRANCHES = DataUtil.mapEnum(Tree.class, tree -> !tree.isDeciduous(), tree ->
+            register(tree.getName() + "_branches", () -> new TreeBranchesBlock(tree, BlockBehaviour.Properties.of(Material.LEAVES)
+                    .strength(1F).speedFactor(0.6F).jumpFactor(0.9F).sound(SoundType.AZALEA_LEAVES)
+                    .dynamicShape().noOcclusion().isSuffocating(BlocksNF::never).isViewBlocking(BlocksNF::never))));
 
     public static final Map<Tree, RegistryObject<TreeTrunkBlock>> TRUNKS = DataUtil.mapEnum(Tree.class, tree ->
             register(tree.getName() + "_trunk", () -> new TreeTrunkBlock(STEMS.get(tree).get(), LEAVES.get(tree).get(),
+                    BRANCHES.containsKey(tree) ? BRANCHES.get(tree).get() : null, FRUIT_LEAVES.containsKey(tree) ? FRUIT_LEAVES.get(tree).get() : null,
                     tree.getGenerator(), BlockBehaviour.Properties.of(Material.WOOD, tree.getBaseColor()).strength(tree.getStrength(),
                     tree.getExplosionResistance()).sound(SoundType.WOOD).randomTicks())));
 

@@ -47,6 +47,7 @@ public class TagsNF {
     public static final TagKey<Block> TILLED_SOIL = blockTag("tilled_soil");
     public static final TagKey<Block> TERRACOTTA = blockTag("terracotta");
     public static final TagKey<Block> TREE_WOOD = blockTag("tree_wood");
+    public static final TagKey<Block> BRANCHES_OR_LEAVES = blockTag("branches_or_leaves");
     public static final TagKey<Block> SIDINGS = blockTag("sidings");
     public static final TagKey<Block> WOODEN_SIDINGS = blockTag("sidings/wooden_sidings");
     public static final TagKey<Block> HATCHES = blockTag("hatches");

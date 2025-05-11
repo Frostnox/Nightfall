@@ -259,6 +259,8 @@ public class Nightfall {
             cutout.addAll(List.of(BlocksNF.TREE_SEEDS.get(type), BlocksNF.PLANK_TRAPDOORS.get(type), BlocksNF.PLANK_HATCHES.get(type),
                     BlocksNF.PLANK_DOORS.get(type), BlocksNF.PLANK_LADDERS.get(type)));
         }
+        cutout.addAll(BlocksNF.FRUIT_LEAVES.values());
+        cutout.addAll(BlocksNF.BRANCHES.values());
         cutoutMipped.addAll(List.of(BlocksNF.FRAZIL, BlocksNF.SEA_FRAZIL)); //Frazil is cutout and not translucent to avoid rendering issues with water, also needs mipmapping badly
         cutout.addAll(List.of(BlocksNF.SHORT_GRASS, BlocksNF.GRASS, BlocksNF.TALL_GRASS, BlocksNF.SMALL_FERN, BlocksNF.FERN,
                 BlocksNF.LARGE_FERN, BlocksNF.VINES, BlocksNF.GLASS_BLOCK, BlocksNF.GLASS_SLAB, BlocksNF.GLASS_SIDING, BlocksNF.CRUCIBLE,
@@ -451,6 +453,12 @@ public class Nightfall {
                     return ClientEngine.get().getLeavesColor(type, Season.getNormalizedProgress(Minecraft.getInstance().level));
                 }), BlocksNF.LEAVES.get(type).get(), BlocksNF.TREE_SEEDS.get(type).get());
             }
+            for(Tree type : BlocksNF.FRUIT_LEAVES.keySet()) {
+                if(!type.isDeciduous()) continue;
+                event.getBlockColors().register(((state, level, pos, tintIndex) -> {
+                    return tintIndex == 0 ? ClientEngine.get().getLeavesColor(type, Season.getNormalizedProgress(Minecraft.getInstance().level)) : Color.WHITE.getRGB();
+                }), BlocksNF.FRUIT_LEAVES.get(type).get());
+            }
 
             event.getBlockColors().register(((state, level, pos, tintIndex) -> {
                     return level != null && pos != null ? BiomeColors.getAverageWaterColor(level, pos) : -1;
@@ -464,6 +472,7 @@ public class Nightfall {
             coloredBlockItems.addAll(BlocksNF.COVERED_DIRT.values().stream().filter(block -> block.get().soilCover != SoilCover.MOSS).map(RegistryObject::get).toList());
             coloredBlockItems.addAll(BlocksNF.COVERED_LOAM.values().stream().filter(block -> block.get().soilCover != SoilCover.MOSS).map(RegistryObject::get).toList());
             coloredBlockItems.addAll(BlocksNF.LEAVES.values().stream().map(RegistryObject::get).toList());
+            coloredBlockItems.addAll(BlocksNF.FRUIT_LEAVES.values().stream().map(RegistryObject::get).toList());
             coloredBlockItems.addAll(List.of(BlocksNF.SHORT_GRASS.get(), BlocksNF.GRASS.get(), BlocksNF.TALL_GRASS.get(),
                     BlocksNF.SMALL_FERN.get(), BlocksNF.FERN.get(), BlocksNF.LARGE_FERN.get(), BlocksNF.VINES.get()));
 
