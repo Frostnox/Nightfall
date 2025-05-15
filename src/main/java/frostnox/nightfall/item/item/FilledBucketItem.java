@@ -128,7 +128,7 @@ public class FilledBucketItem extends ItemNF {
         return true;
     }
 
-    protected void playEmptySound(@Nullable Player pPlayer, LevelAccessor level, BlockPos pos) {
+    public void playEmptySound(@Nullable Player pPlayer, LevelAccessor level, BlockPos pos) {
         SoundEvent soundevent = heldFluid.get().getAttributes().getEmptySound();
         if(soundevent == null) soundevent = SoundEvents.BUCKET_EMPTY;
         level.playSound(pPlayer, pos, soundevent, SoundSource.BLOCKS, 1.0F, 1.0F);

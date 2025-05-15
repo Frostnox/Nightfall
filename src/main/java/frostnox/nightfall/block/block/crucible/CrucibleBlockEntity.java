@@ -226,8 +226,8 @@ public class CrucibleBlockEntity extends MenuContainerBlockEntity implements Men
                     return true;
                 }
             }
-            fluids.add(new FluidStack(newFluid.getFluid(), newFluid.getAmount()));
-            newFluid.setAmount(0);
+            fluids.add(new FluidStack(newFluid.getFluid(), amount));
+            newFluid.shrink(amount);
             setChanged();
             return true;
         }

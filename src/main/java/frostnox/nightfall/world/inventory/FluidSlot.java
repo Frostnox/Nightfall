@@ -10,10 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.SlotItemHandler;
-
-import javax.annotation.Nonnull;
 
 public class FluidSlot extends SlotItemHandler {
     protected final AbstractContainerMenu menu;
@@ -72,7 +69,10 @@ public class FluidSlot extends SlotItemHandler {
     public boolean mayPlace(ItemStack pStack) {
         Fluid fluid = getFluid();
         if(pStack.getItem() instanceof EmptyBucketItem bucket) return fluid != Fluids.EMPTY && FluidsNF.getFilledBucket(bucket, fluid) != null;
-        else if(pStack.getItem() instanceof FilledBucketItem bucket) return getItem().isEmpty() || bucket.getFluid() == fluid;
+        else if(pStack.getItem() instanceof FilledBucketItem bucket) {
+            ItemStack item = getItem();
+            return item.isEmpty() || (bucket.getFluid() == fluid && item.getCount() < Math.min(getMaxStackSize(), item.getMaxStackSize()));
+        }
         else return !fluidOnly;
     }
 
@@ -84,7 +84,7 @@ public class FluidSlot extends SlotItemHandler {
             if(!filledBucket.isEmpty() && removeFluid(fluid)) {
                 if(pStack.getCount() > 1) {
                     pStack.shrink(1);
-                    player.getInventory().add(filledBucket);
+                    player.getInventory().placeItemBackInInventory(filledBucket);
                     menu.setCarried(pStack);
                 }
                 else {
@@ -96,14 +96,11 @@ public class FluidSlot extends SlotItemHandler {
         }
         else if(pStack.getItem() instanceof FilledBucketItem filledBucket) {
             if(addFluid(filledBucket.getFluid())) {
-                if(pStack.getCount() > 1) {
-                    pStack.shrink(1);
-                    player.getInventory().add(pStack);
-                }
+                pStack.shrink(1);
                 //Add bucket back to inventory if it wasn't carried
                 pStack = filledBucket.getContainerItem(pStack);
                 if(!inInsert && menu.getCarried().isEmpty()) {
-                    player.getInventory().add(pStack);
+                    player.getInventory().placeItemBackInInventory(pStack);
                 }
                 else menu.setCarried(filledBucket.getContainerItem(pStack));
                 return;

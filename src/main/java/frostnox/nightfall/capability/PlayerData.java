@@ -3,6 +3,7 @@ package frostnox.nightfall.capability;
 import com.mojang.math.Vector3d;
 import frostnox.nightfall.Nightfall;
 import frostnox.nightfall.block.IHoldable;
+import frostnox.nightfall.data.TagsNF;
 import frostnox.nightfall.encyclopedia.Entry;
 import frostnox.nightfall.encyclopedia.EntryStage;
 import frostnox.nightfall.entity.PlayerAttribute;
@@ -501,6 +502,7 @@ public class PlayerData implements IPlayerData {
         IHoldable staticHoldable = (IHoldable) BlockEntity.loadStatic(player.blockPosition(), state, heldBlock);
         state = staticHoldable.resolvePutState(state, state.getBlock().getStateForPlacement(placeContext));
         if(!failed && state.getMaterial().blocksMotion() && !player.level.isUnobstructed(state, putPos, CollisionContext.of(player))) failed = true;
+        if(!failed && state.is(TagsNF.HAS_PHYSICS) && LevelUtil.canFallThrough(player.level.getBlockState(putPos.below()))) failed = true;
         if(!failed && player.level.setBlockAndUpdate(putPos, state)) {
             ActionTracker.get(player).startAction(ActionsNF.EMPTY.getId());
             NetworkHandler.toAllTrackingAndSelf(player, new GenericEntityToClient(NetworkHandler.Type.STOP_HOLDING_CLIENT, player.getId()));
