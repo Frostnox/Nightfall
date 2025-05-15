@@ -37,6 +37,10 @@ public class FeaturesNF {
     public static final Holder<ConfiguredFeature<NoneFeatureConfiguration, ?>> TREE_CONFIG = register("tree", TREE_FEATURE, FeatureConfiguration.NONE);
     public static final Holder<PlacedFeature> TREE = register("tree", TREE_CONFIG, ForestationCountPlacement.of(13F),
             InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP, BiomeFilter.biome(), AdjacentScanPlacement.of(BlockPredicate.matchesTag(TagsNF.TREE_WOOD), true));
+    public static final LoneTreeFeature LONE_TREE_FEATURE = new LoneTreeFeature(name("lone_tree"));
+    public static final Holder<ConfiguredFeature<NoneFeatureConfiguration, ?>> LONE_TREE_CONFIG = register("lone_tree", LONE_TREE_FEATURE, FeatureConfiguration.NONE);
+    public static final Holder<PlacedFeature> LONE_TREE = register("lone_tree", LONE_TREE_CONFIG, CountPlacement.of(1), ChanceFilter.with(0.002F),
+            InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP, BiomeFilter.biome(), AdjacentScanPlacement.of(BlockPredicate.matchesTag(TagsNF.TREE_WOOD), true));
 //    public static final Holder<ConfiguredFeature<RandomPatchConfiguration, ?>> SHORT_GRASS_CONFIG = register("short_grass",
 //            Feature.RANDOM_PATCH, patch(BlockStateProvider.simple(BlocksNF.SHORT_GRASS.get()), 32));
 //    public static final Holder<PlacedFeature> SHORT_GRASS = register("short_grass", SHORT_GRASS_CONFIG, BiomeFilter.biome(), InSquarePlacement.spread(),
@@ -165,7 +169,7 @@ public class FeaturesNF {
             HeightRangePlacement.uniform(VerticalAnchor.absolute(30), VerticalAnchor.absolute(412)), BiomeFilter.biome());
 
     public static void registerEvent(RegistryEvent.Register<Feature<?>> event) {
-        event.getRegistry().registerAll(TREE_FEATURE, ROCKS_FEATURE, SINGLE_BLOCK_FEATURE, BOULDER_FEATURE, ORE_VEIN_FEATURE, METEORITE_FEATURE,
+        event.getRegistry().registerAll(TREE_FEATURE, LONE_TREE_FEATURE, ROCKS_FEATURE, SINGLE_BLOCK_FEATURE, BOULDER_FEATURE, ORE_VEIN_FEATURE, METEORITE_FEATURE,
                 RABBIT_BURROW_FEATURE, SPIDER_NEST_FEATURE);
     }
 

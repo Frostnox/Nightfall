@@ -59,6 +59,7 @@ public enum Tree implements ITree {
     public static final Tree[] SECONDARY_TREES = new Tree[] {MAPLE, SPRUCE, WILLOW};
     public static final Tree[] TERTIARY_TREES = new Tree[] {ACACIA, CAEDTAR, OAK};
     public static final Tree[] QUATERNARY_TREES = new Tree[] {IRONWOOD, PALM, REDWOOD};
+    public static final Tree[] LONE_TREES = new Tree[] {ACACIA, IRONWOOD, OAK, PALM, WILLOW};
 
     public final float idealTemp, idealHumidity;
     private final float strength, explosionResistance, minTemp, maxTemp, minHumidity, maxHumidity;
@@ -103,6 +104,22 @@ public enum Tree implements ITree {
             if(rand < cumulativeWeight) return entry.tree();
         }
         return null;
+    }
+
+    public static @Nullable Tree chooseTree(Tree[] trees, float temp, float humidity) {
+        Tree bestTree = null;
+        float minDist = Float.MAX_VALUE;
+        for(Tree tree : trees) {
+            if(tree.canSurvive(temp, humidity)) {
+                float tempDist = temp - tree.idealTemp, humidityDist = humidity - tree.idealHumidity;
+                float dist = tempDist * tempDist + humidityDist * humidityDist;
+                if(dist < minDist) {
+                    minDist = dist;
+                    bestTree = tree;
+                }
+            }
+        }
+        return bestTree;
     }
 
     @Override

@@ -366,13 +366,13 @@ public class ContinentalChunkGenerator extends ChunkGenerator {
         TreePool.Entry[] trees = new TreePool.Entry[4];
         Tree primary = null, secondary = null, tertiary = null, quaternary = null;
         float noise = tree1.noise2D(x, z);
-        if(noise < -0.14 || noise > 0.14) primary = chooseTree(Tree.PRIMARY_TREES, temp, humidity); //0.7
+        if(noise < -0.14 || noise > 0.14) primary = Tree.chooseTree(Tree.PRIMARY_TREES, temp, humidity); //0.7
         noise = tree2.noise2D(x, z);
-        if(noise < -0.164 || noise > 0.164) secondary = chooseTree(Tree.SECONDARY_TREES, temp, humidity); //0.65
+        if(noise < -0.164 || noise > 0.164) secondary = Tree.chooseTree(Tree.SECONDARY_TREES, temp, humidity); //0.65
         noise = tree3.noise2D(x, z);
-        if(noise < -0.213 || noise > 0.213) tertiary = chooseTree(Tree.TERTIARY_TREES, temp, humidity); //0.55
+        if(noise < -0.213 || noise > 0.213) tertiary = Tree.chooseTree(Tree.TERTIARY_TREES, temp, humidity); //0.55
         noise = tree4.noise2D(x, z);
-        if(noise < -0.293 || noise > 0.293) quaternary = chooseTree(Tree.QUATERNARY_TREES, temp, humidity); //0.4
+        if(noise < -0.293 || noise > 0.293) quaternary = Tree.chooseTree(Tree.QUATERNARY_TREES, temp, humidity); //0.4
         int totalWeight = 0;
         int size = 0;
         if(primary != null) {
@@ -400,22 +400,6 @@ public class ContinentalChunkGenerator extends ChunkGenerator {
             size++;
         }
         return new TreePool(trees, size, totalWeight);
-    }
-
-    private static @Nullable Tree chooseTree(Tree[] trees, float temp, float humidity) {
-        Tree bestTree = null;
-        float minDist = Float.MAX_VALUE;
-        for(Tree tree : trees) {
-            if(tree.canSurvive(temp, humidity)) {
-                float tempDist = temp - tree.idealTemp, humidityDist = humidity - tree.idealHumidity;
-                float dist = tempDist * tempDist + humidityDist * humidityDist;
-                if(dist < minDist) {
-                    minDist = dist;
-                    bestTree = tree;
-                }
-            }
-        }
-        return bestTree;
     }
 
     /**

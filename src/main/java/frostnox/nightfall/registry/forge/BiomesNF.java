@@ -142,6 +142,7 @@ public class BiomesNF {
 
     public static BiomeGenerationSettings.Builder landFeatureBuilder() {
         return featureBuilder().addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, FeaturesNF.TREE)
+                .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, FeaturesNF.LONE_TREE)
                 .addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, FeaturesNF.BOULDER)
                 .addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, FeaturesNF.RABBIT_BURROW)
                 .addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, FeaturesNF.SPIDER_NEST_SURFACE);
