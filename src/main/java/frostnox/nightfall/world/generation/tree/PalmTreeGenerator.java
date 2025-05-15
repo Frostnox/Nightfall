@@ -1,9 +1,12 @@
 package frostnox.nightfall.world.generation.tree;
 
+import frostnox.nightfall.block.block.tree.TreeTrunkBlockEntity;
 import frostnox.nightfall.util.data.WrappedInt;
 import frostnox.nightfall.util.math.OctalDirection;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.WorldGenLevel;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -16,6 +19,15 @@ public class PalmTreeGenerator extends CurvedTreeGenerator {
 
     public PalmTreeGenerator(int baseHeight, int randHeight, double curveChance, boolean doubleCurve) {
         super(baseHeight, randHeight, 1, 0, 5, curveChance, doubleCurve);
+    }
+
+    @Override
+    public void tryFruit(WorldGenLevel level, Data d, TreeTrunkBlockEntity entity) {
+        int minY = Integer.MAX_VALUE;
+        for(BlockPos pos : d.trunkLeaves) if(pos.getY() < minY) minY = pos.getY();
+        ObjectArrayList<BlockPos> leaves = new ObjectArrayList<>();
+        for(BlockPos pos : d.trunkLeaves) if(pos.getY() == minY) leaves.add(pos);
+        tryFruitBranchLeaves(level, d, entity, 3, leaves);
     }
 
     @Override
@@ -102,7 +114,9 @@ public class PalmTreeGenerator extends CurvedTreeGenerator {
     protected void tickTrunkLeaves(Data d, BlockPos lastPos, BlockPos pos, int radius, boolean old, int dist, int minShortestPlaced, WrappedInt shortestPlaced, OctalDirection originDir) {
         if(dist <= radius) {
             if(!setTrunkLeavesBlock(d, pos, old, dist, minShortestPlaced, shortestPlaced) && originDir == OctalDirection.DOWN) return;
-            if(radius == 3 && originDir != OctalDirection.DOWN) setTrunkLeavesBlock(d, originDir.getOpposite().move(pos), old, dist + 1, minShortestPlaced, shortestPlaced);
+            if(radius == 3 && originDir != OctalDirection.DOWN) {
+                setTrunkLeavesBlock(d, originDir.getOpposite().move(pos), old, dist + 1, minShortestPlaced, shortestPlaced);
+            }
         }
         //Top fronds
         if(originDir == OctalDirection.DOWN) {
@@ -142,7 +156,9 @@ public class PalmTreeGenerator extends CurvedTreeGenerator {
                 else setTrunkLeavesBlock(d, movePos, old, dist, minShortestPlaced, shortestPlaced);
             }
             //Short diagonal
-            if(radius == 0) setTrunkLeavesBlock(d, movePos, old, dist, minShortestPlaced, shortestPlaced);
+            if(radius == 0) {
+                setTrunkLeavesBlock(d, movePos, old, dist, minShortestPlaced, shortestPlaced);
+            }
             else for(int i = 1; i <= radius; i++) {
                 movePos = dir.move(movePos);
                 //Plane

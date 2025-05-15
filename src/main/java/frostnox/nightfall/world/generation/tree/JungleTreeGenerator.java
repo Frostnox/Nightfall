@@ -1,5 +1,9 @@
 package frostnox.nightfall.world.generation.tree;
 
+import frostnox.nightfall.block.block.tree.TreeTrunkBlockEntity;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.minecraft.world.level.WorldGenLevel;
+
 import java.util.Random;
 
 public class JungleTreeGenerator extends CurvedTreeGenerator {
@@ -15,5 +19,10 @@ public class JungleTreeGenerator extends CurvedTreeGenerator {
     @Override
     protected int getTrunkLeavesCutoff(int height) {
         return Math.max(1, height / 3);
+    }
+
+    @Override
+    public void tryFruit(WorldGenLevel level, Data d, TreeTrunkBlockEntity entity) {
+        if(!d.trunkLeaves.isEmpty()) tryFruitBranchLeaves(level, d, entity, 4, new ObjectArrayList<>(d.trunkLeaves));
     }
 }

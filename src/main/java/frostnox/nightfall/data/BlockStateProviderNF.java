@@ -206,6 +206,15 @@ public class BlockStateProviderNF extends BlockStateProvider {
                         resource(base)).texture("cross2", resource(block, "_cross")).texture("cross", resource(block, "_foliage_cross"))).build());
     }
 
+    public void rotatedFruitLeavesBlock(Block base, Block block) {
+        getVariantBuilder(block).partialState().with(TreeBranchesBlock.ALTERNATE, false).addModels(ConfiguredModel.builder().modelFile(
+                models().withExistingParent(name(block), resource("leaves_cross")).texture("all",
+                        resource(base)).texture("cross", resource(block, "_cross"))).build());
+        getVariantBuilder(block).partialState().with(TreeBranchesBlock.ALTERNATE, true).addModels(ConfiguredModel.builder().modelFile(
+                models().withExistingParent(name(block) + "_alt", resource("leaves_cross_rotated")).texture("all",
+                        resource(base)).texture("cross", resource(block, "_cross"))).build());
+    }
+
     public void rotatedLeavesBlock(Block block) {
         getVariantBuilder(block).partialState().with(TreeBranchesBlock.ALTERNATE, false).addModels(ConfiguredModel.builder().modelFile(
                 models().withExistingParent(name(block), "leaves").texture("all", resource(block))).build());
@@ -985,6 +994,7 @@ public class BlockStateProviderNF extends BlockStateProvider {
         }
         for(Tree type : BlocksNF.FRUIT_LEAVES.keySet()) {
             if(type.isDeciduous()) tintedFruitLeavesBlock(BlocksNF.LEAVES.get(type).get(), BlocksNF.FRUIT_LEAVES.get(type).get());
+            else if(type == Tree.PALM) rotatedFruitLeavesBlock(BlocksNF.LEAVES.get(type).get(), BlocksNF.FRUIT_LEAVES.get(type).get());
             else fruitLeavesBlock(BlocksNF.LEAVES.get(type).get(), BlocksNF.FRUIT_LEAVES.get(type).get());
         }
         for(Tree type : BlocksNF.BRANCHES.keySet()) crossLeavesBlock(BlocksNF.BRANCHES.get(type).get());

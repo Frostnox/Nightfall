@@ -9,10 +9,7 @@ import frostnox.nightfall.util.LevelUtil;
 import frostnox.nightfall.util.data.WrappedInt;
 import frostnox.nightfall.util.math.OctalDirection;
 import frostnox.nightfall.world.Season;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import it.unimi.dsi.fastutil.objects.ObjectList;
-import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
-import it.unimi.dsi.fastutil.objects.ObjectSet;
+import it.unimi.dsi.fastutil.objects.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.SectionPos;
@@ -38,8 +35,7 @@ public class TreeGenerator {
 
     public static class Data {
         public final List<BlockPos> trunkWood;
-        public final ObjectSet<BlockPos> trunkLeaves, otherWood, branchLeaves, oldTrunkLeaves;
-        public final ObjectList<BlockPos> changingLeaves;
+        public final ObjectSet<BlockPos> trunkLeaves, otherWood, branchLeaves, oldTrunkLeaves, changingLeaves;
         protected final WorldGenLevel level;
         protected final TreeTrunkBlock trunk;
         protected final BlockPos trunkPos;
@@ -61,12 +57,12 @@ public class TreeGenerator {
             this.woodOnly = woodOnly;
             this.forceGrowth = forceGrowth;
             this.trunkWood = new ObjectArrayList<>();
-            this.trunkLeaves = new ObjectOpenHashSet<>();
-            this.otherWood =new ObjectOpenHashSet<>();
-            this.branchLeaves = new ObjectOpenHashSet<>();
-            this.oldTrunkLeaves = new ObjectOpenHashSet<>();
+            this.trunkLeaves = new ObjectArraySet<>();
+            this.otherWood =new ObjectArraySet<>();
+            this.branchLeaves = new ObjectArraySet<>();
+            this.oldTrunkLeaves = new ObjectArraySet<>();
             this.decaying = decaying;
-            this.changingLeaves = new ObjectArrayList<>();
+            this.changingLeaves = new ObjectArraySet<>();
             this.noPlacement = ticks == 0;
             this.generating = ticks == Integer.MAX_VALUE;
             newLeaves = (decaying ? (trunk.branchesBlock == null ? trunk.leavesBlock : trunk.branchesBlock) : trunk.leavesBlock).defaultBlockState();
@@ -90,7 +86,12 @@ public class TreeGenerator {
         }
 
         protected void collectChangingLeaves(BlockPos pos, BlockState state) {
-            if(!generating && !isCurrentTreeLeaves(state)) changingLeaves.add(pos);
+            if(!generating) {
+                if(decaying) {
+                    if(state.is(trunk.leavesBlock) || state.is(trunk.fruitBlock)) changingLeaves.add(pos);
+                }
+                else if(state.is(trunk.branchesBlock)) changingLeaves.add(pos);
+            }
         }
 
         protected boolean isTreeWood(BlockState state) {
@@ -98,11 +99,7 @@ public class TreeGenerator {
         }
 
         protected boolean isTreeLeaves(BlockState state) {
-            return state.is(trunk.leavesBlock) || state.is(trunk.branchesBlock);
-        }
-
-        protected boolean isCurrentTreeLeaves(BlockState state) {
-            return state.is(newLeaves.getBlock());
+            return state.is(trunk.leavesBlock) || state.is(trunk.branchesBlock) || state.is(trunk.fruitBlock);
         }
 
         protected boolean canPlaceWood(BlockState state) {
@@ -209,7 +206,7 @@ public class TreeGenerator {
         boolean decaying;
         if(ticks > 0 && trunkBlock.type.isDeciduous()) {
             Season season = Season.get(seasonTime);
-            if(season == Season.FALL) decaying = season.getProgress(seasonTime) < 0.5F;
+            if(season == Season.FALL) decaying = season.getProgress(seasonTime) > 0.5F;
             else decaying = season == Season.WINTER;
         }
         else decaying = false;
@@ -253,14 +250,11 @@ public class TreeGenerator {
             }
         }
         if(ticks > 0 && !d.generating && !d.changingLeaves.isEmpty()) {
-            int limit = Math.min(d.changingLeaves.size(), (int) (0.26 * (d.trunkLeaves.size() + d.branchLeaves.size())));
-            if(d.decaying) for(int i = 0; i < limit; i++) {
-                BlockPos pos = d.changingLeaves.remove(level.getRandom().nextInt(d.changingLeaves.size()));
+            if(d.decaying) for(BlockPos pos : d.changingLeaves) {
                 BlockState state = level.getBlockState(pos);
                 LevelUtil.uncheckedDropDestroyBlockNoSound((Level) level, pos, state, d.createLeaves(isAltLeaves(d, pos)), null, BLOCK_SET_FLAG);
             }
-            else for(int i = 0; i < limit; i++) {
-                BlockPos pos = d.changingLeaves.remove(level.getRandom().nextInt(d.changingLeaves.size()));
+            else for(BlockPos pos : d.changingLeaves) {
                 level.setBlock(pos, d.createLeaves(isAltLeaves(d, pos)), BLOCK_SET_FLAG);
             }
         }
@@ -284,6 +278,20 @@ public class TreeGenerator {
 
     protected void setupData(Data d, Random random) {
 
+    }
+
+    public void tryFruit(WorldGenLevel level, Data d, TreeTrunkBlockEntity entity) {
+
+    }
+
+    protected void tryFruitBranchLeaves(WorldGenLevel level, Data d, TreeTrunkBlockEntity entity, int maxFruit, List<BlockPos> leaves) {
+        int limit = Math.min(leaves.size(), 1 + level.getRandom().nextInt(maxFruit));
+        for(int i = 0; i < limit; i++) {
+            BlockPos pos = leaves.remove(level.getRandom().nextInt(leaves.size()));
+            level.setBlock(pos, d.trunk.fruitBlock.defaultBlockState().setValue(TreeBranchesBlock.ALTERNATE, isAltLeaves(d, pos)), BLOCK_SET_FLAG);
+        }
+        entity.hasFruited = true;
+        entity.setChanged();
     }
 
     //Logs must always be collected in a vertical line if using default branch implementation

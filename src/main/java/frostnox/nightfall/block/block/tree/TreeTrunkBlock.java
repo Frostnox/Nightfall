@@ -8,6 +8,7 @@ import frostnox.nightfall.capability.IChunkData;
 import frostnox.nightfall.capability.LevelData;
 import frostnox.nightfall.registry.forge.BlockEntitiesNF;
 import frostnox.nightfall.util.MathUtil;
+import frostnox.nightfall.world.Season;
 import frostnox.nightfall.world.generation.tree.TreeGenerator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -48,7 +49,16 @@ public class TreeTrunkBlock extends BaseEntityBlock implements ITimeSimulatedBlo
         if(level.getBlockEntity(pos) instanceof TreeTrunkBlockEntity trunk) {
             //if(level.getGameTime() - trunk.lastTick < type.getGrowthIntervalTicks()) return; TODO: temp
             TreeTrunkBlockEntity.updating = true;
-            treeGenerator.grow(level, trunk, false);
+            TreeGenerator.Data d = treeGenerator.grow(level, trunk, false);
+            if(trunk.isSpecial() && fruitBlock != null && trunk.maxHeight == d.maxHeight) {
+                if(Season.get(level) == Season.SUMMER) {
+                    if(!trunk.hasFruited) treeGenerator.tryFruit(level, d, trunk);
+                }
+                else {
+                    trunk.hasFruited = false;
+                    trunk.setChanged();
+                }
+            }
             TreeTrunkBlockEntity.updating = false;
         }
     }
@@ -79,11 +89,21 @@ public class TreeTrunkBlock extends BaseEntityBlock implements ITimeSimulatedBlo
             level.getChunk(chunkPos.x, chunkPos.z).markPosForPostprocessing(pos);
             trunk.initSeed(level, random);
             trunk.setChanged();
-            treeGenerator.grow(level, trunk, Integer.MAX_VALUE, true);
+            TreeGenerator.Data d = treeGenerator.grow(level, trunk, Integer.MAX_VALUE, true);
+            if(trunk.isSpecial() && fruitBlock != null && trunk.maxHeight == d.maxHeight) {
+                if(Season.get(level.getLevel()) == Season.SUMMER) {
+                    if(!trunk.hasFruited) treeGenerator.tryFruit(level, d, trunk);
+                }
+                else {
+                    trunk.hasFruited = false;
+                    trunk.setChanged();
+                }
+            }
             BlockPos belowPos = pos.below();
             if(level.getBlockState(belowPos).getBlock() instanceof CoveredSoilBlock coveredSoil) {
                 level.setBlock(belowPos, coveredSoil.soilBlock.get().defaultBlockState(), 4);
             }
+
         }
     }
 
@@ -121,13 +141,37 @@ public class TreeTrunkBlock extends BaseEntityBlock implements ITimeSimulatedBlo
             int spacing = type.getGrowthIntervalTicks();
             long timePassed = gameTime - trunk.lastTick;
             if(timePassed > spacing) {
-                int stages = MathUtil.getRandomSuccesses(randomTickChance, elapsedTime - (timePassed > spacing ? 0 : (spacing - timePassed)),
+                long trials = elapsedTime - (timePassed > spacing ? 0 : (spacing - timePassed));
+                int stages = MathUtil.getRandomSuccesses(randomTickChance, trials,
                         Math.max(treeGenerator.maxLeavesRadius, treeGenerator.maxLength - trunk.maxHeight - 1), spacing, random);
                 if(stages > 0) {
                     TreeTrunkBlockEntity.updating = true;
-                    treeGenerator.grow(level, trunk, stages, seasonTime, false);
-                    TreeTrunkBlockEntity.updating = false;
                     int tickAdjustedSpacing = spacing + (int) (1 / randomTickChance);
+                    long startSeasonTime = seasonTime - elapsedTime;
+                    long finalTickSeasonTime = seasonTime - elapsedTime + stages * tickAdjustedSpacing;
+                    TreeGenerator.Data d = treeGenerator.grow(level, trunk, stages, finalTickSeasonTime, false);
+                    //Simulate fruit
+                    if(trunk.isSpecial() && fruitBlock != null && trunk.maxHeight == d.maxHeight) {
+                        boolean doFruit = !d.decaying;
+                        if(doFruit) {
+                            long summerTime = Season.getTimePassedWithin(startSeasonTime, stages * tickAdjustedSpacing, Season.SUMMER_START, Season.FALL_START);
+                            if(MathUtil.getRandomSuccesses(randomTickChance, summerTime, 1, random) >= 1) {
+                                if(Season.get(finalTickSeasonTime) != Season.SUMMER && MathUtil.getRandomSuccesses(randomTickChance,
+                                        Season.getTimePassedWithin(startSeasonTime, stages * tickAdjustedSpacing, Season.FALL_START, seasonTime), 1, random) >= 1) {
+                                    doFruit = false;
+                                }
+                            }
+                            else doFruit = false;
+                        }
+                        if(doFruit) {
+                            if(!trunk.hasFruited) treeGenerator.tryFruit(level, d, trunk);
+                        }
+                        else {
+                            trunk.hasFruited = false;
+                            trunk.setChanged();
+                        }
+                    }
+                    TreeTrunkBlockEntity.updating = false;
                     //Not the most accurate way of doing this but don't have a way to simulate remaining trials with spacing
                     trunk.lastTick = gameTime / tickAdjustedSpacing * tickAdjustedSpacing;
                 }

@@ -256,7 +256,8 @@ public class BlockTagsProviderNF extends BlockTagsProvider {
         tag(TagsNF.STRUCTURE_REPLACEABLE).addTags(TagsNF.SOIL, BlockTags.REPLACEABLE_PLANTS);
         for(var block : BlocksNF.STONE_BLOCKS.values()) tag(TagsNF.STRUCTURE_REPLACEABLE).add(block.get());
         for(var block : BlocksNF.ROCK_CLUSTERS.values()) tag(TagsNF.STRUCTURE_REPLACEABLE).add(block.get());
-        tag(TagsNF.STRUCTURE_REPLACEABLE).add(BlocksNF.ASH.get(), BlocksNF.SNOW.get(), BlocksNF.WATER.get(), BlocksNF.SEAWATER.get(), Blocks.AIR, Blocks.CAVE_AIR, Blocks.VOID_AIR);
+        tag(TagsNF.STRUCTURE_REPLACEABLE).add(BlocksNF.ASH.get(), BlocksNF.SNOW.get(), BlocksNF.WATER.get(), BlocksNF.SEAWATER.get(), Blocks.AIR, Blocks.CAVE_AIR, Blocks.VOID_AIR,
+                BlocksNF.SPIDER_WEB.get());
         tag(TagsNF.STRUCTURE_POST_PROCESS).addTags(BlockTags.FENCES, TagsNF.LADDERS);
         tag(TagsNF.STRUCTURE_POST_PROCESS).add(BlocksNF.TORCH.get(), BlocksNF.WALL_TORCH.get(), BlocksNF.TORCH_UNLIT.get(), BlocksNF.WALL_TORCH_UNLIT.get());
 

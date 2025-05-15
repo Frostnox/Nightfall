@@ -29,7 +29,9 @@ public class TreeTrunkBlockEntity extends BlockEntity {
     protected static boolean updating = false;
     public long lastTick;
     public int maxHeight = -1; //Tallest height the tree has ever reached
+    public boolean hasFruited;
     protected long seed;
+    protected boolean special;
 
     public TreeTrunkBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntitiesNF.TREE_TRUNK.get(), pos, state);
@@ -39,6 +41,7 @@ public class TreeTrunkBlockEntity extends BlockEntity {
         if(seed == 0) {
             seed = random.nextLong();
             lastTick = level.getLevelData().getGameTime();
+            special = random.nextInt(64) == 0;
         }
     }
 
@@ -46,11 +49,16 @@ public class TreeTrunkBlockEntity extends BlockEntity {
         if(seed == 0 && level != null) {
             seed = level.random.nextLong();
             lastTick = level.getGameTime();
+            special = level.random.nextInt(64) == 0;
         }
     }
 
     public long getSeed() {
         return seed;
+    }
+
+    public boolean isSpecial() {
+        return special;
     }
 
     public ObjectSet<BlockPos> getTree() {
@@ -145,6 +153,8 @@ public class TreeTrunkBlockEntity extends BlockEntity {
         seed = tag.getLong("seed");
         lastTick = tag.getLong("lastTick");
         maxHeight = tag.getInt("maxHeight");
+        hasFruited = tag.getBoolean("hasFruited");
+        special = tag.getBoolean("special");
     }
 
     @Override
@@ -153,12 +163,7 @@ public class TreeTrunkBlockEntity extends BlockEntity {
         tag.putLong("seed", seed);
         tag.putLong("lastTick", lastTick);
         tag.putInt("maxHeight", maxHeight);
+        tag.putBoolean("hasFruited", hasFruited);
+        tag.putBoolean("special", special);
     }
-
-    /*@Override
-    public CompoundTag getUpdateTag() {
-        CompoundTag tag = new CompoundTag();
-        saveAdditional(tag);
-        return tag;
-    }*/
 }
