@@ -79,14 +79,14 @@ public abstract class FireableBlock extends BaseEntityBlock implements IAdjustab
         if(updated || entity.getCookTicks() > 0) {
             if(!updated && level.getGameTime() % 67L == 0L) {
                 entity.setInStructure(fireable.isStructureValid(level, pos, state));
-                if(state.getValue(LIT)) level.setBlockAndUpdate(pos, state.setValue(LIT, false));
+                if(state.getValue(LIT) && !entity.inStructure()) level.setBlockAndUpdate(pos, state.setValue(LIT, false));
             }
             if(updated || (entity.inStructure() && level.getBlockEntity(pos.below()) instanceof BurningFuelBlockEntity fuel && fuel.temperature >= fireable.cookHeat.getBaseTemp())) {
                 entity.setCookTicks(entity.getCookTicks() + 1);
                 ((BlockEntity) entity).setChanged();
             }
             else if(entity.getCookTicks() > 0) {
-                entity.setCookTicks(entity.getCookTicks() - 1);
+                entity.setCookTicks(Math.max(0, entity.getCookTicks() - 30));
                 ((BlockEntity) entity).setChanged();
                 if(entity.getCookTicks() == 0) level.setBlockAndUpdate(pos, state.setValue(LIT, false));
             }
