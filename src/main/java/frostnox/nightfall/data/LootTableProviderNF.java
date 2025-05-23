@@ -66,7 +66,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class LootTableProviderNF extends LootTableProvider {
-    public static final int LEAVES_COMMON = -58;
+    public static final int TREE_SEED_STANDARD = -58, TREE_SEED_RARE = -88, TREE_SEED_COMMON = -28;
     private final List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootContextParamSet>> tables = ImmutableList.of(
             Pair.of(BlockLootNF::new, LootContextParamSets.BLOCK),
             Pair.of(EntityLootNF::new, LootContextParamSets.ENTITY),
@@ -207,7 +207,11 @@ public class LootTableProviderNF extends LootTableProvider {
             for(Tree type : Tree.values()) {
                 dropOther(BlocksNF.TRUNKS.get(type).get(), BlocksNF.LOGS.get(type).get(), 1);
                 dropOther(BlocksNF.STEMS.get(type).get(), BlocksNF.LOGS.get(type).get(), 1);
-                dropLeaves(BlocksNF.LEAVES.get(type).get(), ItemsNF.TREE_SEEDS.get(type).get(), LEAVES_COMMON, 1, 1, ItemsNF.STICK.get(), -1, 1);
+                int min = -68;
+                if(type == Tree.PALM) min = -28;
+                else if(type == Tree.LARCH || type == Tree.SPRUCE) min = -88;
+                else if(type == Tree.BIRCH || type == Tree.ACACIA || type == Tree.REDWOOD) min = -48;
+                dropLeaves(BlocksNF.LEAVES.get(type).get(), ItemsNF.TREE_SEEDS.get(type).get(), min, 1, 1, ItemsNF.STICK.get(), -1, 1);
                 if(BlocksNF.BRANCHES.containsKey(type)) dropBranches(BlocksNF.BRANCHES.get(type).get(), ItemsNF.STICK.get(), -1, 1);
                 dropSpecialAction(BlocksNF.LOGS.get(type).get(), BlocksNF.LOGS.get(type).get(), 1,
                         TagsNF.CHOPPING_ACTION, ItemsNF.FIREWOOD.get(), 4);
@@ -228,9 +232,9 @@ public class LootTableProviderNF extends LootTableProvider {
                 dropOther(BlocksNF.RACKS.get(type).get(), ItemsNF.PLANKS.get(type).get(), 4);
                 dropOther(BlocksNF.SHELVES.get(type).get(), ItemsNF.PLANKS.get(type).get(), 8);
             }
-            dropFruitLeaves(BlocksNF.FRUIT_LEAVES.get(Tree.JUNGLE).get(), ItemsNF.TREE_SEEDS.get(Tree.JUNGLE).get(), LEAVES_COMMON, 1, 1, ItemsNF.STICK.get(), -1, 1, ItemsNF.COCOA_POD.get());
-            dropFruitLeaves(BlocksNF.FRUIT_LEAVES.get(Tree.OAK).get(), ItemsNF.TREE_SEEDS.get(Tree.OAK).get(), LEAVES_COMMON, 1, 1, ItemsNF.STICK.get(), -1, 1, ItemsNF.APPLE.get());
-            dropFruitLeaves(BlocksNF.FRUIT_LEAVES.get(Tree.PALM).get(), ItemsNF.TREE_SEEDS.get(Tree.PALM).get(), LEAVES_COMMON, 1, 1, ItemsNF.STICK.get(), -1, 1, ItemsNF.COCONUT.get());
+            dropFruitLeaves(BlocksNF.FRUIT_LEAVES.get(Tree.JUNGLE).get(), ItemsNF.TREE_SEEDS.get(Tree.JUNGLE).get(), -68, 1, 1, ItemsNF.STICK.get(), -1, 1, ItemsNF.COCOA_POD.get());
+            dropFruitLeaves(BlocksNF.FRUIT_LEAVES.get(Tree.OAK).get(), ItemsNF.TREE_SEEDS.get(Tree.OAK).get(), -68, 1, 1, ItemsNF.STICK.get(), -1, 1, ItemsNF.APPLE.get());
+            dropFruitLeaves(BlocksNF.FRUIT_LEAVES.get(Tree.PALM).get(), ItemsNF.TREE_SEEDS.get(Tree.PALM).get(), -28, 1, 1, ItemsNF.STICK.get(), -1, 1, ItemsNF.COCONUT.get());
 
             for(Stone type : Stone.values()) {
                 dropStone(BlocksNF.TILED_STONE.get(type).get(), type, 4);

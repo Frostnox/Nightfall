@@ -10,6 +10,7 @@ import frostnox.nightfall.block.IMetal;
 import frostnox.nightfall.block.IMicroGrid;
 import frostnox.nightfall.block.TieredHeat;
 import frostnox.nightfall.block.block.crucible.CrucibleContainer;
+import frostnox.nightfall.block.block.tree.TreeStemBlock;
 import frostnox.nightfall.block.fluid.MetalFluid;
 import frostnox.nightfall.capability.*;
 import frostnox.nightfall.client.ClientEngine;
@@ -50,6 +51,7 @@ import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.*;
@@ -695,13 +697,33 @@ public class CommonEventHandler {
                 else if(capA.getAction().is(TagsNF.ADZE_ACTION)) speed *= 0.75F;
             }
         }
-        if(event.getState().is(TagsNF.TREE_WOOD)) {
-            //TODO: just collect the tree and total every trunk log above this y?
-            int size = 1;
-            BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(event.getPos().getX(), event.getPos().getY() + 1, event.getPos().getZ());
-            while(player.level.getBlockState(pos).is(BlockTags.LOGS)) {
-                pos.setY(pos.getY() + 1);
+        BlockState state = event.getState();
+        if(state.is(TagsNF.TREE_WOOD)) {
+            int size = 0;
+            BlockPos.MutableBlockPos pos = event.getPos().mutable();
+            while(state.is(BlockTags.LOGS)) {
+                if(state.getBlock() instanceof TreeStemBlock) {
+                    switch(state.getValue(TreeStemBlock.TYPE)) {
+                        case TOP, ROTATED_TOP ->  {
+                            switch(state.getValue(TreeStemBlock.AXIS)) {
+                                case X -> pos.setX(pos.getX() + 1);
+                                case Y -> pos.setY(pos.getY() + 1);
+                                case Z -> pos.setZ(pos.getZ() - 1);
+                            }
+                        }
+                        case BOTTOM, ROTATED_BOTTOM -> {
+                            switch(state.getValue(TreeStemBlock.AXIS)) {
+                                case X -> pos.setX(pos.getX() - 1);
+                                case Y -> pos.setY(pos.getY() - 1);
+                                case Z -> pos.setZ(pos.getZ() + 1);
+                            }
+                        }
+                        default -> pos.setY(pos.getY() + 1);
+                    }
+                }
+                else pos.setY(pos.getY() + 1);
                 size++;
+                state = player.level.getBlockState(pos);
             }
             if(size > 1) speed *= 1F / (size * 0.8F);
         }

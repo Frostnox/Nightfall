@@ -168,7 +168,7 @@ public class TieredAnvilBlockEntity extends MenuContainerBlockEntity implements 
         if(!gridHas(x, y, z)) return false;
         Optional<?> recipe = level.getRecipeManager().byKey(recipeLocation);
         if(recipe.isEmpty() || !(recipe.get() instanceof TieredAnvilRecipe anvilRecipe)) return false;
-        boolean badTool = !(item.getItem() instanceof MeleeWeaponItem tool) || tool.material.getTier() < anvilRecipe.getTier();
+        boolean badTool = !(item.getItem() instanceof MeleeWeaponItem tool) || tool.material.getTier() < anvilRecipe.getTier() - 1;
         Vec3 gridPos = getWorldPos(worldPosition, (x + 0.5F) / 16, (y + 0.5F) / 16, (z + 0.5F) / 16);
         if(getCachedHeat() != TieredHeat.NONE) {
             ((ServerLevel) level).sendParticles(getCachedHeat().getSparkParticle().get(), gridPos.x(), gridPos.y(), gridPos.z(),

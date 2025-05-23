@@ -130,7 +130,7 @@ public class TreeTrunkBlockEntity extends BlockEntity {
             if(!currentTree.contains(pos)) {
                 BlockState state = serverLevel.getBlockState(pos);
                 boolean isLeaves = state.is(trunk.leavesBlock);
-                if((isLeaves || state.is(trunk.branchesBlock)) && !nearbyTrees.contains(pos)) {
+                if((isLeaves || state.is(trunk.branchesBlock) || state.is(trunk.fruitBlock)) && !nearbyTrees.contains(pos)) {
                     LevelUtil.uncheckedDropDestroyBlockNoSound(level, pos, state, Blocks.AIR.defaultBlockState(), null, 3);
                     if(isLeaves) leavesDestroyed++;
                 }
