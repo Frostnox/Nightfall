@@ -36,7 +36,7 @@ public class FeaturesNF {
     public static final RandomTreeFeature TREE_FEATURE = new RandomTreeFeature(name("tree"));
     public static final Holder<ConfiguredFeature<NoneFeatureConfiguration, ?>> TREE_CONFIG = register("tree", TREE_FEATURE, FeatureConfiguration.NONE);
     public static final Holder<PlacedFeature> TREE = register("tree", TREE_CONFIG, ForestationCountPlacement.of(13F),
-            InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP, BiomeFilter.biome(), AdjacentScanPlacement.of(BlockPredicate.matchesTag(TagsNF.TREE_WOOD), true));
+            InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, BiomeFilter.biome(), AdjacentScanPlacement.of(BlockPredicate.matchesTag(TagsNF.TREE_WOOD), true));
     public static final LoneTreeFeature LONE_TREE_FEATURE = new LoneTreeFeature(name("lone_tree"));
     public static final Holder<ConfiguredFeature<NoneFeatureConfiguration, ?>> LONE_TREE_CONFIG = register("lone_tree", LONE_TREE_FEATURE, FeatureConfiguration.NONE);
     public static final Holder<PlacedFeature> LONE_TREE = register("lone_tree", LONE_TREE_CONFIG, CountPlacement.of(1), ChanceFilter.with(0.002F),

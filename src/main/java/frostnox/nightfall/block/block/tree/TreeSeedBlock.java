@@ -66,7 +66,7 @@ public class TreeSeedBlock extends BushBlock implements ITimeSimulatedBlock {
     @Override
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random) {
         if(random.nextBoolean()) {
-            if(true || treeBlock.treeGenerator.canGrowAt(level, pos)) { //TODO: Temp
+            if(treeBlock.treeGenerator.canGrowAt(level, pos)) {
                 if(state.getValue(STAGE) == 1) treeBlock.growSaplingAt(level, pos);
                 else level.setBlock(pos, state.setValue(STAGE, 1), 3);
             }

@@ -44,6 +44,7 @@ public class TagsNF {
     public static final TagKey<Block> NATURAL_STONE = blockTag("natural_stone");
     public static final TagKey<Block> NATURAL_TERRAIN = blockTag("natural_terrain");
     public static final TagKey<Block> TILLABLE_SOIL = blockTag("tillable_soil");
+    public static final TagKey<Block> TILLABLE_OR_AQUATIC_SOIL = blockTag("tillable_or_aquatic_soil");
     public static final TagKey<Block> TILLED_SOIL = blockTag("tilled_soil");
     public static final TagKey<Block> TERRACOTTA = blockTag("terracotta");
     public static final TagKey<Block> TREE_WOOD = blockTag("tree_wood");
@@ -94,6 +95,7 @@ public class TagsNF {
     public static final TagKey<Block> RABBIT_SPAWN_BLOCK = blockTag("rabbit_spawn_block");
     public static final TagKey<Block> CREEPER_SPAWN_BLOCK = blockTag("creeper_spawn_block");
     public static final TagKey<Block> SPIDER_FREE_TRAVEL_BLOCK = blockTag("spider_free_travel_block");
+    public static final TagKey<Block> TREE_REPLACEABLE = blockTag("tree_replaceable");
     public static final TagKey<Block> STRUCTURE_REPLACEABLE = blockTag("structure_replaceable");
     public static final TagKey<Block> STRUCTURE_POST_PROCESS = blockTag("structure_post_process");
     //Mark blocks that only exist for specific technical purposes

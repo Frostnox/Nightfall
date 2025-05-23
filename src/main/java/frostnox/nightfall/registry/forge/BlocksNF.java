@@ -287,8 +287,10 @@ public class BlocksNF {
                     tree.getExplosionResistance()).sound(SoundType.WOOD).randomTicks())));
 
     public static final Map<Tree, RegistryObject<TreeSeedBlock>> TREE_SEEDS = DataUtil.mapEnum(Tree.class, tree ->
-            register(tree.getName() + "_seed", () -> new TreeSeedBlock(TRUNKS.get(tree).get(), BlockBehaviour.Properties.of(Material.PLANT)
-                    .strength(0.4F).noCollission().randomTicks().sound(SoundType.AZALEA_LEAVES))));
+            register(tree.getName() + "_seed", () -> (tree != Tree.CAEDTAR ? new TreeSeedBlock(TRUNKS.get(tree).get(), BlockBehaviour.Properties.of(Material.PLANT)
+                    .strength(0.4F).noCollission().randomTicks().sound(SoundType.AZALEA_LEAVES)) :
+                    new TreeAquaticSeedBlock(TRUNKS.get(tree).get(), BlockBehaviour.Properties.of(Material.PLANT)
+                            .strength(0.4F).noCollission().randomTicks().sound(SoundType.AZALEA_LEAVES)))));
     //Building
     public static final Map<Tree, RegistryObject<Block>> PLANK_BLOCKS = DataUtil.mapEnum(Tree.class, tree ->
             register(tree.getName() + "_planks", () -> new BlockNF(BlockBehaviour.Properties.of(Material.WOOD, tree.getBaseColor())

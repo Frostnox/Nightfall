@@ -41,7 +41,7 @@ public class PalmTreeGenerator extends CurvedTreeGenerator {
     }
 
     @Override
-    protected OctalDirection[] getTrunkLeavesDirections(int y, int height) {
+    protected OctalDirection[] getInitialTrunkLeavesDirections(int y, int height) {
         return OctalDirection.OCTALS_UP;
     }
 
@@ -92,18 +92,18 @@ public class PalmTreeGenerator extends CurvedTreeGenerator {
         WrappedInt shortestPlaced = new WrappedInt(Integer.MAX_VALUE);
         int minShortestPlaced = !d.oldTrunkLeaves.isEmpty() ? maxLeavesRadius : d.ticks; //If old leaves are shifting up, let new leaves grow fully to next stage
         int y = d.height - cutoff;
-        if(y < 0 || y >= d.trunkWood.size()) return;
-        BlockPos pos = d.trunkWood.get(y);
+        if(y < 0 || y >= d.trunkWood.get(0).size()) return;
+        BlockPos pos = d.trunkWood.get(0).get(y);
         int radius = getTrunkLeavesRadius(y, d.height, d.maxHeight, cutoff);
         if(radius == 1) {
-            for(OctalDirection dir : getTrunkLeavesDirections(y, d.height)) {
+            for(OctalDirection dir : getInitialTrunkLeavesDirections(y, d.height)) {
                 setTrunkLeavesBlock(d, dir.move(pos), old, 1, minShortestPlaced, shortestPlaced);
             }
         }
         else {
             radius = Math.max(1, radius - 1);
             int diagonalRadius = (radius) / 2;
-            for(OctalDirection dir : getTrunkLeavesDirections(y, d.height)) {
+            for(OctalDirection dir : getInitialTrunkLeavesDirections(y, d.height)) {
                 tickTrunkLeaves(d, pos, dir.move(pos), dir.isDiagonal() ? diagonalRadius : radius,
                         old, 1, minShortestPlaced, shortestPlaced, dir.getOpposite());
             }

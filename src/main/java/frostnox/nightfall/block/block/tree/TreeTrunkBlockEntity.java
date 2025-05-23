@@ -5,6 +5,7 @@ import frostnox.nightfall.registry.forge.BlockEntitiesNF;
 import frostnox.nightfall.registry.forge.SoundsNF;
 import frostnox.nightfall.util.LevelUtil;
 import frostnox.nightfall.world.generation.tree.TreeGenerator;
+import it.unimi.dsi.fastutil.objects.ObjectArraySet;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import it.unimi.dsi.fastutil.objects.ObjectSet;
 import net.minecraft.core.BlockPos;
@@ -17,13 +18,11 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkSource;
 import net.minecraft.world.level.chunk.LevelChunk;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class TreeTrunkBlockEntity extends BlockEntity {
     protected static boolean updating = false;
@@ -81,13 +80,22 @@ public class TreeTrunkBlockEntity extends BlockEntity {
     public static List<TreeTrunkBlockEntity> getNearbyTrunks(Level level, ITree type, BlockPos aroundPos, int minXBlock, int maxXBlock, int minZBlock, int maxZBlock) {
         if(level == null || level.isClientSide()) return List.of();
         TreeGenerator gen = type.getGenerator();
+        int centerX = SectionPos.blockToSectionCoord(aroundPos.getX()), centerZ = SectionPos.blockToSectionCoord(aroundPos.getZ());
         int minX = SectionPos.blockToSectionCoord(minXBlock), maxX = SectionPos.blockToSectionCoord(maxXBlock);
         int minZ = SectionPos.blockToSectionCoord(minZBlock), maxZ = SectionPos.blockToSectionCoord(maxZBlock);
-        List<LevelChunk> chunks = new ArrayList<>(4);
-        chunks.add(level.getChunkSource().getChunk(minX, minZ, true));
-        if(maxX != minX) chunks.add(level.getChunkSource().getChunk(maxX, minZ, true));
-        if(maxZ != minZ) chunks.add(level.getChunkSource().getChunk(minX, maxZ, true));
-        if(chunks.size() == 3) chunks.add(level.getChunkSource().getChunk(maxX, maxZ, true));
+
+        Set<LevelChunk> chunks = new ObjectArraySet<>(9);
+        ChunkSource source = level.getChunkSource();
+        chunks.add(source.getChunk(centerX, centerZ, true));
+        if(minX != centerX) chunks.add(source.getChunk(minX, centerZ, true));
+        if(minZ != centerZ) chunks.add(source.getChunk(centerX, minZ, true));
+        if(maxX != centerX) chunks.add(source.getChunk(maxX, centerZ, true));
+        if(maxZ != centerZ) chunks.add(source.getChunk(centerX, maxZ, true));
+        chunks.add(source.getChunk(minX, minZ, true));
+        if(maxX != minX) chunks.add(source.getChunk(maxX, minZ, true));
+        if(maxZ != minZ) chunks.add(source.getChunk(minX, maxZ, true));
+        chunks.add(source.getChunk(maxX, maxZ, true));
+
         List<TreeTrunkBlockEntity> nearbyTrunks = new ArrayList<>(16);
         for(LevelChunk chunk : chunks) {
             for(BlockEntity entity : chunk.getBlockEntities().values()) {

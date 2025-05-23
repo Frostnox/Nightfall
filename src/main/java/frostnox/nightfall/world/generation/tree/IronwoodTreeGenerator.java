@@ -33,7 +33,7 @@ public class IronwoodTreeGenerator extends TreeGenerator {
     }
 
     @Override
-    protected Direction selectBranchDirection(Random random, int length, Direction startDirection, Direction lastDirection) {
+    protected Direction selectBranchDirection(Data d, Random random, BlockPos pos, int length, Direction startDirection, Direction lastDirection) {
         return startDirection;
     }
 
@@ -43,7 +43,7 @@ public class IronwoodTreeGenerator extends TreeGenerator {
     }
 
     @Override
-    protected int getBranchLength(Data d, Random random) {
+    protected int getBranchLength(Data d, BlockPos stemPos, Random random) {
         int length = baseBranchLength + (randBranchLength > 0 ? ((random.nextInt() & Integer.MAX_VALUE) % randBranchLength) : 0);
         if(length == baseBranchLength + randBranchLength - 1) length -= random.nextInt(3);
         if(d.height < averageHeight / 2 && length > 2) length--;

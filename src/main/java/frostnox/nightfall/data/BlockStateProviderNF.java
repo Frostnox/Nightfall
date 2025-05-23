@@ -153,7 +153,7 @@ public class BlockStateProviderNF extends BlockStateProvider {
         for(TreeStemBlock.Type type : TreeStemBlock.TYPE.getPossibleValues()) {
             int xRot = (type == TreeStemBlock.Type.BOTTOM || type == TreeStemBlock.Type.ROTATED_BOTTOM) ? 180 : 0;
             ModelFile vertical, horizontal;
-            if(type == TreeStemBlock.Type.END) {
+            if(type == TreeStemBlock.Type.END || type == TreeStemBlock.Type.FAKE_END) {
                 vertical = models().cubeColumn(name(block) + "_end", sideTex, sideTex);
                 horizontal = models().cubeColumnHorizontal(name(block) + "_horizontal_end", sideTex, sideTex);
             }

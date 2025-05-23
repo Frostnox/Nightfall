@@ -696,6 +696,7 @@ public class CommonEventHandler {
             }
         }
         if(event.getState().is(TagsNF.TREE_WOOD)) {
+            //TODO: just collect the tree and total every trunk log above this y?
             int size = 1;
             BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(event.getPos().getX(), event.getPos().getY() + 1, event.getPos().getZ());
             while(player.level.getBlockState(pos).is(BlockTags.LOGS)) {

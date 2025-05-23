@@ -709,7 +709,7 @@ public class ClientEventHandler {
             if(action == GLFW.GLFW_PRESS) {
                 long sprintTime = System.currentTimeMillis();
                 if(sprintTime - lastSprintTime < 250L) { //Double tap crawl
-                    if(p.getPose() != Pose.FALL_FLYING && !capP.isCrawling() && !p.isSpectator() && (capA.isInactive() || capA.getAction().isInterruptible()) && !p.isPassenger() && !p.isEyeInFluid(FluidTags.WATER)) {
+                    if(p.getPose() != Pose.FALL_FLYING && !capP.isCrawling() && !p.isSpectator() && !p.getAbilities().flying && (capA.isInactive() || capA.getAction().isInterruptible()) && !p.isPassenger() && !p.isEyeInFluid(FluidTags.WATER)) {
                         capP.setCrawling(true);
                         NetworkHandler.toServer(new GenericToServer(NetworkHandler.Type.START_CRAWLING));
                         p.setPose(Pose.SWIMMING);

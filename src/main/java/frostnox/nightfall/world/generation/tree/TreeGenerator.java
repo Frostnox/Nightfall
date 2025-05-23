@@ -34,7 +34,7 @@ public class TreeGenerator {
     protected static final int BLOCK_SET_FLAG = 1 | 2 | 16;
 
     public static class Data {
-        public final List<BlockPos> trunkWood;
+        public final List<List<BlockPos>> trunkWood;
         public final ObjectSet<BlockPos> trunkLeaves, otherWood, branchLeaves, oldTrunkLeaves, changingLeaves;
         protected final WorldGenLevel level;
         protected final TreeTrunkBlock trunk;
@@ -56,7 +56,8 @@ public class TreeGenerator {
             this.simulateDetection = simulateDetection;
             this.woodOnly = woodOnly;
             this.forceGrowth = forceGrowth;
-            this.trunkWood = new ObjectArrayList<>();
+            this.trunkWood = new ObjectArrayList<>(5);
+            trunkWood.add(new ObjectArrayList<>());
             this.trunkLeaves = new ObjectArraySet<>();
             this.otherWood =new ObjectArraySet<>();
             this.branchLeaves = new ObjectArraySet<>();
@@ -73,11 +74,18 @@ public class TreeGenerator {
         }
 
         public ObjectSet<BlockPos> collectWood() {
-            return new ObjectOpenHashSet<>(Stream.of(trunkWood, otherWood).flatMap(Collection::stream).collect(Collectors.toSet()));
+            return new ObjectOpenHashSet<>(Stream.concat(trunkWood.stream(), Stream.of(otherWood)).flatMap(Collection::stream).collect(Collectors.toSet()));
         }
 
         public ObjectSet<BlockPos> collectTree() {
-            return new ObjectOpenHashSet<>(Stream.of(trunkWood, otherWood, trunkLeaves, branchLeaves).flatMap(Collection::stream).collect(Collectors.toSet()));
+            return new ObjectOpenHashSet<>(Stream.concat(trunkWood.stream(), Stream.of(otherWood, trunkLeaves, branchLeaves)).flatMap(Collection::stream).collect(Collectors.toSet()));
+        }
+
+        public boolean hasTrunkWood(BlockPos pos) {
+            for(List<BlockPos> positions : trunkWood) {
+                if(positions.contains(pos)) return true;
+            }
+            return false;
         }
 
         protected boolean visitedTrunkLeaves(BlockPos pos, boolean old) {
@@ -252,10 +260,11 @@ public class TreeGenerator {
         if(ticks > 0 && !d.generating && !d.changingLeaves.isEmpty()) {
             if(d.decaying) for(BlockPos pos : d.changingLeaves) {
                 BlockState state = level.getBlockState(pos);
-                LevelUtil.uncheckedDropDestroyBlockNoSound((Level) level, pos, state, d.createLeaves(isAltLeaves(d, pos)), null, BLOCK_SET_FLAG);
+                if(d.isTreeLeaves(state)) LevelUtil.uncheckedDropDestroyBlockNoSound((Level) level, pos, state, d.createLeaves(isAltLeaves(d, pos)), null, BLOCK_SET_FLAG);
             }
             else for(BlockPos pos : d.changingLeaves) {
-                level.setBlock(pos, d.createLeaves(isAltLeaves(d, pos)), BLOCK_SET_FLAG);
+                BlockState state = level.getBlockState(pos);
+                if(d.isTreeLeaves(state)) level.setBlock(pos, d.createLeaves(isAltLeaves(d, pos)), BLOCK_SET_FLAG);
             }
         }
         if(!d.noPlacement) {
@@ -303,14 +312,14 @@ public class TreeGenerator {
             BlockState centerState = d.level.getBlockState(pos);
             if(d.isTreeWood(centerState)) {
                 d.height++;
-                d.trunkWood.add(pos.immutable());
+                d.trunkWood.get(0).add(pos.immutable());
             }
             else if(d.canPlaceWood(centerState, lastState)) {
-                d.level.setBlock(pos, d.createStem(TreeStemBlock.Type.END), BLOCK_SET_FLAG);
+                d.level.setBlock(pos.immutable(), d.createStem(TreeStemBlock.Type.END), BLOCK_SET_FLAG);
                 if(d.height != 0) d.level.setBlock(pos.below(), d.trunk.stemBlock.defaultBlockState(), BLOCK_SET_FLAG);
                 d.height++;
                 d.stemsPlaced++;
-                d.trunkWood.add(pos.immutable());
+                d.trunkWood.get(0).add(pos.immutable());
                 if(d.stemsPlaced >= d.ticks) break;
             }
             else break; //Missing log
@@ -319,45 +328,50 @@ public class TreeGenerator {
     }
 
     protected void tickBranches(Data d, Random random) {
-        if(d.trunkWood.isEmpty()) return;
+        if(baseBranchLength == 0) return;
         int minBranchHeight = getMinBranchHeight(d.maxHeight, random);
         int maxBranchHeight = getMaxBranchHeight(d.height, minBranchHeight);
         int maxRadius = getLeavesRadius(d.maxHeight);
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
-        List<Direction> lastDirections = null, lastLastDirections = null;
-        int minBranchHeightOffset = minBranchHeight + d.trunkPos.getY();
-        BlockPos centerPos = d.trunkWood.get(0);
-        int index = 1;
-        while(centerPos.getY() != minBranchHeightOffset && index < d.trunkWood.size()) {
-            centerPos = d.trunkWood.get(index);
-            index++;
-        }
-        for(int i = minBranchHeight; i < maxBranchHeight; i++) {
-            if(index >= d.trunkWood.size()) return;
-            centerPos = d.trunkWood.get(index);
-            index++;
-            Random branchRandom = new Random(random.nextLong());
-            List<Direction> branchDirections = getBranchStartDirections(d, centerPos, branchRandom, lastDirections, lastLastDirections);
-            for(Direction direction : branchDirections) {
-                Random dirRandom = new Random(branchRandom.nextLong());
-                pos.set(centerPos);
-                //Select branch direction
-                pos.move(direction);
-                BlockState branchState = d.level.getBlockState(pos);
-                //Create new branch or tick existing one
-                if(d.stemsPlaced > 0 && d.canPlaceWood(branchState)) {
-                    d.otherWood.add(pos.immutable());
-                    d.level.setBlock(pos, d.createStem(TreeStemBlock.Type.END, direction.getAxis()), BLOCK_SET_FLAG);
-                    if(d.ticks > 1) tickBranch(d, dirRandom, pos, centerPos, maxRadius, direction);
-                    else tickBranchLeaves(d, pos, centerPos, maxRadius, d.ticks * d.ticks);
-                }
-                else if(d.isTreeWood(branchState)) {
-                    d.otherWood.add(pos.immutable());
-                    tickBranch(d, dirRandom, pos, centerPos, maxRadius, direction);
-                }
+        for(int j = d.trunkWood.size() > 1 ? 1 : 0; j < d.trunkWood.size(); j++) {
+            List<BlockPos> trunkWood = d.trunkWood.get(j);
+            Random trunkRandom = new Random(random.nextLong());
+            if(trunkWood.isEmpty()) continue;
+            List<Direction> lastDirections = null, lastLastDirections = null;
+            int minBranchHeightOffset = minBranchHeight + d.trunkPos.getY();
+            BlockPos centerPos = trunkWood.get(0);
+            int index = 1;
+            while(centerPos.getY() < minBranchHeightOffset && index < trunkWood.size()) {
+                centerPos = trunkWood.get(index);
+                index++;
             }
-            lastLastDirections = lastDirections;
-            lastDirections = branchDirections;
+            for(int i = minBranchHeight; i < maxBranchHeight; i++) {
+                Random branchRandom = new Random(trunkRandom.nextLong());
+                if(index >= trunkWood.size()) break;
+                centerPos = trunkWood.get(index);
+                index++;
+                List<Direction> branchDirections = getBranchStartDirections(d, centerPos, branchRandom, lastDirections, lastLastDirections);
+                for(Direction direction : branchDirections) {
+                    Random dirRandom = new Random(branchRandom.nextLong());
+                    pos.set(centerPos);
+                    //Select branch direction
+                    pos.move(direction);
+                    BlockState branchState = d.level.getBlockState(pos);
+                    //Create new branch or tick existing one
+                    if(d.stemsPlaced > 0 && d.canPlaceWood(branchState)) {
+                        d.otherWood.add(pos.immutable());
+                        d.level.setBlock(pos.immutable(), d.createStem(TreeStemBlock.Type.END, direction.getAxis()), BLOCK_SET_FLAG);
+                        if(d.ticks > 1) tickBranch(d, dirRandom, pos, centerPos, maxRadius, direction);
+                        else tickBranchLeaves(d, pos, centerPos, maxRadius, d.ticks * d.ticks);
+                    }
+                    else if(d.isTreeWood(branchState)) {
+                        d.otherWood.add(pos.immutable());
+                        tickBranch(d, dirRandom, pos, centerPos, maxRadius, direction);
+                    }
+                }
+                lastLastDirections = lastDirections;
+                lastDirections = branchDirections;
+            }
         }
     }
 
@@ -378,7 +392,7 @@ public class TreeGenerator {
         return Math.max(0, height - 1);
     }
 
-    protected int getBranchLength(Data d, Random random) {
+    protected int getBranchLength(Data d, BlockPos stemPos, Random random) {
         int length = baseBranchLength + (randBranchLength > 0 ? ((random.nextInt() & Integer.MAX_VALUE) % randBranchLength) : 0);
         if(d.height < averageHeight / 2 && length > 2) length--;
         return length;
@@ -392,15 +406,16 @@ public class TreeGenerator {
         Direction lastDirection = startDirection;
         BlockPos pos = startPos;
         int placed = 0;
-        for(int i = 2; i <= getBranchLength(d, random); i++) {
-            direction = selectBranchDirection(random, i, startDirection, lastDirection);
+        int branchLength = getBranchLength(d, stemPos, random);
+        for(int i = 2; i <= branchLength; i++) {
+            direction = selectBranchDirection(d, new Random(random.nextLong()), pos, i, startDirection, lastDirection);
             lastDirection = direction;
-            BlockPos lastPos = pos;
+            BlockPos lastPos = pos.immutable();
             pos = pos.relative(direction);
             BlockState state = d.level.getBlockState(pos);
             if(d.canPlaceWood(state, lastState)) {
                 d.otherWood.add(pos);
-                d.level.setBlock(pos, d.createStem(TreeStemBlock.Type.END, direction.getAxis()), BLOCK_SET_FLAG);
+                d.level.setBlock(pos.immutable(), d.createStem(TreeStemBlock.Type.END, direction.getAxis()), BLOCK_SET_FLAG);
                 d.level.setBlock(lastPos, d.createBranch(direction), BLOCK_SET_FLAG);
                 d.branchLeaves.remove(pos);
                 placed++;
@@ -414,7 +429,7 @@ public class TreeGenerator {
         tickBranchLeaves(d, startPos, stemPos, radius, minShortestPlacedSqr);
     }
 
-    protected Direction selectBranchDirection(Random random, int length, Direction startDirection, Direction lastDirection) {
+    protected Direction selectBranchDirection(Data d, Random random, BlockPos pos, int length, Direction startDirection, Direction lastDirection) {
         if(length != 2) {
             if(lastDirection == startDirection || random.nextFloat() < 0.2F) {
                 Direction dir = random.nextBoolean() ? lastDirection.getClockWise() : lastDirection.getCounterClockWise();
@@ -438,7 +453,7 @@ public class TreeGenerator {
         if(d.woodOnly) return;
         float radiusSqr = squareBranchLeavesRadius(radius);
         WrappedInt shortestPlaced = new WrappedInt(Integer.MAX_VALUE);
-        if(!placeOriginLeaves || setBranchLeavesBlock(d, branchPos, branchPos, radiusSqr, shortestPlaced, minShortestPlacedSqr, 1)) {
+        if(!placeOriginLeaves || setBranchLeavesBlock(d, branchPos, branchPos, radiusSqr, shortestPlaced, minShortestPlacedSqr, OctalDirection.CENTER, OctalDirection.CENTER, 1)) {
             if(radius == 0) return;
             for(OctalDirection dir : directions) {
                 tickBranchLeaves(d, branchPos, branchPos.offset(dir.xStepInt, dir.yStepInt, dir.zStepInt), radiusSqr, shortestPlaced, minShortestPlacedSqr, dir.getOpposite(), dir.getOpposite(), 1);
@@ -447,21 +462,25 @@ public class TreeGenerator {
     }
 
     protected void tickBranchLeaves(Data d, BlockPos branchPos, BlockPos pos, float radiusSqr, WrappedInt shortestPlaced, int minShortestPlacedSqr, OctalDirection backDir, OctalDirection originDir, int dist) {
-        if(!setBranchLeavesBlock(d, branchPos, pos, radiusSqr, shortestPlaced, minShortestPlacedSqr, dist)) return;
+        if(!setBranchLeavesBlock(d, branchPos, pos, radiusSqr, shortestPlaced, minShortestPlacedSqr, backDir, originDir, dist)) return;
         for(OctalDirection newDir : getBranchLeavesDirections(d)) {
             if(cancelBranchLeavesDirection(newDir, backDir, originDir)) continue;
             tickBranchLeaves(d, branchPos, pos.offset(newDir.xStepInt, newDir.yStepInt, newDir.zStepInt), radiusSqr, shortestPlaced, minShortestPlacedSqr, newDir.getOpposite(), originDir, dist + 1);
         }
     }
 
-    protected boolean setBranchLeavesBlock(Data d, BlockPos branchPos, BlockPos pos, float radiusSqr, WrappedInt shortestPlaced, int minShortestPlacedSqr, int dist) {
+    protected boolean checkBranchLeaves(Data d, BlockPos branchPos, BlockPos pos, float radiusSqr, WrappedInt shortestPlaced, int minShortestPlacedSqr, OctalDirection backDir, OctalDirection originDir, int dist) {
         if(dist * dist > radiusSqr) return false;
         double distSqr = branchPos.distSqr(pos);
-        if(distSqr > radiusSqr) return false;
+        return distSqr <= radiusSqr;
+    }
+
+    protected boolean setBranchLeavesBlock(Data d, BlockPos branchPos, BlockPos pos, float radiusSqr, WrappedInt shortestPlaced, int minShortestPlacedSqr, OctalDirection backDir, OctalDirection originDir, int dist) {
+        if(!checkBranchLeaves(d, branchPos, pos, radiusSqr, shortestPlaced, minShortestPlacedSqr, backDir, originDir, dist)) return false;
         if(d.simulateDetection) d.branchLeaves.add(pos);
         else {
             BlockState state = d.level.getBlockState(pos);
-            int roundedDistSqr = Mth.ceil(distSqr);
+            int roundedDistSqr = Mth.ceil(branchPos.distSqr(pos));
             if(!d.generating && roundedDistSqr > shortestPlaced.val) {
                 if(d.isTreeLeaves(state)) {
                     d.collectChangingLeaves(pos, state);
@@ -490,23 +509,27 @@ public class TreeGenerator {
         int cutoff = getTrunkLeavesCutoff(d.height);
         WrappedInt shortestPlaced = new WrappedInt(Integer.MAX_VALUE);
         int minShortestPlaced = !d.oldTrunkLeaves.isEmpty() ? maxLeavesRadius : d.ticks; //If old leaves are shifting up, let new leaves grow fully to next stage
-        for(int y = d.height - cutoff + 1; y <= d.height; y++) {
-            if(y - 1 >= d.trunkWood.size() || y <= 0) break;
-            BlockPos pos = d.trunkWood.get(y - 1);
-            int radius = getTrunkLeavesRadius(y, d.height, d.maxHeight, cutoff);
-            WrappedInt diagonalRadius = new WrappedInt(-1);
-            for(OctalDirection dir : getTrunkLeavesDirections(y, d.height)) {
-                tickTrunkLeaves(d, pos, dir.move(pos),
-                        dir.isDiagonal() ? (diagonalRadius.val == -1 ? diagonalRadius.setAndGet((radius + 1) / 2) : diagonalRadius.val) : radius,
-                        old, 1, minShortestPlaced, shortestPlaced, dir.getOpposite());
+        for(int j = 0; j < d.trunkWood.size(); j++) {
+            List<BlockPos> trunkWood = d.trunkWood.get(j);
+            for(int i = 0; i <= Math.min(trunkWood.size() - 1, d.height); i++) {
+                BlockPos pos = trunkWood.get(i);
+                int y = pos.getY() - d.trunkPos.getY();
+                if((j > 0 ? d.trunkWood.get(0).size() + i : i) < d.height - cutoff) continue;
+                int radius = getTrunkLeavesRadius(y, d.height, d.maxHeight, cutoff);
+                WrappedInt diagonalRadius = new WrappedInt(-1);
+                for(OctalDirection dir : getInitialTrunkLeavesDirections(y, d.height)) {
+                    tickTrunkLeaves(d, pos, dir.move(pos),
+                            dir.isDiagonal() ? (diagonalRadius.val == -1 ? diagonalRadius.setAndGet((radius + 1) / 2) : diagonalRadius.val) : radius,
+                            old, 1, minShortestPlaced, shortestPlaced, dir.getOpposite());
+                }
             }
         }
     }
 
     protected void tickTrunkLeaves(Data d, BlockPos centerPos, BlockPos pos, int radius, boolean old, int dist, int minShortestPlaced, WrappedInt shortestPlaced, OctalDirection originDir) {
-        if(dist > radius || d.visitedTrunkLeaves(pos, old)) return;
+        if(dist > radius) return;
         if(!setTrunkLeavesBlock(d, pos, old, dist, minShortestPlaced, shortestPlaced)) return;
-        for(OctalDirection dir : OctalDirection.CARDINALS) {
+        for(OctalDirection dir : getTrunkLeavesDirections(pos.getY() - d.trunkPos.getY(), d.height)) {
             if(dir == originDir) continue;
             tickTrunkLeaves(d, centerPos, dir.move(pos), radius, old, dist + 1, minShortestPlaced, shortestPlaced, originDir);
         }
@@ -569,8 +592,12 @@ public class TreeGenerator {
         return pos.getY() % 2 == 0;
     }
 
-    protected OctalDirection[] getTrunkLeavesDirections(int y, int height) {
+    protected OctalDirection[] getInitialTrunkLeavesDirections(int y, int height) {
         return y == height ? OctalDirection.CARDINALS_UP : OctalDirection.CARDINALS;
+    }
+
+    protected OctalDirection[] getTrunkLeavesDirections(int y, int height) {
+        return OctalDirection.CARDINALS;
     }
 
     protected OctalDirection[] getBranchLeavesDirections(Data d) {

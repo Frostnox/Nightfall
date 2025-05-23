@@ -17,7 +17,7 @@ import java.util.Locale;
 
 public class TreeStemBlock extends RotatedPillarBlock {
     public enum Type implements StringRepresentable {
-        END, TOP, BOTTOM, ROTATED_TOP, ROTATED_BOTTOM;
+        END, TOP, BOTTOM, ROTATED_TOP, ROTATED_BOTTOM, FAKE_END;
 
         private final String name;
 
@@ -55,7 +55,7 @@ public class TreeStemBlock extends RotatedPillarBlock {
             List<TreeTrunkBlockEntity> nearbyTrunks = TreeTrunkBlockEntity.getNearbyTrunks(level, type, pos, minX, maxX, minZ, maxZ);
             for(TreeTrunkBlockEntity nearbyTrunk : nearbyTrunks) {
                 var simulatedData = gen.getTree((WorldGenLevel) level, nearbyTrunk, true);
-                if(simulatedData.trunkWood.contains(pos) || simulatedData.otherWood.contains(pos)) {
+                if(simulatedData.hasTrunkWood(pos) || simulatedData.otherWood.contains(pos)) {
                     nearbyTrunk.updateBlocks(pos, simulatedData, false);
                 }
             }

@@ -47,7 +47,7 @@ public class TreeTrunkBlock extends BaseEntityBlock implements ITimeSimulatedBlo
     @Override
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random) {
         if(level.getBlockEntity(pos) instanceof TreeTrunkBlockEntity trunk) {
-            //if(level.getGameTime() - trunk.lastTick < type.getGrowthIntervalTicks()) return; TODO: temp
+            if(level.getGameTime() - trunk.lastTick < type.getGrowthIntervalTicks()) return;
             TreeTrunkBlockEntity.updating = true;
             TreeGenerator.Data d = treeGenerator.grow(level, trunk, false);
             if(trunk.isSpecial() && fruitBlock != null && trunk.maxHeight == d.maxHeight) {

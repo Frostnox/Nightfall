@@ -19,13 +19,13 @@ import java.util.Random;
 
 public enum Tree implements ITree {
     ACACIA(1.6F, 0.7F, 0.2F, 0.5F, 1F, 0F, 0.35F, MaterialColor.TERRACOTTA_LIGHT_GRAY,
-            MaterialColor.COLOR_ORANGE, new TreeGenerator(6, 5, 3, 3, 2),
+            MaterialColor.COLOR_ORANGE, new AcaciaTreeGenerator(6, 3, 3, 1, 3, 0.4F, true),
             240, true, "patterned", null),
     BIRCH(1.2F, 0.55F, 0.6F, 0.4F, 0.75F, 0.4F, 0.85F, MaterialColor.QUARTZ,
             MaterialColor.SAND, new BirchTreeGenerator(5, 7, 1, 0, 2),
             200, true, "simple", ParticleTypesNF.LEAF_BIRCH),
-    CAEDTAR(1.8F, 0.6F, 0.85F, 0.1F, 1F, 0.7F, 1F, MaterialColor.TERRACOTTA_BLACK,
-            MaterialColor.TERRACOTTA_PINK, new TreeGenerator(6, 5, 3, 3, 2),
+    CAEDTAR(1.8F, 0.6F, 0.85F, 0.2F, 1F, 0.7F, 1F, MaterialColor.TERRACOTTA_BLACK,
+            MaterialColor.TERRACOTTA_PINK, new CaedtarTreeGenerator(4, 4, 2, 3, 2),
             500, true, "ornate", ParticleTypesNF.LEAF_CAEDTAR),
     IRONWOOD(2.4F, 0.5F, 0.4F, 0.1F, 1F, 0.1F, 1F, MaterialColor.TERRACOTTA_GRAY,
             MaterialColor.TERRACOTTA_BROWN, new IronwoodTreeGenerator(8, 9, 2, 3, 1),
@@ -37,7 +37,7 @@ public enum Tree implements ITree {
             MaterialColor.PODZOL, new LarchTreeGenerator(7, 6, 2),
             400, true, "medieval", null),
     MAPLE(1.4F, 0.5F, 0.6F, 0.3F, 0.7F, 0.2F, 1F, MaterialColor.TERRACOTTA_LIGHT_GRAY,
-            MaterialColor.DIRT, new TreeGenerator(6, 5, 3, 3, 2),
+            MaterialColor.DIRT, new MapleTreeGenerator(5, 6, 2, 2, 2),
             280, true, "simple", ParticleTypesNF.LEAF_MAPLE),
     OAK(1.6F, 0.5F, 0.55F, 0.35F, 1F, 0.3F, 1F, MaterialColor.TERRACOTTA_BROWN,
             MaterialColor.WOOD, new OakTreeGenerator(6, 5, 3, 3, 2),
@@ -46,13 +46,14 @@ public enum Tree implements ITree {
             MaterialColor.SAND, new PalmTreeGenerator(7, 8, 0.6, true),
             260, false, "patterned", null),
     REDWOOD(0.6F, 0.2F, 0.75F, 0F, 0.35F, 0.5F, 1F, MaterialColor.TERRACOTTA_ORANGE,
-            MaterialColor.CRIMSON_HYPHAE, new TreeGenerator(6, 5, 3, 3, 2),
+            MaterialColor.CRIMSON_HYPHAE, new RedwoodTreeGenerator(10, 12, 1, 2, 1),
             700, false, "medieval", null),
     SPRUCE(0.8F, 0.35F, 0.5F, 0F, 0.6F, 0.4F, 1F, MaterialColor.COLOR_BROWN,
             MaterialColor.QUARTZ, new SpruceTreeGenerator(6, 6, 2),
             360, false, "medieval", null),
     WILLOW(0.6F, 0.8F, 0.8F, 0.45F, 1F, 0.65F, 1F, MaterialColor.TERRACOTTA_BROWN,
-            MaterialColor.TERRACOTTA_LIGHT_GREEN, new TreeGenerator(6, 5, 3, 3, 2),
+            MaterialColor.TERRACOTTA_LIGHT_GREEN, new WillowTreeGenerator(7, 6, 2, 0, 2,
+            2, 4, 0.2F, true),
             240, true, "rustic", ParticleTypesNF.LEAF_WILLOW);
 
     public static final Tree[] PRIMARY_TREES = new Tree[] {BIRCH, JUNGLE, LARCH};

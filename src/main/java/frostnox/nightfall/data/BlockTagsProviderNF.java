@@ -115,6 +115,8 @@ public class BlockTagsProviderNF extends BlockTagsProvider {
         for(var block : BlocksNF.METAL_BLOCKS.values()) tag(TagsNF.METAL_BLOCKS).add(block.get());
 
         tag(TagsNF.TILLABLE_SOIL).addTags(BlockTags.DIRT, TagsNF.SILT, TagsNF.LOAM);
+        tag(TagsNF.TILLABLE_OR_AQUATIC_SOIL).addTag(TagsNF.TILLABLE_SOIL);
+        tag(TagsNF.TILLABLE_OR_AQUATIC_SOIL).add(BlocksNF.MUD.get(), BlocksNF.CLAY.get());
         tag(TagsNF.TILLED_SOIL).add(BlocksNF.TILLED_SILT.get(), BlocksNF.TILLED_DIRT.get(), BlocksNF.TILLED_LOAM.get());
         for(Stone type : Stone.values()) {
             if(type.getType() == StoneType.METAMORPHIC) tag(TagsNF.HEAT_RESISTANT_1).add(BlocksNF.STONE_BRICK_BLOCKS.get(type).get());
@@ -253,11 +255,13 @@ public class BlockTagsProviderNF extends BlockTagsProvider {
         tag(TagsNF.RABBIT_SPAWN_BLOCK).addTag(TagsNF.TILLABLE_SOIL);
         tag(TagsNF.CREEPER_SPAWN_BLOCK).addTag(TagsNF.TILLABLE_SOIL);
         tag(TagsNF.SPIDER_FREE_TRAVEL_BLOCK).add(BlocksNF.SPIDER_WEB.get(), BlocksNF.SPIDER_NEST.get());
-        tag(TagsNF.STRUCTURE_REPLACEABLE).addTags(TagsNF.SOIL, BlockTags.REPLACEABLE_PLANTS);
+        tag(TagsNF.TREE_REPLACEABLE).addTags(BlockTags.REPLACEABLE_PLANTS);
+        tag(TagsNF.STRUCTURE_REPLACEABLE).addTags(TagsNF.SOIL, TagsNF.TREE_REPLACEABLE);
         for(var block : BlocksNF.STONE_BLOCKS.values()) tag(TagsNF.STRUCTURE_REPLACEABLE).add(block.get());
-        for(var block : BlocksNF.ROCK_CLUSTERS.values()) tag(TagsNF.STRUCTURE_REPLACEABLE).add(block.get());
-        tag(TagsNF.STRUCTURE_REPLACEABLE).add(BlocksNF.ASH.get(), BlocksNF.SNOW.get(), BlocksNF.WATER.get(), BlocksNF.SEAWATER.get(), Blocks.AIR, Blocks.CAVE_AIR, Blocks.VOID_AIR,
+        for(var block : BlocksNF.ROCK_CLUSTERS.values()) tag(TagsNF.TREE_REPLACEABLE).add(block.get());
+        tag(TagsNF.TREE_REPLACEABLE).add(BlocksNF.SNOW.get(), BlocksNF.WATER.get(), BlocksNF.SEAWATER.get(), Blocks.AIR, Blocks.CAVE_AIR, Blocks.VOID_AIR,
                 BlocksNF.SPIDER_WEB.get());
+        tag(TagsNF.STRUCTURE_REPLACEABLE).add(BlocksNF.ASH.get());
         tag(TagsNF.STRUCTURE_POST_PROCESS).addTags(BlockTags.FENCES, TagsNF.LADDERS);
         tag(TagsNF.STRUCTURE_POST_PROCESS).add(BlocksNF.TORCH.get(), BlocksNF.WALL_TORCH.get(), BlocksNF.TORCH_UNLIT.get(), BlocksNF.WALL_TORCH_UNLIT.get());
 

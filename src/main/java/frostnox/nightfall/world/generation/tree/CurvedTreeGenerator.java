@@ -48,11 +48,11 @@ public class CurvedTreeGenerator extends TreeGenerator {
                     if(d.isTreeWood(d.level.getBlockState(belowPos))) d.otherWood.add(belowPos);
                     else break;
                 }
-                d.trunkWood.add(pos.immutable());
+                d.trunkWood.get(0).add(pos.immutable());
                 d.height++;
             }
             else if(d.canPlaceWood(centerState, lastState)) {
-                d.trunkWood.add(pos.immutable());
+                d.trunkWood.get(0).add(pos.immutable());
                 d.level.setBlock(pos, d.createStem(TreeStemBlock.Type.END), BLOCK_SET_FLAG);
                 if(d.height != 0) {
                     BlockPos belowPos = pos.below();
@@ -82,7 +82,7 @@ public class CurvedTreeGenerator extends TreeGenerator {
         List<Direction> directions = Lists.newArrayList(Direction.Plane.HORIZONTAL.iterator());
         Direction direction = directions.remove((random.nextInt() & Integer.MAX_VALUE) % directions.size());
         BlockPos newPos = centerPos.relative(direction);
-        while((lastDirections != null && lastDirections.contains(direction)) || d.trunkWood.contains(newPos.above()) ||  d.trunkWood.contains(newPos.below())) {
+        while((lastDirections != null && lastDirections.contains(direction)) || d.hasTrunkWood(newPos.above()) ||  d.hasTrunkWood(newPos.below())) {
             direction = directions.remove((random.nextInt() & Integer.MAX_VALUE) % directions.size());
             newPos = centerPos.relative(direction);
         }

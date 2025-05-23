@@ -35,11 +35,11 @@ public class SpruceTreeGenerator extends TreeGenerator {
 
     @Override
     protected void tickBranches(Data d, Random random) {
-        if(d.trunkWood.isEmpty() || d.height < 3) return;
+        if(d.trunkWood.get(0).isEmpty() || d.height < 3) return;
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
         for(int i = 0; i < d.height - 1; i++) {
-            if(i >= d.trunkWood.size()) continue;
-            BlockPos stemPos = d.trunkWood.get(i);
+            if(i >= d.trunkWood.get(0).size()) continue;
+            BlockPos stemPos = d.trunkWood.get(0).get(i);
             if(branchAt(d, i)) {
                 int radius = Math.max(0, getBranchRadius(i + 1, d.height, d.maxHeight, 0) - getBranchLengthReduction());
                 for(Direction direction : Direction.Plane.HORIZONTAL) {
@@ -87,7 +87,7 @@ public class SpruceTreeGenerator extends TreeGenerator {
             tickBranchLeaves(d, pos, stemPos, maxLeavesRadius, minShortestPlacedSqr);
             for(int r = maxLeavesRadius - 1; r >= 0; r--) {
                 growPos = growPos.relative(Direction.UP);
-                if(r == 0) setBranchLeavesBlock(d, growPos, growPos, 1, new WrappedInt(Integer.MAX_VALUE), minShortestPlacedSqr, 1);
+                if(r == 0) setBranchLeavesBlock(d, growPos, growPos, 1, new WrappedInt(Integer.MAX_VALUE), minShortestPlacedSqr, OctalDirection.DOWN, OctalDirection.DOWN, 1);
                 else tickBranchLeaves(d, growPos, stemPos, r, minShortestPlacedSqr, true, branchDirections);
             }
         }
@@ -121,7 +121,7 @@ public class SpruceTreeGenerator extends TreeGenerator {
                 tickBranchLeaves(d, pos, stemPos, leavesRadius, minShortestPlacedSqr);
                 for(int r = leavesRadius - 1; r >= 0; r--) {
                     growPos = growPos.relative(Direction.UP);
-                    if(r == 0) setBranchLeavesBlock(d, growPos, growPos, 1, new WrappedInt(Integer.MAX_VALUE), minShortestPlacedSqr, 1);
+                    if(r == 0) setBranchLeavesBlock(d, growPos, growPos, 1, new WrappedInt(Integer.MAX_VALUE), minShortestPlacedSqr, OctalDirection.DOWN, OctalDirection.DOWN, 1);
                     else tickBranchLeaves(d, growPos, stemPos, r, minShortestPlacedSqr, true, branchDirections);
                 }
             }
