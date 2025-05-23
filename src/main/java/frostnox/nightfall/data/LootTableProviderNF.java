@@ -210,7 +210,8 @@ public class LootTableProviderNF extends LootTableProvider {
                 int min = -68;
                 if(type == Tree.PALM) min = -28;
                 else if(type == Tree.LARCH || type == Tree.SPRUCE) min = -88;
-                else if(type == Tree.BIRCH || type == Tree.ACACIA || type == Tree.REDWOOD) min = -48;
+                else if(type == Tree.BIRCH || type == Tree.ACACIA) min = -48;
+                else if(type == Tree.REDWOOD) min = -38;
                 dropLeaves(BlocksNF.LEAVES.get(type).get(), ItemsNF.TREE_SEEDS.get(type).get(), min, 1, 1, ItemsNF.STICK.get(), -1, 1);
                 if(BlocksNF.BRANCHES.containsKey(type)) dropBranches(BlocksNF.BRANCHES.get(type).get(), ItemsNF.STICK.get(), -1, 1);
                 dropSpecialAction(BlocksNF.LOGS.get(type).get(), BlocksNF.LOGS.get(type).get(), 1,
