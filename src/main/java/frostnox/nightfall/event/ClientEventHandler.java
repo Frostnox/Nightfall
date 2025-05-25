@@ -15,7 +15,7 @@ import frostnox.nightfall.client.gui.screen.encyclopedia.EntryPuzzleScreen;
 import frostnox.nightfall.client.gui.screen.item.ModifiableItemScreen;
 import frostnox.nightfall.data.TagsNF;
 import frostnox.nightfall.data.recipe.BuildingRecipe;
-import frostnox.nightfall.entity.entity.ArmorStandDummyEntity;
+import frostnox.nightfall.entity.IEntityWithItem;
 import frostnox.nightfall.item.IActionableItem;
 import frostnox.nightfall.item.IWeaponItem;
 import frostnox.nightfall.item.client.IModifiable;
@@ -154,7 +154,7 @@ public class ClientEventHandler {
     private static void updateClickInput(boolean fromClick) {
         Minecraft mc = Minecraft.getInstance();
         LocalPlayer player = mc.player;
-        if(player == null || !player.isAlive() || player.isUsingItem() || mc.isPaused()) return;
+        if(player == null || !player.isAlive() || player.isUsingItem() || player.isHandsBusy() || mc.isPaused()) return;
         updateHotbarBuffer(player); //Update hotbar buffer in case item was going to switch
         IActionTracker capA = ActionTracker.get(player);
         IPlayerData capP = PlayerData.get(player);
@@ -781,11 +781,11 @@ public class ClientEventHandler {
                     }
                 }
                 else if(mc.hitResult instanceof EntityHitResult entityHit) {
-                    if(entityHit.getEntity() instanceof ArmorStandDummyEntity armorStand) {
-                        ItemStack pickItem = armorStand.getPickedResult(entityHit);
+                    if(entityHit.getEntity() instanceof IEntityWithItem entity) {
+                        ItemStack pickItem = entity.getPickedResult(entityHit);
                         if(pickItem.getItem() == heldItem.getItem()) {
                             List<BuildingRecipe> recipes = buildingItem.getRecipes(player.level, player);
-                            Item armorStandItem = armorStand.getAsItem();
+                            Item armorStandItem = entity.getItemForm();
                             for(int i = 0; i < recipes.size(); i++) {
                                 BuildingRecipe recipe = recipes.get(i);
                                 if(recipe.output == armorStandItem) {

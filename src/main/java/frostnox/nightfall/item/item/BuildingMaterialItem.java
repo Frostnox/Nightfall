@@ -117,7 +117,20 @@ public class BuildingMaterialItem extends ScreenCacheItem implements IModifiable
         }
         ItemStack placeItem = recipe.getResultItem();
         InteractionResultHolder<ItemStack> result = placeItem.use(level, player, hand);
-        return result;
+        if(!result.getResult().consumesAction() && isEdible()) {
+            if(player.canEat(result.getObject().getFoodProperties(player).canAlwaysEat())) {
+                player.startUsingItem(hand);
+                return InteractionResultHolder.consume(result.getObject());
+            }
+            else return InteractionResultHolder.fail(result.getObject());
+        }
+        else {
+            if(result.getResult().consumesAction() && !player.getAbilities().instabuild) {
+                item.shrink(recipe.baseAmount);
+                extraItem.shrink(recipe.extraAmount);
+            }
+            return result;
+        }
     }
 
     @Override

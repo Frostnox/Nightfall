@@ -351,6 +351,7 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
         tag(TagsNF.RECIPE_GROUP).addTags(TagsNF.SLAYER_SCALE_PIECES.values().toArray(TagKey[]::new));
         tag(TagsNF.RECIPE_GROUP).addTags(TagsNF.SLAYER_CHAINMAIL_PIECES.values().toArray(TagKey[]::new));
         for(var item : ItemsNF.ARMOR_STANDS.values()) tag(TagsNF.ARMOR_STAND).add(item.get());
+        for(var item : ItemsNF.BOATS.values()) tag(ItemTags.BOATS).add(item.get());
     }
 
     @Override

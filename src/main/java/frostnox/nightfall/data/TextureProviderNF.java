@@ -547,6 +547,12 @@ public class TextureProviderNF extends TextureProvider {
             replaceImagePalette(entity("armorstand/" + type.getName() + "_plank"), entity("armorstand/plank"), subset(WOOD_FULL_PALETTES.get(type), 6, 2));
         }
 
+        for(Tree type : ItemsNF.BOATS.keySet()) {
+            replaceImagePalette(item(ItemsNF.BOATS.get(type)), item("boat"),
+                    combine(subset(WOOD_FULL_PALETTES.get(type), 2, 1), subset(WOOD_FULL_PALETTES.get(type), 4, 3)));
+            replaceImagePalette(entity("boat/" + type.getName() + "_plank"), entity("boat/plank"), subset(WOOD_FULL_PALETTES.get(type), 6, 2));
+        }
+
         layerImages(item(ItemsNF.MEAT_STEW), item(ItemsNF.WOODEN_BOWL), item(ItemsNF.MEAT_STEW));
         layerImages(item(ItemsNF.VEGETABLE_STEW), item(ItemsNF.WOODEN_BOWL), item(ItemsNF.VEGETABLE_STEW));
         layerImages(item(ItemsNF.HEARTY_STEW), item(ItemsNF.WOODEN_BOWL), item(ItemsNF.HEARTY_STEW));

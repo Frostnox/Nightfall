@@ -514,6 +514,7 @@ public class Nightfall {
             event.registerEntityRenderer(EntitiesNF.COCKATRICE.get(), CockatriceRenderer::new);
             event.registerEntityRenderer(EntitiesNF.SPIDER.get(), SpiderRenderer::new);
             event.registerEntityRenderer(EntitiesNF.ARMOR_STAND.get(), ArmorStandDummyRenderer::new);
+            event.registerEntityRenderer(EntitiesNF.BOAT.get(), BoatRendererNF::new);
             event.registerEntityRenderer(EntitiesNF.MOVING_BLOCK.get(), MovingBlockRenderer::new);
             event.registerEntityRenderer(EntitiesNF.THROWN_ROCK.get(), ThrownItemRenderer::new);
             event.registerEntityRenderer(EntitiesNF.ARROW.get(), ArrowRendererNF::new);

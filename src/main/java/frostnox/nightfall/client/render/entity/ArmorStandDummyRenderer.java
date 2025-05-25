@@ -33,7 +33,7 @@ public class ArmorStandDummyRenderer extends LivingEntityRenderer<ArmorStandDumm
     @Override
     public ResourceLocation getTextureLocation(ArmorStandDummyEntity pEntity) {
         String key = pEntity.getMaterial();
-        ResourceLocation texture = TEXTURE_CACHE.get(pEntity.getMaterial());
+        ResourceLocation texture = TEXTURE_CACHE.get(key);
         if(texture == null) {
             int split = key.indexOf(":");
             String nameSpace = key.substring(0, split);

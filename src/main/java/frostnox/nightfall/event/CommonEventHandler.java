@@ -47,11 +47,9 @@ import frostnox.nightfall.world.generation.ContinentalChunkGenerator;
 import frostnox.nightfall.world.inventory.AccessoryInventory;
 import frostnox.nightfall.world.inventory.AccessorySlot;
 import it.unimi.dsi.fastutil.Pair;
-import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.*;
@@ -64,6 +62,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
@@ -72,6 +71,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
@@ -90,9 +90,9 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.ticks.TickPriority;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.EntityMountEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -1025,6 +1025,25 @@ public class CommonEventHandler {
                 IChunkData cap = ChunkData.get(chunk);
                 cap.setLastLoadedDayTime(level.getDayTime());
                 chunk.setUnsaved(true);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onEntityStartRidingEvent(EntityMountEvent event) {
+        Entity rider = event.getEntityMounting();
+        if(event.isMounting()) {
+            if(rider instanceof Player player) {
+                if(!player.isCreative() && !rider.isOnGround() && !rider.isInWater() && !rider.isInLava()) event.setCanceled(true);
+            }
+            else if(event.getEntityBeingMounted() instanceof Boat) {
+                if(!rider.getType().is(TagsNF.BOAT_PASSENGER)) event.setCanceled(true);
+            }
+        }
+        else {
+            if(!event.isCanceled()) {
+                Entity vehicle = event.getEntityBeingMounted();
+                if(vehicle.fallDistance > rider.fallDistance) rider.fallDistance = vehicle.fallDistance;
             }
         }
     }

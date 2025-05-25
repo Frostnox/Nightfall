@@ -4,6 +4,7 @@ import frostnox.nightfall.Nightfall;
 import frostnox.nightfall.client.render.blockentity.CauldronRenderer;
 import frostnox.nightfall.client.render.blockentity.ChestRendererNF;
 import frostnox.nightfall.client.model.entity.*;
+import frostnox.nightfall.client.render.entity.BoatRendererNF;
 import frostnox.nightfall.item.ArmorType;
 import frostnox.nightfall.item.Style;
 import frostnox.nightfall.block.Metal;
@@ -32,7 +33,7 @@ public class ModelRegistryNF {
     public static ModelLayerLocation CHEST, DOUBLE_CHEST_LEFT, DOUBLE_CHEST_RIGHT;
     public static ModelLayerLocation CAULDRON;
     //Entities
-    public static ModelLayerLocation ARMOR_STAND;
+    public static ModelLayerLocation ARMOR_STAND, BOAT;
     public static ModelLayerLocation PLAYER, PLAYER_SLIM;
     public static ModelLayerLocation RABBIT, DEER;
     public static ModelLayerLocation HUSK, SKELETON, DREG;
@@ -63,6 +64,7 @@ public class ModelRegistryNF {
         CAULDRON = register("cauldron", CauldronRenderer.createLayer());
         //Entities
         ARMOR_STAND = register("armor_stand", ArmorStandDummyModel.createBodyLayer());
+        BOAT = register("boat", BoatRendererNF.createModel());
         PLAYER = register("player_combat", LayerDefinition.create(PlayerModelNF.createMesh(CubeDeformation.NONE, false), 64, 64));
         PLAYER_SLIM = register("player_slim_combat", LayerDefinition.create(PlayerModelNF.createMesh(CubeDeformation.NONE, true), 64, 64));
         RABBIT = register("rabbit", RabbitModel.createBodyLayer());

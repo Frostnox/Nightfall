@@ -445,6 +445,7 @@ public class LanguageProviderNF extends LanguageProvider {
         for(var item : ItemsNF.METAL_BLOCKS.values()) add(item.get(), WordUtils.capitalize(item.getId().getPath().replace("_", " ")));
         for(var item : ItemsNF.METAL_SHIELDS_DYED.values()) add(item.get(),
                 WordUtils.capitalize(item.getId().getPath().replace("_dyed", "").replace("_", " ")));
+        for(var item : ItemsNF.BOATS.values()) add(item.get(), WordUtils.capitalize(item.getId().getPath().replace("_", " ").replace("boat", "rowboat")));
 
         for(var fluid : FluidsNF.METAL.values()) addFluid(fluid, WordUtils.capitalize(fluid.getId().getPath().replace("_", " ")));
 

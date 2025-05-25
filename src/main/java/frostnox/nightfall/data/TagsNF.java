@@ -101,6 +101,7 @@ public class TagsNF {
     //Mark blocks that only exist for specific technical purposes
     public static final TagKey<Block> TECHNICAL = blockTag("technical");
 
+    public static final TagKey<EntityType<?>> BOAT_PASSENGER = entityTag("boat_passenger");
     public static final TagKey<EntityType<?>> IMPACT_TYPE_BONE = entityTag("impact_type/bone"); //Determines sound when hit (flesh is default)
     public static final TagKey<EntityType<?>> IMPACT_TYPE_STONE = entityTag("impact_type/stone");
     public static final TagKey<EntityType<?>> IMPACT_TYPE_GASEOUS = entityTag("impact_type/gaseous");

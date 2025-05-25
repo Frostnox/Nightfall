@@ -3,6 +3,7 @@ package frostnox.nightfall.entity.entity;
 import frostnox.nightfall.action.DamageTypeSource;
 import frostnox.nightfall.block.Tree;
 import frostnox.nightfall.capability.ActionTracker;
+import frostnox.nightfall.entity.IEntityWithItem;
 import frostnox.nightfall.item.item.BuildingMaterialItem;
 import frostnox.nightfall.item.item.TieredArmorItem;
 import frostnox.nightfall.registry.forge.BlocksNF;
@@ -52,7 +53,7 @@ import java.util.function.Predicate;
  * Allows placing items in hands (vanilla is capable of this but doesn't allow it in survival)
  * Supports texture variants
  */
-public class ArmorStandDummyEntity extends LivingEntity {
+public class ArmorStandDummyEntity extends LivingEntity implements IEntityWithItem {
     private static final Rotations ZERO = new Rotations(0.0F, 0.0F, 0.0F);
     private static final Rotations DEFAULT_LEFT_ARM_POSE = new Rotations(-10.0F, 0.0F, -10.0F);
     private static final Rotations DEFAULT_RIGHT_ARM_POSE = new Rotations(-15.0F, 0.0F, 10.0F);
@@ -93,7 +94,8 @@ public class ArmorStandDummyEntity extends LivingEntity {
         maxUpStep = 0.0F;
     }
 
-    public Item getAsItem() {
+    @Override
+    public Item getItemForm() {
         return ForgeRegistries.ITEMS.getValue(ResourceLocation.parse(getMaterial().replace("plank", "armor_stand")));
     }
 

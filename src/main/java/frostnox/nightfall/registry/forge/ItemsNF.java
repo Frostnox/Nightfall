@@ -247,6 +247,8 @@ public class ItemsNF {
     //Utilities
     public static final Map<Tree, RegistryObject<ArmorStandDummyItem>> ARMOR_STANDS = DataUtil.mapEnum(Tree.class, tree ->
             register(tree.getName() + "_armor_stand", () -> new ArmorStandDummyItem(PLANKS.get(tree).getId(), new Item.Properties().stacksTo(1))));
+    public static final Map<Tree, RegistryObject<BoatItemNF>> BOATS = DataUtil.mapEnum(Tree.class, tree -> tree.getHardness() > Tree.OAK.getHardness(), tree ->
+            register(tree.getName() + "_boat", () -> new BoatItemNF(PLANKS.get(tree).getId(), new Item.Properties().stacksTo(1))));
 
     public static final RegistryObject<EmptyBucketItem> WOODEN_BUCKET = ITEMS.register("wooden_bucket", () -> new EmptyBucketItem(new Item.Properties().stacksTo(16).tab(UTILITIES_TAB)));
     public static final RegistryObject<FilledBucketItem> WOODEN_WATER_BUCKET = ITEMS.register("wooden_water_bucket", () -> new FilledBucketItem(false, FluidsNF.WATER, new Item.Properties().craftRemainder(WOODEN_BUCKET.get()).stacksTo(1).tab(UTILITIES_TAB)));

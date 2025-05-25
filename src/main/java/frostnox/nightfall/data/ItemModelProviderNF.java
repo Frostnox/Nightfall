@@ -292,7 +292,6 @@ public class ItemModelProviderNF extends ModelProvider<AnimatedItemModelBuilder>
 
         handheldItem(ItemsNF.STICK.get());
         genericItem(ItemsNF.SNOWBALL_THROWABLE.get(), ItemsNF.SNOWBALL.get());
-        for(var item : ItemsNF.ARMOR_STANDS.values()) genericItem(item.get());
 
         templateItem(ItemsNF.TORCH.get(), modLoc("item/handheld_small_flipped"));
         templateItem(ItemsNF.TORCH_UNLIT.get(), modLoc("item/handheld_small_flipped"));

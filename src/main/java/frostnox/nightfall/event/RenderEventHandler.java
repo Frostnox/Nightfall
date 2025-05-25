@@ -217,6 +217,7 @@ public class RenderEventHandler {
             IActionTracker capA = ActionTracker.get(player);
             IPlayerData capP = PlayerData.get(player);
             Action action = capA.getAction();
+            if(player.handsBusy && (player.isUsingItem() || !capA.isInactive())) player.handsBusy = false;
             if(!capP.getHeldContents().isEmpty()) {
                 event.setCanceled(true);
                 if(hand == InteractionHand.MAIN_HAND) {

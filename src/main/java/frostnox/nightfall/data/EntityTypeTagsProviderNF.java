@@ -14,6 +14,7 @@ public class EntityTypeTagsProviderNF extends EntityTypeTagsProvider {
 
     @Override
     protected void addTags() {
+        tag(TagsNF.BOAT_PASSENGER);
         tag(TagsNF.IMPACT_TYPE_BONE).add(EntitiesNF.SKELETON.get());
         tag(TagsNF.IMPACT_TYPE_STONE);
         tag(TagsNF.IMPACT_TYPE_GASEOUS);
