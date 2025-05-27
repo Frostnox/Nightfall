@@ -20,6 +20,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 
@@ -28,7 +29,11 @@ public class PotBlockEntity extends MenuContainerBlockEntity implements IHoldabl
     public final ItemStackHandlerNF inventory;
 
     public PotBlockEntity(BlockPos pos, BlockState pBlockState) {
-        super(BlockEntitiesNF.POT.get(), pos, pBlockState);
+        this(BlockEntitiesNF.POT.get(), pos, pBlockState);
+    }
+
+    protected PotBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
+        super(pType, pPos, pBlockState);
         inventory = new ItemStackHandlerNF(ROWS * COLUMNS);
     }
 

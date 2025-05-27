@@ -13,6 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class BowlBlockEntity extends BlockEntity implements IHoldable {
@@ -21,7 +22,11 @@ public class BowlBlockEntity extends BlockEntity implements IHoldable {
     public int crushes = 0;
 
     public BowlBlockEntity(BlockPos pos, BlockState pBlockState) {
-        super(BlockEntitiesNF.BOWL.get(), pos, pBlockState);
+        this(BlockEntitiesNF.BOWL.get(), pos, pBlockState);
+    }
+
+    protected BowlBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
+        super(pType, pPos, pBlockState);
     }
 
     @Override

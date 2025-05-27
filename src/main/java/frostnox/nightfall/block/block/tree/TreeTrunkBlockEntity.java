@@ -17,6 +17,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkSource;
 import net.minecraft.world.level.chunk.LevelChunk;
@@ -33,7 +34,11 @@ public class TreeTrunkBlockEntity extends BlockEntity {
     protected boolean special;
 
     public TreeTrunkBlockEntity(BlockPos pos, BlockState state) {
-        super(BlockEntitiesNF.TREE_TRUNK.get(), pos, state);
+        this(BlockEntitiesNF.TREE_TRUNK.get(), pos, state);
+    }
+
+    protected TreeTrunkBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
+        super(pType, pPos, pBlockState);
     }
 
     public void initSeed(WorldGenLevel level, Random random) {

@@ -9,6 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
@@ -17,7 +18,11 @@ public class FireableHoldableBlockEntity extends BlockEntity implements IFireabl
     public boolean inStructure;
 
     public FireableHoldableBlockEntity(BlockPos pos, BlockState state) {
-        super(BlockEntitiesNF.FIREABLE_POTTERY.get(), pos, state);
+        this(BlockEntitiesNF.FIREABLE_POTTERY.get(), pos, state);
+    }
+
+    protected FireableHoldableBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
+        super(pType, pPos, pBlockState);
     }
 
     @Override

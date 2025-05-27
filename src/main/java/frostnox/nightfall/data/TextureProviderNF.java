@@ -278,9 +278,12 @@ public class TextureProviderNF extends TextureProvider {
             replaceImagePalette(entity(BlocksNF.CHESTS.get(type), "chest", "_single"), entity("chest/chest_single" + style), palette);
             replaceImagePalette(entity(BlocksNF.CHESTS.get(type), "chest", "_left"), entity("chest/chest_left" + style), palette);
             replaceImagePalette(entity(BlocksNF.CHESTS.get(type), "chest", "_right"), entity("chest/chest_right" + style), palette);
+            String signStyle = type.getHardness() >= Tree.MAPLE.getHardness() ? "_single" : "_multiple";
+            replaceImagePalette(entity("sign/" + type.getName() + "_plank"), entity("sign/plank" + signStyle), subset(WOOD_FULL_PALETTES.get(type), 5, 2));
             replaceImagePalette(block(BlocksNF.SHELVES.get(type)), block("shelf_simple"), WOOD_PALETTES.get(type));
             replaceImagePalette(item(ItemsNF.RACKS.get(type)), item("rack"), combine(subset(WOOD_FULL_PALETTES.get(type), 2, 1), subset(WOOD_FULL_PALETTES.get(type), 4, 3)));
             replaceImagePalette(item(ItemsNF.PLANKS.get(type)), item("plank"), WOOD_REDUCED_PALETTES.get(type));
+            replaceImagePalette(item(ItemsNF.PLANK_SIGNS.get(type)), item("plank_sign" + signStyle), combine(subset(WOOD_FULL_PALETTES.get(type), 2, 1), subset(WOOD_FULL_PALETTES.get(type), 4, 3)));
             replaceImagePalette(block(BlocksNF.PLANK_FENCES.get(type)), block("fence"), subset(WOOD_FULL_PALETTES.get(type), 5, 2));
         }
         for(Tree type : BlocksNF.STRIPPED_LOGS.keySet()) {

@@ -28,6 +28,8 @@ import frostnox.nightfall.block.block.nest.SpiderNestBlock;
 import frostnox.nightfall.block.block.pot.PotBlock;
 import frostnox.nightfall.block.block.rack.RackBlock;
 import frostnox.nightfall.block.block.shelf.ShelfBlock;
+import frostnox.nightfall.block.block.sign.StandingSignBlockNF;
+import frostnox.nightfall.block.block.sign.WallSignBlockNF;
 import frostnox.nightfall.block.block.strangesoil.StrangeSoilBlock;
 import frostnox.nightfall.block.block.tree.*;
 import frostnox.nightfall.capability.LevelData;
@@ -395,6 +397,12 @@ public class BlocksNF {
                     return 20;
                 }
             }));
+    public static final Map<Tree, RegistryObject<StandingSignBlockNF>> PLANK_STANDING_SIGNS = DataUtil.mapEnum(Tree.class, tree ->
+            register(tree.getName() + "_standing_sign", () -> new StandingSignBlockNF(BlockBehaviour.Properties.of(Material.WOOD, tree.getBaseColor())
+                    .noCollission().strength(1.5F).sound(SoundType.WOOD), tree)));
+    public static final Map<Tree, RegistryObject<WallSignBlockNF>> PLANK_WALL_SIGNS = DataUtil.mapEnum(Tree.class, tree ->
+            register(tree.getName() + "_wall_sign", () -> new WallSignBlockNF(BlockBehaviour.Properties.of(Material.WOOD, tree.getBaseColor())
+                    .noCollission().strength(1.5F).sound(SoundType.WOOD), tree)));
 
     public static final Map<Stone, RegistryObject<Block>> TILED_STONE = DataUtil.mapEnum(Stone.class, stone ->
             register("tiled_" + stone.getName(), () -> new BlockNF(BlockBehaviour.Properties.of(Material.STONE, stone.getBaseColor())

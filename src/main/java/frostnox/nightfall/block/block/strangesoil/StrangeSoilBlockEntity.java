@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nullable;
@@ -14,7 +15,11 @@ public class StrangeSoilBlockEntity extends BlockEntity {
     public long lootTableSeed;
 
     public StrangeSoilBlockEntity(BlockPos pos, BlockState pBlockState) {
-        super(BlockEntitiesNF.STRANGE_SOIL.get(), pos, pBlockState);
+        this(BlockEntitiesNF.STRANGE_SOIL.get(), pos, pBlockState);
+    }
+
+    protected StrangeSoilBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
+        super(pType, pPos, pBlockState);
     }
 
     @Override

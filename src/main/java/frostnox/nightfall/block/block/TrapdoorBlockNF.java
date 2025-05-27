@@ -170,7 +170,7 @@ public class TrapdoorBlockNF extends TrapDoorBlock implements IWaterloggedBlock,
 
     @Override
     public int getExcludedWaterLevel(BlockState state) {
-        return 1;
+        return state.getValue(HALF) == Half.BOTTOM && !state.getValue(OPEN) ? 1 : 0;
     }
 
     @Override

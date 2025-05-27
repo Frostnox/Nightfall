@@ -525,6 +525,7 @@ public class Nightfall {
             event.registerBlockEntityRenderer(BlockEntitiesNF.CAULDRON.get(), CauldronRenderer::new);
             event.registerBlockEntityRenderer(BlockEntitiesNF.CAMPFIRE.get(), CampfireRendererNF::new);
             event.registerBlockEntityRenderer(BlockEntitiesNF.CHEST.get(), ChestRendererNF::new);
+            event.registerBlockEntityRenderer(BlockEntitiesNF.SIGN.get(), SignRendererNF::new);
             event.registerBlockEntityRenderer(BlockEntitiesNF.RACK.get(), RackRenderer::new);
             event.registerBlockEntityRenderer(BlockEntitiesNF.SHELF.get(), ShelfRenderer::new);
             event.registerBlockEntityRenderer(BlockEntitiesNF.ITEM_MOLD.get(), ItemMoldRenderer::new);
@@ -538,6 +539,7 @@ public class Nightfall {
         @SubscribeEvent
         public static void onTextureStitchEvent(TextureStitchEvent.Pre event) {
             ChestRendererNF.stitchChestTextures(event);
+            SignRendererNF.stitchSignTextures(event);
             if(event.getAtlas().location().equals(InventoryMenu.BLOCK_ATLAS)) {
                 event.addSprite(KnowledgeNF.KNOWLEDGE_TEXTURE);
                 event.addSprite(KnowledgeNF.UNKNOWN_KNOWLEDGE_TEXTURE);

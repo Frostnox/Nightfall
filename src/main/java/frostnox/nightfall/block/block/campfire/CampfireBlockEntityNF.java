@@ -21,6 +21,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.CampfireBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
@@ -35,7 +36,11 @@ public class CampfireBlockEntityNF extends BlockEntity implements Clearable {
     private int burnTicks;
 
     public CampfireBlockEntityNF(BlockPos pos, BlockState pBlockState) {
-        super(BlockEntitiesNF.CAMPFIRE.get(), pos, pBlockState);
+        this(BlockEntitiesNF.CAMPFIRE.get(), pos, pBlockState);
+    }
+
+    protected CampfireBlockEntityNF(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
+        super(pType, pPos, pBlockState);
     }
 
     public static void cookTick(Level level, BlockPos pos, BlockState state, CampfireBlockEntityNF campfire) {

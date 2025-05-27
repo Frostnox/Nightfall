@@ -7,9 +7,12 @@ import frostnox.nightfall.action.Action;
 import frostnox.nightfall.action.Attack;
 import frostnox.nightfall.action.HitData;
 import frostnox.nightfall.action.player.IClientAction;
+import frostnox.nightfall.block.block.sign.StandingSignBlockNF;
+import frostnox.nightfall.block.block.sign.WallSignBlockNF;
 import frostnox.nightfall.capability.*;
 import frostnox.nightfall.client.ClientEngine;
 import frostnox.nightfall.client.EntityLightEngine;
+import frostnox.nightfall.client.gui.screen.SignEditScreenNF;
 import frostnox.nightfall.client.gui.screen.encyclopedia.EncyclopediaScreen;
 import frostnox.nightfall.client.gui.screen.encyclopedia.EntryPuzzleScreen;
 import frostnox.nightfall.client.gui.screen.item.ModifiableItemScreen;
@@ -45,6 +48,7 @@ import net.minecraft.client.gui.components.ChatComponent;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
+import net.minecraft.client.gui.screens.inventory.SignEditScreen;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.debug.DebugRenderer;
@@ -958,6 +962,10 @@ public class ClientEventHandler {
         else if(event.getScreen() instanceof EntryPuzzleScreen entryPuzzleScreen) {
             if(mc.screen instanceof EncyclopediaScreen encyclopediaScreen) encyclopediaScreen.setEntryScreen(entryPuzzleScreen);
             event.setCanceled(true);
+        }
+        else if(event.getScreen() instanceof SignEditScreen screen && (screen.sign.getBlockState().getBlock() instanceof StandingSignBlockNF
+                || screen.sign.getBlockState().getBlock() instanceof WallSignBlockNF)) {
+            event.setScreen(new SignEditScreenNF(screen.sign, mc.isTextFilteringEnabled()));
         }
     }
 

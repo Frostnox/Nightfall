@@ -29,6 +29,7 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
@@ -64,7 +65,11 @@ public class CauldronBlockEntity extends MenuContainerBlockEntity implements IHo
     };
 
     public CauldronBlockEntity(BlockPos pos, BlockState state) {
-        super(BlockEntitiesNF.CAULDRON.get(), pos, state);
+        this(BlockEntitiesNF.CAULDRON.get(), pos, state);
+    }
+
+    protected CauldronBlockEntity(BlockEntityType<?> pType, BlockPos pos, BlockState pBlockState) {
+        super(pType, pos, pBlockState);
         inventory = new ItemStackHandlerNF(4) {
             @Override
             protected void onContentsChanged(int slot) {

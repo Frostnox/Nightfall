@@ -15,6 +15,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -23,7 +24,11 @@ public class ItemMoldBlockEntity extends BlockEntity implements IHoldable, IDrop
     protected float temperature;
 
     public ItemMoldBlockEntity(BlockPos pos, BlockState state) {
-        super(BlockEntitiesNF.ITEM_MOLD.get(), pos, state);
+        this(BlockEntitiesNF.ITEM_MOLD.get(), pos, state);
+    }
+
+    protected ItemMoldBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
+        super(pType, pPos, pBlockState);
     }
 
     @Override

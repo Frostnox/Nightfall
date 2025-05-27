@@ -228,6 +228,8 @@ public class LootTableProviderNF extends LootTableProvider {
                 dropOther(BlocksNF.PLANK_TRAPDOORS.get(type).get(), ItemsNF.PLANKS.get(type).get(), 3);
                 dropOther(BlocksNF.PLANK_HATCHES.get(type).get(), ItemsNF.PLANKS.get(type).get(), 3);
                 dropOther(BlocksNF.PLANK_LADDERS.get(type).get(), ItemsNF.PLANKS.get(type).get(), 3);
+                dropOther(BlocksNF.PLANK_STANDING_SIGNS.get(type).get(), ItemsNF.PLANKS.get(type).get(), 3);
+                dropOther(BlocksNF.PLANK_WALL_SIGNS.get(type).get(), ItemsNF.PLANKS.get(type).get(), 3);
                 dropOther(BlocksNF.BARRELS.get(type).get(), ItemsNF.PLANKS.get(type).get(), 16);
                 dropOther(BlocksNF.CHESTS.get(type).get(), ItemsNF.PLANKS.get(type).get(), 16);
                 dropOther(BlocksNF.RACKS.get(type).get(), ItemsNF.PLANKS.get(type).get(), 4);

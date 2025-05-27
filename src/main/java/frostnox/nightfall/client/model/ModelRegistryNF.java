@@ -17,6 +17,7 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -31,6 +32,7 @@ public class ModelRegistryNF {
     private static final Map<Item, Pair<EntityPart, ModelLayerLocation>> accessoryMap = new Object2ObjectOpenHashMap<>();
     //Block entities
     public static ModelLayerLocation CHEST, DOUBLE_CHEST_LEFT, DOUBLE_CHEST_RIGHT;
+    public static ModelLayerLocation SIGN;
     public static ModelLayerLocation CAULDRON;
     //Entities
     public static ModelLayerLocation ARMOR_STAND, BOAT;
@@ -61,6 +63,7 @@ public class ModelRegistryNF {
         CHEST = register("chest", ChestRendererNF.createSingleBodyLayer());
         DOUBLE_CHEST_LEFT = register("double_chest_left", ChestRendererNF.createDoubleBodyLeftLayer());
         DOUBLE_CHEST_RIGHT = register("double_chest_right", ChestRendererNF.createDoubleBodyRightLayer());
+        SIGN = register("sign", SignRenderer.createSignLayer());
         CAULDRON = register("cauldron", CauldronRenderer.createLayer());
         //Entities
         ARMOR_STAND = register("armor_stand", ArmorStandDummyModel.createBodyLayer());

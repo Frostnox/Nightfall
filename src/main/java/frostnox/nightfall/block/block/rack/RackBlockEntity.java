@@ -7,12 +7,17 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
 public class RackBlockEntity extends ContainerBlockEntity {
     public RackBlockEntity(BlockPos pos, BlockState pBlockState) {
-        super(BlockEntitiesNF.RACK.get(), pos, pBlockState, 3);
+        this(BlockEntitiesNF.RACK.get(), pos, pBlockState, 3);
+    }
+
+    protected RackBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState, int size) {
+        super(pType, pPos, pBlockState, size);
     }
 
     @Override

@@ -9,6 +9,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class BurningFuelBlockEntity extends BlockEntity {
@@ -16,7 +17,11 @@ public class BurningFuelBlockEntity extends BlockEntity {
     public float temperature, structureTempBonus;
 
     public BurningFuelBlockEntity(BlockPos pos, BlockState state) {
-        super(BlockEntitiesNF.FUEL.get(), pos, state);
+        this(BlockEntitiesNF.FUEL.get(), pos, state);
+    }
+
+    protected BurningFuelBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState state) {
+        super(pType, pPos, state);
         burnTicks = ((BurningFuelBlock) state.getBlock()).burnTicks;
     }
 

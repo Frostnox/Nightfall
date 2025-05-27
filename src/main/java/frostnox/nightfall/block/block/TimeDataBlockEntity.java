@@ -5,13 +5,18 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class TimeDataBlockEntity extends BlockEntity {
     public long lastProcessedTick;
 
     public TimeDataBlockEntity(BlockPos pos, BlockState pBlockState) {
-        super(BlockEntitiesNF.TIME_DATA.get(), pos, pBlockState);
+        this(BlockEntitiesNF.TIME_DATA.get(), pos, pBlockState);
+    }
+
+    protected TimeDataBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
+        super(pType, pPos, pBlockState);
     }
 
     @Override

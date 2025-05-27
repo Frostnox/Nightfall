@@ -96,6 +96,7 @@ public class RecipeProviderNF extends RecipeProvider {
             BuildingRecipeBuilder.base(plank, 3, ItemsNF.PLANK_TRAPDOORS.get(type).get()).order(7).requirement(EntriesNF.ADVANCED_WOODWORKING).save(consumer);
             BuildingRecipeBuilder.base(plank, 3, ItemsNF.PLANK_HATCHES.get(type).get()).order(8).requirement(EntriesNF.ADVANCED_WOODWORKING).save(consumer);
             BuildingRecipeBuilder.base(plank, 3, ItemsNF.PLANK_LADDERS.get(type).get()).order(9).requirement(EntriesNF.WOODWORKING).save(consumer);
+            BuildingRecipeBuilder.base(plank, 3, ItemsNF.PLANK_SIGNS.get(type).get()).order(11).requirement(EntriesNF.WOODWORKING).save(consumer);
             BuildingRecipeBuilder.base(plank, 12, ItemsNF.ARMOR_STANDS.get(type).get()).requirement(EntriesNF.ADVANCED_WOODWORKING).save(consumer);
             if(ItemsNF.BOATS.containsKey(type)) BuildingRecipeBuilder.base(plank, 16, ItemsNF.BOATS.get(type).get()).requirement(EntriesNF.ADVANCED_WOODWORKING).save(consumer);
             BuildingRecipeBuilder.base(plank, 16, ItemsNF.BARRELS.get(type).get()).requirement(EntriesNF.TANNING).save(consumer);

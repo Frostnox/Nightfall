@@ -36,6 +36,7 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.ContainerOpenersCounter;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fluids.FluidStack;
@@ -95,7 +96,11 @@ public class BarrelBlockEntityNF extends MenuContainerBlockEntity implements IHo
     };
 
     public BarrelBlockEntityNF(BlockPos pos, BlockState pBlockState) {
-        super(BlockEntitiesNF.BARREL.get(), pos, pBlockState);
+        this(BlockEntitiesNF.BARREL.get(), pos, pBlockState);
+    }
+
+    protected BarrelBlockEntityNF(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
+        super(pType, pPos, pBlockState);
         inventory = new ItemStackHandlerNF(ROWS * COLUMNS) {
             @Override
             protected void onContentsChanged(int slot) {

@@ -6,11 +6,16 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class ShelfBlockEntity extends ContainerBlockEntity {
     public ShelfBlockEntity(BlockPos pos, BlockState pBlockState) {
-        super(BlockEntitiesNF.SHELF.get(), pos, pBlockState, 4);
+        this(BlockEntitiesNF.SHELF.get(), pos, pBlockState, 4);
+    }
+
+    protected ShelfBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState, int size) {
+        super(pType, pPos, pBlockState, size);
     }
 
     @Override

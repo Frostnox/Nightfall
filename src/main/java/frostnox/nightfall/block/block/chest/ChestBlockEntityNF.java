@@ -12,6 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ChestBlock;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -20,7 +21,11 @@ public class ChestBlockEntityNF extends ChestBlockEntity implements IHoldable, I
     public int tickCount = 0;
 
     public ChestBlockEntityNF(BlockPos p_155328_, BlockState p_155329_) {
-        super(BlockEntitiesNF.CHEST.get(), p_155328_, p_155329_);
+        this(BlockEntitiesNF.CHEST.get(), p_155328_, p_155329_);
+    }
+
+    protected ChestBlockEntityNF(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
+        super(pType, pPos, pBlockState);
     }
 
     public static void clientTick(Level level, BlockPos pos, BlockState state, ChestBlockEntity pBlockEntity) {

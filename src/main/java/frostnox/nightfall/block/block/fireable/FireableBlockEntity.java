@@ -4,6 +4,7 @@ import frostnox.nightfall.registry.forge.BlockEntitiesNF;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class FireableBlockEntity extends BlockEntity implements IFireableBlockEntity {
@@ -11,7 +12,11 @@ public class FireableBlockEntity extends BlockEntity implements IFireableBlockEn
     public boolean inStructure;
 
     public FireableBlockEntity(BlockPos pos, BlockState state) {
-        super(BlockEntitiesNF.FIREABLE.get(), pos, state);
+        this(BlockEntitiesNF.FIREABLE.get(), pos, state);
+    }
+
+    protected FireableBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
+        super(pType, pPos, pBlockState);
     }
 
     @Override

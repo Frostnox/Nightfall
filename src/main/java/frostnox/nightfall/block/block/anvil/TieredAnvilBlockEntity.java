@@ -46,6 +46,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
@@ -69,7 +70,11 @@ public class TieredAnvilBlockEntity extends MenuContainerBlockEntity implements 
     public final Color[][][] gridColors = new Color[GRID_X][GRID_Y][GRID_Z];
 
     public TieredAnvilBlockEntity(BlockPos pos, BlockState state) {
-        super(BlockEntitiesNF.ANVIL.get(), pos, state);
+        this(BlockEntitiesNF.ANVIL.get(), pos, state);
+    }
+
+    protected TieredAnvilBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
+        super(pType, pPos, pBlockState);
         result = new ItemStackHandlerNF();
     }
 

@@ -983,6 +983,8 @@ public class BlockStateProviderNF extends BlockStateProvider {
             hatchBlock(BlocksNF.PLANK_HATCHES.get(type).get());
             trapdoorBlock(BlocksNF.PLANK_TRAPDOORS.get(type).get());
             ladderBlock(BlocksNF.PLANK_LADDERS.get(type).get());
+            particleOnlyBlock(BlocksNF.PLANK_STANDING_SIGNS.get(type).get(), resource(BlocksNF.PLANK_BLOCKS.get(type).get()));
+            particleOnlyBlock(BlocksNF.PLANK_WALL_SIGNS.get(type).get(), resource(BlocksNF.PLANK_BLOCKS.get(type).get()));
             barrelBlock(BlocksNF.BARRELS.get(type).get());
             chestBlock(BlocksNF.CHESTS.get(type).get(), resource(BlocksNF.PLANK_BLOCKS.get(type).get()));
             horizontalBlockNF(BlocksNF.RACKS.get(type).get(),

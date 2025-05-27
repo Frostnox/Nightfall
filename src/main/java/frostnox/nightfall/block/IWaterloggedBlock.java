@@ -101,7 +101,10 @@ public interface IWaterloggedBlock extends BucketPickup, LiquidBlockContainer {
     }
 
     default void tickLiquid(BlockState state, BlockPos pos, LevelAccessor level) {
-        if(state.getValue(WATER_LEVEL) != 0) {
+        int waterLevel = state.getValue(WATER_LEVEL);
+        if(waterLevel != 0) {
+            int excludedLevel = getExcludedWaterLevel(state);
+            if(waterLevel <= excludedLevel) level.setBlock(pos, state.setValue(WATER_LEVEL, 0), 3);
             FluidState fluidState = state.getFluidState();
             level.scheduleTick(pos, fluidState.getType(), fluidState.getType().getTickDelay(level));
         }
