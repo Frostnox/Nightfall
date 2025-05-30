@@ -257,7 +257,7 @@ public class Nightfall {
         for(Tree type : Tree.values()) {
             cutoutMipped.addAll(List.of(BlocksNF.LEAVES.get(type)));
             cutout.addAll(List.of(BlocksNF.TREE_SEEDS.get(type), BlocksNF.PLANK_TRAPDOORS.get(type), BlocksNF.PLANK_HATCHES.get(type),
-                    BlocksNF.PLANK_DOORS.get(type), BlocksNF.PLANK_LADDERS.get(type)));
+                    BlocksNF.PLANK_DOORS.get(type), BlocksNF.PLANK_LADDERS.get(type), BlocksNF.CHAIRS.get(type)));
         }
         cutout.addAll(BlocksNF.FRUIT_LEAVES.values());
         cutout.addAll(BlocksNF.BRANCHES.values());
@@ -515,6 +515,7 @@ public class Nightfall {
             event.registerEntityRenderer(EntitiesNF.SPIDER.get(), SpiderRenderer::new);
             event.registerEntityRenderer(EntitiesNF.ARMOR_STAND.get(), ArmorStandDummyRenderer::new);
             event.registerEntityRenderer(EntitiesNF.BOAT.get(), BoatRendererNF::new);
+            event.registerEntityRenderer(EntitiesNF.SEAT.get(), NoopRenderer::new);
             event.registerEntityRenderer(EntitiesNF.MOVING_BLOCK.get(), MovingBlockRenderer::new);
             event.registerEntityRenderer(EntitiesNF.THROWN_ROCK.get(), ThrownItemRenderer::new);
             event.registerEntityRenderer(EntitiesNF.ARROW.get(), ArrowRendererNF::new);

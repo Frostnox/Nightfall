@@ -4,6 +4,7 @@ import frostnox.nightfall.Nightfall;
 import frostnox.nightfall.entity.entity.ArmorStandDummyEntity;
 import frostnox.nightfall.entity.entity.BoatEntity;
 import frostnox.nightfall.entity.entity.MovingBlockEntity;
+import frostnox.nightfall.entity.entity.SeatEntity;
 import frostnox.nightfall.entity.entity.animal.DeerEntity;
 import frostnox.nightfall.entity.entity.animal.RabbitEntity;
 import frostnox.nightfall.entity.entity.monster.*;
@@ -39,6 +40,8 @@ public class EntitiesNF {
             .sized(0.5F, 1.975F).clientTrackingRange(10).updateInterval(4).build("armor_stand"));
     public static final RegistryObject<EntityType<BoatEntity>> BOAT = ENTITIES.register("boat", () -> EntityType.Builder.<BoatEntity>of(BoatEntity::new, MobCategory.MISC)
             .sized(1.375F, 0.5625F).clientTrackingRange(10).build("boat"));
+    public static final RegistryObject<EntityType<SeatEntity>> SEAT = ENTITIES.register("seat", () -> EntityType.Builder.<SeatEntity>of(SeatEntity::new, MobCategory.MISC)
+            .sized(0, 0).clientTrackingRange(10).updateInterval(Integer.MAX_VALUE).build("seat"));
     public static final RegistryObject<EntityType<MovingBlockEntity>> MOVING_BLOCK = ENTITIES.register("moving_block", () -> EntityType.Builder.of(MovingBlockEntity::new, MobCategory.MISC)
             .sized(0.99F, 0.99F).clientTrackingRange(10).updateInterval(Integer.MAX_VALUE).build("moving_block"));
     public static final RegistryObject<EntityType<ThrownRockEntity>> THROWN_ROCK = ENTITIES.register("thrown_rock", () -> EntityType.Builder.<ThrownRockEntity>of(ThrownRockEntity::new, MobCategory.MISC)

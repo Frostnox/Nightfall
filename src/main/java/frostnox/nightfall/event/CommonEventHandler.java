@@ -2,6 +2,7 @@ package frostnox.nightfall.event;
 
 import com.google.common.collect.Multimap;
 import com.mojang.math.Vector3f;
+import frostnox.nightfall.Nightfall;
 import frostnox.nightfall.action.Action;
 import frostnox.nightfall.action.DamageType;
 import frostnox.nightfall.action.DamageTypeSource;
@@ -1032,18 +1033,21 @@ public class CommonEventHandler {
     @SubscribeEvent
     public static void onEntityStartRidingEvent(EntityMountEvent event) {
         Entity rider = event.getEntityMounting();
-        if(event.isMounting()) {
-            if(rider instanceof Player player) {
-                if(!player.isCreative() && !rider.isOnGround() && !rider.isInWater() && !rider.isInLava()) event.setCanceled(true);
+        if(!rider.level.isClientSide) {
+            if(event.isMounting()) {
+                if(rider instanceof Player player) {
+                    Nightfall.LOGGER.info(player.tickCount + ", " + rider.fallDistance);
+                    if(!player.isCreative() && !rider.isOnGround() && !rider.isInWater() && !rider.isInLava()) event.setCanceled(true);
+                }
+                else if(event.getEntityBeingMounted() instanceof Boat) {
+                    if(!rider.getType().is(TagsNF.BOAT_PASSENGER)) event.setCanceled(true);
+                }
             }
-            else if(event.getEntityBeingMounted() instanceof Boat) {
-                if(!rider.getType().is(TagsNF.BOAT_PASSENGER)) event.setCanceled(true);
-            }
-        }
-        else {
-            if(!event.isCanceled()) {
-                Entity vehicle = event.getEntityBeingMounted();
-                if(vehicle.fallDistance > rider.fallDistance) rider.fallDistance = vehicle.fallDistance;
+            else {
+                if(!event.isCanceled()) {
+                    Entity vehicle = event.getEntityBeingMounted();
+                    if(vehicle.fallDistance > rider.fallDistance) rider.fallDistance = vehicle.fallDistance;
+                }
             }
         }
     }

@@ -104,6 +104,7 @@ public class BlockTagsProviderNF extends BlockTagsProvider {
             tag(TagsNF.WOODEN_CHESTS).add(BlocksNF.CHESTS.get(type).get());
             tag(TagsNF.WOODEN_RACKS).add(BlocksNF.RACKS.get(type).get());
             tag(TagsNF.WOODEN_SHELVES).add(BlocksNF.SHELVES.get(type).get());
+            tag(TagsNF.CHAIRS).add(BlocksNF.CHAIRS.get(type).get());
             tag(Tags.Blocks.BARRELS_WOODEN).add(BlocksNF.BARRELS.get(type).get());
             tag(TagsNF.WOODEN_BARRELS).add(BlocksNF.BARRELS.get(type).get());
             tag(BlockTags.CLIMBABLE).add(BlocksNF.PLANK_LADDERS.get(type).get());

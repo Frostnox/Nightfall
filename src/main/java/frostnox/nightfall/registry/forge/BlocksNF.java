@@ -9,6 +9,7 @@ import frostnox.nightfall.block.block.anvil.MetalAnvilBlock;
 import frostnox.nightfall.block.block.anvil.TieredAnvilBlock;
 import frostnox.nightfall.block.block.barrel.BarrelBlockNF;
 import frostnox.nightfall.block.block.bowl.BowlBlock;
+import frostnox.nightfall.block.block.chair.ChairBlock;
 import frostnox.nightfall.block.block.nest.RabbitBurrowBlock;
 import frostnox.nightfall.block.block.campfire.CampfireBlockNF;
 import frostnox.nightfall.block.block.cauldron.CauldronBlockNF;
@@ -557,6 +558,10 @@ public class BlocksNF {
 
     public static final Map<Tree, RegistryObject<ShelfBlock>> SHELVES = DataUtil.mapEnum(Tree.class, tree ->
             register(tree.getName() + "_shelf", () -> new ShelfBlock(BlockBehaviour.Properties.of(SOLID_FLAMMABLE_DECORATION)
+                    .strength(tree.getStrength() * 0.5F, tree.getExplosionResistance() * 0.5F).sound(SoundType.WOOD))));
+
+    public static final Map<Tree, RegistryObject<ChairBlock>> CHAIRS = DataUtil.mapEnum(Tree.class, tree ->
+            register(tree.getName() + "_chair", () -> new ChairBlock(BlockBehaviour.Properties.of(Material.WOOD, tree.getBaseColor())
                     .strength(tree.getStrength() * 0.5F, tree.getExplosionResistance() * 0.5F).sound(SoundType.WOOD))));
 
     //Metallurgy

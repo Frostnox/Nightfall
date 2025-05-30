@@ -91,8 +91,8 @@ public class RecipeProviderNF extends RecipeProvider {
             BuildingRecipeBuilder.base(plank, 2, ItemsNF.PLANK_SLABS.get(type).get()).order(2).save(consumer);
             BuildingRecipeBuilder.base(plank, 2, ItemsNF.PLANK_SIDINGS.get(type).get()).order(3).save(consumer);
             BuildingRecipeBuilder.base(plank, 3, ItemsNF.PLANK_FENCES.get(type).get()).order(4).requirement(EntriesNF.WOODWORKING).save(consumer);
-            BuildingRecipeBuilder.base(plank, 3, ItemsNF.PLANK_FENCE_GATES.get(type).get()).order(5).requirement(EntriesNF.ADVANCED_WOODWORKING).save(consumer);
-            BuildingRecipeBuilder.base(plank, 6, ItemsNF.PLANK_DOORS.get(type).get()).order(6).requirement(EntriesNF.ADVANCED_WOODWORKING).save(consumer);
+            BuildingRecipeBuilder.base(plank, 3, ItemsNF.PLANK_FENCE_GATES.get(type).get()).order(5).requirement(EntriesNF.WOODWORKING).save(consumer);
+            BuildingRecipeBuilder.base(plank, 8, ItemsNF.PLANK_DOORS.get(type).get()).order(6).requirement(EntriesNF.WOODWORKING).save(consumer);
             BuildingRecipeBuilder.base(plank, 3, ItemsNF.PLANK_TRAPDOORS.get(type).get()).order(7).requirement(EntriesNF.ADVANCED_WOODWORKING).save(consumer);
             BuildingRecipeBuilder.base(plank, 3, ItemsNF.PLANK_HATCHES.get(type).get()).order(8).requirement(EntriesNF.ADVANCED_WOODWORKING).save(consumer);
             BuildingRecipeBuilder.base(plank, 3, ItemsNF.PLANK_LADDERS.get(type).get()).order(9).requirement(EntriesNF.WOODWORKING).save(consumer);
@@ -103,6 +103,7 @@ public class RecipeProviderNF extends RecipeProvider {
             BuildingRecipeBuilder.base(plank, 16, ItemsNF.CHESTS.get(type).get()).order(10).requirement(EntriesNF.ADVANCED_WOODWORKING).save(consumer);
             BuildingRecipeBuilder.base(plank, 4, ItemsNF.RACKS.get(type).get()).requirement(EntriesNF.WOODWORKING).save(consumer);
             BuildingRecipeBuilder.base(plank, 8, ItemsNF.SHELVES.get(type).get()).requirement(EntriesNF.WOODWORKING).save(consumer);
+            BuildingRecipeBuilder.base(plank, 8, ItemsNF.CHAIRS.get(type).get()).requirement(EntriesNF.ADVANCED_WOODWORKING).save(consumer);
             if(ItemsNF.BOWS.containsKey(type)) CraftingRecipeBuilder.base(ItemsNF.BOWS.get(type).get(), EntriesNF.BOW_AND_ARROW).define('P', plank).define('L', ItemsNF.FLAX_FIBERS.get()).pattern(" PL").pattern("P L").pattern(" PL").save(consumer);
         }
         for(Metal type : ItemsNF.INGOTS.keySet()) {

@@ -1,6 +1,7 @@
 package frostnox.nightfall.block;
 
 import frostnox.nightfall.block.block.SidingBlock;
+import frostnox.nightfall.block.block.chair.ChairBlock;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
@@ -35,4 +36,5 @@ public class BlockStatePropertiesNF {
     public static final EnumProperty<SidingBlock.Type> SIDING_TYPE = EnumProperty.create("siding_type", SidingBlock.Type.class);
     public static final EnumProperty<SidingBlock.Shape> SIDING_SHAPE = EnumProperty.create("siding_shape", SidingBlock.Shape.class);
     public static final EnumProperty<Humidity> HUMIDITY = EnumProperty.create("humidity", Humidity.class);
+    public static final EnumProperty<ChairBlock.Type> CHAIR_TYPE = EnumProperty.create("chair_type", ChairBlock.Type.class);
 }

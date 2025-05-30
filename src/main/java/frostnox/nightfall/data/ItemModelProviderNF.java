@@ -289,6 +289,7 @@ public class ItemModelProviderNF extends ModelProvider<AnimatedItemModelBuilder>
             genericBlockAsItem(ItemsNF.PLANK_LADDERS.get(type).get());
             genericItem(ItemsNF.PLANK_SIGNS.get(type).get());
             genericItem(ItemsNF.RACKS.get(type).get());
+            genericItem((ItemsNF.CHAIRS.get(type).get()));
         }
 
         handheldItem(ItemsNF.STICK.get());

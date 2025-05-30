@@ -8,6 +8,7 @@ import frostnox.nightfall.block.block.barrel.BarrelBlockNF;
 import frostnox.nightfall.block.block.campfire.CampfireBlockNF;
 import frostnox.nightfall.block.block.cauldron.CauldronBlockNF;
 import frostnox.nightfall.block.block.cauldron.Task;
+import frostnox.nightfall.block.block.chair.ChairBlock;
 import frostnox.nightfall.block.block.fireable.FireablePartialBlock;
 import frostnox.nightfall.block.block.nest.OverlayBurrowBlock;
 import frostnox.nightfall.block.block.pile.PileBlock;
@@ -262,6 +263,30 @@ public class BlockStateProviderNF extends BlockStateProvider {
                     .modelFile(models().withExistingParent(name(block) + "_right", resource("chest_right"))
                             .texture("all", ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "entity/chest/" + block.getRegistryName().getPath() + "_right"))
                             .texture("particle", particle)).rotationY(yRot).build()));
+        }
+    }
+
+    public void chairBlock(ChairBlock block, ResourceLocation particle) {
+        ModelFile singleBottom = templateModel(name(block) + "_single_bottom", resource("chair_single_bottom"), Pair.of("0", resource(block)), Pair.of("particle", particle));
+        ModelFile leftBottom = templateModel(name(block) + "_left_bottom", resource("chair_left_bottom"), Pair.of("0", resource(block)), Pair.of("particle", particle));
+        ModelFile rightBottom = templateModel(name(block) + "_right_bottom", resource("chair_right_bottom"), Pair.of("0", resource(block)), Pair.of("particle", particle));
+        ModelFile middleBottom = templateModel(name(block) + "_middle_bottom", resource("chair_middle_bottom"), Pair.of("0", resource(block)), Pair.of("particle", particle));
+        ModelFile singleTop = templateModel(name(block) + "_single_top", resource("chair_single_top"), Pair.of("0", resource(block)), Pair.of("particle", particle));
+        ModelFile leftTop = templateModel(name(block) + "_left_top", resource("chair_left_top"), Pair.of("0", resource(block)), Pair.of("particle", particle));
+        ModelFile rightTop = templateModel(name(block) + "_right_top", resource("chair_right_top"), Pair.of("0", resource(block)), Pair.of("particle", particle));
+        ModelFile middleTop = templateModel(name(block) + "_middle_top", resource("chair_middle_top"), Pair.of("0", resource(block)), Pair.of("particle", particle));
+        for(Direction facing : ChairBlock.FACING.getPossibleValues()) {
+            for(ChairBlock.Type type : ChairBlock.TYPE.getPossibleValues()) {
+                for(DoubleBlockHalf half : ChairBlock.HALF.getPossibleValues()) {
+                    getVariantBuilder(block).partialState().with(ChairBlock.TYPE, type).with(ChairBlock.FACING, facing).with(ChairBlock.HALF, half).addModels((ConfiguredModel.builder()
+                            .modelFile(switch(type) {
+                                case SINGLE -> half == DoubleBlockHalf.LOWER ? singleBottom : singleTop;
+                                case LEFT -> half == DoubleBlockHalf.LOWER ? leftBottom : leftTop;
+                                case RIGHT -> half == DoubleBlockHalf.LOWER ? rightBottom : rightTop;
+                                case MIDDLE -> half == DoubleBlockHalf.LOWER ? middleBottom : middleTop;
+                            }).rotationY((int) facing.getOpposite().toYRot()).build()));
+                }
+            }
         }
     }
 
@@ -993,6 +1018,7 @@ public class BlockStateProviderNF extends BlockStateProvider {
             horizontalBlockNF(BlocksNF.SHELVES.get(type).get(),
                     templateModel(BlocksNF.SHELVES.get(type).get(), resource("shelf_simple"), Pair.of("all", resource(BlocksNF.SHELVES.get(type).get()))),
                     0);
+            chairBlock(BlocksNF.CHAIRS.get(type).get(), resource(BlocksNF.PLANK_BLOCKS.get(type).get()));
         }
         for(Tree type : BlocksNF.FRUIT_LEAVES.keySet()) {
             if(type.isDeciduous()) tintedFruitLeavesBlock(BlocksNF.LEAVES.get(type).get(), BlocksNF.FRUIT_LEAVES.get(type).get());

@@ -69,6 +69,7 @@ public class ItemMoldBlock extends WaterloggedEntityBlock {
 
     @Override
     public BlockState updateShape(BlockState state, Direction pFacing, BlockState pFacingState, LevelAccessor level, BlockPos pCurrentPos, BlockPos pFacingPos) {
+        super.updateShape(state, pFacing, pFacingState, level, pCurrentPos, pFacingPos);
         if(pFacing == Direction.DOWN && !state.canSurvive(level, pCurrentPos)) return Blocks.AIR.defaultBlockState();
         else return state;
     }
