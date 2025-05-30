@@ -614,6 +614,20 @@ public class BlockStateProviderNF extends BlockStateProvider {
         }
     }
 
+    public void directionalBlockNF(Block block, ModelFile model, int angleOffset) {
+        directionalBlockNF(block, $ -> model, angleOffset);
+    }
+
+    public void directionalBlockNF(Block block, Function<BlockState, ModelFile> modelFunc, int angleOffset) {
+        for(Direction dir : BlockStateProperties.FACING.getPossibleValues()) {
+            getVariantBuilder(block).partialState().with(BlockStateProperties.FACING, dir).modelForState()
+                    .modelFile(modelFunc.apply(block.defaultBlockState().setValue(BlockStateProperties.FACING, dir)))
+                    .rotationX(dir == Direction.DOWN ? 90 : (dir == Direction.UP ? -90 : 0))
+                    .rotationY(dir.getAxis().isVertical() ? 0 : ((int) dir.getOpposite().toYRot() + angleOffset) % 360)
+                    .addModel();
+        }
+    }
+
     public void unfiredMoldBlock(Block unfiredMold, Block firedMold) {
         ModelFile model = models().withExistingParent(name(unfiredMold), resource(firedMold))
                 .texture("0", resource("clay_block")).texture("1", resource("clay_darkened"))
@@ -1010,6 +1024,8 @@ public class BlockStateProviderNF extends BlockStateProvider {
             ladderBlock(BlocksNF.PLANK_LADDERS.get(type).get());
             particleOnlyBlock(BlocksNF.PLANK_STANDING_SIGNS.get(type).get(), resource(BlocksNF.PLANK_BLOCKS.get(type).get()));
             particleOnlyBlock(BlocksNF.PLANK_WALL_SIGNS.get(type).get(), resource(BlocksNF.PLANK_BLOCKS.get(type).get()));
+            directionalBlockNF(BlocksNF.WOODEN_ITEM_FRAMES.get(type).get(), templateModel(BlocksNF.WOODEN_ITEM_FRAMES.get(type).get(), resource("item_frame"),
+                    Pair.of("0", resource(BlocksNF.WOODEN_ITEM_FRAMES.get(type).get()))), 0);
             barrelBlock(BlocksNF.BARRELS.get(type).get());
             chestBlock(BlocksNF.CHESTS.get(type).get(), resource(BlocksNF.PLANK_BLOCKS.get(type).get()));
             horizontalBlockNF(BlocksNF.RACKS.get(type).get(),

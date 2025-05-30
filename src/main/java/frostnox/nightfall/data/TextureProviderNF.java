@@ -270,6 +270,8 @@ public class TextureProviderNF extends TextureProvider {
             palette[0] = WOOD_PALETTES.get(type);
             if(palette.length == 2) palette[1] = List.of(metal.get(3));
             replaceImagePalette(block(BlocksNF.PLANK_LADDERS.get(type)), block("ladder" + style), palette);
+            replaceImagePalette(block(BlocksNF.WOODEN_ITEM_FRAMES.get(type)), block("item_frame_wooden"), WOOD_REDUCED_PALETTES.get(type));
+            replaceImagePalette(item(BlocksNF.WOODEN_ITEM_FRAMES.get(type)), item("item_frame_wooden"), WOOD_REDUCED_PALETTES.get(type));
             replaceImagePalette(block(BlocksNF.BARRELS.get(type), "_end"), block("barrel_end"), WOOD_REDUCED_PALETTES.get(type));
             replaceImagePalette(block(BlocksNF.BARRELS.get(type), "_open"), block("barrel_open"), BARREL_OPEN_PALETTES.get(type));
             replaceImagePalette(block(BlocksNF.BARRELS.get(type), "_side"), block("barrel_side"), WOOD_REDUCED_PALETTES.get(type));

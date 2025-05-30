@@ -138,6 +138,7 @@ public class CommonEventHandler {
             float progress = level.getBlockState(pos).getDestroyProgress(player, level, pos) * AttributesNF.getStrengthMultiplier(player);
             if(!isTool) progress *= 0.66F;
             progress += chunkData.getBreakProgress(pos);
+            block.attack(level, pos, player);
             if(progress >= 1F) {
                 BlockEntity blockEntity = player.level.getBlockEntity(pos);
                 if(!level.isClientSide) {

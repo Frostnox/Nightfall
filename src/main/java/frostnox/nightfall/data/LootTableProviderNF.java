@@ -224,17 +224,18 @@ public class LootTableProviderNF extends LootTableProvider {
                 dropSiding(BlocksNF.PLANK_SIDINGS.get(type).get(), ItemsNF.PLANKS.get(type).get(), 2);
                 dropOther(BlocksNF.PLANK_FENCES.get(type).get(), ItemsNF.PLANKS.get(type).get(), 3);
                 dropOther(BlocksNF.PLANK_FENCE_GATES.get(type).get(), ItemsNF.PLANKS.get(type).get(), 3);
-                add(BlocksNF.PLANK_DOORS.get(type).get(), createDoubleBlockDrops(BlocksNF.PLANK_DOORS.get(type).get(), ItemsNF.PLANKS.get(type).get(), 8));
+                add(BlocksNF.PLANK_DOORS.get(type).get(), createDoubleBlockDrops(BlocksNF.PLANK_DOORS.get(type).get(), ItemsNF.PLANKS.get(type).get(), 6));
                 dropOther(BlocksNF.PLANK_TRAPDOORS.get(type).get(), ItemsNF.PLANKS.get(type).get(), 3);
                 dropOther(BlocksNF.PLANK_HATCHES.get(type).get(), ItemsNF.PLANKS.get(type).get(), 3);
                 dropOther(BlocksNF.PLANK_LADDERS.get(type).get(), ItemsNF.PLANKS.get(type).get(), 3);
                 dropOther(BlocksNF.PLANK_STANDING_SIGNS.get(type).get(), ItemsNF.PLANKS.get(type).get(), 3);
                 dropOther(BlocksNF.PLANK_WALL_SIGNS.get(type).get(), ItemsNF.PLANKS.get(type).get(), 3);
+                dropOther(BlocksNF.WOODEN_ITEM_FRAMES.get(type).get(), ItemsNF.PLANKS.get(type).get(), 2);
                 dropOther(BlocksNF.BARRELS.get(type).get(), ItemsNF.PLANKS.get(type).get(), 16);
                 dropOther(BlocksNF.CHESTS.get(type).get(), ItemsNF.PLANKS.get(type).get(), 16);
                 dropOther(BlocksNF.RACKS.get(type).get(), ItemsNF.PLANKS.get(type).get(), 4);
                 dropOther(BlocksNF.SHELVES.get(type).get(), ItemsNF.PLANKS.get(type).get(), 8);
-                add(BlocksNF.CHAIRS.get(type).get(), createDoubleBlockDrops(BlocksNF.CHAIRS.get(type).get(), ItemsNF.PLANKS.get(type).get(), 8));
+                add(BlocksNF.CHAIRS.get(type).get(), createDoubleBlockDrops(BlocksNF.CHAIRS.get(type).get(), ItemsNF.PLANKS.get(type).get(), 4));
             }
             dropFruitLeaves(BlocksNF.FRUIT_LEAVES.get(Tree.JUNGLE).get(), ItemsNF.TREE_SEEDS.get(Tree.JUNGLE).get(), -68, 1, 1, ItemsNF.STICK.get(), -1, 1, ItemsNF.COCOA_POD.get());
             dropFruitLeaves(BlocksNF.FRUIT_LEAVES.get(Tree.OAK).get(), ItemsNF.TREE_SEEDS.get(Tree.OAK).get(), -68, 1, 1, ItemsNF.STICK.get(), -1, 1, ItemsNF.APPLE.get());

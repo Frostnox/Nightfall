@@ -108,6 +108,7 @@ public class DigBlockToServer {
                     float progress = block.getDestroyProgress(player, player.level, pos)
                             * AttributesNF.getStrengthMultiplier(player) * capA.getChargeDestroyProgressMultiplier() + chunkData.getBreakProgress(pos);
                     BlockEntity blockEntity = player.level.getBlockEntity(pos);
+                    block.attack(player.level, pos, player);
                     if(progress >= 1.0F) {
                         int exp = net.minecraftforge.common.ForgeHooks.onBlockBreakEvent(player.level, player.gameMode.getGameModeForPlayer(), player, pos.immutable());
                         if(exp == -1) {

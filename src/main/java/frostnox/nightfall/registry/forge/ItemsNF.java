@@ -404,6 +404,8 @@ public class ItemsNF {
     public static final Map<Tree, RegistryObject<SignItem>> PLANK_SIGNS = DataUtil.mapEnum(Tree.class, tree ->
             register(tree.getName() + "_sign", () -> new SignItem(new Item.Properties().stacksTo(1),
                     BlocksNF.PLANK_STANDING_SIGNS.get(tree).get(), BlocksNF.PLANK_WALL_SIGNS.get(tree).get())));
+    public static final Map<Tree, RegistryObject<BlockItemNF>> WOODEN_ITEM_FRAMES = DataUtil.mapEnum(Tree.class, tree ->
+            register(BlocksNF.WOODEN_ITEM_FRAMES.get(tree)));
     public static final Map<Stone, RegistryObject<BlockItemNF>> TILED_STONE = DataUtil.mapEnum(Stone.class, stone ->
             register(BlocksNF.TILED_STONE.get(stone)));
     public static final Map<Stone, RegistryObject<BlockItemNF>> POLISHED_STONE = DataUtil.mapEnum(Stone.class, stone ->

@@ -527,6 +527,7 @@ public class Nightfall {
             event.registerBlockEntityRenderer(BlockEntitiesNF.CAMPFIRE.get(), CampfireRendererNF::new);
             event.registerBlockEntityRenderer(BlockEntitiesNF.CHEST.get(), ChestRendererNF::new);
             event.registerBlockEntityRenderer(BlockEntitiesNF.SIGN.get(), SignRendererNF::new);
+            event.registerBlockEntityRenderer(BlockEntitiesNF.ITEM_FRAME.get(), ItemFrameRenderer::new);
             event.registerBlockEntityRenderer(BlockEntitiesNF.RACK.get(), RackRenderer::new);
             event.registerBlockEntityRenderer(BlockEntitiesNF.SHELF.get(), ShelfRenderer::new);
             event.registerBlockEntityRenderer(BlockEntitiesNF.ITEM_MOLD.get(), ItemMoldRenderer::new);

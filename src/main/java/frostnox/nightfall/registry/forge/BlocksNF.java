@@ -10,6 +10,7 @@ import frostnox.nightfall.block.block.anvil.TieredAnvilBlock;
 import frostnox.nightfall.block.block.barrel.BarrelBlockNF;
 import frostnox.nightfall.block.block.bowl.BowlBlock;
 import frostnox.nightfall.block.block.chair.ChairBlock;
+import frostnox.nightfall.block.block.itemframe.ItemFrameBlock;
 import frostnox.nightfall.block.block.nest.RabbitBurrowBlock;
 import frostnox.nightfall.block.block.campfire.CampfireBlockNF;
 import frostnox.nightfall.block.block.cauldron.CauldronBlockNF;
@@ -404,6 +405,19 @@ public class BlocksNF {
     public static final Map<Tree, RegistryObject<WallSignBlockNF>> PLANK_WALL_SIGNS = DataUtil.mapEnum(Tree.class, tree ->
             register(tree.getName() + "_wall_sign", () -> new WallSignBlockNF(BlockBehaviour.Properties.of(Material.WOOD, tree.getBaseColor())
                     .noCollission().strength(1.5F).sound(SoundType.WOOD), tree)));
+    public static final Map<Tree, RegistryObject<ItemFrameBlock>> WOODEN_ITEM_FRAMES = DataUtil.mapEnum(Tree.class, tree ->
+            register(tree.getName() + "_item_frame", () -> new ItemFrameBlock(BlockBehaviour.Properties.of(SOLID_FLAMMABLE_DECORATION).noCollission()
+                    .strength(tree.getStrength() * 0.5F, tree.getExplosionResistance() * 0.5F).sound(SoundType.WOOD)) {
+                @Override
+                public int getFireSpreadSpeed(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+                    return 5;
+                }
+
+                @Override
+                public int getFlammability(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+                    return 20;
+                }
+            }));
 
     public static final Map<Stone, RegistryObject<Block>> TILED_STONE = DataUtil.mapEnum(Stone.class, stone ->
             register("tiled_" + stone.getName(), () -> new BlockNF(BlockBehaviour.Properties.of(Material.STONE, stone.getBaseColor())

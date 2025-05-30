@@ -1,7 +1,6 @@
-package frostnox.nightfall.block.block.rack;
+package frostnox.nightfall.block.block.itemframe;
 
 import frostnox.nightfall.block.block.WaterloggedEntityBlock;
-import frostnox.nightfall.data.TagsNF;
 import frostnox.nightfall.registry.forge.BlockEntitiesNF;
 import frostnox.nightfall.util.MathUtil;
 import net.minecraft.core.BlockPos;
@@ -16,77 +15,88 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.Mirror;
-import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-public class RackBlock extends WaterloggedEntityBlock {
-    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
-    protected static final VoxelShape NORTH_SHAPE = Block.box(3, 2, 13, 13, 14, 16);
+public class ItemFrameBlock extends WaterloggedEntityBlock {
+    public static final DirectionProperty FACING = BlockStateProperties.FACING;
+    protected static final VoxelShape NORTH_SHAPE = Block.box(2, 2, 15, 14, 14, 16);
     protected static final VoxelShape EAST_SHAPE = MathUtil.rotate(NORTH_SHAPE, Rotation.CLOCKWISE_90);
     protected static final VoxelShape SOUTH_SHAPE = MathUtil.rotate(NORTH_SHAPE, Rotation.CLOCKWISE_180);
     protected static final VoxelShape WEST_SHAPE = MathUtil.rotate(NORTH_SHAPE, Rotation.COUNTERCLOCKWISE_90);
+    protected static final VoxelShape UP_SHAPE = Block.box(2, 0, 2, 14, 1, 14);
+    protected static final VoxelShape DOWN_SHAPE = Block.box(2, 15, 2, 14, 16, 14);
 
-    public RackBlock(Properties pProperties) {
+    public ItemFrameBlock(Properties pProperties) {
         super(pProperties);
-        registerDefaultState(defaultBlockState().setValue(FACING, Direction.SOUTH));
+        registerDefaultState(defaultBlockState().setValue(FACING, Direction.NORTH));
     }
 
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return BlockEntitiesNF.RACK.get().create(pos, state);
+        return BlockEntitiesNF.ITEM_FRAME.get().create(pos, state);
     }
 
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         Direction facing = state.getValue(FACING);
         BlockPos supportPos = pos.relative(facing.getOpposite());
-        return Block.isFaceFull(level.getBlockState(supportPos).getBlockSupportShape(level, supportPos), facing);
+        return level.getBlockState(supportPos).isFaceSturdy(level, supportPos, facing, SupportType.RIGID);
     }
 
     @Override
     public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos pos, BlockPos facingPos) {
         state = super.updateShape(state, facing, facingState, level, pos, facingPos);
-        if(!state.canSurvive(level, pos)) return Blocks.AIR.defaultBlockState();
+        if(facing == state.getValue(FACING).getOpposite() && !state.canSurvive(level, pos)) return Blocks.AIR.defaultBlockState();
         else return state;
     }
 
     @Override
+    public void attack(BlockState state, Level level, BlockPos pos, Player player) {
+        super.attack(state, level, pos, player);
+        if(level.getBlockEntity(pos) instanceof ItemFrameBlockEntity frame && !frame.isEmpty()) {
+            Containers.dropContents(level, pos, frame.items);
+            frame.items.set(0, ItemStack.EMPTY);
+            frame.resetRotation();
+            level.sendBlockUpdated(pos, state, state, 2);
+        }
+    }
+
+    @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        if(level.getBlockEntity(pos) instanceof RackBlockEntity rack) {
+        if(level.getBlockEntity(pos) instanceof ItemFrameBlockEntity frame) {
             if(level.isClientSide) return InteractionResult.SUCCESS;
             else {
-                ItemStack heldItem = pPlayer.getItemInHand(pHand);
-                double y = Math.abs(pHit.getLocation().y) % 1D;
-                int index;
-                if(y < 5D/16D) index = 0;
-                else if(y < 11D/16D) index = 1;
-                else index = 2;
-                ItemStack item = rack.items.get(index);
+                ItemStack item = frame.items.get(0);
                 if(!item.isEmpty()) {
-                    pPlayer.getInventory().placeItemBackInInventory(item.copy());
-                    rack.items.set(index, ItemStack.EMPTY);
-                    rack.setChanged();
+                    frame.incrementRotation();
                     level.sendBlockUpdated(pos, state, state, 2);
                     return InteractionResult.CONSUME;
                 }
-                else if(heldItem.is(TagsNF.RACK_ITEM)) {
-                    rack.items.set(index, heldItem.copy());
-                    if(!pPlayer.getAbilities().instabuild) pPlayer.setItemInHand(pHand, ItemStack.EMPTY);
-                    rack.setChanged();
-                    level.sendBlockUpdated(pos, state, state, 2);
-                    return InteractionResult.CONSUME;
+                else {
+                    ItemStack heldItem = pPlayer.getItemInHand(pHand);
+                    if(!heldItem.isEmpty()) {
+                        ItemStack copyItem;
+                        if(!pPlayer.getAbilities().instabuild) copyItem = heldItem.split(1);
+                        else {
+                            copyItem = heldItem.copy();
+                            copyItem.setCount(1);
+                        }
+                        frame.items.set(0, copyItem);
+                        frame.setChanged();
+                        level.sendBlockUpdated(pos, state, state, 2);
+                        return InteractionResult.CONSUME;
+                    }
                 }
             }
         }
@@ -99,14 +109,16 @@ public class RackBlock extends WaterloggedEntityBlock {
             case NORTH -> NORTH_SHAPE;
             case EAST -> EAST_SHAPE;
             case SOUTH -> SOUTH_SHAPE;
-            default -> WEST_SHAPE;
+            case WEST -> WEST_SHAPE;
+            case UP -> UP_SHAPE;
+            case DOWN -> DOWN_SHAPE;
         };
     }
 
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState pNewState, boolean pIsMoving) {
-        if(!state.is(pNewState.getBlock()) && level.getBlockEntity(pos) instanceof RackBlockEntity rack) {
-            Containers.dropContents(level, pos, rack.items);
+        if(!state.is(pNewState.getBlock()) && level.getBlockEntity(pos) instanceof ItemFrameBlockEntity frame) {
+            Containers.dropContents(level, pos, frame.items);
         }
         super.onRemove(state, level, pos, pNewState, pIsMoving);
     }
@@ -132,6 +144,14 @@ public class RackBlock extends WaterloggedEntityBlock {
     @Override
     public BlockState mirror(BlockState state, Mirror pMirror) {
         return state.rotate(pMirror.getRotation(state.getValue(FACING)));
+    }
+
+    @Override
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player) {
+        if(level.getBlockEntity(pos) instanceof ItemFrameBlockEntity frame) {
+            if(!frame.isEmpty()) return frame.items.get(0).copy();
+        }
+        return super.getCloneItemStack(state, target, level, pos, player);
     }
 
     @Override

@@ -5,6 +5,7 @@ import frostnox.nightfall.block.Metal;
 import frostnox.nightfall.block.block.anvil.TieredAnvilBlockEntity;
 import frostnox.nightfall.block.block.barrel.BarrelBlockEntityNF;
 import frostnox.nightfall.block.block.bowl.BowlBlockEntity;
+import frostnox.nightfall.block.block.itemframe.ItemFrameBlockEntity;
 import frostnox.nightfall.block.block.nest.GuardedNestBlockEntity;
 import frostnox.nightfall.block.block.nest.NestBlockEntity;
 import frostnox.nightfall.block.block.campfire.CampfireBlockEntityNF;
@@ -44,6 +45,7 @@ public class BlockEntitiesNF {
     public static final RegistryObject<BlockEntityType<BowlBlockEntity>> BOWL = BLOCK_ENTITIES.register("bowl", () -> BlockEntityType.Builder.of(BowlBlockEntity::new, BlocksNF.WOODEN_BOWL.get()).build(null));
     public static final RegistryObject<BlockEntityType<ChestBlockEntityNF>> CHEST = BLOCK_ENTITIES.register("chest", () -> BlockEntityType.Builder.of(ChestBlockEntityNF::new, BlocksNF.CHESTS.values().stream().map(RegistryObject::get).toArray(Block[]::new)).build(null));
     public static final RegistryObject<BlockEntityType<SignBlockEntityNF>> SIGN = BLOCK_ENTITIES.register("sign", () -> BlockEntityType.Builder.of(SignBlockEntityNF::new, Stream.of(BlocksNF.PLANK_STANDING_SIGNS.values(), BlocksNF.PLANK_WALL_SIGNS.values()).flatMap(Collection::stream).map(RegistryObject::get).toArray(Block[]::new)).build(null));
+    public static final RegistryObject<BlockEntityType<ItemFrameBlockEntity>> ITEM_FRAME = BLOCK_ENTITIES.register("item_frame", () -> BlockEntityType.Builder.of(ItemFrameBlockEntity::new, BlocksNF.WOODEN_ITEM_FRAMES.values().stream().map(RegistryObject::get).toArray(Block[]::new)).build(null));
     public static final RegistryObject<BlockEntityType<RackBlockEntity>> RACK = BLOCK_ENTITIES.register("rack", () -> BlockEntityType.Builder.of(RackBlockEntity::new, BlocksNF.RACKS.values().stream().map(RegistryObject::get).toArray(Block[]::new)).build(null));
     public static final RegistryObject<BlockEntityType<ShelfBlockEntity>> SHELF = BLOCK_ENTITIES.register("shelf", () -> BlockEntityType.Builder.of(ShelfBlockEntity::new, BlocksNF.SHELVES.values().stream().map(RegistryObject::get).toArray(Block[]::new)).build(null));
     public static final RegistryObject<BlockEntityType<StrangeSoilBlockEntity>> STRANGE_SOIL = BLOCK_ENTITIES.register("strange_soil", () -> BlockEntityType.Builder.of(StrangeSoilBlockEntity::new, BlocksNF.STRANGE_SOILS.values().stream().map(RegistryObject::get).toArray(Block[]::new)).build(null));

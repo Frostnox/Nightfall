@@ -538,6 +538,7 @@ public class ClientEventHandler {
                                         IGlobalChunkData chunkData = GlobalChunkData.get(level.getChunkAt(pos));
                                         float progress = chunkData.getBreakProgress(pos) + level.getBlockState(pos).getDestroyProgress(player, level, pos) *
                                                 AttributesNF.getStrengthMultiplier(player) * capA.getChargeDestroyProgressMultiplier();
+                                        block.attack(level, pos, player);
                                         if(progress >= 1F) {
                                             if(block.onDestroyedByPlayer(level, pos, player, false, block.getFluidState())) {
                                                 block.getBlock().destroy(level, pos, block);
