@@ -1,12 +1,16 @@
-package frostnox.nightfall.block.block.chair;
+package frostnox.nightfall.block.block;
 
 import frostnox.nightfall.block.BlockStatePropertiesNF;
-import frostnox.nightfall.block.block.WaterloggedBlock;
+import frostnox.nightfall.block.ICustomPathfindable;
+import frostnox.nightfall.entity.ai.pathfinding.NodeManager;
+import frostnox.nightfall.entity.ai.pathfinding.NodeType;
 import frostnox.nightfall.entity.entity.SeatEntity;
 import frostnox.nightfall.util.LevelUtil;
 import frostnox.nightfall.util.MathUtil;
+import frostnox.nightfall.util.math.OctalDirection;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -23,6 +27,7 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.*;
+import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -36,7 +41,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class ChairBlock extends WaterloggedBlock {
+public class ChairBlock extends WaterloggedBlock implements ICustomPathfindable {
     public enum Type implements StringRepresentable {
         SINGLE, LEFT, RIGHT, MIDDLE;
 
@@ -62,8 +67,11 @@ public class ChairBlock extends WaterloggedBlock {
     public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
 
     protected static final Map<Type, Map<Direction, VoxelShape>> BOTTOM_SHAPES, TOP_SHAPES;
+    protected static final Map<Type, Map<Direction, List<AABB>>> BOTTOM_FACES_BOTTOM, BOTTOM_FACES_TOP, TOP_FACES;
     static {
         BOTTOM_SHAPES = new EnumMap<>(Type.class);
+        BOTTOM_FACES_BOTTOM = new EnumMap<>(Type.class);
+        BOTTOM_FACES_TOP = new EnumMap<>(Type.class);
         for(Type type : Type.values()) {
             VoxelShape shape = switch(type) {
                 case SINGLE -> Shapes.or(Block.box(2, 0, 2, 4, 8, 4),
@@ -89,8 +97,15 @@ public class ChairBlock extends WaterloggedBlock {
             map.put(Direction.WEST, MathUtil.rotate(shape, Rotation.COUNTERCLOCKWISE_90));
             map.put(Direction.EAST, MathUtil.rotate(shape, Rotation.CLOCKWISE_90));
             BOTTOM_SHAPES.put(type, map);
+            EnumMap<Direction, List<AABB>> bottomShapesMap = new EnumMap<>(Direction.class);
+            for(Direction dir : Direction.Plane.HORIZONTAL) bottomShapesMap.put(dir, map.get(dir).getFaceShape(Direction.UP).toAabbs());
+            BOTTOM_FACES_BOTTOM.put(type, bottomShapesMap);
+            EnumMap<Direction, List<AABB>> topShapesMap = new EnumMap<>(Direction.class);
+            for(Direction dir : Direction.Plane.HORIZONTAL) topShapesMap.put(dir, map.get(dir).getFaceShape(Direction.DOWN).toAabbs());
+            BOTTOM_FACES_TOP.put(type, topShapesMap);
         }
         TOP_SHAPES = new EnumMap<>(Type.class);
+        TOP_FACES = new EnumMap<>(Type.class);
         for(Type type : Type.values()) {
             VoxelShape shape = switch(type) {
                 case SINGLE -> Block.box(2, 0, 12, 14, 6, 14);
@@ -104,6 +119,9 @@ public class ChairBlock extends WaterloggedBlock {
             map.put(Direction.WEST, MathUtil.rotate(shape, Rotation.COUNTERCLOCKWISE_90));
             map.put(Direction.EAST, MathUtil.rotate(shape, Rotation.CLOCKWISE_90));
             TOP_SHAPES.put(type, map);
+            EnumMap<Direction, List<AABB>> shapesMap = new EnumMap<>(Direction.class);
+            for(Direction dir : Direction.Plane.HORIZONTAL) shapesMap.put(dir, map.get(dir).getFaceShape(Direction.UP).toAabbs());
+            TOP_FACES.put(type, shapesMap);
         }
     }
 
@@ -268,6 +286,57 @@ public class ChairBlock extends WaterloggedBlock {
     @Override
     public BlockState mirror(BlockState state, Mirror pMirror) {
         return state.rotate(pMirror.getRotation(state.getValue(FACING)));
+    }
+
+    @Override
+    public boolean isPathfindable(BlockState state, BlockGetter level, BlockPos pos, PathComputationType pType) {
+        return switch(pType) {
+            case LAND, AIR -> true;
+            case WATER -> level.getFluidState(pos).is(FluidTags.WATER);
+        };
+    }
+
+    @Override
+    public NodeType getRawNodeType(NodeManager nodeManager, BlockState state, BlockGetter level, BlockPos pos) {
+        float edgeDist = 6F/16F;
+        boolean top = state.getValue(HALF) == DoubleBlockHalf.UPPER;
+        float y = top ? (pos.getY() + 0.375F) : (pos.getY() + 0.625F);
+        OctalDirection travelDir = OctalDirection.fromDirection(state.getValue(FACING));
+        if(top) travelDir = travelDir.getOpposite();
+        float x = pos.getX() + 0.5F + travelDir.xStep * edgeDist, z = pos.getZ() + 0.5F + travelDir.zStep * edgeDist;
+        //Edge
+        if(!nodeManager.collidesWith(nodeManager.getEntityBox(x, y, z))) {
+            nodeManager.getNode(pos).setPartialPath(x, y, z);
+            return NodeType.WALKABLE;
+        }
+        //Center of bottom half
+        else if(!top) {
+            x = pos.getX() + 0.5F + travelDir.xStep / 16F;
+            z = pos.getZ() + 0.5F + travelDir.zStep / 16F;
+            if(!nodeManager.collidesWith(nodeManager.getEntityBox(x, y, z))) {
+                nodeManager.getNode(pos).setPartialPath(x, y, z);
+                return NodeType.WALKABLE;
+            }
+        }
+        nodeManager.getNode(pos).partial = true;
+        return NodeType.CLOSED;
+    }
+
+    @Override
+    public NodeType getFloorNodeType(NodeManager nodeManager, BlockState state, BlockGetter level, BlockPos pos) {
+        return state.getValue(HALF) == DoubleBlockHalf.UPPER ? NodeType.OPEN : NodeType.CLOSED;
+    }
+
+    @Override
+    public List<AABB> getTopFaceShape(BlockState state) {
+        return state.getValue(HALF) == DoubleBlockHalf.UPPER ? TOP_FACES.get(state.getValue(TYPE)).get(state.getValue(FACING)) :
+                BOTTOM_FACES_TOP.get(state.getValue(TYPE)).get(state.getValue(FACING));
+    }
+
+    @Override
+    public List<AABB> getBottomFaceShape(BlockState state) {
+        return state.getValue(HALF) == DoubleBlockHalf.UPPER ? TOP_FACES.get(state.getValue(TYPE)).get(state.getValue(FACING)) :
+                BOTTOM_FACES_BOTTOM.get(state.getValue(TYPE)).get(state.getValue(FACING));
     }
 
     @Override

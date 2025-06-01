@@ -283,9 +283,12 @@ public class TextureProviderNF extends TextureProvider {
             String signStyle = type.getHardness() >= Tree.MAPLE.getHardness() ? "_single" : "_multiple";
             replaceImagePalette(entity("sign/" + type.getName() + "_plank"), entity("sign/plank" + signStyle), subset(WOOD_FULL_PALETTES.get(type), 5, 2));
             replaceImagePalette(block(BlocksNF.SHELVES.get(type)), block("shelf_simple"), WOOD_PALETTES.get(type));
-            replaceImagePalette(block(BlocksNF.CHAIRS.get(type)), block("chair" + style), WOOD_REDUCED_PALETTES.get(type));
-            replaceImagePalette(item(ItemsNF.CHAIRS.get(type)), item("chair" + style),
-                    combine(subset(WOOD_FULL_PALETTES.get(type), 2, 1), subset(WOOD_FULL_PALETTES.get(type), 4, 3)));
+            palette[0] = style.contains("patterned") ? WOOD_PALETTES.get(type) : WOOD_REDUCED_PALETTES.get(type);
+            if(palette.length == 2) palette[1] = List.of(metal.get(2));
+            replaceImagePalette(block(BlocksNF.CHAIRS.get(type)), block("chair" + style), palette);
+            palette[0] = combine(subset(WOOD_FULL_PALETTES.get(type), 2, 1), subset(WOOD_FULL_PALETTES.get(type), 3, 3));
+            if(palette.length == 2) palette[1] = List.of(metal.get(2));
+            replaceImagePalette(item(ItemsNF.CHAIRS.get(type)), item("chair" + style), palette);
             replaceImagePalette(item(ItemsNF.RACKS.get(type)), item("rack"), combine(subset(WOOD_FULL_PALETTES.get(type), 2, 1), subset(WOOD_FULL_PALETTES.get(type), 4, 3)));
             replaceImagePalette(item(ItemsNF.PLANKS.get(type)), item("plank"), WOOD_REDUCED_PALETTES.get(type));
             replaceImagePalette(item(ItemsNF.PLANK_SIGNS.get(type)), item("plank_sign" + signStyle), combine(subset(WOOD_FULL_PALETTES.get(type), 2, 1), subset(WOOD_FULL_PALETTES.get(type), 4, 3)));

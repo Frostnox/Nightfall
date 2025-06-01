@@ -1,7 +1,7 @@
 package frostnox.nightfall.block;
 
 import frostnox.nightfall.block.block.SidingBlock;
-import frostnox.nightfall.block.block.chair.ChairBlock;
+import frostnox.nightfall.block.block.ChairBlock;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;

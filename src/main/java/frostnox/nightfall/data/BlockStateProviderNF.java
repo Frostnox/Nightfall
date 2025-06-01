@@ -8,7 +8,7 @@ import frostnox.nightfall.block.block.barrel.BarrelBlockNF;
 import frostnox.nightfall.block.block.campfire.CampfireBlockNF;
 import frostnox.nightfall.block.block.cauldron.CauldronBlockNF;
 import frostnox.nightfall.block.block.cauldron.Task;
-import frostnox.nightfall.block.block.chair.ChairBlock;
+import frostnox.nightfall.block.block.ChairBlock;
 import frostnox.nightfall.block.block.fireable.FireablePartialBlock;
 import frostnox.nightfall.block.block.nest.OverlayBurrowBlock;
 import frostnox.nightfall.block.block.pile.PileBlock;

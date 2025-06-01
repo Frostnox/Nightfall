@@ -9,7 +9,7 @@ import frostnox.nightfall.block.block.anvil.MetalAnvilBlock;
 import frostnox.nightfall.block.block.anvil.TieredAnvilBlock;
 import frostnox.nightfall.block.block.barrel.BarrelBlockNF;
 import frostnox.nightfall.block.block.bowl.BowlBlock;
-import frostnox.nightfall.block.block.chair.ChairBlock;
+import frostnox.nightfall.block.block.ChairBlock;
 import frostnox.nightfall.block.block.itemframe.ItemFrameBlock;
 import frostnox.nightfall.block.block.nest.RabbitBurrowBlock;
 import frostnox.nightfall.block.block.campfire.CampfireBlockNF;

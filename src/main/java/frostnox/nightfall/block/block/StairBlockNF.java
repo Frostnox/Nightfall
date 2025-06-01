@@ -109,7 +109,7 @@ public class StairBlockNF extends StairBlock implements IWaterloggedBlock, ICust
     public NodeType getRawNodeType(NodeManager nodeManager, BlockState state, BlockGetter level, BlockPos pos) {
         Half half = state.getValue(HALF);
         boolean top = half == Half.TOP;
-        float y = top ? pos.getY() : pos.getY() + 0.5F;
+        float y = top ? pos.getY() : (pos.getY() + 0.5F);
         for(OctalDirection gapDirection : getGapDirections(state)) {
             float x = pos.getX() + 0.5F + gapDirection.xStepHalf, z = pos.getZ() + 0.5F + gapDirection.zStepHalf;
             if(top) {

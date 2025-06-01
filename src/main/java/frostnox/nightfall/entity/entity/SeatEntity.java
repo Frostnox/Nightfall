@@ -71,10 +71,10 @@ public class SeatEntity extends Entity {
         BlockPos.MutableBlockPos pos = blockPosition().mutable();
         Direction facing = Direction.fromYRot(getYRot());
         for(Direction dir : new Direction[]{facing, facing.getClockWise(), facing.getCounterClockWise(), facing.getOpposite()}) {
-            Vec3 loc = DismountHelper.findSafeDismountLocation(pPassenger.getType(), level, pos.setWithOffset(pos, dir), false);
+            Vec3 loc = DismountHelper.findSafeDismountLocation(pPassenger.getType(), level, pos.setWithOffset(blockPosition(), dir), false);
             if(loc != null) return loc;
         }
-        return new Vec3(getX(), getBlockY(), getZ());
+        return new Vec3(getX(), getBlockY() + 0.2, getZ());
     }
 
     @Override
