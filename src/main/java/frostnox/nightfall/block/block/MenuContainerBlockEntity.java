@@ -2,12 +2,11 @@ package frostnox.nightfall.block.block;
 
 import frostnox.nightfall.Nightfall;
 import frostnox.nightfall.block.IDropsItems;
-import frostnox.nightfall.item.ItemStackHandlerNF;
+import frostnox.nightfall.world.inventory.ItemStackHandlerNF;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
@@ -26,7 +25,6 @@ import net.minecraft.world.phys.Vec3;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public abstract class MenuContainerBlockEntity extends RandomizableContainerBlockEntity implements Container, IDropsItems {
     public boolean orderedLoot;

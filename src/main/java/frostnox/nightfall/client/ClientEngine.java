@@ -811,6 +811,19 @@ public class ClientEngine {
         dirtyScreen = true;
     }
 
+    public void updateRecipeSearchItems() {
+        if(mc.screen != null && mc.screen == inventoryScreen) {
+            inventoryScreen.recipeSearch.updateItems();
+        }
+    }
+
+    public boolean isRecipeSearchOpen() {
+        if(mc.screen != null && mc.screen == inventoryScreen) {
+            return inventoryScreen.selectedComponent == inventoryScreen.recipeSearch;
+        }
+        else return false;
+    }
+
     public void openAttributeSelectionScreen() {
         if(!(mc.screen instanceof AttributeSelectionScreen)) mc.setScreen(new AttributeSelectionScreen());
     }

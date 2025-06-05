@@ -48,6 +48,7 @@ public class NetworkHandler {
         CHASER_REMOVE_TARGET_CLIENT,
         //Server
         PUZZLE_EXPERIMENT_SERVER,
+        CLOSE_RECIPE_SEARCH_SERVER,
         //Common
         ACTIVATE_MAINHAND,
         ACTIVATE_OFFHAND,

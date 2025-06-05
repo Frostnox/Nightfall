@@ -5,7 +5,10 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import frostnox.nightfall.Nightfall;
 import frostnox.nightfall.client.gui.screen.ScreenGuiComponent;
 import frostnox.nightfall.data.recipe.IEncyclopediaRecipe;
+import frostnox.nightfall.network.NetworkHandler;
+import frostnox.nightfall.network.message.GenericToServer;
 import frostnox.nightfall.util.RenderUtil;
+import frostnox.nightfall.world.inventory.PlayerInventoryContainer;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -17,6 +20,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 
 import java.util.*;
@@ -29,7 +33,7 @@ public class RecipeSearchComponent extends ScreenGuiComponent {
     private int startIndex = 0;
     private float scrollOffs;
     private boolean grabbedScrollBar = false;
-    private int selectedIndex = -1;
+    private int selectedIndex = Integer.MIN_VALUE;
     private final List<Recipe<?>> searchableRecipes;
     private final List<Item> allItems, searchedItems;
     private final List<Item> visibleItems = new ObjectArrayList<>(SIZE);
@@ -46,11 +50,25 @@ public class RecipeSearchComponent extends ScreenGuiComponent {
         recipeViewer = new RecipeViewerComponent(searchableRecipes);
     }
 
-    protected void updateItems() {
+    public void updateItems() {
+        scrollOffs = 0;
+        startIndex = 0;
         allItems.clear();
+        ItemStack searchItem = ((PlayerInventoryContainer) screen.getMenu()).getSearchItem();
+        boolean checkIngredient = !searchItem.isEmpty();
         for(Iterator<Recipe<?>> recipes = searchableRecipes.stream().iterator(); recipes.hasNext();) {
             Recipe<?> recipe = recipes.next();
             if(allItems.contains(recipe.getResultItem().getItem())) continue;
+            if(checkIngredient) {
+                boolean skip = true;
+                for(Ingredient ingredient : recipe.getIngredients()) {
+                    if(ingredient.test(searchItem)) {
+                        skip = false;
+                        break;
+                    }
+                }
+                if(skip) continue;
+            }
             if(!(recipe instanceof IEncyclopediaRecipe encyclopediaRecipe) || encyclopediaRecipe.isUnlocked(mc.player)) {
                 allItems.add(recipe.getResultItem().getItem());
             }
@@ -63,16 +81,21 @@ public class RecipeSearchComponent extends ScreenGuiComponent {
         visibleItems.clear();
         String search = searchBox.getValue().toLowerCase(Locale.ROOT);
         int i = 0;
-        for(int j = startIndex; j < allItems.size() && i < SIZE; j++) {
+        int scrollSkips = 0;
+        for(int j = 0; j < allItems.size() && i < SIZE; j++) {
             Item item = allItems.get(j);
             if(search.isEmpty() || item.getDescription().getString().toLowerCase(Locale.ROOT).contains(search.toLowerCase(Locale.ROOT))) {
-                visibleItems.add(item);
-                i++;
+                if(scrollSkips < startIndex) scrollSkips++;
+                else {
+                    visibleItems.add(item);
+                    i++;
+                }
             }
         }
     }
 
     protected void updateSearchedItems() {
+        selectedIndex = Integer.MIN_VALUE;
         searchedItems.clear();
         String search = searchBox.getValue().toLowerCase(Locale.ROOT);
         for(Item item : allItems) {
@@ -105,8 +128,9 @@ public class RecipeSearchComponent extends ScreenGuiComponent {
     public void onClose() {
         searchBox.setVisible(false);
         recipeViewer.setVisible(false);
-        selectedIndex = -1;
+        selectedIndex = Integer.MIN_VALUE;
         grabbedScrollBar = false;
+        NetworkHandler.toServer(new GenericToServer(NetworkHandler.Type.CLOSE_RECIPE_SEARCH_SERVER));
     }
 
     @Override
@@ -115,7 +139,7 @@ public class RecipeSearchComponent extends ScreenGuiComponent {
     }
 
     public boolean isRecipeSelected() {
-        return selectedIndex != -1;
+        return selectedIndex != Integer.MIN_VALUE;
     }
 
     @Override
@@ -125,6 +149,7 @@ public class RecipeSearchComponent extends ScreenGuiComponent {
         RenderSystem.setShaderTexture(0, PlayerInventoryScreen.TEXTURE);
         searchBox.x = screen.getLeftPos() - 112 - 2 + 6;
         searchBox.y = screen.getTopPos() + 5;
+        blit(poseStack, screen.getLeftPos() - 112 - 1 + 8, screen.getTopPos() - 17, 288, PlayerInventoryScreen.IMAGE_HEIGHT + 54, 18, 18, 512, 256);
         blit(poseStack, screen.getLeftPos() - 112 - 1, screen.getTopPos(), 288, 0, 112, PlayerInventoryScreen.IMAGE_HEIGHT, 512, 256);
         if(!searchBox.isFocused() && searchBox.getValue().isEmpty()) mc.font.draw(poseStack, new TranslatableComponent("container." + Nightfall.MODID + ".search").withStyle(ChatFormatting.ITALIC).withStyle(ChatFormatting.DARK_GRAY), screen.getLeftPos() - 112 - 2 + 8, screen.getTopPos() + 5, -1);
         else searchBox.render(poseStack, mouseX, mouseY, partial);
@@ -265,6 +290,7 @@ public class RecipeSearchComponent extends ScreenGuiComponent {
             scrollOffs = (float) (scrollOffs - scrollAmount / offScreenRows);
             scrollOffs = Mth.clamp(scrollOffs, 0, 1);
             startIndex = (int) ((scrollOffs * offScreenRows) + 0.5) * COLUMNS;
+            if(selectedIndex != Integer.MIN_VALUE) selectedIndex += scrollAmount * COLUMNS;
             updateVisibleItems();
         }
         return true;

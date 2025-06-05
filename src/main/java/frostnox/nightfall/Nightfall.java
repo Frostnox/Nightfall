@@ -553,6 +553,7 @@ public class Nightfall {
                 event.addSprite(PlayerInventoryContainer.EMPTY_ACCESSORY_SLOT_FACE);
                 event.addSprite(PlayerInventoryContainer.EMPTY_ACCESSORY_SLOT_NECK);
                 event.addSprite(PlayerInventoryContainer.EMPTY_ACCESSORY_SLOT_WAIST);
+                event.addSprite(PlayerInventoryContainer.EMPTY_RECIPE_SEARCH_SLOT);
                 event.addSprite(PuzzleContainer.UNKNOWN_ITEM);
                 event.addSprite(PuzzleContainer.FAILURE);
                 event.addSprite(PuzzleContainer.SUCCESS);

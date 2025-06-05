@@ -3,7 +3,7 @@ package frostnox.nightfall.block.block.pot;
 import frostnox.nightfall.Nightfall;
 import frostnox.nightfall.block.IHoldable;
 import frostnox.nightfall.block.block.MenuContainerBlockEntity;
-import frostnox.nightfall.item.ItemStackHandlerNF;
+import frostnox.nightfall.world.inventory.ItemStackHandlerNF;
 import frostnox.nightfall.registry.forge.BlockEntitiesNF;
 import frostnox.nightfall.registry.forge.SoundsNF;
 import frostnox.nightfall.world.inventory.StorageContainer;

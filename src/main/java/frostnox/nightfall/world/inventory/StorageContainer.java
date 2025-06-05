@@ -5,7 +5,6 @@ import frostnox.nightfall.block.block.barrel.BarrelBlockEntityNF;
 import frostnox.nightfall.block.block.cauldron.CauldronBlockEntity;
 import frostnox.nightfall.block.block.pot.PotBlockEntity;
 import frostnox.nightfall.data.TagsNF;
-import frostnox.nightfall.item.ItemStackHandlerNF;
 import frostnox.nightfall.registry.forge.ContainersNF;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;

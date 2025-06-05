@@ -1,4 +1,4 @@
-package frostnox.nightfall.item;
+package frostnox.nightfall.world.inventory;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.server.level.ServerPlayer;

@@ -2,7 +2,7 @@ package frostnox.nightfall.encyclopedia;
 
 import frostnox.nightfall.capability.IPlayerData;
 import frostnox.nightfall.encyclopedia.knowledge.Knowledge;
-import frostnox.nightfall.item.ItemStackHandlerNF;
+import frostnox.nightfall.world.inventory.ItemStackHandlerNF;
 import frostnox.nightfall.world.condition.WorldCondition;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;

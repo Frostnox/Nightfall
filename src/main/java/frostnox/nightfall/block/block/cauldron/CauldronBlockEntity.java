@@ -4,7 +4,7 @@ import frostnox.nightfall.Nightfall;
 import frostnox.nightfall.block.IHoldable;
 import frostnox.nightfall.block.block.MenuContainerBlockEntity;
 import frostnox.nightfall.data.recipe.CauldronRecipe;
-import frostnox.nightfall.item.ItemStackHandlerNF;
+import frostnox.nightfall.world.inventory.ItemStackHandlerNF;
 import frostnox.nightfall.registry.forge.BlockEntitiesNF;
 import frostnox.nightfall.registry.forge.ItemsNF;
 import frostnox.nightfall.registry.forge.SoundsNF;

@@ -7,7 +7,7 @@ import frostnox.nightfall.block.block.MenuContainerBlockEntity;
 import frostnox.nightfall.block.block.mold.ItemMoldBlockEntity;
 import frostnox.nightfall.block.fluid.MetalFluid;
 import frostnox.nightfall.data.recipe.CrucibleRecipe;
-import frostnox.nightfall.item.ItemStackHandlerNF;
+import frostnox.nightfall.world.inventory.ItemStackHandlerNF;
 import frostnox.nightfall.registry.forge.BlockEntitiesNF;
 import frostnox.nightfall.registry.forge.SoundsNF;
 import frostnox.nightfall.util.DataUtil;

@@ -1,7 +1,7 @@
 package frostnox.nightfall.block.block.anvil;
 
 import frostnox.nightfall.data.recipe.TieredAnvilRecipe;
-import frostnox.nightfall.item.ItemStackHandlerNF;
+import frostnox.nightfall.world.inventory.ItemStackHandlerNF;
 import frostnox.nightfall.registry.forge.ContainersNF;
 import frostnox.nightfall.world.inventory.PartialInventoryContainer;
 import frostnox.nightfall.world.inventory.SingleSlot;

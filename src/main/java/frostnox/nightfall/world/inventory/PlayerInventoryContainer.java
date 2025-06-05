@@ -3,8 +3,8 @@ package frostnox.nightfall.world.inventory;
 import com.mojang.datafixers.util.Pair;
 import frostnox.nightfall.Nightfall;
 import frostnox.nightfall.capability.PlayerData;
-import frostnox.nightfall.data.recipe.CraftingRecipeNF;
 import frostnox.nightfall.data.TagsNF;
+import frostnox.nightfall.data.recipe.CraftingRecipeNF;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
 import net.minecraft.resources.ResourceLocation;
@@ -29,10 +29,12 @@ public class PlayerInventoryContainer extends InventoryMenu {
     public static final ResourceLocation EMPTY_ACCESSORY_SLOT_FACE = ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "item/empty_accessory_slot_face");
     public static final ResourceLocation EMPTY_ACCESSORY_SLOT_NECK = ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "item/empty_accessory_slot_neck");
     public static final ResourceLocation EMPTY_ACCESSORY_SLOT_WAIST = ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "item/empty_accessory_slot_waist");
+    public static final ResourceLocation EMPTY_RECIPE_SEARCH_SLOT = ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "item/empty_recipe_search_slot");
     private static final ResourceLocation[] TEXTURE_EMPTY_SLOTS = new ResourceLocation[]{EMPTY_ARMOR_SLOT_BOOTS, EMPTY_ARMOR_SLOT_LEGGINGS, EMPTY_ARMOR_SLOT_CHESTPLATE, EMPTY_ARMOR_SLOT_HELMET, EMPTY_ACCESSORY_SLOT_FACE, EMPTY_ACCESSORY_SLOT_NECK, EMPTY_ACCESSORY_SLOT_WAIST};
     private static final EquipmentSlot[] SLOT_IDS = new EquipmentSlot[]{EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
     private final CraftingContainer craftSlots = new CraftingContainer(this, 3, 3);
     private final ResultContainer resultSlots = new ResultContainer();
+    public final SingleContainer searchSlots = new SingleContainer();
     private final Player owner;
 
     public PlayerInventoryContainer(Inventory playerInv, boolean serverSide) {
@@ -41,6 +43,7 @@ public class PlayerInventoryContainer extends InventoryMenu {
         lastSlots.clear();
         remoteSlots.clear();
         owner = playerInv.player;
+        //Result slot
         addSlot(new ResultSlot(playerInv.player, craftSlots, resultSlots, 0, 151, 44) {
             public void onTake(Player pPlayer, ItemStack pStack) {
                 checkTakeAchievements(pStack);
@@ -155,6 +158,18 @@ public class PlayerInventoryContainer extends InventoryMenu {
         addSlot(new Slot(craftSlots, 6, craftX + 0 * 18, craftY + 2 * 18));
         addSlot(new Slot(craftSlots, 7, craftX + 1 * 18, craftY + 2 * 18));
         addSlot(new Slot(craftSlots, 8, craftX + 2 * 18, craftY + 2 * 18));
+
+        //Recipe ingredient search slot
+        addSlot(new SearchSlot(searchSlots, !serverSide, 0, -112 - 1 + 8 + 1, -17 + 1) {
+            @Override
+            public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
+                return Pair.of(InventoryMenu.BLOCK_ATLAS, EMPTY_RECIPE_SEARCH_SLOT);
+            }
+        });
+    }
+
+    public ItemStack getSearchItem() {
+        return searchSlots.getItem(0);
     }
 
     public void fillCraftSlotsStackedContents(StackedContents pItemHelper) {
@@ -205,7 +220,12 @@ public class PlayerInventoryContainer extends InventoryMenu {
         resultSlots.clearContent();
         if(!pPlayer.level.isClientSide) {
             clearContainer(pPlayer, craftSlots);
+            clearContainer(pPlayer, searchSlots);
         }
+    }
+
+    public void clearSearchSlot() {
+        clearContainer(owner, searchSlots);
     }
 
     /**

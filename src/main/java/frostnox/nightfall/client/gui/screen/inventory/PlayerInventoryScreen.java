@@ -25,10 +25,10 @@ import java.util.List;
 public class PlayerInventoryScreen extends EffectRenderingInventoryScreen<InventoryMenu> {
     public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "textures/gui/screen/player_inventory.png");
     public static final int IMAGE_HEIGHT = 166;
-    private final RecipeSearchComponent recipeSearch;
+    public final RecipeSearchComponent recipeSearch;
     private boolean recipeSearchInit = false;
-    private final PlayerStatsComponent stats;
-    private ScreenGuiComponent selectedComponent;
+    public final PlayerStatsComponent stats;
+    public ScreenGuiComponent selectedComponent;
     private int selectedIndex = -1;
     private float xOld, yOld;
 

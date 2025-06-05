@@ -2,7 +2,7 @@ package frostnox.nightfall.encyclopedia;
 
 import com.mojang.datafixers.util.Pair;
 import frostnox.nightfall.Nightfall;
-import frostnox.nightfall.item.ItemStackHandlerNF;
+import frostnox.nightfall.world.inventory.ItemStackHandlerNF;
 import frostnox.nightfall.registry.EntriesNF;
 import frostnox.nightfall.registry.forge.ContainersNF;
 import frostnox.nightfall.world.inventory.PartialInventoryContainer;

@@ -8,6 +8,7 @@ import frostnox.nightfall.encyclopedia.PuzzleContainer;
 import frostnox.nightfall.network.NetworkHandler;
 
 import frostnox.nightfall.network.message.capability.ActionTrackerToClient;
+import frostnox.nightfall.world.inventory.PlayerInventoryContainer;
 import it.unimi.dsi.fastutil.ints.IntList;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
@@ -82,6 +83,9 @@ public class GenericToServer {
                     }
                 }
                 Nightfall.LOGGER.error("Player " + player.getName().getString() + " tried to solve puzzle but does not have access to entry");
+            }
+            case CLOSE_RECIPE_SEARCH_SERVER -> {
+                if(player.containerMenu instanceof PlayerInventoryContainer container) container.clearSearchSlot();
             }
             case ACTIVATE_MAINHAND -> {
                 if(capA.isInactive() || capA.getAction().isInterruptible() || (capA.getState() == capA.getAction().getTotalStates() - 1 && capA.getFrame() == capA.getDuration())) {
