@@ -647,6 +647,7 @@ public class LootTableProviderNF extends LootTableProvider {
                     .withPool(pool(entry(ItemsNF.COCKATRICE_FEATHER.get(), 6, 8)))
                     .withPool(pool(entry(ItemsNF.RAW_GAME.get(), 1, 2))).withPool(pool(entry(ItemsNF.RAW_POULTRY.get(), 2, 2))));
             add(EntitiesNF.SPIDER.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.SILK.get(), 1, 2))));
+            add(EntitiesNF.JELLYFISH.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.SILK.get(), 1, 2))));
         }
     }
 

@@ -7,7 +7,6 @@ import frostnox.nightfall.client.model.entity.*;
 import frostnox.nightfall.client.render.entity.BoatRendererNF;
 import frostnox.nightfall.item.ArmorType;
 import frostnox.nightfall.item.Style;
-import frostnox.nightfall.block.Metal;
 import frostnox.nightfall.entity.EntityPart;
 import frostnox.nightfall.item.ITieredArmorMaterial;
 import frostnox.nightfall.item.TieredArmorMaterial;
@@ -42,6 +41,7 @@ public class ModelRegistryNF {
     public static ModelLayerLocation CREEPER;
     public static ModelLayerLocation COCKATRICE;
     public static ModelLayerLocation SPIDER;
+    public static ModelLayerLocation JELLYFISH_INNER, JELLYFISH_OUTER;
     //Armor
     public static ModelLayerLocation INNER_ARMOR, OUTER_ARMOR; //Vanilla
     public static ModelLayerLocation FLAT_ARMOR, TAPERED_ARMOR, SLIM_ARMOR;
@@ -78,6 +78,8 @@ public class ModelRegistryNF {
         CREEPER = register("creeper", CreeperModel.createBodyLayer());
         COCKATRICE = register("cockatrice", CockatriceModel.createBodyLayer());
         SPIDER = register("spider", SpiderModel.createBodyLayer());
+        JELLYFISH_INNER = register("jellyfish_inner", JellyfishInnerModel.createInnerLayer());
+        JELLYFISH_OUTER = register("jellyfish_outer", JellyfishOuterModel.createOuterLayer());
         //Armor
         INNER_ARMOR = register("armor", innerArmor, "inner_armor"); //Vanilla
         OUTER_ARMOR = register("armor", outerArmor, "outer_armor"); //Vanilla

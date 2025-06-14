@@ -2,6 +2,7 @@ package frostnox.nightfall.registry.forge;
 
 import frostnox.nightfall.Nightfall;
 import frostnox.nightfall.entity.Sex;
+import frostnox.nightfall.entity.entity.ambient.JellyfishEntity;
 import frostnox.nightfall.entity.entity.animal.DeerEntity;
 import frostnox.nightfall.entity.entity.animal.RabbitEntity;
 import frostnox.nightfall.entity.entity.monster.CockatriceEntity;
@@ -94,6 +95,22 @@ public class DataSerializersNF {
             return pValue;
         }
     };
+    public static final EntityDataSerializer<JellyfishEntity.Type> JELLYFISH_TYPE = new EntityDataSerializer<>() {
+        @Override
+        public void write(FriendlyByteBuf pBuffer, JellyfishEntity.Type pValue) {
+            pBuffer.writeEnum(pValue);
+        }
+
+        @Override
+        public JellyfishEntity.Type read(FriendlyByteBuf pBuffer) {
+            return pBuffer.readEnum(JellyfishEntity.Type.class);
+        }
+
+        @Override
+        public JellyfishEntity.Type copy(JellyfishEntity.Type pValue) {
+            return pValue;
+        }
+    };
 
     static {
         SERIALIZERS.register("sex", () -> new DataSerializerEntry(SEX));
@@ -101,6 +118,7 @@ public class DataSerializersNF {
         SERIALIZERS.register("deer_type", () -> new DataSerializerEntry(DEER_TYPE));
         SERIALIZERS.register("cockatrice_type", () -> new DataSerializerEntry(COCKATRICE_TYPE));
         SERIALIZERS.register("spider_type", () -> new DataSerializerEntry(SPIDER_TYPE));
+        SERIALIZERS.register("jellyfish_type", () -> new DataSerializerEntry(JELLYFISH_TYPE));
     }
 
     public static void register() {

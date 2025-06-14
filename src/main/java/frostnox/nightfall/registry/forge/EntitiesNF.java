@@ -5,6 +5,7 @@ import frostnox.nightfall.entity.entity.ArmorStandDummyEntity;
 import frostnox.nightfall.entity.entity.BoatEntity;
 import frostnox.nightfall.entity.entity.MovingBlockEntity;
 import frostnox.nightfall.entity.entity.SeatEntity;
+import frostnox.nightfall.entity.entity.ambient.JellyfishEntity;
 import frostnox.nightfall.entity.entity.animal.DeerEntity;
 import frostnox.nightfall.entity.entity.animal.RabbitEntity;
 import frostnox.nightfall.entity.entity.monster.*;
@@ -36,6 +37,8 @@ public class EntitiesNF {
             .sized(11F/16F, 15.95F/16F).clientTrackingRange(10).setShouldReceiveVelocityUpdates(false).build("cockatrice"));
     public static final RegistryObject<EntityType<SpiderEntity>> SPIDER = ENTITIES.register("spider", () -> EntityType.Builder.of(SpiderEntity::new, MobCategory.MONSTER)
             .sized(10F/16F, 6.5F/16F).clientTrackingRange(10).setShouldReceiveVelocityUpdates(false).build("spider"));
+    public static final RegistryObject<EntityType<JellyfishEntity>> JELLYFISH = ENTITIES.register("jellyfish", () -> EntityType.Builder.of(JellyfishEntity::new, MobCategory.WATER_AMBIENT)
+            .sized(6.1F/16F, 14.1F/16F).clientTrackingRange(10).setShouldReceiveVelocityUpdates(false).build("jellyfish"));
     public static final RegistryObject<EntityType<ArmorStandDummyEntity>> ARMOR_STAND = ENTITIES.register("armor_stand", () -> EntityType.Builder.of(ArmorStandDummyEntity::new, MobCategory.MISC)
             .sized(0.5F, 1.975F).clientTrackingRange(10).updateInterval(4).build("armor_stand"));
     public static final RegistryObject<EntityType<BoatEntity>> BOAT = ENTITIES.register("boat", () -> EntityType.Builder.<BoatEntity>of(BoatEntity::new, MobCategory.MISC)

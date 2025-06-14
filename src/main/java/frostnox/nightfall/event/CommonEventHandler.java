@@ -515,13 +515,15 @@ public class CommonEventHandler {
                     ParticleOptions particle;
                     if(entity instanceof ActionableEntity actEntity) particle = actEntity.getHurtParticle();
                     else particle = ParticleTypesNF.BLOOD_RED.get();
-                    int mod = 15;
-                    int duration = capA.getBleedDuration();
-                    if(duration > 90 * 20) mod = 4;
-                    else if(duration > 60 * 20) mod = 8;
-                    else if(duration > 30 * 20) mod = 12;
-                    if(entity.tickCount % mod == 0) {
-                        entity.level.addParticle(particle, entity.getRandomX(0.5D), entity.getRandomY(), entity.getRandomZ(0.5D), 0, -8, 0);
+                    if(particle != null) {
+                        int mod = 15;
+                        int duration = capA.getBleedDuration();
+                        if(duration > 90 * 20) mod = 4;
+                        else if(duration > 60 * 20) mod = 8;
+                        else if(duration > 30 * 20) mod = 12;
+                        if(entity.tickCount % mod == 0) {
+                            entity.level.addParticle(particle, entity.getRandomX(0.5D), entity.getRandomY(), entity.getRandomZ(0.5D), 0, -8, 0);
+                        }
                     }
                 }
                 if(capA.getPoisonDuration() > 0) {

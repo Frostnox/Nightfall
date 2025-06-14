@@ -22,6 +22,7 @@ import frostnox.nightfall.data.recipe.*;
 import frostnox.nightfall.encyclopedia.Entry;
 import frostnox.nightfall.encyclopedia.PuzzleContainer;
 import frostnox.nightfall.encyclopedia.knowledge.Knowledge;
+import frostnox.nightfall.entity.entity.ambient.JellyfishEntity;
 import frostnox.nightfall.entity.entity.animal.DeerEntity;
 import frostnox.nightfall.entity.entity.animal.RabbitEntity;
 import frostnox.nightfall.entity.entity.monster.*;
@@ -359,6 +360,7 @@ public class Nightfall {
         event.put(EntitiesNF.CREEPER.get(), CreeperEntity.getAttributeMap().build());
         event.put(EntitiesNF.COCKATRICE.get(), CockatriceEntity.getAttributeMap().build());
         event.put(EntitiesNF.SPIDER.get(), SpiderEntity.getAttributeMap().build());
+        event.put(EntitiesNF.JELLYFISH.get(), JellyfishEntity.getAttributeMap().build());
         event.put(EntitiesNF.ARMOR_STAND.get(), LivingEntity.createLivingAttributes().add(Attributes.MAX_HEALTH, 100D).build());
     }
 
@@ -513,6 +515,7 @@ public class Nightfall {
             event.registerEntityRenderer(EntitiesNF.CREEPER.get(), CreeperRenderer::new);
             event.registerEntityRenderer(EntitiesNF.COCKATRICE.get(), CockatriceRenderer::new);
             event.registerEntityRenderer(EntitiesNF.SPIDER.get(), SpiderRenderer::new);
+            event.registerEntityRenderer(EntitiesNF.JELLYFISH.get(), JellyfishRenderer::new);
             event.registerEntityRenderer(EntitiesNF.ARMOR_STAND.get(), ArmorStandDummyRenderer::new);
             event.registerEntityRenderer(EntitiesNF.BOAT.get(), BoatRendererNF::new);
             event.registerEntityRenderer(EntitiesNF.SEAT.get(), NoopRenderer::new);

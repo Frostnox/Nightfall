@@ -94,12 +94,14 @@ public class HitParticlesToClient {
         ParticleOptions particle;
         if(entity instanceof ActionableEntity actEntity) particle = actEntity.getHurtParticle();
         else particle = ParticleTypesNF.BLOOD_RED.get();
-        for(int i = 0; i < Math.min(Math.ceil(msg.damage / 5F), 20); i++) {
-            double yVelocity = noFluid ? world.random.nextDouble() + 0.2 : 0D;
-            world.addParticle(particle, x, y, z,
-                    (msg.xDir + (world.random.nextFloat() - 0.5) * 0.4) * 50D * world.random.nextDouble(),
-                    yVelocity * 20D,
-                    (msg.zDir + (world.random.nextFloat() - 0.5) * 0.4) * 50D * world.random.nextDouble());
+        if(particle != null) {
+            for(int i = 0; i < Math.min(Math.ceil(msg.damage / 5F), 20); i++) {
+                double yVelocity = noFluid ? world.random.nextDouble() + 0.2 : 0D;
+                world.addParticle(particle, x, y, z,
+                        (msg.xDir + (world.random.nextFloat() - 0.5) * 0.4) * 50D * world.random.nextDouble(),
+                        yVelocity * 20D,
+                        (msg.zDir + (world.random.nextFloat() - 0.5) * 0.4) * 50D * world.random.nextDouble());
+            }
         }
         /*if(msg.stun) {
             for(int i = 0; i < 1; i++) {
