@@ -917,9 +917,10 @@ public class ClientEventHandler {
             triedJump = event.getInput().jumping;
             event.getInput().jumping = false;
         }
-        //Slow dive ascension in water
+        //Slow dive ascension in water & apply swim speed to vertical movement
         if(player.isVisuallySwimming()) {
-            player.setDeltaMovement(player.getDeltaMovement().x, player.getDeltaMovement().y * 0.85F, player.getDeltaMovement().z);
+            double swimSpeed = player.getAttributeValue(ForgeMod.SWIM_SPEED.get());
+            player.setDeltaMovement(player.getDeltaMovement().x, player.getDeltaMovement().y * 0.85F * swimSpeed, player.getDeltaMovement().z);
         }
         //Stop elytra from triggering, should look for a cleaner way to do this since it messes with creative flying while attacking
         if(player.getItemBySlot(EquipmentSlot.CHEST).canElytraFly(player)) {

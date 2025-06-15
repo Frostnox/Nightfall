@@ -366,6 +366,18 @@
     "subtitle": "nightfall.entity.spider.bite",
     "sounds": ["nightfall:entity/spider/bite_0", "nightfall:entity/spider/bite_1", "nightfall:entity/spider/bite_2"]
   },
+  "entity.jellyfish.death": {
+    "subtitle": "nightfall.entity.jellyfish.death",
+    "sounds": ["mob/slime/small1", "mob/slime/small2", "mob/slime/small3", "mob/slime/small4", "mob/slime/small5"]
+  },
+  "entity.jellyfish.hurt": {
+    "subtitle": "nightfall.entity.jellyfish.hurt",
+    "sounds": ["mob/slime/small1", "mob/slime/small2", "mob/slime/small3", "mob/slime/small4", "mob/slime/small5"]
+  },
+  "entity.jellyfish.sting": {
+    "subtitle": "nightfall.entity.jellyfish.sting",
+    "sounds": ["nightfall:entity/jellyfish/sting_0", "nightfall:entity/jellyfish/sting_1", "nightfall:entity/jellyfish/sting_2"]
+  },
   "entity.projectile.poison_impact": {
     "subtitle": "nightfall.entity.projectile.poison_impact",
     "sounds": ["nightfall:entity/projectile/poison_impact"]

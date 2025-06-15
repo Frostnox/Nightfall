@@ -2,6 +2,7 @@ package frostnox.nightfall.action;
 
 import com.mojang.math.Vector3d;
 import frostnox.nightfall.item.ImpactSoundType;
+import frostnox.nightfall.registry.forge.EffectsNF;
 import frostnox.nightfall.registry.forge.SoundsNF;
 import frostnox.nightfall.registry.ActionsNF;
 import frostnox.nightfall.util.data.Vec3f;
@@ -58,6 +59,7 @@ public class DamageTypeSource extends DamageSource {
     private Supplier<SoundEvent> sound = () -> null;
     private @Nullable ImpactSoundType impactSoundType = null;
     private int stunDuration = 0;
+    private @Nullable AttackEffect[] effects = null;
 
     public DamageTypeSource(String id) {
         this(id, null, null, (HitData) null, DamageType.ABSOLUTE);
@@ -113,6 +115,10 @@ public class DamageTypeSource extends DamageSource {
 
     public @Nullable ImpactSoundType getImpactSoundType() {
         return impactSoundType;
+    }
+
+    public @Nullable AttackEffect[] getEffects() {
+        return effects;
     }
 
     public Attack getAttack() {
@@ -180,6 +186,11 @@ public class DamageTypeSource extends DamageSource {
         return this;
     }
 
+    public DamageTypeSource setEffects(AttackEffect... effects) {
+        this.effects = effects;
+        return this;
+    }
+
     public DamageTypeSource setAttack(Attack attack) {
         this.attack = () -> attack;
         return this;
@@ -195,8 +206,12 @@ public class DamageTypeSource extends DamageSource {
         return new DamageTypeSource("fallingBlock", type);
     }
 
-    public static DamageTypeSource createMobSource(LivingEntity entity, DamageType... type) {
+    public static DamageTypeSource createEntitySource(LivingEntity entity, DamageType... type) {
         return new DamageTypeSource(type[0].toString(), entity, type);
+    }
+
+    public static DamageTypeSource createEntitySource(LivingEntity entity, String name, DamageType... type) {
+        return new DamageTypeSource(name, entity, type);
     }
 
     public static DamageTypeSource createExplosionSource(@Nullable LivingEntity pLivingEntity) {

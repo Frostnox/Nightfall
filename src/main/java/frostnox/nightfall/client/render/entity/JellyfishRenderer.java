@@ -40,6 +40,7 @@ public class JellyfishRenderer extends AnimatedMobRenderer<JellyfishEntity, Anim
     @Override
     protected void setupRotations(JellyfishEntity pEntityLiving, PoseStack pMatrixStack, float pAgeInTicks, float pRotationYaw, float pPartialTicks) {
         if(!pEntityLiving.isInWaterOrBubble()) pMatrixStack.translate(0, -9F/16F, 0);
+        else if(pEntityLiving.getJellyfishType() == JellyfishEntity.Type.MOON) pMatrixStack.translate(0, -7F/16F, 0);
     }
 
     @Override

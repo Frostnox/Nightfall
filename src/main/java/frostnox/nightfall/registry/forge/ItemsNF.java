@@ -281,7 +281,7 @@ public class ItemsNF {
     public static final RegistryObject<SpawnEggItem> SPIDER_SPAWN_EGG = register(EntitiesNF.SPIDER.getId().getPath() + "_spawn_egg",
             () -> new ForgeSpawnEggItem(EntitiesNF.SPIDER, 0x95150d, 0x2c2622, utility()));
     public static final RegistryObject<SpawnEggItem> JELLYFISH_SPAWN_EGG = register(EntitiesNF.JELLYFISH.getId().getPath() + "_spawn_egg",
-            () -> new ForgeSpawnEggItem(EntitiesNF.JELLYFISH, 0x95150d, 0x2c2622, utility()));
+            () -> new ForgeSpawnEggItem(EntitiesNF.JELLYFISH, 0xec5c83, 0xf5b7cf, utility()));
     //Armaments
     public static final Map<TieredItemMaterial, Map<Armament, RegistryObject<MeleeWeaponItem>>> METAL_ARMAMENTS = DataUtil.mapEnum(TieredItemMaterial.class,
             material -> material.getMetal() == null, material -> DataUtil.mapEnum(Armament.class, armament -> {

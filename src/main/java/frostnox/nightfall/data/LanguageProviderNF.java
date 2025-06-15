@@ -400,6 +400,9 @@ public class LanguageProviderNF extends LanguageProvider {
         addSound(SoundsNF.COCKATRICE_BITE, "Cockatrice bites");
         addSound(SoundsNF.COCKATRICE_SPIT, "Cockatrice spits");
         addSound(SoundsNF.SPIDER_BITE, "Spider bites");
+        addSound(SoundsNF.JELLYFISH_DEATH, "Jellyfish ruptures");
+        addSound(SoundsNF.JELLYFISH_HURT, "Jellyfish squishes");
+        addSound(SoundsNF.JELLYFISH_STING, "Jellyfish stings");
         addSound(SoundsNF.PROJECTILE_POISON_IMPACT, "Poison corrodes");
         addSound(SoundsNF.PROJECTILE_ROCK_IMPACT, "Rock collides");
         addSound(SoundsNF.PLAYER_WARP, "Someone warps");
@@ -464,6 +467,7 @@ public class LanguageProviderNF extends LanguageProvider {
         addAttack("bite", "%1$s was devoured by %2$s");
         addAttack("swipe", "%1$s was torn apart by %2$s");
         addAttack("maul", "%1$s was mauled by %2$s");
+        addAttack("sting", "%1$s was stung by %2$s");
 
         addItemClues(EntriesNF.TOOLS, "A hard, brittle rock", "A wooden handle", "A binding");
         addItemClues(EntriesNF.SLING, "Twisted fibers", "A round projectile");

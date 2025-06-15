@@ -25,5 +25,6 @@ public class EntityTypeTagsProviderNF extends EntityTypeTagsProvider {
         tag(TagsNF.COCKATRICE_PREY).add(EntitiesNF.RABBIT.get(), EntitiesNF.DEER.get(), EntitiesNF.SPIDER.get());
         tag(TagsNF.SPIDER_PREDATOR);
         tag(TagsNF.SPIDER_PREY).add(EntitiesNF.RABBIT.get());
+        tag(TagsNF.JELLYFISH_IMMUNE).add(EntitiesNF.JELLYFISH.get());
     }
 }

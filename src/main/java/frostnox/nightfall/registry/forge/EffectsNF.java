@@ -10,6 +10,7 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -54,6 +55,7 @@ public class EffectsNF {
             .addAttributeModifier(AttributesNF.ELECTRIC_ABSORPTION.get(), "cf58f418-c961-44ea-9bb2-f02b0bdb6176", 0.2D, AttributeModifier.Operation.ADDITION));
     public static final RegistryObject<MobEffect> PARALYSIS = EFFECTS.register("paralysis", () -> new DamageEffect(MobEffectCategory.HARMFUL)
             .addAttributeModifier(Attributes.MOVEMENT_SPEED, "5e59ad86-9311-4fbd-8e70-db765be34d30", -0.2D, AttributeModifier.Operation.MULTIPLY_TOTAL)
+            .addAttributeModifier(ForgeMod.SWIM_SPEED.get(), "728607eb-2232-457d-a9ac-f61d42fa91f3", -0.2D, AttributeModifier.Operation.MULTIPLY_TOTAL)
             .addAttributeModifier(AttributesNF.ENDURANCE.get(), "47a84663-d865-4df0-8672-01608ce5d124", -2D, AttributeModifier.Operation.ADDITION));
 
     public static void register() {

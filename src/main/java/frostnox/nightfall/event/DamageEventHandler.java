@@ -164,6 +164,13 @@ public class DamageEventHandler {
         float reducedDamage = Math.min(2F, damageAmount / originalAmount);
         float chargedModifier = (source.getOwner() instanceof Player || source.getOwner() instanceof ActionableEntity) ? ActionTracker.get(source.getOwner()).getChargeAttackMultiplier() : 1F;
         if(reducedDamage > 0.5F) {
+            if(source.getEffects() != null) {
+                for(AttackEffect attackEffect : source.getEffects()) {
+                    if(entity.level.getRandom().nextFloat() <= attackEffect.chance) {
+                        entity.addEffect(attackEffect.getEffect(), source.getEntity());
+                    }
+                }
+            }
             for(AttackEffect attackEffect : source.getAttack().getEffects(source.getEntity() instanceof LivingEntity livingEntity ? livingEntity : null)) {
                 if(entity.level.getRandom().nextFloat() <= attackEffect.chance) {
                     entity.addEffect(attackEffect.getEffect(), source.getEntity());

@@ -114,6 +114,7 @@ public class TagsNF {
     public static final TagKey<EntityType<?>> COCKATRICE_PREY = entityTag("cockatrice_prey");
     public static final TagKey<EntityType<?>> SPIDER_PREDATOR = entityTag("spider_predator");
     public static final TagKey<EntityType<?>> SPIDER_PREY = entityTag("spider_prey");
+    public static final TagKey<EntityType<?>> JELLYFISH_IMMUNE = entityTag("jellyfish_immune");
 
     public static final TagKey<Fluid> FRESHWATER = fluidTag("freshwater");
     public static final TagKey<Fluid> SEAWATER = fluidTag("seawater");
