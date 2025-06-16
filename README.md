@@ -20,7 +20,7 @@ Instead, all entities are spawned by picking a random spawn group.
 
 Spawn groups are implemented through a custom Forge registry. You may use it like any other registry.
 
-Make sure to add your spawn group to one of ```TagsNF.SURFACE_GROUPS```, ```TagsNF.FRESHWATER_GROUPS```, or ```TagsNF.OCEAN_GROUPS```.
+Make sure to add your spawn group to one of ```TagsNF.SURFACE_GROUPS```, ```TagsNF.FRESHWATER_GROUPS```, ```TagsNF.OCEAN_GROUPS```, or ```TagsNF.RANDOM_GROUPS```.
 
 Be careful when spawning entities that do not despawn on their own as the world does not take into account how many entities are already present.
 
