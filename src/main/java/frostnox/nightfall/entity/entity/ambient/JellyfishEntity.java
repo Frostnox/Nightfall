@@ -110,7 +110,7 @@ public class JellyfishEntity extends AquaticAmbientEntity {
     }
 
     protected boolean shouldPropel() {
-        if(tickCount % 8 == 0 && random.nextBoolean()) {
+        if(isAlive() && tickCount % 8 == 0 && random.nextBoolean()) {
             //Sink at day to low sky light
             if(LevelUtil.isDayTimeWithin(level, LevelUtil.SUNRISE_TIME, LevelUtil.NIGHT_TIME)) {
                 return level.getBrightness(LightLayer.SKY, eyeBlockPosition()) <= lightSensitivity
@@ -138,7 +138,7 @@ public class JellyfishEntity extends AquaticAmbientEntity {
             int propulsionTicks = getPropulsionTicks();
             if(propulsionTicks >= 0) {
                 setPropulsionTicks(propulsionTicks - 1);
-                if(propulsionTicks == 0 && !isDeflating()) {
+                if(propulsionTicks == 0 && !isDeflating() && isAlive()) {
                     Vec3 velocity = getDeltaMovement();
                     setDeltaMovement(velocity.x, velocity.y + 0.15, velocity.z);
                     hasImpulse = true;
@@ -207,10 +207,15 @@ public class JellyfishEntity extends AquaticAmbientEntity {
     }
 
     @Override
+    public float getScale() {
+        return isDeadOrDying() ? 0.75F : 1F;
+    }
+
+    @Override
     public EntityDimensions getDimensions(Pose pPose) {
-        if(!isInWaterOrBubble()) return new EntityDimensions(getType().getWidth(), 5.1F/16F, false);
-        else if(getJellyfishType() == Type.MOON) return new EntityDimensions(getType().getWidth(), 7.1F/16F, false);
-        else return super.getDimensions(pPose);
+        if(!isInWaterOrBubble()) return new EntityDimensions(getType().getWidth(), 5.1F/16F, false).scale(getScale());
+        else if(getJellyfishType() == Type.MOON) return new EntityDimensions(getType().getWidth(), 7.1F/16F, false).scale(getScale());
+        else return getType().getDimensions().scale(getScale());
     }
 
     @Override

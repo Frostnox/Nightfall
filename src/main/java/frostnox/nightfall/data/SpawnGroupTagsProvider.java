@@ -18,7 +18,8 @@ public class SpawnGroupTagsProvider extends ForgeRegistryTagsProvider<SpawnGroup
     protected void addTags() {
         tag(TagsNF.SURFACE_GROUPS).add(SpawnGroupsNF.COCKATRICE.get(), SpawnGroupsNF.DEER.get(), SpawnGroupsNF.RABBIT.get(), SpawnGroupsNF.CREEPER.get());
         tag(TagsNF.FRESHWATER_GROUPS);
-        tag(TagsNF.OCEAN_GROUPS);
+        tag(TagsNF.OCEAN_GROUPS).add(SpawnGroupsNF.JELLYFISH.get());
+        tag(TagsNF.RANDOM_GROUPS);
     }
 
     @Override

@@ -28,6 +28,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.*;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Clearable;
 import net.minecraft.world.Containers;
@@ -54,6 +55,8 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.registries.tags.ITag;
 
 import java.util.*;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 public class ChunkData implements IChunkData {
     public static final Capability<IChunkData> CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {}); //Reference to manager instance
@@ -285,8 +288,89 @@ public class ChunkData implements IChunkData {
         }
     }
 
+    private void tryEntitySpawn(boolean spawnFriendlies, boolean spawnEnemies, BiFunction<ServerLevel, LevelChunk, BlockPos> centerPosProvider, TagKey<SpawnGroup> spawnTag, Function<BlockPos, BlockPos> poolPosProvider) {
+        ServerLevel level = (ServerLevel) this.level;
+        BlockPos centerPos = centerPosProvider.apply(level, chunk);
+        if(centerPos == null) return;
+        double spawnX = centerPos.getX() + 0.5, spawnY = centerPos.getY(), spawnZ = centerPos.getZ() + 0.5;
+        if(LevelUtil.getShortestDistanceSqrToPlayer(level, spawnX, spawnY, spawnZ) > 80 * 80) {
+            //Generate possible groups
+            ITag<SpawnGroup> tag = RegistriesNF.getSpawnGroups().tags().getTag(spawnTag);
+            Object2IntArrayMap<SpawnGroup> weightedGroups = new Object2IntArrayMap<>(tag.size());
+            int totalWeight = 0;
+            BlockPos belowPos = centerPos.below();
+            BlockState blockBelow = chunk.getBlockState(belowPos);
+            BlockState blockAt = chunk.getBlockState(centerPos);
+            int skyLight = level.getBrightness(LightLayer.SKY, centerPos);
+            float temperature = getTemperature(centerPos);
+            float humidity = getHumidity(centerPos);
+            for(Iterator<SpawnGroup> it = tag.iterator(); it.hasNext();) {
+                SpawnGroup group = it.next();
+                if((spawnFriendlies && group.isFriendly()) || (spawnEnemies && !group.isFriendly())) {
+                    if(group.canSpawnAt(level, centerPos, group.getPlacementType() == SpawnPlacements.Type.ON_GROUND ? blockBelow : blockAt, skyLight, temperature, humidity)) {
+                        totalWeight += group.getWeight();
+                        weightedGroups.put(group, group.getWeight());
+                    }
+                }
+            }
+            //Pick group
+            if(totalWeight > 0) {
+                SpawnGroup group = null;
+                int weight = 0;
+                int rand = level.random.nextInt(totalWeight);
+                for(var entry : weightedGroups.object2IntEntrySet()) {
+                    weight += entry.getIntValue();
+                    if(rand < weight) {
+                        group = entry.getKey();
+                        break;
+                    }
+                }
+                if(group != null) {
+                    EntityType<?>[] types = group.createGroup(level, centerPos, blockBelow, skyLight, temperature, humidity);
+                    SpawnGroupData data = group.getGroupData(level, centerPos, blockBelow, skyLight, temperature, humidity, types.length);
+                    //Create pool of valid positions to spawn at
+                    ObjectArrayList<BlockPos> openPositions = ObjectArrayList.of();
+                    for(int x = -3; x <= 3; x++) {
+                        for(int z = -3; z <= 3; z++) {
+                            int xPos = centerPos.getX() + x, zPos = centerPos.getZ() + z;
+                            if(!level.hasChunkAt(xPos, zPos)) continue;
+                            BlockPos pos = poolPosProvider.apply(new BlockPos(xPos, centerPos.getY(), zPos));
+                            openPositions.add(pos);
+                        }
+                    }
+                    Collections.shuffle(openPositions, level.random);
+                    boolean spawnedAny = false;
+                    //Spawn entities
+                    for(int i = 0; i < types.length; i++) {
+                        if(openPositions.isEmpty()) break;
+                        EntityType<?> type = types[i];
+                        Entity entity = type.create(level);
+                        if(!(entity instanceof PathfinderMob mob) || mob.checkSpawnRules(level, MobSpawnType.NATURAL)) {
+                            for(BlockPos pos : openPositions) {
+                                if(NaturalSpawner.isSpawnPositionOk(group.getPlacementType(), level, pos, type)) {
+                                    entity.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
+                                    if(entity instanceof Mob mob && !mob.checkSpawnObstruction(level)) continue;
+                                    entity.moveTo(pos, level.random.nextFloat() * 360, 0);
+                                    entity.setYBodyRot(entity.getYRot());
+                                    entity.setYHeadRot(entity.getYRot());
+                                    if(entity instanceof ActionableEntity actionable) actionable.noDespawnTicks = ticksToSpawn;
+                                    if(entity instanceof PathfinderMob mob) mob.finalizeSpawn(level, level.getCurrentDifficultyAt(pos), MobSpawnType.NATURAL, data, null);
+                                    level.addFreshEntityWithPassengers(entity);
+                                    spawnedAny = true;
+                                    openPositions.remove(pos);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    if(spawnedAny) chunk.setUnsaved(true);
+                }
+            }
+        }
+    }
+
     @Override
-    public void trySurfaceEntitySpawn(boolean spawnFriendlies, boolean spawnEnemies) {
+    public void tryEntitySpawn(boolean spawnFriendlies, boolean spawnEnemies) {
         if(!level.isClientSide) {
             ticksToSpawn--;
             if(ticksToSpawn <= 0) {
@@ -295,83 +379,26 @@ public class ChunkData implements IChunkData {
                 float temp = temperature[7 * 16 + 7] + Season.getTemperatureInfluence(levelData.getSeasonTime());
                 float hum = humidity[7 * 16 + 7];
                 float spawnChance = 0.0045F + Mth.sqrt(temp * temp + hum * hum) * (0.0045F / 5F);
+                //Surface
                 if(level.random.nextFloat() < spawnChance) {
-                    ServerLevel level = (ServerLevel) this.level;
-                    BlockPos centerPos = LevelUtil.getRandomSurfacePos(level, chunk);
-                    double spawnX = centerPos.getX() + 0.5, spawnY = centerPos.getY(), spawnZ = centerPos.getZ() + 0.5;
-                    if(LevelUtil.getShortestDistanceSqrToPlayer(level, spawnX, spawnY, spawnZ) > 80 * 80) {
-                        //Generate possible groups
-                        ITag<SpawnGroup> tag = RegistriesNF.getSpawnGroups().tags().getTag(TagsNF.SURFACE_GROUPS);
-                        Object2IntArrayMap<SpawnGroup> weightedGroups = new Object2IntArrayMap<>(tag.size());
-                        int totalWeight = 0;
-                        BlockPos blockPos = centerPos.below();
-                        BlockState block = level.getBlockState(blockPos);
-                        int skyLight = level.getBrightness(LightLayer.SKY, centerPos);
-                        float temperature = getTemperature(centerPos);
-                        float humidity = getHumidity(centerPos);
-                        for(Iterator<SpawnGroup> it = tag.iterator(); it.hasNext();) {
-                            SpawnGroup group = it.next();
-                            if((spawnFriendlies && group.isFriendly()) || (spawnEnemies && !group.isFriendly())) {
-                                if(group.canSpawnAt(level, centerPos, block, skyLight, temperature, humidity)) {
-                                    totalWeight += group.getWeight();
-                                    weightedGroups.put(group, group.getWeight());
-                                }
-                            }
-                        }
-                        //Pick group
-                        if(totalWeight > 0) {
-                            SpawnGroup group = null;
-                            int weight = 0;
-                            int rand = level.random.nextInt(totalWeight);
-                            for(var entry : weightedGroups.object2IntEntrySet()) {
-                                weight += entry.getIntValue();
-                                if(rand < weight) {
-                                    group = entry.getKey();
-                                    break;
-                                }
-                            }
-                            if(group != null) {
-                                EntityType<?>[] types = group.createGroup(level);
-                                SpawnGroupData data = group.getGroupData(level, centerPos, block, skyLight, temperature, humidity, types.length);
-                                //Create pool of valid positions to spawn at
-                                ObjectArrayList<BlockPos> openPositions = ObjectArrayList.of();
-                                for(int x = -3; x <= 3; x++) {
-                                    for(int z = -3; z <= 3; z++) {
-                                        int xPos = centerPos.getX() + x, zPos = centerPos.getZ() + z;
-                                        if(!level.hasChunkAt(xPos, zPos)) continue;
-                                        BlockPos pos = new BlockPos(xPos, level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, xPos, zPos), zPos);
-                                        openPositions.add(pos);
-                                    }
-                                }
-                                Collections.shuffle(openPositions, level.random);
-                                boolean spawnedAny = false;
-                                //Spawn entities
-                                for(int i = 0; i < types.length; i++) {
-                                    if(openPositions.isEmpty()) break;
-                                    EntityType<?> type = types[i];
-                                    Entity entity = type.create(level);
-                                    if(!(entity instanceof PathfinderMob mob) || mob.checkSpawnRules(level, MobSpawnType.NATURAL)) {
-                                        for(BlockPos pos : openPositions) {
-                                            if(NaturalSpawner.isSpawnPositionOk(SpawnPlacements.Type.ON_GROUND, level, pos, type)) {
-                                                entity.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
-                                                if(entity instanceof Mob mob && !mob.checkSpawnObstruction(level)) continue;
-                                                entity.moveTo(pos, level.random.nextFloat() * 360, 0);
-                                                entity.setYBodyRot(entity.getYRot());
-                                                entity.setYHeadRot(entity.getYRot());
-                                                if(entity instanceof ActionableEntity actionable) actionable.noDespawnTicks = ticksToSpawn;
-                                                if(entity instanceof PathfinderMob mob) mob.finalizeSpawn(level, level.getCurrentDifficultyAt(pos), MobSpawnType.NATURAL, data, null);
-                                                level.addFreshEntityWithPassengers(entity);
-                                                spawnedAny = true;
-                                                openPositions.remove(pos);
-                                                break;
-                                            }
-                                        }
-                                    }
-                                }
-                                if(spawnedAny) chunk.setUnsaved(true);
-                            }
-                        }
-                    }
+                    tryEntitySpawn(spawnFriendlies, spawnEnemies, LevelUtil::getRandomSurfacePos, TagsNF.SURFACE_GROUPS,
+                            (pos) -> new BlockPos(pos.getX(), level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, pos.getX(), pos.getZ()), pos.getZ())
+                    );
+                }
+                //Ocean (floor to surface)
+                if(level.random.nextFloat() < spawnChance * 8) { //Increase chance since ocean is very large
+                    tryEntitySpawn(spawnFriendlies, spawnEnemies, LevelUtil::getRandomWaterPos, TagsNF.OCEAN_GROUPS,
+                            (pos) -> pos);
+                }
+                //Freshwater (floor to surface)
+                if(level.random.nextFloat() < spawnChance) {
+                    tryEntitySpawn(spawnFriendlies, spawnEnemies, LevelUtil::getRandomWaterPos, TagsNF.FRESHWATER_GROUPS,
+                            (pos) -> pos);
+                }
+                //Random (completely random)
+                if(level.random.nextFloat() < spawnChance) {
+                    tryEntitySpawn(spawnFriendlies, spawnEnemies, LevelUtil::getRandomPos, TagsNF.RANDOM_GROUPS,
+                            (pos) -> pos);
                 }
             }
         }

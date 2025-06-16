@@ -292,6 +292,7 @@ public class TagsNF {
     public static final TagKey<SpawnGroup> SURFACE_GROUPS = spawnGroupTag("surface_groups");
     public static final TagKey<SpawnGroup> FRESHWATER_GROUPS = spawnGroupTag("freshwater_groups");
     public static final TagKey<SpawnGroup> OCEAN_GROUPS = spawnGroupTag("ocean_groups");
+    public static final TagKey<SpawnGroup> RANDOM_GROUPS = spawnGroupTag("random_groups");
 
     static {
         ITEM_TAGS.trim();

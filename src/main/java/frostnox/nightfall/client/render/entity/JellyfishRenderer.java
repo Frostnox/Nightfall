@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.EntityDimensions;
 
 import java.util.EnumMap;
 
@@ -39,8 +40,35 @@ public class JellyfishRenderer extends AnimatedMobRenderer<JellyfishEntity, Anim
 
     @Override
     protected void setupRotations(JellyfishEntity pEntityLiving, PoseStack pMatrixStack, float pAgeInTicks, float pRotationYaw, float pPartialTicks) {
-        if(!pEntityLiving.isInWaterOrBubble()) pMatrixStack.translate(0, -9F/16F, 0);
-        else if(pEntityLiving.getJellyfishType() == JellyfishEntity.Type.MOON) pMatrixStack.translate(0, -7F/16F, 0);
+        float deathScale = 0.75F;
+        if(!pEntityLiving.isInWaterOrBubble()) {
+            pMatrixStack.translate(0, -9F/16F, 0);
+            deathScale = 1.39F;
+        }
+        else if(pEntityLiving.getJellyfishType() == JellyfishEntity.Type.MOON) {
+            pMatrixStack.translate(0, -7F/16F, 0);
+            deathScale = 1.25F;
+        }
+        if(pEntityLiving.deathTime > 0) {
+            float f;
+            f = ((float) pEntityLiving.deathTime + pPartialTicks - 1.0F) / 20.0F * 1.6F;
+            f = Mth.sqrt(f);
+            if(f > 1.0F) f = 1.0F;
+
+            int dir = pEntityLiving.getSynchedRandom() % 2 == 0 ? 1 : -1;
+            EntityDimensions dimensions = pEntityLiving.getType().getDimensions();
+            pMatrixStack.mulPose(Vector3f.ZP.rotationDegrees(f * getFlipDegrees(pEntityLiving) * dir));
+            pMatrixStack.translate(0, -dimensions.height * deathScale * f, 0);
+        }
+        else if(isEntityUpsideDown(pEntityLiving)) {
+            pMatrixStack.translate(0.0D, pEntityLiving.getBbHeight() + 0.1F, 0.0D);
+            pMatrixStack.mulPose(Vector3f.ZP.rotationDegrees(180.0F));
+        }
+    }
+
+    @Override
+    protected float getFlipDegrees(JellyfishEntity pLivingEntity) {
+        return 180.0F;
     }
 
     @Override

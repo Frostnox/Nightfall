@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
@@ -26,6 +27,8 @@ public abstract class SpawnGroup extends ForgeRegistryEntry<SpawnGroup> {
         return friendly;
     }
 
+    public abstract SpawnPlacements.Type getPlacementType();
+
     /**
      * @param temperature at world position, season independent
      * @param humidity at world position, season independent
@@ -35,7 +38,7 @@ public abstract class SpawnGroup extends ForgeRegistryEntry<SpawnGroup> {
     /**
      * @return array of entities to spawn with size of at least 1
      */
-    public abstract EntityType<?>[] createGroup(ServerLevel level);
+    public abstract EntityType<?>[] createGroup(ServerLevel level, BlockPos pos, BlockState block, int skyLight, float temperature, float humidity);
 
     public abstract @Nullable SpawnGroupData getGroupData(ServerLevel level, BlockPos pos, BlockState block, int skyLight, float temperature, float humidity, int groupSize);
 }

@@ -3,6 +3,7 @@ package frostnox.nightfall.client.render.entity.layer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import frostnox.nightfall.client.model.AnimatedModel;
+import frostnox.nightfall.util.AnimationUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -30,7 +31,7 @@ public class TranslucentBodyLayer<T extends LivingEntity, M extends AnimatedMode
             getParentModel().copyPropertiesTo(model);
             model.prepareMobModel(entity, pLimbSwing, pLimbSwingAmount, pPartialTick);
             model.setupAnim(entity, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
-            model.renderToBuffer(pPoseStack, buffer, pPackedLight, LivingEntityRenderer.getOverlayCoords(entity, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
+            model.renderToBuffer(pPoseStack, buffer, pPackedLight, AnimationUtil.getOverlayCoords(entity, 0), 1.0F, 1.0F, 1.0F, 1.0F);
         }
     }
 }

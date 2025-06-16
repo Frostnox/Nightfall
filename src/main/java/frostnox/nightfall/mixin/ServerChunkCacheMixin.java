@@ -176,7 +176,7 @@ public abstract class ServerChunkCacheMixin extends ChunkSource {
                     }
                 }
                 //Standard entity spawning
-                if(mobSpawning) capC.trySurfaceEntitySpawn(spawnFriendlies, spawnEnemies);
+                if(mobSpawning) capC.tryEntitySpawn(spawnFriendlies, spawnEnemies);
                 //Undead spawning
                 if(isDay) {
                     if(capC.hasSpawnedUndead()) {

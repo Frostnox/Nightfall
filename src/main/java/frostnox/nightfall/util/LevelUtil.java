@@ -193,6 +193,23 @@ public class LevelUtil {
         return new BlockPos(x, y, z);
     }
 
+    public static @Nullable BlockPos getRandomWaterPos(Level level, LevelChunk chunk) {
+        ChunkPos chunkpos = chunk.getPos();
+        int x = chunkpos.getMinBlockX() + level.random.nextInt(16);
+        int z = chunkpos.getMinBlockZ() + level.random.nextInt(16);
+        int minY = chunk.getHeight(Heightmap.Types.OCEAN_FLOOR, x, z);
+        int maxY = chunk.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z);
+        if(minY >= maxY) return null;
+        return new BlockPos(x, minY + level.random.nextInt(maxY - minY + 1), z);
+    }
+
+    public static BlockPos getRandomPos(Level level, LevelChunk chunk) {
+        ChunkPos chunkpos = chunk.getPos();
+        int x = chunkpos.getMinBlockX() + level.random.nextInt(16);
+        int z = chunkpos.getMinBlockZ() + level.random.nextInt(16);
+        return new BlockPos(x, level.getMinBuildHeight() + level.random.nextInt(level.getMaxBuildHeight()), z);
+    }
+
     public static boolean canFallThrough(BlockState state) {
         Material material = state.getMaterial();
         return state.isAir() || state.is(TagsNF.FALLING_DESTROYABLE) || material.isLiquid() || material.isReplaceable();

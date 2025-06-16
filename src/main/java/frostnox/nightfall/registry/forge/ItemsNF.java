@@ -177,6 +177,7 @@ public class ItemsNF {
     public static final RegistryObject<BowItemNF> TWISTED_BOW = register("twisted_bow", () -> new BowItemNF(
             ActionsNF.TWISTED_BOW_SHOOT, ItemTags.ARROWS, armament().durability(240)));
     public static final RegistryObject<Item> SILK = ITEMS.register("silk", () -> new Item(ingredient()));
+    public static final RegistryObject<Item> RAW_JELLYFISH = ITEMS.register("raw_jellyfish", () -> new Item(ingredient()));
     //Food
     public static final RegistryObject<Item> POTATO = ITEMS.register("potato", () -> new Item(new Item.Properties().food(
             food(2, 0F)).tab(FOOD_TAB).stacksTo(4)));

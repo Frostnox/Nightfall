@@ -50,7 +50,7 @@ public interface IChunkData {
 
     void schedulePhysicsTickAround(BlockPos pos);
 
-    void trySurfaceEntitySpawn(boolean spawnFriendlies, boolean spawnEnemies);
+    void tryEntitySpawn(boolean spawnFriendlies, boolean spawnEnemies);
 
     void addWardingEffigy(BlockPos pos);
 

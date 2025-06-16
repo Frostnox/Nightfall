@@ -17,7 +17,7 @@ public abstract class AmbientEntity extends ActionableEntity {
 
     @Override
     protected void pushEntities() {
-        if(level.isClientSide) return;
+        if(level.isClientSide || isDeadOrDying()) return;
         List<Entity> list = this.level.getEntities(this, this.getBoundingBox(), EntitySelector.pushableBy(this).and(entity -> entity instanceof AmbientEntity));
         if (!list.isEmpty()) {
             int i = this.level.getGameRules().getInt(GameRules.RULE_MAX_ENTITY_CRAMMING);
@@ -45,6 +45,6 @@ public abstract class AmbientEntity extends ActionableEntity {
 
     @Override
     public boolean dropLootFromSkinning() {
-        return false;
+        return true;
     }
 }
