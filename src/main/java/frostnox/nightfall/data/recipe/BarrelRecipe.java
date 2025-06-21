@@ -28,22 +28,27 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
-import java.util.Arrays;
 import java.util.Map;
 
-public class SoakingRecipe extends EncyclopediaRecipe<RecipeWrapper> implements IRenderableRecipe {
-    public static final RecipeType<SoakingRecipe> TYPE = RecipeType.register(Nightfall.MODID + ":soaking");
+public class BarrelRecipe extends EncyclopediaRecipe<RecipeWrapper> implements IRenderableRecipe {
+    public static final RecipeType<BarrelRecipe> TYPE = RecipeType.register(Nightfall.MODID + ":barrel");
     public static final Serializer SERIALIZER = new Serializer();
-    public static final ResourceLocation RECIPE_VIEWER_LOCATION = ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "textures/gui/screen/recipe_soaking.png");
+    public static final ResourceLocation RECIPE_VIEWER_LOCATION = ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "textures/gui/screen/recipe_barrel.png");
     private final NonNullList<Ingredient> input;
     private final ItemStack output;
     private final int soakTime;
+    private final boolean fixedSoakTime;
 
-    public SoakingRecipe(ResourceLocation id, ResourceLocation requirementId, NonNullList<Ingredient> input, ItemStack output, int soakTime) {
+    public BarrelRecipe(ResourceLocation id, ResourceLocation requirementId, NonNullList<Ingredient> input, ItemStack output, int soakTime, boolean fixedSoakTime) {
         super(id, requirementId);
         this.input = input;
         this.output = output;
         this.soakTime = soakTime;
+        this.fixedSoakTime = fixedSoakTime;
+    }
+
+    public boolean hasFixedSoakTime() {
+        return fixedSoakTime;
     }
 
     public int getSoakTime() {
@@ -189,7 +194,7 @@ public class SoakingRecipe extends EncyclopediaRecipe<RecipeWrapper> implements 
 
     @Override
     public TranslatableComponent getTitle() {
-        return new TranslatableComponent(Nightfall.MODID + ".soaking");
+        return new TranslatableComponent(Nightfall.MODID + ".barrel");
     }
 
     @Override
@@ -197,13 +202,13 @@ public class SoakingRecipe extends EncyclopediaRecipe<RecipeWrapper> implements 
         return getRequirementId() != null;
     }
 
-    public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<SoakingRecipe> {
+    public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<BarrelRecipe> {
         Serializer() {
-            this.setRegistryName(ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "soaking"));
+            this.setRegistryName(ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "barrel"));
         }
 
         @Override
-        public SoakingRecipe fromJson(ResourceLocation id, JsonObject json) {
+        public BarrelRecipe fromJson(ResourceLocation id, JsonObject json) {
             JsonArray inputJson = GsonHelper.getAsJsonArray(json, "input");
             Ingredient[] ingredients = new Ingredient[inputJson.size()];
             for(int i = 0; i < inputJson.size(); i++) {
@@ -211,28 +216,30 @@ public class SoakingRecipe extends EncyclopediaRecipe<RecipeWrapper> implements 
             }
             ItemStack output = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "output"));
             int soakTime = GsonHelper.getAsInt(json, "soakTime", 0);
+            boolean fixedSoakTime = GsonHelper.getAsBoolean(json, "fixedSoakTime", false);
             ResourceLocation requirement = json.has("requirement") ? ResourceLocation.parse(json.get("requirement").getAsString()) : null;
-            return new SoakingRecipe(id, requirement, NonNullList.of(Ingredient.EMPTY, ingredients), output, soakTime);
+            return new BarrelRecipe(id, requirement, NonNullList.of(Ingredient.EMPTY, ingredients), output, soakTime, fixedSoakTime);
         }
 
         @Override
-        public SoakingRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
+        public BarrelRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
             int inputSize = buf.readVarInt();
             Ingredient[] ingredients = new Ingredient[inputSize];
             for(int i = 0; i < inputSize; i++) {
                 ingredients[i] = Ingredient.fromNetwork(buf);
             }
             ResourceLocation requirement = buf.readResourceLocation();
-            return new SoakingRecipe(id, requirement.getPath().equals("empty") ? null : requirement, NonNullList.of(Ingredient.EMPTY, ingredients), buf.readItem(), buf.readVarInt());
+            return new BarrelRecipe(id, requirement.getPath().equals("empty") ? null : requirement, NonNullList.of(Ingredient.EMPTY, ingredients), buf.readItem(), buf.readVarInt(), buf.readBoolean());
         }
 
         @Override
-        public void toNetwork(FriendlyByteBuf buf, SoakingRecipe recipe) {
+        public void toNetwork(FriendlyByteBuf buf, BarrelRecipe recipe) {
             buf.writeVarInt(recipe.input.size());
             for(Ingredient ingredient : recipe.input) ingredient.toNetwork(buf);
             buf.writeResourceLocation(recipe.getRequirementId() == null ? ResourceLocation.parse("empty") : recipe.getRequirementId());
             buf.writeItem(recipe.output);
             buf.writeVarInt(recipe.soakTime);
+            buf.writeBoolean(recipe.fixedSoakTime);
         }
     }
 }

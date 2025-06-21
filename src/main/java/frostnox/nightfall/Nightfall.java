@@ -333,7 +333,7 @@ public class Nightfall {
         event.getRegistry().register(TieredAnvilRecipe.SERIALIZER);
         event.getRegistry().register(BuildingRecipe.SERIALIZER);
         event.getRegistry().register(CampfireRecipe.SERIALIZER);
-        event.getRegistry().register(SoakingRecipe.SERIALIZER);
+        event.getRegistry().register(BarrelRecipe.SERIALIZER);
     }
 
     @SubscribeEvent

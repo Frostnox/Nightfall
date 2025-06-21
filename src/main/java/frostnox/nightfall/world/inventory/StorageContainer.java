@@ -66,7 +66,7 @@ public class StorageContainer extends PartialInventoryContainer {
     public static StorageContainer createBarrelContainer(int windowID, Inventory playerInv, BlockEntity entity) {
         if(entity instanceof BarrelBlockEntityNF containerEntity) return new StorageContainer(ContainersNF.BARREL.get(), playerInv, windowID, containerEntity,
                 (inventory, menu, player, index, xPosition, yPosition) -> new FluidSlot(inventory, menu, player, index, xPosition, yPosition, false),
-                BarrelBlockEntityNF.ROWS, BarrelBlockEntityNF.COLUMNS, 62, 8);
+                BarrelBlockEntityNF.ROWS, BarrelBlockEntityNF.COLUMNS, 62, 28, 8, 84 + 20, false);
         else return createContainerException(entity);
     }
 

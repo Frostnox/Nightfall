@@ -36,19 +36,27 @@ public class LevelData implements ILevelData {
     }
 
     private void generateNewWeather() {
+        float lastLastWeatherIntensity = lastWeatherIntensity;
         lastWeatherIntensity = weatherIntensity;
-        //Modeled after realistic rainfall distribution in a temperate zone
-        weatherIntensity = (float) MathUtil.gammaSample(1.2, level.random) / 4F;
-        Season season = getSeason();
-        if(level.random.nextFloat() < (season == Season.FALL ? 0.5F : 0.3F)) {
-            weatherIntensity = -Math.min(weatherIntensity, 1F);
+        //Let fog hang around for extra time
+        if(Weather.get(lastLastWeatherIntensity) != Weather.FOG && Weather.get(lastWeatherIntensity) == Weather.FOG) {
+            int time = (int) (20 * 60 * 3 * -weatherIntensity);
+            weatherDuration = time + level.random.nextInt(time);
         }
         else {
-            if(season == Season.SUMMER) weatherIntensity *= 0.8F;
-            else if(season == Season.SPRING) weatherIntensity *= 1.2F;
-            weatherIntensity = Math.min(weatherIntensity, 1F);
+            //Modeled after realistic rainfall distribution in a temperate zone
+            weatherIntensity = (float) MathUtil.gammaSample(1.2, level.random) / 4F;
+            Season season = getSeason();
+            if(level.random.nextFloat() < (season == Season.FALL ? 0.5F : 0.3F)) {
+                weatherIntensity = -Math.min(weatherIntensity, 1F);
+            }
+            else {
+                if(season == Season.SUMMER) weatherIntensity *= 0.8F;
+                else if(season == Season.SPRING) weatherIntensity *= 1.2F;
+                weatherIntensity = Math.min(weatherIntensity, 1F);
+            }
+            weatherDuration = 20 * 60 * 8 + level.random.nextInt(20 * 60 * 12);
         }
-        weatherDuration = 20 * 60 * 8 + level.random.nextInt(20 * 60 * 12);
         //Record weather data
         weatherHistory[historyIndex] = new WeatherData(weatherIntensity, weatherDuration);
         historyIndex = (historyIndex + 1) % HISTORY_LENGTH;

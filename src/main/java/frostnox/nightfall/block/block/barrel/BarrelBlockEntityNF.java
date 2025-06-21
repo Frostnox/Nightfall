@@ -3,7 +3,7 @@ package frostnox.nightfall.block.block.barrel;
 import frostnox.nightfall.Nightfall;
 import frostnox.nightfall.block.IHoldable;
 import frostnox.nightfall.block.block.MenuContainerBlockEntity;
-import frostnox.nightfall.data.recipe.SoakingRecipe;
+import frostnox.nightfall.data.recipe.BarrelRecipe;
 import frostnox.nightfall.world.inventory.ItemStackHandlerNF;
 import frostnox.nightfall.registry.forge.BlockEntitiesNF;
 import frostnox.nightfall.util.DataUtil;
@@ -28,6 +28,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -107,11 +108,12 @@ public class BarrelBlockEntityNF extends MenuContainerBlockEntity implements IHo
                     items.set(i, item);
                     if(inputSize == 0 && !item.isEmpty()) inputSize = item.getCount();
                 }
-                Optional<SoakingRecipe> newRecipe = level.getRecipeManager().getRecipeFor(SoakingRecipe.TYPE,
+                Optional<BarrelRecipe> newRecipe = level.getRecipeManager().getRecipeFor(BarrelRecipe.TYPE,
                         new RecipeWrapper(new ItemStackHandlerNF(items)), level);
                 activeRecipes.set(column, newRecipe.isPresent() ? newRecipe.get().getId() : null);
                 soakTicks.set(column, 0);
-                soakDurations.set(column, newRecipe.isPresent() ? (newRecipe.get().getSoakTime() * inputSize) : 1);
+                soakDurations.set(column, newRecipe.isPresent() ?
+                        (newRecipe.get().hasFixedSoakTime() ? newRecipe.get().getSoakTime() : (newRecipe.get().getSoakTime() * inputSize)) : 1);
             }
         };
     }
@@ -121,19 +123,21 @@ public class BarrelBlockEntityNF extends MenuContainerBlockEntity implements IHo
         for(int i = 0; i < MAX_RECIPES; i++) {
             ResourceLocation recipeLocation = entity.activeRecipes.get(i);
             if(recipeLocation != null) {
-                SoakingRecipe recipe = (SoakingRecipe) level.getRecipeManager().byKey(recipeLocation).orElseThrow();
-                int soakTicks = entity.soakTicks.getInt(i) + 1;
-                entity.soakTicks.set(i, soakTicks);
-                changed = true;
-                if(soakTicks >= entity.soakDurations.getInt(i)) {
-                    NonNullList<ItemStack> items = NonNullList.withSize(ROWS, ItemStack.EMPTY);
-                    for(int j = 0; j < ROWS; j++) {
-                        int slot = i + j * 3;
-                        items.set(j, entity.inventory.getStackInSlot(slot));
-                        entity.inventory.setStackInSlot(slot, ItemStack.EMPTY);
+                Optional<? extends Recipe<?>> recipe = level.getRecipeManager().byKey(recipeLocation);
+                if(recipe.isPresent()) {
+                    int soakTicks = entity.soakTicks.getInt(i) + 1;
+                    entity.soakTicks.set(i, soakTicks);
+                    changed = true;
+                    if(soakTicks >= entity.soakDurations.getInt(i)) {
+                        NonNullList<ItemStack> items = NonNullList.withSize(ROWS, ItemStack.EMPTY);
+                        for(int j = 0; j < ROWS; j++) {
+                            int slot = i + j * 3;
+                            items.set(j, entity.inventory.getStackInSlot(slot));
+                            entity.inventory.setStackInSlot(slot, ItemStack.EMPTY);
+                        }
+                        ItemStack item = ((BarrelRecipe) recipe.get()).assemble(new RecipeWrapper(new ItemStackHandlerNF(items)));
+                        entity.inventory.setStackInSlot(i, item);
                     }
-                    ItemStack item = recipe.assemble(new RecipeWrapper(new ItemStackHandlerNF(items)));
-                    entity.inventory.setStackInSlot(i, item);
                 }
             }
         }

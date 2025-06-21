@@ -14,7 +14,8 @@ public class BarrelScreen extends SimpleContainerScreen<StorageContainer> {
     public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "textures/gui/screen/barrel.png");
 
     public BarrelScreen(StorageContainer container, Inventory inventory, Component title) {
-        super(container, inventory, title);
+        super(container, inventory, title, 0, 10);
+        imageHeight = 186;
     }
 
     @Override
@@ -27,18 +28,19 @@ public class BarrelScreen extends SimpleContainerScreen<StorageContainer> {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, TEXTURE);
-        int x = leftPos + 62;
-        int y = topPos + 8;
+        int x = leftPos + 66;
+        int y = topPos + 9;
         stack.pushPose();
         RenderSystem.disableDepthTest();
         BarrelBlockEntityNF barrel = (BarrelBlockEntityNF) menu.entity;
         for(int i = 0; i < BarrelBlockEntityNF.MAX_RECIPES; i++) {
             int soakTicks = barrel.soakTicks.getInt(i);
             if(soakTicks > 0) {
-                for(int p = 0; p <= (int) ((float) soakTicks / barrel.soakDurations.getInt(i) * 4); p++) {
-                    blit(stack, x, y + 54 - (18 * p), 0, 166, 16, 16);
-                }
+                float progress = (float) soakTicks / barrel.soakDurations.getInt(i);
+                int u = (int) (progress * 6) * 8;
+                blit(stack, x, y, u, imageHeight, 8, 13, 256, 256);
             }
+            else blit(stack, x, y, 48, imageHeight, 8, 13, 256, 256);
             x += 18;
         }
         RenderSystem.enableDepthTest();

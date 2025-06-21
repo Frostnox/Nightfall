@@ -14,6 +14,10 @@ public abstract class SimpleContainerScreen<T extends AbstractContainerMenu> ext
         super(container, inventory, title);
     }
 
+    public SimpleContainerScreen(T container, Inventory inventory, Component title, int xOff, int yOff) {
+        super(container, inventory, title, xOff, yOff);
+    }
+
     public abstract ResourceLocation getTexture();
 
     public void innerRender(PoseStack stack, int mouseX, int mouseY, float partial) {

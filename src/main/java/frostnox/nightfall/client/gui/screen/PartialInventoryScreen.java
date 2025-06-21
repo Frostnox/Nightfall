@@ -17,9 +17,16 @@ public abstract class PartialInventoryScreen<T extends AbstractContainerMenu> ex
     public static final ResourceLocation INVENTORY_METAL_TEXTURE = ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "textures/gui/screen/partial_inventory_metal.png");
     public static final ResourceLocation INVENTORY_PAPER_TEXTURE = ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "textures/gui/screen/partial_inventory_paper.png");
     public static final int WIDTH = 176, HEIGHT = 90;
+    protected final int xOff, yOff;
 
     public PartialInventoryScreen(T pMenu, Inventory pPlayerInventory, Component pTitle) {
+        this(pMenu, pPlayerInventory, pTitle, 0, 0);
+    }
+
+    public PartialInventoryScreen(T pMenu, Inventory pPlayerInventory, Component pTitle, int xOff, int yOff) {
         super(pMenu, pPlayerInventory, pTitle);
+        this.xOff = xOff;
+        this.yOff = yOff;
     }
 
     protected ResourceLocation getInventoryTexture() {
@@ -31,8 +38,8 @@ public abstract class PartialInventoryScreen<T extends AbstractContainerMenu> ex
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, getInventoryTexture());
-        int x = leftPos + imageWidth / 2 - WIDTH / 2;
-        int y = topPos + imageHeight / 2 - 7;
+        int x = leftPos + imageWidth / 2 - WIDTH / 2 + xOff;
+        int y = topPos + imageHeight / 2 - 7 + yOff;
         blit(poseStack, x, y, 0, 0, WIDTH, HEIGHT, WIDTH, HEIGHT);
         //Expandable inventory
         for(int i = 0; i < AttributesNF.getInventoryCapacity(minecraft.player); i++) {

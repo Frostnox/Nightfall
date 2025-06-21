@@ -218,7 +218,7 @@ public class LanguageProviderNF extends LanguageProvider {
         add(Nightfall.MODID + ".cauldron", "Cauldron");
         add(Nightfall.MODID + ".crucible", "Crucible");
         add(Nightfall.MODID + ".held_tool", "Held Tool");
-        add(Nightfall.MODID + ".soaking", "Soaking");
+        add(Nightfall.MODID + ".barrel", "Barrel");
         addComponent(CauldronRecipe.UNIT, "part");
         addComponent(CauldronRecipe.UNITS, "parts");
         add(CauldronRecipe.MIN_PHRASE, "At least %s ");
