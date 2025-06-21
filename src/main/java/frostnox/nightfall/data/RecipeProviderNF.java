@@ -4,6 +4,7 @@ import frostnox.nightfall.block.*;
 import frostnox.nightfall.data.recipe.BowlCrushingRecipe;
 import frostnox.nightfall.data.recipe.CauldronRecipe;
 import frostnox.nightfall.data.recipe.HeldToolRecipe;
+import frostnox.nightfall.data.recipe.MixtureRecipe;
 import frostnox.nightfall.data.recipe.builder.*;
 import frostnox.nightfall.item.*;
 import frostnox.nightfall.registry.EntriesNF;
@@ -307,19 +308,28 @@ public class RecipeProviderNF extends RecipeProvider {
             }
         }
         SingleRecipeBuilder.base(ItemsNF.GLASS.get(), 1).input(TagsNF.SAND_ITEM).cookTime(20 * 3).saveCrucible(consumer);
+        SingleRecipeBuilder.base(ItemsNF.SALT.get(), 1).input(ItemsNF.SEAWATER.get()).cookTime(CauldronRecipe.COOK_TIME).saveCrucible(consumer);
 
         SoakingRecipeBuilder.base(ItemsNF.RAWHIDE.get(), 1).input(TagsNF.ANIMAL_HIDE_SMALL).input(ItemsNF.LIME.get()).input(ItemsNF.WATER.get())
-                .soakTime(DAY_LENGTH/2).requirement(EntriesNF.TANNING.getId()).save(consumer);
+                .soakTime(DAY_LENGTH / 2).requirement(EntriesNF.TANNING.getId()).save(consumer);
         SoakingRecipeBuilder.base(ItemsNF.RAWHIDE.get(), 2).input(TagsNF.ANIMAL_HIDE_MEDIUM).input(ItemsNF.LIME.get()).input(ItemsNF.WATER.get())
-                .soakTime(DAY_LENGTH/2).requirement(EntriesNF.TANNING.getId()).save(consumer);
+                .soakTime(DAY_LENGTH / 2).requirement(EntriesNF.TANNING.getId()).save(consumer);
         SoakingRecipeBuilder.base(ItemsNF.RAWHIDE.get(), 4).input(TagsNF.ANIMAL_HIDE_LARGE).input(ItemsNF.LIME.get()).input(ItemsNF.WATER.get())
-                .soakTime(DAY_LENGTH/2).requirement(EntriesNF.TANNING.getId()).save(consumer);
+                .soakTime(DAY_LENGTH / 2).requirement(EntriesNF.TANNING.getId()).save(consumer);
         SoakingRecipeBuilder.base(ItemsNF.LEATHER.get(), 2).input(TagsNF.RAWHIDE_SMALL).input(TagsNF.TANNIN).input(ItemsNF.WATER.get())
                 .soakTime(DAY_LENGTH).requirement(EntriesNF.TANNING.getId()).save(consumer);
         SoakingRecipeBuilder.base(ItemsNF.LEATHER.get(), 4).input(TagsNF.RAWHIDE_MEDIUM).input(TagsNF.TANNIN).input(ItemsNF.WATER.get())
                 .soakTime(DAY_LENGTH).requirement(EntriesNF.TANNING.getId()).save(consumer);
         SoakingRecipeBuilder.base(ItemsNF.LEATHER.get(), 8).input(TagsNF.RAWHIDE_LARGE).input(TagsNF.TANNIN).input(ItemsNF.WATER.get())
                 .soakTime(DAY_LENGTH).requirement(EntriesNF.TANNING.getId()).save(consumer);
+        SoakingRecipeBuilder.base(ItemsNF.CURED_GAME.get(), 1).input(ItemsNF.SALT.get()).input(ItemsNF.RAW_GAME.get())
+                .soakTime(DAY_LENGTH).requirement(EntriesNF.CURING.getId()).save(consumer);
+        SoakingRecipeBuilder.base(ItemsNF.CURED_VENISON.get(), 1).input(ItemsNF.SALT.get()).input(ItemsNF.RAW_VENISON.get())
+                .soakTime(DAY_LENGTH * 2).requirement(EntriesNF.CURING.getId()).save(consumer);
+        SoakingRecipeBuilder.base(ItemsNF.CURED_POULTRY.get(), 1).input(ItemsNF.SALT.get()).input(ItemsNF.RAW_POULTRY.get())
+                .soakTime(DAY_LENGTH).requirement(EntriesNF.CURING.getId()).save(consumer);
+        SoakingRecipeBuilder.base(ItemsNF.CURED_JELLYFISH.get(), 1).input(ItemsNF.SALT.get()).input(ItemsNF.RAW_JELLYFISH.get())
+                .soakTime(DAY_LENGTH / 2).requirement(EntriesNF.CURING.getId()).save(consumer);
 
         for(TieredItemMaterial material : ItemsNF.ARMAMENT_HEADS.keySet()) {
             Metal metal = (Metal) material.getMetal();

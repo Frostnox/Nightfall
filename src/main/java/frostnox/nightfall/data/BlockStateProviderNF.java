@@ -16,6 +16,7 @@ import frostnox.nightfall.block.block.tree.*;
 import frostnox.nightfall.item.Armament;
 import frostnox.nightfall.registry.forge.BlocksNF;
 import it.unimi.dsi.fastutil.Pair;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.Direction;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
@@ -991,8 +992,15 @@ public class BlockStateProviderNF extends BlockStateProvider {
             else {
                 List<RegistryObject<Block>> ores;
                 if(type == Stone.MOONSTONE) ores = List.of(BlocksNF.METEORITE_ORE);
-                else ores = List.of(BlocksNF.TIN_ORES.get(type), BlocksNF.COPPER_ORES.get(type), BlocksNF.AZURITE_ORES.get(type), BlocksNF.HEMATITE_ORES.get(type),
-                        BlocksNF.COAL_ORES.get(type));
+                else {
+                    ores = new ObjectArrayList<>();
+                    if(BlocksNF.TIN_ORES.containsKey(type)) ores.add(BlocksNF.TIN_ORES.get(type));
+                    if(BlocksNF.COPPER_ORES.containsKey(type)) ores.add(BlocksNF.COPPER_ORES.get(type));
+                    if(BlocksNF.AZURITE_ORES.containsKey(type)) ores.add(BlocksNF.AZURITE_ORES.get(type));
+                    if(BlocksNF.HEMATITE_ORES.containsKey(type)) ores.add(BlocksNF.HEMATITE_ORES.get(type));
+                    if(BlocksNF.COAL_ORES.containsKey(type)) ores.add(BlocksNF.COAL_ORES.get(type));
+                    if(BlocksNF.HALITE_ORES.containsKey(type)) ores.add(BlocksNF.HALITE_ORES.get(type));
+                }
                 if(type == Stone.SLATE || type == Stone.DEEPSLATE || type == Stone.SANDSTONE || type == Stone.SUNSCHIST || type == Stone.AURGROT) {
                     mirroredColumnBlock(BlocksNF.STONE_BLOCKS.get(type).get());
                     for(var ore : ores) mirroredColumnBlock(ore.get());

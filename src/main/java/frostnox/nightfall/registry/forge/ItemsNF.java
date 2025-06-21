@@ -89,8 +89,8 @@ public class ItemsNF {
     public static final CreativeModeTab CONSUMABLES_TAB = new CreativeModeTab(10, Nightfall.MODID + ".consumables") {
         @Override
         public ItemStack makeIcon() {
-            return new ItemStack(Items.BARRIER);
-        } //TODO: Replace later
+            return new ItemStack(ItemsNF.BANDAGE.get());
+        }
     };
     static {
         CreativeModeTab.TAB_HOTBAR = new CreativeModeTab(4, "hotbar") {
@@ -143,6 +143,7 @@ public class ItemsNF {
     public static final RegistryObject<Item> YARROW_POWDER = ITEMS.register("yarrow_powder", () -> new Item(ingredient()));
     public static final RegistryObject<Item> SULFUR = register("sulfur", () -> new SulfurItem(ingredient()));
     public static final RegistryObject<Item> LIME = register("lime", () -> new LimeItem(ingredient()));
+    public static final RegistryObject<Item> SALT = ITEMS.register("salt", () -> new SaltItem(ingredient()));
     public static final RegistryObject<Item> TIN_CHUNK = ITEMS.register("tin_chunk", () -> new Item(ingredient().stacksTo(16)));
     public static final RegistryObject<Item> COPPER_CHUNK = ITEMS.register("copper_chunk", () -> new Item(ingredient().stacksTo(16)));
     public static final RegistryObject<BuildingMaterialItem> AZURITE_CHUNK = ITEMS.register("azurite_chunk", () -> new BuildingMaterialItem(ingredient().stacksTo(16)));
@@ -177,7 +178,7 @@ public class ItemsNF {
     public static final RegistryObject<BowItemNF> TWISTED_BOW = register("twisted_bow", () -> new BowItemNF(
             ActionsNF.TWISTED_BOW_SHOOT, ItemTags.ARROWS, armament().durability(240)));
     public static final RegistryObject<Item> SILK = ITEMS.register("silk", () -> new Item(ingredient()));
-    public static final RegistryObject<Item> RAW_JELLYFISH = ITEMS.register("raw_jellyfish", () -> new Item(ingredient()));
+    public static final RegistryObject<Item> RAW_JELLYFISH = ITEMS.register("raw_jellyfish", () -> new Item(ingredient().stacksTo(4)));
     //Food
     public static final RegistryObject<Item> POTATO = ITEMS.register("potato", () -> new Item(new Item.Properties().food(
             food(2, 0F)).tab(FOOD_TAB).stacksTo(4)));
@@ -187,11 +188,11 @@ public class ItemsNF {
             food(3, 0.2F)).tab(FOOD_TAB).stacksTo(4)));
     public static final RegistryObject<Item> ROASTED_CARROT = ITEMS.register("roasted_carrot", () -> new Item(new Item.Properties().food(
             food(3, 0.2F)).tab(FOOD_TAB).stacksTo(4)));
-    public static final RegistryObject<Item> RAW_GAME = ITEMS.register("raw_game", () -> new Item(new Item.Properties().food(
+    public static final RegistryObject<Item> RAW_GAME = ITEMS.register("raw_game", () -> new FoodItem(48, new Item.Properties().food(
             meat(3, 0.2F)).tab(FOOD_TAB).stacksTo(4)));
-    public static final RegistryObject<Item> RAW_VENISON = ITEMS.register("raw_venison", () -> new Item(new Item.Properties().food(
+    public static final RegistryObject<Item> RAW_VENISON = ITEMS.register("raw_venison", () -> new FoodItem(48, new Item.Properties().food(
             meat(4, 0.25F)).tab(FOOD_TAB).stacksTo(4)));
-    public static final RegistryObject<Item> RAW_POULTRY = ITEMS.register("raw_poultry", () -> new Item(new Item.Properties().food(
+    public static final RegistryObject<Item> RAW_POULTRY = ITEMS.register("raw_poultry", () -> new FoodItem(48, new Item.Properties().food(
             meat(4, 0.25F)).tab(FOOD_TAB).stacksTo(4)));
     public static final RegistryObject<Item> COOKED_GAME = ITEMS.register("cooked_game", () -> new Item(new Item.Properties().food(
             meat(4, 0.3F)).tab(FOOD_TAB).stacksTo(4)));
@@ -199,6 +200,14 @@ public class ItemsNF {
             meat(5, 0.35F)).tab(FOOD_TAB).stacksTo(4)));
     public static final RegistryObject<Item> COOKED_POULTRY = ITEMS.register("cooked_poultry", () -> new Item(new Item.Properties().food(
             meat(5, 0.35F)).tab(FOOD_TAB).stacksTo(4)));
+    public static final RegistryObject<Item> CURED_GAME = ITEMS.register("cured_game", () -> new Item(new Item.Properties().food(
+            meat(4, 0.3F)).tab(FOOD_TAB).stacksTo(8)));
+    public static final RegistryObject<Item> CURED_VENISON = ITEMS.register("cured_venison", () -> new Item(new Item.Properties().food(
+            meat(5, 0.35F)).tab(FOOD_TAB).stacksTo(8)));
+    public static final RegistryObject<Item> CURED_POULTRY = ITEMS.register("cured_poultry", () -> new Item(new Item.Properties().food(
+            meat(5, 0.35F)).tab(FOOD_TAB).stacksTo(8)));
+    public static final RegistryObject<Item> CURED_JELLYFISH = ITEMS.register("cured_jellyfish", () -> new FoodItem(48, new Item.Properties().food(
+            meat(1, 0F)).tab(FOOD_TAB).stacksTo(8)));
     public static final RegistryObject<Item> BERRIES = ITEMS.register("berries", () -> new Item(new Item.Properties().food(
             foodBuilder(1, 0F).build()).tab(FOOD_TAB).stacksTo(8)));
     public static final RegistryObject<Item> APPLE = ITEMS.register("apple", () -> new Item(new Item.Properties().food(
@@ -367,6 +376,8 @@ public class ItemsNF {
             stone -> register(BlocksNF.HEMATITE_ORES.get(stone), NATURAL_TAB));
     public static final Map<Stone, RegistryObject<BlockItemNF>> COAL_ORES = DataUtil.mapEnum(Stone.class, stone -> !BlocksNF.COAL_ORES.containsKey(stone),
             stone -> register(BlocksNF.COAL_ORES.get(stone), NATURAL_TAB));
+    public static final Map<Stone, RegistryObject<BlockItemNF>> HALITE_ORES = DataUtil.mapEnum(Stone.class, stone -> !BlocksNF.HALITE_ORES.containsKey(stone),
+            stone -> register(BlocksNF.HALITE_ORES.get(stone), NATURAL_TAB));
     public static final RegistryObject<BlockItemNF> METEORITE_ORE = register(BlocksNF.METEORITE_ORE, NATURAL_TAB);
 
     public static final RegistryObject<BlockItemNF> OBSIDIAN = register(BlocksNF.OBSIDIAN, NATURAL_TAB);
@@ -536,11 +547,11 @@ public class ItemsNF {
             AttributesNF.POISON_RESISTANCE, new AttributeModifier(new UUID(RANDOM.nextLong(), RANDOM.nextLong()), "mask_poison_resistance",
                     0.2, AttributeModifier.Operation.ADDITION)), new Item.Properties().tab(UTILITIES_TAB).stacksTo(1)));
     public static final RegistryObject<ActionableItem> FIBER_BANDAGE = ITEMS.register("fiber_bandage", () -> new ActionableItem(
-            ActionsNF.FIBER_BANDAGE_USE, new Item.Properties().tab(UTILITIES_TAB).stacksTo(16)));
+            ActionsNF.FIBER_BANDAGE_USE, new Item.Properties().tab(CONSUMABLES_TAB).stacksTo(16)));
     public static final RegistryObject<ActionableItem> BANDAGE = ITEMS.register("bandage", () -> new ActionableItem(
-            ActionsNF.BANDAGE_USE, new Item.Properties().tab(UTILITIES_TAB).stacksTo(16)));
+            ActionsNF.BANDAGE_USE, new Item.Properties().tab(CONSUMABLES_TAB).stacksTo(16)));
     public static final RegistryObject<ActionableItem> MEDICINAL_BANDAGE = ITEMS.register("medicinal_bandage", () -> new ActionableItem(
-            ActionsNF.MEDICINAL_BANDAGE_USE, new Item.Properties().tab(UTILITIES_TAB).stacksTo(16)));
+            ActionsNF.MEDICINAL_BANDAGE_USE, new Item.Properties().tab(CONSUMABLES_TAB).stacksTo(16)));
     private static final float[] SHIELD_DEFENSE = new float[]{16F, 16F, 16F, 2F, 4F, 4F};
     private static final float[] SHIELD_ABSORPTION = new float[]{0.05F, 0.05F, 0.05F, 0F, 0F, 0F};
     public static final RegistryObject<ShieldItemNF> IRONWOOD_SHIELD = ITEMS.register("ironwood_shield", () -> new ShieldItemNF(SHIELD_DEFENSE, SHIELD_ABSORPTION,

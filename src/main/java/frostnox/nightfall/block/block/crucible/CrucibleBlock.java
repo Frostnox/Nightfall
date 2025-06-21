@@ -7,6 +7,7 @@ import frostnox.nightfall.block.TieredHeat;
 import frostnox.nightfall.block.block.WaterloggedEntityBlock;
 import frostnox.nightfall.entity.ai.pathfinding.NodeManager;
 import frostnox.nightfall.entity.ai.pathfinding.NodeType;
+import frostnox.nightfall.item.item.FilledBucketItem;
 import frostnox.nightfall.registry.forge.BlockEntitiesNF;
 import frostnox.nightfall.util.MathUtil;
 import net.minecraft.ChatFormatting;
@@ -97,7 +98,14 @@ public class CrucibleBlock extends WaterloggedEntityBlock implements ICustomPath
         if(level.isClientSide()) return InteractionResult.SUCCESS;
         else {
             if(level.getBlockEntity(pos) instanceof CrucibleBlockEntity blockEntity) {
-                NetworkHooks.openGui((ServerPlayer) player, blockEntity, pos);
+                //Try placing water directly before opening gui
+                ServerPlayer serverPlayer = (ServerPlayer) player;
+                ItemStack item = player.getItemInHand(hand);
+                if(item.getItem() instanceof FilledBucketItem bucket) {
+                    blockEntity.createMenu(serverPlayer.containerCounter, player.getInventory()).quickMoveStack(player, 27 + player.getInventory().selected);
+                    if(item.isEmpty()) bucket.playEmptySound(null, level, pos);
+                }
+                else NetworkHooks.openGui((ServerPlayer) player, blockEntity, pos);
                 return InteractionResult.SUCCESS;
             }
         }

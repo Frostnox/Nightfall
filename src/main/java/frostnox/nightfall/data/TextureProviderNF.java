@@ -205,8 +205,15 @@ public class TextureProviderNF extends TextureProvider {
                 replaceImagePalette(block(BlocksNF.STONE_BLOCKS.get(type)), block(BlocksNF.STONE_BLOCKS.get(type)), RAW_STONE_PALETTES.get(type));
                 List<RegistryObject<Block>> ores;
                 if(type == Stone.MOONSTONE) ores = List.of(BlocksNF.METEORITE_ORE);
-                else ores = List.of(BlocksNF.TIN_ORES.get(type), BlocksNF.COPPER_ORES.get(type), BlocksNF.AZURITE_ORES.get(type), BlocksNF.HEMATITE_ORES.get(type),
-                        BlocksNF.COAL_ORES.get(type));
+                else {
+                    ores = new ObjectArrayList<>();
+                    if(BlocksNF.TIN_ORES.containsKey(type)) ores.add(BlocksNF.TIN_ORES.get(type));
+                    if(BlocksNF.COPPER_ORES.containsKey(type)) ores.add(BlocksNF.COPPER_ORES.get(type));
+                    if(BlocksNF.AZURITE_ORES.containsKey(type)) ores.add(BlocksNF.AZURITE_ORES.get(type));
+                    if(BlocksNF.HEMATITE_ORES.containsKey(type)) ores.add(BlocksNF.HEMATITE_ORES.get(type));
+                    if(BlocksNF.COAL_ORES.containsKey(type)) ores.add(BlocksNF.COAL_ORES.get(type));
+                    if(BlocksNF.HALITE_ORES.containsKey(type)) ores.add(BlocksNF.HALITE_ORES.get(type));
+                }
                 for(var ore : ores) {
                     String metal = ore.getId().getPath().replace(type.getName() + "_", "");
                     replaceImagePalette(tempBlock(ore, "_overlay"), block(metal + "_overlay"), DARK_STONE_PALETTES.get(type));

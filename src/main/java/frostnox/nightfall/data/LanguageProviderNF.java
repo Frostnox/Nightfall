@@ -333,6 +333,7 @@ public class LanguageProviderNF extends LanguageProvider {
 
         add("nightfall.block.fall", "Block falls");
         addSound(SoundsNF.SIZZLE, "Something sizzles");
+        addSound(SoundsNF.ICE_CRACKLE, "Ice crackles");
         addSound(SoundsNF.ANVIL_STRIKE, "Tool strikes anvil piece");
         addSound(SoundsNF.WOODEN_BOWL_CRUSH, "Something crushes in wooden bowl");
         addSound(SoundsNF.CRUCIBLE_POUR, "Metal pours from crucible");

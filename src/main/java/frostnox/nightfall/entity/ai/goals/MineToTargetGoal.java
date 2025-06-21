@@ -8,6 +8,7 @@ import frostnox.nightfall.entity.ai.pathfinding.Node;
 import frostnox.nightfall.network.NetworkHandler;
 import frostnox.nightfall.network.message.world.DigBlockToClient;
 import frostnox.nightfall.registry.ActionsNF;
+import frostnox.nightfall.util.LevelUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -71,7 +72,7 @@ public class MineToTargetGoal extends Goal {
         float progress = chunkData.getBreakProgress(blockPos) + entity.getItemBySlot(EquipmentSlot.MAINHAND).getDestroySpeed(entity.level.getBlockState(blockPos))
                 / entity.level.getBlockState(blockPos).getDestroySpeed(entity.level, blockPos) / 30 * 4;
         if(progress >= 1) {
-            FakePlayer player = FakePlayerFactory.get((ServerLevel) entity.level, new GameProfile(UUID.fromString("f8e91fce-7ddd-47d3-a0fe-d4992193510f"), "fakeMiningPlayer"));
+            FakePlayer player = FakePlayerFactory.get((ServerLevel) entity.level, LevelUtil.FAKE_PROFILE);
             entity.level.getBlockState(blockPos).getBlock().playerDestroy(entity.level, player, blockPos, entity.level.getBlockState(blockPos), entity.level.getBlockEntity(blockPos), entity.getItemBySlot(EquipmentSlot.MAINHAND));
             entity.level.getBlockState(blockPos).onDestroyedByPlayer(entity.level, blockPos, player, true, entity.level.getFluidState(blockPos));
             chunkData.removeBreakProgress(blockPos);

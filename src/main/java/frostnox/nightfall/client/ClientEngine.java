@@ -980,11 +980,11 @@ public class ClientEngine {
     }
 
     public void doEntryNotification(ResourceLocation id) {
-        if(getEntry(id) != null) {
+        if(EntriesNF.contains(id)) {
             IPlayerData capP = PlayerData.get(mc.player);
-            if(capP.hasEntry(getCategory(id).unlockEntryId())) {
-                Entry entry = EntriesNF.get(id);
-                ResourceLocation notifId = entry.isAddendum ? entry.parents.get(0).getId() : entry.getRegistryName();
+            Entry entry = EntriesNF.get(id);
+            ResourceLocation notifId = entry.isAddendum ? entry.parents.get(0).getId() : entry.getRegistryName();
+            if(capP.hasEntry(getCategory(notifId).unlockEntryId())) {
                 capP.addEntryNotification(notifId);
                 NetworkHandler.toServer(new EntryNotificationToServer(notifId, false));
                 mc.getToasts().addToast(new EntryToast(entry));

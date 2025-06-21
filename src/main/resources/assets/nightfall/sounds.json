@@ -22,6 +22,10 @@
     "subtitle": "nightfall.block.sizzle",
     "sounds": ["nightfall:block/sizzle_0", "nightfall:block/sizzle_1", "nightfall:block/sizzle_2"]
   },
+  "block.ice_crackle": {
+    "subtitle": "nightfall.block.ice_crackle",
+    "sounds": ["nightfall:block/ice_crackle_0", "nightfall:block/ice_crackle_1", "nightfall:block/ice_crackle_2"]
+  },
   "block.anvil.strike": {
     "subtitle": "nightfall.block.anvil.strike",
     "sounds": ["nightfall:block/anvil/strike_0", "nightfall:block/anvil/strike_1", "nightfall:block/anvil/strike_2"]

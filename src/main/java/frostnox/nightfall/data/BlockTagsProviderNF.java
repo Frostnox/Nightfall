@@ -181,6 +181,8 @@ public class BlockTagsProviderNF extends BlockTagsProvider {
         tag(TagsNF.SHATTER_ON_FALL).addTags(Tags.Blocks.GLASS, BlockTags.ICE);
         tag(TagsNF.SHATTER_ON_FALL).add(BlocksNF.POT.get());
         for(var block : BlocksNF.STRANGE_SOILS.values()) tag(TagsNF.SHATTER_ON_FALL).add(block.get());
+        tag(TagsNF.SALT_MELTS).add(BlocksNF.ICE.get());
+        tag(TagsNF.SALT_MELTS).addTag(BlockTags.SNOW);
 
         for(var block : BlocksNF.ROCK_CLUSTERS.values()) tag(TagsNF.FALLING_DESTROYABLE).add(block.get());
         tag(TagsNF.FALLING_DESTROYABLE).add(BlocksNF.TORCH.get(), BlocksNF.TORCH_UNLIT.get(), BlocksNF.WALL_TORCH.get(), BlocksNF.WALL_TORCH_UNLIT.get(),

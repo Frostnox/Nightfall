@@ -67,6 +67,8 @@ public class EntriesNF {
             new Puzzle(List.of(),
                     List.of(Ingredient.of(TagsNF.ANIMAL_HIDE), Ingredient.of(ItemsNF.WATER.get()), Ingredient.of(ItemsNF.LIME.get()), Ingredient.of(TagsNF.TANNIN)),
                     List.of())));
+    public static final RegistryObject<Entry> CURING = ENTRIES.register("curing",
+            () -> Entry.createAddendum(List.of(TANNING), knowledge(ItemsNF.SALT), knowledge(TagsNF.CURABLE_FOOD)));
     public static final RegistryObject<Entry> CAMPFIRE = ENTRIES.register("campfire", () -> Entry.create(
             List.of(TOOLS),
             Set.of(KnowledgeNF.LOG_TAG),

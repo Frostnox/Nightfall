@@ -5,8 +5,10 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import frostnox.nightfall.Nightfall;
 import frostnox.nightfall.client.gui.screen.ScreenGuiComponent;
 import frostnox.nightfall.data.recipe.IEncyclopediaRecipe;
+import frostnox.nightfall.item.item.FilledBucketItem;
 import frostnox.nightfall.network.NetworkHandler;
 import frostnox.nightfall.network.message.GenericToServer;
+import frostnox.nightfall.registry.forge.FluidsNF;
 import frostnox.nightfall.util.RenderUtil;
 import frostnox.nightfall.world.inventory.PlayerInventoryContainer;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -55,6 +57,7 @@ public class RecipeSearchComponent extends ScreenGuiComponent {
         startIndex = 0;
         allItems.clear();
         ItemStack searchItem = ((PlayerInventoryContainer) screen.getMenu()).getSearchItem();
+        ItemStack altSearchItem = searchItem.getItem() instanceof FilledBucketItem bucket ? new ItemStack(FluidsNF.getAsItem(bucket.getFluid())) : ItemStack.EMPTY;
         boolean checkIngredient = !searchItem.isEmpty();
         for(Iterator<Recipe<?>> recipes = searchableRecipes.stream().iterator(); recipes.hasNext();) {
             Recipe<?> recipe = recipes.next();
@@ -62,7 +65,7 @@ public class RecipeSearchComponent extends ScreenGuiComponent {
             if(checkIngredient) {
                 boolean skip = true;
                 for(Ingredient ingredient : recipe.getIngredients()) {
-                    if(ingredient.test(searchItem)) {
+                    if(ingredient.test(searchItem) || (!altSearchItem.isEmpty() && ingredient.test(altSearchItem))) {
                         skip = false;
                         break;
                     }

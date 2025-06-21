@@ -92,7 +92,6 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
         copy(BlockTags.COPPER_ORES, ItemTags.COPPER_ORES);
         copy(BlockTags.DIRT, ItemTags.DIRT);
         copy(BlockTags.TERRACOTTA, ItemTags.TERRACOTTA);
-        copy(BlockTags.STANDING_SIGNS, ItemTags.SIGNS);
 
         tag(TagsNF.ACCESSORY_FACE).add(ItemsNF.MASK.get());
         tag(TagsNF.ACCESSORY_NECK).add(ItemsNF.WARDING_CHARM.get());
@@ -105,6 +104,7 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
         tag(TagsNF.LUMBER_TANNIN).add(ItemsNF.LOGS.get(Tree.OAK).get(), ItemsNF.LOGS.get(Tree.LARCH).get(), ItemsNF.LOGS.get(Tree.BIRCH).get(), ItemsNF.LOGS.get(Tree.IRONWOOD).get(), ItemsNF.LOGS.get(Tree.ACACIA).get());
         for(var item : ItemsNF.BARRELS.values()) tag(Tags.Items.BARRELS_WOODEN).add(item.get());
         for(var item : ItemsNF.CHESTS.values()) tag(Tags.Items.CHESTS_WOODEN).add(item.get());
+        for(var item : ItemsNF.PLANK_SIGNS.values()) tag(ItemTags.SIGNS).add(item.get());
 
         for(Metal metal : ItemsNF.INGOTS.keySet()) tag(metal.getTag()).add(ItemsNF.INGOTS.get(metal).get());
         for(TieredItemMaterial material : ItemsNF.ARMAMENT_HEADS.keySet()) {
@@ -238,11 +238,13 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
         tag(TagsNF.RAWHIDE_SMALL).add(ItemsNF.RAWHIDE.get());
         tag(TagsNF.FLETCHING).add(ItemsNF.COCKATRICE_FEATHER.get());
         tag(TagsNF.COOKED_MEAT).add(ItemsNF.COOKED_GAME.get(), ItemsNF.COOKED_POULTRY.get(), ItemsNF.COOKED_VENISON.get());
+        tag(TagsNF.CURED_MEAT).add(ItemsNF.CURED_GAME.get(), ItemsNF.CURED_POULTRY.get(), ItemsNF.CURED_VENISON.get());
+        tag(TagsNF.CURABLE_FOOD).add(ItemsNF.RAW_GAME.get(), ItemsNF.RAW_VENISON.get(), ItemsNF.RAW_POULTRY.get(), ItemsNF.RAW_JELLYFISH.get());
         tag(TagsNF.COOKED_VEGETABLE).add(ItemsNF.ROASTED_CARROT.get(), ItemsNF.ROASTED_POTATO.get());
         tag(ItemTags.ARROWS).add(ItemsNF.FLINT_ARROW.get(), ItemsNF.BONE_ARROW.get(), ItemsNF.RUSTED_ARROW.get());
         for(var arrow : ItemsNF.METAL_ARROWS.values()) tag(ItemTags.ARROWS).add(arrow.get());
-        tag(TagsNF.MEAT).add(ItemsNF.RAW_GAME.get(), ItemsNF.RAW_VENISON.get(), ItemsNF.RAW_POULTRY.get(), ItemsNF.COOKED_GAME.get(),
-                ItemsNF.COOKED_VENISON.get(), ItemsNF.COOKED_POULTRY.get());
+        tag(TagsNF.MEAT).add(ItemsNF.RAW_GAME.get(), ItemsNF.RAW_VENISON.get(), ItemsNF.RAW_POULTRY.get());
+        tag(TagsNF.MEAT).addTags(TagsNF.COOKED_MEAT, TagsNF.CURED_MEAT);
         tag(TagsNF.VEGETABLE).add(ItemsNF.POTATO.get(), ItemsNF.CARROT.get(), ItemsNF.ROASTED_POTATO.get(), ItemsNF.ROASTED_CARROT.get());
         tag(TagsNF.FRUIT).add(ItemsNF.BERRIES.get(), ItemsNF.APPLE.get(), ItemsNF.COCONUT_HALF.get(), ItemsNF.COCOA_POD.get());
         tag(TagsNF.GRAIN);
@@ -267,6 +269,8 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
         copy(TagsNF.WOODEN_SHELVES, TagsNF.WOODEN_SHELVES_ITEM);
         copy(TagsNF.WOODEN_BARRELS, TagsNF.WOODEN_BARRELS_ITEM);
         copy(TagsNF.WOODEN_FENCE_GATES, TagsNF.WOODEN_FENCE_GATES_ITEM);
+        copy(TagsNF.CHAIRS, TagsNF.CHAIRS_ITEM);
+        copy(TagsNF.ITEM_FRAMES, TagsNF.ITEM_FRAMES_ITEM);
         copy(TagsNF.ANVILS, TagsNF.ANVILS_ITEM);
         copy(TagsNF.METAL_ANVILS, TagsNF.METAL_ANVILS_ITEM);
         copy(TagsNF.METAL_BLOCKS, TagsNF.METAL_BLOCKS_ITEM);
@@ -340,7 +344,8 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
                 TagsNF.METAL_BLOCKS_ITEM, TagsNF.WIRES, TagsNF.PLATES, TagsNF.CHAINMAIL, TagsNF.SCALES, TagsNF.BILLETS, TagsNF.ADZE_HEAD, TagsNF.AXE_HEAD, TagsNF.CHISEL_HEAD,
                 TagsNF.DAGGER_HEAD, TagsNF.MACE_HEAD, TagsNF.PICKAXE_HEAD, TagsNF.SABRE_HEAD, TagsNF.SHOVEL_HEAD, TagsNF.SICKLE_HEAD, TagsNF.SPEAR_HEAD,
                 TagsNF.SWORD_HEAD, TagsNF.ADZE, TagsNF.AXE, TagsNF.CHISEL, TagsNF.DAGGER, TagsNF.HAMMER, TagsNF.MACE, TagsNF.PICKAXE, TagsNF.SABRE, TagsNF.SICKLE, TagsNF.SHOVEL,
-                TagsNF.SPEAR, TagsNF.SWORD, TagsNF.BOW, TagsNF.SHIELD, TagsNF.NATIVE_METAL, TagsNF.NATIVE_METAL_INGOT, TagsNF.LUMBER_TANNIN);
+                TagsNF.SPEAR, TagsNF.SWORD, TagsNF.BOW, TagsNF.SHIELD, TagsNF.NATIVE_METAL, TagsNF.NATIVE_METAL_INGOT, TagsNF.LUMBER_TANNIN, TagsNF.CURABLE_FOOD, TagsNF.CURED_MEAT,
+                ItemTags.SIGNS, TagsNF.CHAIRS_ITEM, TagsNF.ITEM_FRAMES_ITEM, ItemTags.BOATS);
         tag(TagsNF.RECIPE_GROUP).addTags(TagsNF.SURVIVOR_PLATE_PIECES.values().toArray(TagKey[]::new));
         tag(TagsNF.RECIPE_GROUP).addTags(TagsNF.SURVIVOR_SCALE_PIECES.values().toArray(TagKey[]::new));
         tag(TagsNF.RECIPE_GROUP).addTags(TagsNF.SURVIVOR_CHAINMAIL_PIECES.values().toArray(TagKey[]::new));

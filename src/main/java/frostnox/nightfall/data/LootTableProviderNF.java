@@ -187,6 +187,9 @@ public class LootTableProviderNF extends LootTableProvider {
             for(var block : BlocksNF.COAL_ORES.values()) {
                 dropOtherPerception(block.get(), ItemsNF.COAL.get(), 1, 1, 0.2F, 0.02F, 1);
             }
+            for(var block : BlocksNF.HALITE_ORES.values()) {
+                dropOtherPerception(block.get(), ItemsNF.SALT.get(), 3, 1, 0.5F, 0.05F, 1);
+            }
             dropOthersPerception(BlocksNF.METEORITE_ORE.get(), ItemsNF.METEORITE_CHUNK.get(), 1,
                     ItemsNF.METEORITE_NUGGET.get(), 1, 0.2F, 0.02F, 3);
             dropOtherPerception(BlocksNF.OBSIDIAN.get(), ItemsNF.OBSIDIAN_SHARD.get(), 2, 1, 0.5F, 0.05F, 1);

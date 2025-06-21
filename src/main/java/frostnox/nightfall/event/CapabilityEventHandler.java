@@ -258,7 +258,7 @@ public class CapabilityEventHandler {
 
         NetworkHandler.toClient(player, new ActionTrackerToClient(capA.writeNBT(), player.getId()));
         NetworkHandler.toClient(player, new PlayerDataToClient(capP.writeNBT(), player.getId()));
-        if(capP.needsAttributeSelection() && !player.canUseGameMasterBlocks()) {
+        if(capP.needsAttributeSelection() && !player.canUseGameMasterBlocks() && !player.isSpectator()) {
             NetworkHandler.toClient(player, new GenericEntityToClient(NetworkHandler.Type.OPEN_ATTRIBUTE_SELECTION_SCREEN_CLIENT, player.getId()));
         }
     }

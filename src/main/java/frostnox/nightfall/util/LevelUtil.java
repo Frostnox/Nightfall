@@ -1,5 +1,6 @@
 package frostnox.nightfall.util;
 
+import com.mojang.authlib.GameProfile;
 import com.mojang.math.Vector3d;
 import frostnox.nightfall.block.*;
 import frostnox.nightfall.capability.*;
@@ -71,6 +72,7 @@ import javax.annotation.Nullable;
 import java.awt.*;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.function.Predicate;
 
 public class LevelUtil {
@@ -81,6 +83,7 @@ public class LevelUtil {
     public static final Direction[] PHYSICS_DIRECTIONS = new Direction[] {Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.UP};
     public static final Direction[] HORIZONTAL_DIRECTIONS = new Direction[] {Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST};
     public static final BlockPos NULL_POS = new BlockPos(0, -32768, 0);
+    public static final GameProfile FAKE_PROFILE = new GameProfile(UUID.fromString("f8e91fce-7ddd-47d3-a0fe-d4992193510f"), "fakeNightfallPlayer");
     public static final double UNDEAD_MIN_SPAWN_DIST_SQR = 24D * 24D;
     public static final double UNDEAD_MAX_SPAWN_DIST_SQR = 128 * 128;
     public static final long MORNING_TIME = 0L;

@@ -80,6 +80,7 @@ public class TagsNF {
     public static final TagKey<Block> MINEABLE_WITH_MAUL = blockTag("mineable_with_maul");
     public static final TagKey<Block> FALLING_DESTROYABLE = blockTag("falling_destroyable");
     public static final TagKey<Block> SHATTER_ON_FALL = blockTag("shatter_on_fall");
+    public static final TagKey<Block> SALT_MELTS = blockTag("salt_melts");
     public static final TagKey<Block> UNSTABLE_SUPPORT_HORIZONTAL = blockTag("unstable_support_horizontal");
     public static final TagKey<Block> HAS_PHYSICS = blockTag("support/has_physics");
     public static final TagKey<Block> FLOATS = blockTag("support/floats");
@@ -212,6 +213,8 @@ public class TagsNF {
     public static final TagKey<Item> CRUSHABLE_TO_LIME = itemTag("crushable_to_lime");
     public static final TagKey<Item> FLETCHING = itemTag("fletching");
     public static final TagKey<Item> COOKED_MEAT = itemTag("cooked_meat");
+    public static final TagKey<Item> CURED_MEAT = itemTag("cured_meat");
+    public static final TagKey<Item> CURABLE_FOOD = itemTag("curable_food");
     public static final TagKey<Item> COOKED_VEGETABLE = itemTag("cooked_vegetable");
     public static final TagKey<Item> ARMOR_STAND = itemTag("armor_stand");
     public static final TagKey<Item> WIRES = itemTag("wires");
@@ -283,6 +286,8 @@ public class TagsNF {
     public static final TagKey<Item> WOODEN_SHELVES_ITEM = itemTag(WOODEN_SHELVES);
     public static final TagKey<Item> WOODEN_BARRELS_ITEM = itemTag(WOODEN_BARRELS);
     public static final TagKey<Item> WOODEN_FENCE_GATES_ITEM = itemTag(WOODEN_FENCE_GATES);
+    public static final TagKey<Item> CHAIRS_ITEM = itemTag(CHAIRS);
+    public static final TagKey<Item> ITEM_FRAMES_ITEM = itemTag(ITEM_FRAMES);
     public static final TagKey<Item> ANVILS_ITEM = itemTag(ANVILS);
     public static final TagKey<Item> METAL_ANVILS_ITEM = itemTag(METAL_ANVILS);
     public static final TagKey<Item> METAL_BLOCKS_ITEM = itemTag(METAL_BLOCKS);

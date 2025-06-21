@@ -116,8 +116,9 @@ public class OreVeinFeature extends Feature<OreVeinFeature.Configuration> {
                 noiseGen2.setXZ(noiseX, noiseZ);
                 int surfaceY = chunk.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, localX, localZ);
                 for(int y = minY; y <= maxY; y++) {
+                    if(y < chunk.getMinBuildHeight()) continue;
                     //Skip block at surface to reduce generation in highly exposed areas
-                    if(chunk.isOutsideBuildHeight(y) || y >= surfaceY) continue;
+                    else if(y >= chunk.getMaxBuildHeight() || y >= surfaceY) break;
                     int yDist = origin.getY() - y;
                     if(xzFactor + yDist * yDist / yRadSqr > 1 || random.nextFloat() > richness) continue;
                     int newSectionIndex = chunk.getSectionIndex(y);

@@ -83,7 +83,7 @@ public class BarrelBlockNF extends WaterloggedEntityBlock implements ICustomPath
             BlockPos facingPos = pos.relative(facing);
             if(!level.getBlockState(facingPos).isFaceSturdy(level, facingPos, facing.getOpposite(), SupportType.FULL) &&
                     level.getBlockEntity(pos) instanceof BarrelBlockEntityNF barrel) {
-                //Try placing water directly into barrel before opening gui
+                //Try placing water directly before opening gui
                 ServerPlayer serverPlayer = (ServerPlayer) pPlayer;
                 ItemStack item = pPlayer.getItemInHand(pHand);
                 if(item.getItem() instanceof FilledBucketItem bucket) {
