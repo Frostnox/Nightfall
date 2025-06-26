@@ -80,6 +80,11 @@ public class PlayerInventoryScreen extends EffectRenderingInventoryScreen<Invent
     }
 
     @Override
+    protected void renderEffects(PoseStack pPoseStack, int pMouseX, int pMouseY) {
+        //Cancel effects in super render call so we can do them later
+    }
+
+    @Override
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partial) {
         renderBackground(poseStack);
         int x = leftPos;
@@ -103,16 +108,11 @@ public class PlayerInventoryScreen extends EffectRenderingInventoryScreen<Invent
             v = IMAGE_HEIGHT;
             blit(poseStack, tabX, tabY + yOff, u, v, 20, 20 - yOff, 512, 256);
         }
-        if(selectedComponent == recipeSearch && recipeSearch.isRecipeSelected() && !minecraft.player.getActiveEffects().isEmpty()) {
-            List<MobEffectInstance> effects = Lists.newArrayList();
-            effects.addAll(minecraft.player.getActiveEffects());
-            for(MobEffectInstance effect : effects) minecraft.player.removeEffectNoUpdate(effect.getEffect());
-            super.render(poseStack, mouseX, mouseY, partial);
-            for(MobEffectInstance effect : effects) minecraft.player.addEffect(effect);
-        }
-        else super.render(poseStack, mouseX, mouseY, partial);
+        super.render(poseStack, mouseX, mouseY, partial);
         //Component
         if(selectedComponent != null) selectedComponent.render(poseStack, mouseX, mouseY, partial);
+        //Effects
+        if(selectedComponent != recipeSearch || !recipeSearch.isRecipeSelected()) super.renderEffects(poseStack, mouseX, mouseY);
         //Inventory tooltips
         renderTooltip(poseStack, mouseX, mouseY);
         xOld = (float) mouseX;

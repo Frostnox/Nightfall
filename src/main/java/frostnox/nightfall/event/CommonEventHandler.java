@@ -740,9 +740,13 @@ public class CommonEventHandler {
         if(player == null) return;
         Level level = player.level;
         if(event.phase == TickEvent.Phase.END) {
-            //Warp effects
             if(!level.isClientSide) {
-                if(player.isAlive() && player.tickCount == 1) LevelUtil.warpServerPlayer(player, false);
+                if(player.isAlive()) {
+                    if(player.tickCount == 1) LevelUtil.warpServerPlayer(player, false);
+                    if(player.getFoodData().getFoodLevel() <= 0 && !player.hasEffect(EffectsNF.STARVATION.get()) && !player.hasEffect(EffectsNF.STARVATION_1.get())) {
+                        player.addEffect(new MobEffectInstance(EffectsNF.STARVATION_1.get(), 5 * 20, 0));
+                    }
+                }
             }
             else if(player.deathTime == 20) LevelUtil.warpClientPlayer(player, false);
         }

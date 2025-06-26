@@ -2,11 +2,11 @@ package frostnox.nightfall.registry.forge;
 
 import frostnox.nightfall.Nightfall;
 import frostnox.nightfall.action.DamageTypeSource;
-import frostnox.nightfall.capability.ActionTracker;
-import frostnox.nightfall.capability.IActionTracker;
 import frostnox.nightfall.entity.effect.DamageEffect;
+import frostnox.nightfall.entity.effect.StarvationEffect;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -15,8 +15,49 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.UUID;
+
 public class EffectsNF {
     public static final DeferredRegister<MobEffect> EFFECTS = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, Nightfall.MODID);
+    public static final RegistryObject<MobEffect> STARVATION_1 = EFFECTS.register("starvation_1", () -> new StarvationEffect() {
+        @Override
+        public void onTickUp(LivingEntity entity, int amplifier, int duration) {
+            if(entity.level.isClientSide) return;
+            if(duration > 20 * 60 * 10) {
+                entity.removeEffect(this);
+                entity.addEffect(new MobEffectInstance(EffectsNF.STARVATION.get(), duration, amplifier));
+            }
+        }
+    }
+            .addAttributeModifier(AttributesNF.ENDURANCE.get(), "8d9d96b6-8df3-461a-8ae7-1c7cf42351a8", -2D, AttributeModifier.Operation.ADDITION));
+    private static final UUID STARVATION_ENDURANCE_UUID = UUID.fromString("995a05cb-0eaf-4ec8-99e6-ecb751531794");
+    public static final RegistryObject<MobEffect> STARVATION = EFFECTS.register("starvation", () -> new StarvationEffect() {
+        @Override
+        public void onTickUp(LivingEntity entity, int amplifier, int duration) {
+            if(entity.level.isClientSide) return;
+            int expectedAmplifier;
+            if(duration > 20 * 60 * 40) expectedAmplifier = 3;
+            else if(duration > 20 * 60 * 20) expectedAmplifier = 2;
+            else if(duration > 20 * 60 * 10) expectedAmplifier = 1;
+            else expectedAmplifier = 0;
+            if(amplifier != expectedAmplifier) {
+                entity.removeEffect(this);
+                if(expectedAmplifier == 0) entity.addEffect(new MobEffectInstance(EffectsNF.STARVATION_1.get(), duration, expectedAmplifier));
+                else entity.addEffect(new MobEffectInstance(EffectsNF.STARVATION.get(), duration, expectedAmplifier));
+            }
+        }
+
+        @Override
+        public double getAttributeModifierValue(int pAmplifier, AttributeModifier pModifier) {
+            if(pModifier.getId().equals(STARVATION_ENDURANCE_UUID)) return super.getAttributeModifierValue(pAmplifier, pModifier);
+            else return pModifier.getAmount() * (double) (pAmplifier);
+        }
+    }
+            .addAttributeModifier(Attributes.MOVEMENT_SPEED, "e0d13cbb-521f-4afc-b476-43b40dd051f2", -0.125D, AttributeModifier.Operation.MULTIPLY_TOTAL)
+            .addAttributeModifier(ForgeMod.SWIM_SPEED.get(), "01ed0754-2303-431d-9fc1-5a56ef6ad916", -0.125D, AttributeModifier.Operation.MULTIPLY_TOTAL)
+            .addAttributeModifier(AttributesNF.STRENGTH.get(), "c0b371d8-e9f7-418c-b6ee-4997fa9b4e9d", -2D, AttributeModifier.Operation.ADDITION)
+            .addAttributeModifier(Attributes.MAX_HEALTH, "253f436b-cc13-4474-a4e9-3f3d534e93a9", -10D, AttributeModifier.Operation.ADDITION)
+            .addAttributeModifier(AttributesNF.ENDURANCE.get(), "995a05cb-0eaf-4ec8-99e6-ecb751531794", -2D, AttributeModifier.Operation.ADDITION));
     public static final RegistryObject<MobEffect> BLEEDING = EFFECTS.register("bleeding", () -> new DamageEffect(MobEffectCategory.HARMFUL, 0F, DamageTypeSource.BLEEDING) {
         @Override
         public float getDamage(LivingEntity entity, int duration, int amplifier) {

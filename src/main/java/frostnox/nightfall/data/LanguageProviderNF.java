@@ -421,6 +421,8 @@ public class LanguageProviderNF extends LanguageProvider {
         addSound(SoundsNF.QUENCH, "Hot item quenches");
         addSound(SoundsNF.METAL_BREAK, "Metal item breaks");
 
+        add(EffectsNF.STARVATION_1.get(), "Starvation");
+
         add(ItemsNF.SNOWBALL_THROWABLE.get(), "Snowball");
         add(ItemsNF.COKE_BLOCK.get(), "Coke Block");
         add(ItemsNF.COAL_BLOCK.get(), "Coal Block");

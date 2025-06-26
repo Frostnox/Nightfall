@@ -1,22 +1,21 @@
 package frostnox.nightfall.mixin;
 
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodData;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Constant;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
-import org.spongepowered.asm.mixin.injection.ModifyConstant;
+import org.spongepowered.asm.mixin.injection.*;
 
 @Mixin(FoodData.class)
 public class FoodDataMixin {
     @ModifyConstant(method = "tick", constant = @Constant(intValue = 20, ordinal = 0))
     private int nightfall$adjustHealThreshold(int i) {
-        return 7;
+        return 1;
     }
 
     @ModifyConstant(method = "tick", constant = @Constant(intValue = 18, ordinal = 0))
     private int nightfall$adjustHealThreshold2(int i) {
-        return 7;
+        return 1;
     }
 
     @ModifyConstant(method = "tick", constant = @Constant(intValue = 10, ordinal = 0))
@@ -34,8 +33,8 @@ public class FoodDataMixin {
         return 0.3F;
     }
 
-    @ModifyConstant(method = "tick", constant = @Constant(floatValue = 10F, ordinal = 0))
-    private float nightfall$adjustMinStarveHealth(float f) {
-        return 0F;
+    @Redirect(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z"))
+    private boolean nightfall$disableStarveDamage(Player player, DamageSource damageSource, float damage) {
+        return false;
     }
 }

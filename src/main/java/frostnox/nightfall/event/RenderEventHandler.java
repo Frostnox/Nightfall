@@ -20,6 +20,7 @@ import frostnox.nightfall.entity.EntityPart;
 import frostnox.nightfall.entity.IOrientedHitBoxes;
 import frostnox.nightfall.item.IWeaponItem;
 import frostnox.nightfall.registry.ActionsNF;
+import frostnox.nightfall.registry.forge.EffectsNF;
 import frostnox.nightfall.util.*;
 import frostnox.nightfall.util.animation.AnimationCalculator;
 import frostnox.nightfall.util.animation.AnimationData;
@@ -41,6 +42,8 @@ import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -259,14 +262,18 @@ public class RenderEventHandler {
             }
             //Idle bob
             if(mc.options.bobView) {
-                float bob0 = Mth.lerp(event.getPartialTicks(), Mth.sin((player.tickCount - 1) * 0.03F), Mth.sin(player.tickCount * 0.03F));
-                float bob1 = Mth.lerp(event.getPartialTicks(), Mth.sin((player.tickCount + 19) * 0.025F), Mth.sin((player.tickCount + 20) * 0.025F));
+                float intensity = 1F;
+                MobEffectInstance starvation = player.getEffect(EffectsNF.STARVATION_1.get());
+                if(starvation == null) starvation = player.getEffect(EffectsNF.STARVATION.get());
+                if(starvation != null) intensity = Math.min(6F, 1F + starvation.getDuration() / (20 * 60 * 4F));
+                float bob0 = intensity * Mth.lerp(event.getPartialTicks(), Mth.sin((player.tickCount - 1) * 0.03F), Mth.sin(player.tickCount * 0.03F));
+                float bob1 = intensity * Mth.lerp(event.getPartialTicks(), Mth.sin((player.tickCount + 19) * 0.025F), Mth.sin((player.tickCount + 20) * 0.025F));
                 if(hand == InteractionHand.MAIN_HAND) {
                     stack.translate(0.01F * bob1, 0.008F * bob0, 0F);
                 }
                 else {
-                    float bob2 = Mth.lerp(event.getPartialTicks(), Mth.cos((player.tickCount - 1) * 0.03F), Mth.cos(player.tickCount * 0.03F));
-                    float bob3 = Mth.lerp(event.getPartialTicks(), Mth.cos((player.tickCount + 19) * 0.025F), Mth.cos((player.tickCount + 20) * 0.025F));
+                    float bob2 = intensity * Mth.lerp(event.getPartialTicks(), Mth.cos((player.tickCount - 1) * 0.03F), Mth.cos(player.tickCount * 0.03F));
+                    float bob3 = intensity * Mth.lerp(event.getPartialTicks(), Mth.cos((player.tickCount + 19) * 0.025F), Mth.cos((player.tickCount + 20) * 0.025F));
                     stack.translate(-0.01F * bob1 + 0.01F * bob3, -0.008F * bob0 + 0.008F * bob2, 0);
                 }
             }

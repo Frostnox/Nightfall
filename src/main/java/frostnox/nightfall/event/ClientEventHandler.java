@@ -125,7 +125,6 @@ public class ClientEventHandler {
     private static boolean skipClickInputEvent = false;
     private static boolean wasAttackKeyDown = false;
     private static boolean retryPickBlock = false;
-    private static int tempFood;
     private static boolean disabledSprint;
 
     private static void updateHand(Player player) {
@@ -306,8 +305,6 @@ public class ClientEventHandler {
         IPlayerData capP = PlayerData.get(player);
         ClientLevel level = player.clientLevel;
         if(event.phase == TickEvent.Phase.START) {
-            tempFood = player.foodData.getFoodLevel();
-            player.foodData.setFoodLevel(20); //Max food temporarily so sprint doesn't get canceled
             if(LevelUtil.disallowPlayerSprint(player) && !player.hasEffect(MobEffects.BLINDNESS)) {
                 player.addEffect(new MobEffectInstance(MobEffects.BLINDNESS));
                 disabledSprint = true;
@@ -375,7 +372,6 @@ public class ClientEventHandler {
             }
         }
         else {
-            player.foodData.setFoodLevel(tempFood); //Restore food level after vanilla logic is done
             if(disabledSprint) {
                 player.removeEffect(MobEffects.BLINDNESS);
                 disabledSprint = false;
@@ -980,7 +976,6 @@ public class ClientEventHandler {
         p.getAttribute(Attributes.ATTACK_SPEED).setBaseValue(100);
         p.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(2);
         p.getAttribute(Attributes.MAX_HEALTH).setBaseValue(100);
-        //if(!(p.foodData instanceof PlayerFoodData)) p.foodData = new PlayerFoodData();
         //Debug settings are saved between worlds, so reset it if necessary
         if(!p.isCreative() && !p.isSpectator()) {
             DebugRenderer debugRenderer = Minecraft.getInstance().debugRenderer;

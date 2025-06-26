@@ -24,6 +24,7 @@ import frostnox.nightfall.registry.EntriesNF;
 import frostnox.nightfall.registry.KnowledgeNF;
 import frostnox.nightfall.registry.RegistriesNF;
 import frostnox.nightfall.registry.forge.AttributesNF;
+import frostnox.nightfall.registry.forge.EffectsNF;
 import frostnox.nightfall.util.LevelUtil;
 import frostnox.nightfall.world.ContinentalWorldType;
 import frostnox.nightfall.world.inventory.AccessoryInventory;
@@ -35,11 +36,13 @@ import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.game.ClientboundUpdateMobEffectPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.TicketType;
 import net.minecraft.util.Unit;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -285,11 +288,8 @@ public class CapabilityEventHandler {
         player.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(2);
         player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(100);
         player.setHealth(player.getMaxHealth());
-        player.foodData.setFoodLevel(10);
-        player.foodData.setSaturation(2F);
         ServerPlayer p = (ServerPlayer) event.getPlayer();
         p.spawnInvulnerableTime = 2;
-        //p.getAttributes().getAttributeInstanceByName("generic.attackSpeed").setBaseValue(100);
         IPlayerData capP = PlayerData.get(p);
         IActionTracker capA = ActionTracker.get(p);
         capP.addRevelatoryKnowledge(KnowledgeNF.ESSENCE.getId());
@@ -347,6 +347,13 @@ public class CapabilityEventHandler {
         clone.getInventory().replaceWith(original.getInventory());
         cCapP.getAccessoryInventory().replaceWith(oCapP.getAccessoryInventory());
         clone.foodData = original.foodData;
+        MobEffectInstance starvation = original.getEffect(EffectsNF.STARVATION_1.get());
+        if(starvation == null) starvation = original.getEffect(EffectsNF.STARVATION.get());
+        if(starvation != null) {
+            clone.addEffect(starvation);
+            MobEffectInstance finalStarvation = starvation;
+            clone.server.execute(() -> clone.connection.send(new ClientboundUpdateMobEffectPacket(clone.getId(), finalStarvation)));
+        }
 
         cCapP.readEncyclopediaNBT(oCapP.writeEncyclopediaNBT(new CompoundTag()));
         cCapP.setStamina(oCapP.getStamina());

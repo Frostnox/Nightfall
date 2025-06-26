@@ -236,7 +236,8 @@ public class ContinentalEffects extends DimensionSpecialEffects {
             }
         }));
         setCloudRenderHandler((ticks, partialTick, stack, level, mc, camX, camY, camZ) -> {
-            if(!initialized || mc.gameRenderer.getMainCamera().getFluidInCamera() != FogType.NONE) return;
+            if(!initialized || mc.gameRenderer.getMainCamera().getFluidInCamera() != FogType.NONE ||
+                    (mc.gameRenderer.getMainCamera().getEntity() instanceof LivingEntity entity && entity.hasEffect(MobEffects.BLINDNESS))) return;
 
             float levelHeight = level.effects().getCloudHeight();
             RenderSystem.disableCull();

@@ -19,7 +19,8 @@
     "ChestMenuMixin",
     "ServerLevelMixin",
     "DerivedLevelDataMixin",
-    "LevelChunkMixin"
+    "LevelChunkMixin",
+    "MobEffectInstanceMixin"
   ],
   "client": [
     "KeyboardHandlerMixin",
