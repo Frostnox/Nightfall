@@ -23,7 +23,7 @@ public class WillowTreeGenerator extends SplitTreeGenerator {
 
     @Override
     protected void setupData(Data d, Random random) {
-        int size = maxLeavesDistXZ % 2 != 0 ? maxLeavesDistXZ + 1 : maxLeavesDistXZ;
+        int size = maxLeavesDistXZ + 1;
         d.intData = new int[2 + size * size];
         d.intData[DROOP_ARRAY_SIZE_INDEX] = size;
         int droopDist = 1 + maxLeavesRadius * 2;

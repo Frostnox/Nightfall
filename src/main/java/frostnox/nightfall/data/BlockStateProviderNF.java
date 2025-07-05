@@ -453,19 +453,21 @@ public class BlockStateProviderNF extends BlockStateProvider {
     }
 
     public void sidingBlock(SidingBlock block, ResourceLocation texture) {
-        sidingBlock(block, texture, texture, texture, texture, texture, texture, texture, true);
+        sidingBlock(block, texture, texture, texture, texture, texture, texture, texture, texture, texture, texture, true);
     }
 
-    public void sidingBlock(SidingBlock block, ResourceLocation doubled, ResourceLocation side, ResourceLocation shortSide, ResourceLocation bottom, ResourceLocation top, ResourceLocation quartBottom, ResourceLocation quartTop, boolean lockUV) {
+    public void sidingBlock(SidingBlock block, ResourceLocation doubled, ResourceLocation side, ResourceLocation shortSide, ResourceLocation bottom, ResourceLocation top, ResourceLocation quartBottom, ResourceLocation quartTop, ResourceLocation innerBottom, ResourceLocation innerTop, ResourceLocation innerSide, boolean lockUV) {
         sidingBlock(block,
                 models().withExistingParent(name(block), resource("siding")).texture("side", side).texture("short_side", shortSide)
                         .texture("bottom", bottom).texture("top", top),
                 models().withExistingParent(name(block) + "_quartet", resource("quartet")).texture("side", shortSide)
                         .texture("bottom", quartBottom).texture("top", quartTop),
+                models().withExistingParent(name(block) + "_inner", resource("siding_inner")).texture("side", side).texture("short_side", shortSide)
+                        .texture("inner_side", innerSide).texture("bottom", innerBottom).texture("top", innerTop),
                 models().getExistingFile(doubled), lockUV);
     }
 
-    public void sidingBlock(SidingBlock block, ModelFile full, ModelFile quartet, ModelFile doubled, boolean lockUV) {
+    public void sidingBlock(SidingBlock block, ModelFile full, ModelFile quartet, ModelFile inner, ModelFile doubled, boolean lockUV) {
         for(SidingBlock.Type type : SidingBlock.Type.values()) {
             for(SidingBlock.Shape shape : SidingBlock.Shape.values()) {
                 if(type == SidingBlock.Type.DOUBLE) {
@@ -475,10 +477,10 @@ public class BlockStateProviderNF extends BlockStateProvider {
                     continue;
                 }
                 int yRot = (int) type.getDirection().getClockWise().toYRot();
-                if(shape == SidingBlock.Shape.NEGATIVE_QUARTET) yRot -= 90;
+                if(!shape.positive) yRot -= 90;
                 yRot = (yRot + 360) % 360;
                 getVariantBuilder(block).partialState().with(SidingBlock.TYPE, type).with(SidingBlock.SHAPE, shape).addModels(ConfiguredModel.builder()
-                        .modelFile(shape == SidingBlock.Shape.FULL ? full : quartet).rotationY(yRot).uvLock(yRot != 0 && lockUV).build());
+                        .modelFile(shape == SidingBlock.Shape.FULL ? full : (shape.inner ? inner : quartet)).rotationY(yRot).uvLock(yRot != 0 && lockUV).build());
             }
         }
     }
@@ -1055,7 +1057,9 @@ public class BlockStateProviderNF extends BlockStateProvider {
         slabBlock(BlocksNF.GLASS_SLAB.get(), glass, resource(BlocksNF.GLASS_SLAB.get()), glass, glass);
         ResourceLocation glassSiding = resource(BlocksNF.GLASS_SIDING.get());
         ResourceLocation glassQuartet = resource("glass_quartet");
-        sidingBlock(BlocksNF.GLASS_SIDING.get(), glass, glass, glassSiding, glassSiding, glassSiding, glassQuartet, glassQuartet, false);
+        ResourceLocation glassInnerTop = resource("glass_siding_inner_top");
+        sidingBlock(BlocksNF.GLASS_SIDING.get(), glass, glass, glassSiding, glassSiding, glassSiding, glassQuartet, glassQuartet,
+                glassInnerTop, glassInnerTop, resource("glass_siding_inner_side"), false);
 
         templateBlock(BlocksNF.TORCH.get(), mcLoc("template_torch"), Pair.of("torch", resource(BlocksNF.TORCH.get())));
         templateBlock(BlocksNF.TORCH_UNLIT.get(), mcLoc("template_torch"), Pair.of("torch", resource(BlocksNF.TORCH_UNLIT.get())));

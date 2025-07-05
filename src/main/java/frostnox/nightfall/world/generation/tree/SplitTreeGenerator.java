@@ -33,7 +33,7 @@ public class SplitTreeGenerator extends TreeGenerator {
 
     @Override
     protected int getMaxDistXZ() {
-        return super.getMaxDistXZ() + maxPossibleHeight - 1;
+        return super.getMaxDistXZ() + maxPossibleHeight;
     }
 
     @Override

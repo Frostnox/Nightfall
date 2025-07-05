@@ -43,17 +43,30 @@ public class GlassBlockNF extends BlockNF {
     }
 
     @Override
-    public boolean skipRendering(BlockState state, BlockState pAdjacentBlockState, Direction pSide) {
+    public boolean skipRendering(BlockState state, BlockState pAdjacentBlockState, Direction side) {
         if(pAdjacentBlockState.is(Tags.Blocks.GLASS_COLORLESS)) {
             VoxelShape adjShape = pAdjacentBlockState.getShape(null, null);
             if(adjShape == Shapes.block()) return true;
-            adjShape = adjShape.getFaceShape(pSide.getOpposite());
+            Direction oppSide = side.getOpposite();
+            adjShape = adjShape.getFaceShape(oppSide);
             if(adjShape.isEmpty()) return false;
-            VoxelShape shape = state.getShape(null, null).getFaceShape(pSide);
+            VoxelShape shape = state.getShape(null, null).getFaceShape(side);
             if(shape.isEmpty()) return false;
-            AABB box = shape.bounds(), adjBox = adjShape.bounds();
-            return box.minX >= adjBox.minX && box.maxX <= adjBox.maxX && box.minY >= adjBox.minY && box.maxY <= adjBox.maxY
-                    && box.minZ >= adjBox.minZ && box.maxZ <= adjBox.maxZ ;
+            for(AABB box : shape.toAabbs()) {
+                if(side.getAxisDirection() != Direction.AxisDirection.POSITIVE) {
+                    if(box.max(side.getAxis()) < 1D) continue;
+                }
+                else if(box.min(side.getAxis()) > 0D) continue;
+                for(AABB adjBox : adjShape.toAabbs()) {
+                    if(oppSide.getAxisDirection() != Direction.AxisDirection.POSITIVE) {
+                        if(box.max(oppSide.getAxis()) < 1D) continue;
+                    }
+                    else if(box.min(oppSide.getAxis()) > 0D) continue;
+                    if(!(box.minX >= adjBox.minX && box.maxX <= adjBox.maxX && box.minY >= adjBox.minY && box.maxY <= adjBox.maxY
+                            && box.minZ >= adjBox.minZ && box.maxZ <= adjBox.maxZ)) return false;
+                }
+            }
+            return true;
         }
         else return false;
     }

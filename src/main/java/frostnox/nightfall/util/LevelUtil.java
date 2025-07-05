@@ -82,6 +82,7 @@ public class LevelUtil {
     public static final EquipmentSlot[] ARMOR_SLOTS = new EquipmentSlot[]{EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
     public static final Direction[] PHYSICS_DIRECTIONS = new Direction[] {Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.UP};
     public static final Direction[] HORIZONTAL_DIRECTIONS = new Direction[] {Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST};
+    public static final Direction[] HORIZONTAL_DOWN_DIRECTIONS = new Direction[] {Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.DOWN};
     public static final BlockPos NULL_POS = new BlockPos(0, -32768, 0);
     public static final GameProfile FAKE_PROFILE = new GameProfile(UUID.fromString("f8e91fce-7ddd-47d3-a0fe-d4992193510f"), "fakeNightfallPlayer");
     public static final double UNDEAD_MIN_SPAWN_DIST_SQR = 24D * 24D;

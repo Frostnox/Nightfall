@@ -20,7 +20,8 @@
     "ServerLevelMixin",
     "DerivedLevelDataMixin",
     "LevelChunkMixin",
-    "MobEffectInstanceMixin"
+    "MobEffectInstanceMixin",
+    "ClientboundUpdateMobEffectPacketMixin"
   ],
   "client": [
     "KeyboardHandlerMixin",

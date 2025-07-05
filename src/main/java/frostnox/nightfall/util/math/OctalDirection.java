@@ -31,6 +31,10 @@ public enum OctalDirection implements StringRepresentable {
     public static final OctalDirection[] SOUTH_SINGLE = new OctalDirection[] {SOUTH};
     public static final OctalDirection[] WEST_SINGLE = new OctalDirection[] {WEST};
     public static final OctalDirection[] EAST_SINGLE = new OctalDirection[] {EAST};
+    public static final OctalDirection[] NORTHWEST_SINGLE = new OctalDirection[] {NORTHWEST};
+    public static final OctalDirection[] NORTHEAST_SINGLE = new OctalDirection[] {NORTHEAST};
+    public static final OctalDirection[] SOUTHWEST_SINGLE = new OctalDirection[] {SOUTHWEST};
+    public static final OctalDirection[] SOUTHEAST_SINGLE = new OctalDirection[] {SOUTHEAST};
     public static final OctalDirection[] CENTER_SINGLE = new OctalDirection[] {CENTER};
     public static final OctalDirection[] NORTH_AND_WEST = new OctalDirection[] {NORTH, WEST};
     public static final OctalDirection[] NORTH_AND_EAST = new OctalDirection[] {NORTH, EAST};

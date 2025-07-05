@@ -581,12 +581,8 @@ public class ChunkData implements IChunkData {
                     return;
                 }
             }
-            else if(Block.canSupportCenter(level, belowPos, Direction.UP)) {
-                fell.val = false;
-                return;
-            }
         }
-        for(Direction dir : Direction.Plane.HORIZONTAL) {
+        for(Direction dir : LevelUtil.HORIZONTAL_DOWN_DIRECTIONS) {
             VoxelShape face = shape.getFaceShape(dir);
             if(face.isEmpty()) continue;
             BlockPos supportPos = pos.relative(dir);
@@ -610,6 +606,10 @@ public class ChunkData implements IChunkData {
                     }
                 }
                 if(joined) {
+                    if(dir == Direction.DOWN) {
+                        fell.val = false;
+                        return;
+                    }
                     checkForSupport(supportPos, supportState, visited, fell,
                             supportState.hasProperty(BlockStateProperties.AXIS) && supportState.getValue(BlockStateProperties.AXIS) == dir.getAxis() ? (dist + 0.666F) : (dist + 1),
                             maxDist, floats, origin);

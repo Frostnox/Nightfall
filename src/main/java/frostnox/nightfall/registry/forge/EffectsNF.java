@@ -19,6 +19,14 @@ import java.util.UUID;
 
 public class EffectsNF {
     public static final DeferredRegister<MobEffect> EFFECTS = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, Nightfall.MODID);
+    public static final RegistryObject<MobEffect> DESPAIR = EFFECTS.register("despair", () -> new MobEffect(MobEffectCategory.NEUTRAL, 0) {}
+            .addAttributeModifier(Attributes.MAX_HEALTH, "3eb0c333-e6d2-46ed-acfb-b12fa5ae7e7a", -10, AttributeModifier.Operation.ADDITION)
+            .addAttributeModifier(AttributesNF.ENDURANCE.get(), "8dee21aa-5d0c-4bae-b2b4-0c6f09b5fe5e", -1, AttributeModifier.Operation.ADDITION)
+            .addAttributeModifier(AttributesNF.WILLPOWER.get(), "be42557c-0db3-43c8-b708-eecb422f3e34", -1, AttributeModifier.Operation.ADDITION)
+            .addAttributeModifier(AttributesNF.STRENGTH.get(), "9e944581-840d-432a-a48a-5576314f09c1", -1, AttributeModifier.Operation.ADDITION)
+            .addAttributeModifier(Attributes.MOVEMENT_SPEED, "b5f3fc7d-16f3-4867-b7c5-9973ddcbcb49", -0.03, AttributeModifier.Operation.MULTIPLY_BASE)
+            .addAttributeModifier(AttributesNF.PERCEPTION.get(), "c23eca0f-114f-47f5-9442-26fc14a12788", -1, AttributeModifier.Operation.ADDITION)
+    );
     public static final RegistryObject<MobEffect> STARVATION_1 = EFFECTS.register("starvation_1", () -> new StarvationEffect() {
         @Override
         public void onTickUp(LivingEntity entity, int amplifier, int duration) {

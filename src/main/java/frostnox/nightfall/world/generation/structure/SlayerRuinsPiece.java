@@ -83,6 +83,7 @@ public class SlayerRuinsPiece extends StructurePieceNF {
             else stone = Stone.DEEPSLATE;
             BlockState stoneBrick = BlocksNF.STONE_BRICK_BLOCKS.get(stone).get().defaultBlockState();
             BlockState stoneBrickSiding = BlocksNF.STONE_BRICK_SIDINGS.get(stone).get().defaultBlockState();
+            BlockState stoneBrickSidingInner = stoneBrickSiding.setValue(SidingBlock.SHAPE, SidingBlock.Shape.POSITIVE_INNER);
             BlockState stoneBrickSlabTop = BlocksNF.STONE_BRICK_SLABS.get(stone).get().defaultBlockState().setValue(SlabBlock.TYPE, SlabType.TOP);
             BlockState planks = BlocksNF.PLANK_BLOCKS.get(tree).get().defaultBlockState();
             BlockState plankStairs = BlocksNF.PLANK_STAIRS.get(tree).get().defaultBlockState();
@@ -165,7 +166,8 @@ public class SlayerRuinsPiece extends StructurePieceNF {
                     tryReplaceBlock(level, stoneBrickSiding.setValue(SidingBlock.TYPE, SidingBlock.Type.WEST), pos, X_SIZE - 1, y, z, box);
                 }
             }
-            for(int y = -1; y <= getHeight(3, 8); y++) tryReplaceBlock(level, stoneBrick, pos, 3, y, 8, box);
+            BlockState innerSiding = stoneBrickSidingInner.setValue(SidingBlock.TYPE, SidingBlock.Type.EAST);
+            for(int y = -1; y <= getHeight(3, 8); y++) tryReplaceBlock(level, innerSiding, pos, 3, y, 8, box);
             for(int x = 0; x <= 2; x++) {
                 BlockState siding = stoneBrickSiding.setValue(SidingBlock.TYPE, SidingBlock.Type.SOUTH);
                 if(x == 0) siding = siding.setValue(SidingBlock.SHAPE, SidingBlock.Shape.NEGATIVE_QUARTET);
@@ -173,7 +175,8 @@ public class SlayerRuinsPiece extends StructurePieceNF {
                     tryReplaceBlock(level, siding, pos, x, y, 8, box);
                 }
             }
-            for(int y = -1; y <= getHeight(11, 8); y++) tryReplaceBlock(level, stoneBrick, pos, 11, y, 8, box);
+            innerSiding = stoneBrickSidingInner.setValue(SidingBlock.TYPE, SidingBlock.Type.SOUTH);
+            for(int y = -1; y <= getHeight(11, 8); y++) tryReplaceBlock(level, innerSiding, pos, 11, y, 8, box);
             for(int x = 12; x <= X_SIZE - 1; x++) {
                 BlockState siding = stoneBrickSiding.setValue(SidingBlock.TYPE, SidingBlock.Type.SOUTH);
                 if(x == X_SIZE - 1) siding = siding.setValue(SidingBlock.SHAPE, SidingBlock.Shape.POSITIVE_QUARTET);

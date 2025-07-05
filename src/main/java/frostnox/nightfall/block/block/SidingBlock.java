@@ -5,7 +5,7 @@ import frostnox.nightfall.block.ICustomPathfindable;
 import frostnox.nightfall.block.IWaterloggedBlock;
 import frostnox.nightfall.entity.ai.pathfinding.NodeManager;
 import frostnox.nightfall.entity.ai.pathfinding.NodeType;
-import frostnox.nightfall.util.LevelUtil;
+import frostnox.nightfall.util.MathUtil;
 import frostnox.nightfall.util.math.OctalDirection;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -35,7 +35,6 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -85,14 +84,25 @@ public class SidingBlock extends BlockNF implements IWaterloggedBlock, ICustomPa
     }
 
     public enum Shape implements StringRepresentable {
-        FULL("full"),
-        POSITIVE_QUARTET("pos_quartet"),
-        NEGATIVE_QUARTET("neg_quartet");
+        FULL("full", true, true),
+        POSITIVE_QUARTET("pos_quartet", true, false),
+        NEGATIVE_QUARTET("neg_quartet", false, false),
+        POSITIVE_INNER("pos_inner", true, true),
+        NEGATIVE_INNER("neg_inner", false, true);
 
         private final String name;
+        public final boolean positive;
+        public final boolean inner;
 
-        Shape(String name) {
+        Shape(String name, boolean positive, boolean inner) {
             this.name = name;
+            this.positive = positive;
+            this.inner = inner;
+        }
+
+        public Shape getOpposite() {
+            if(this == FULL) return this;
+            else return positive ? values()[ordinal() + 1] : values()[ordinal() - 1];
         }
 
         @Override
@@ -118,6 +128,11 @@ public class SidingBlock extends BlockNF implements IWaterloggedBlock, ICustomPa
     protected static final VoxelShape NORTH_EAST_SHAPE = Block.box(8.0D, 0.0D, 0.0D, 16.0D, 16.0D, 8.0D);
     protected static final VoxelShape SOUTH_WEST_SHAPE = Block.box(0.0D, 0.0D, 8.0D, 8.0D, 16.0D, 16.0D);
     protected static final VoxelShape SOUTH_EAST_SHAPE = Block.box(8.0D, 0.0D, 8.0D, 16.0D, 16.0D, 16.0D);
+    protected static final VoxelShape NORTH_WEST_INNER_SHAPE = Shapes.or(Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 8.0D),
+            Block.box(0.0D, 0.0D, 8.0D, 8.0D, 16.0D, 16.0D));
+    protected static final VoxelShape NORTH_EAST_INNER_SHAPE = MathUtil.rotate(NORTH_WEST_INNER_SHAPE, Rotation.CLOCKWISE_90);
+    protected static final VoxelShape SOUTH_WEST_INNER_SHAPE = MathUtil.rotate(NORTH_WEST_INNER_SHAPE, Rotation.COUNTERCLOCKWISE_90);
+    protected static final VoxelShape SOUTH_EAST_INNER_SHAPE = MathUtil.rotate(NORTH_WEST_INNER_SHAPE, Rotation.CLOCKWISE_180);
     protected static final List<AABB> NORTH_FACE_Y = NORTH_SHAPE.getFaceShape(Direction.UP).toAabbs();
     protected static final List<AABB> SOUTH_FACE_Y = SOUTH_SHAPE.getFaceShape(Direction.UP).toAabbs();
     protected static final List<AABB> WEST_FACE_Y = WEST_SHAPE.getFaceShape(Direction.UP).toAabbs();
@@ -126,6 +141,10 @@ public class SidingBlock extends BlockNF implements IWaterloggedBlock, ICustomPa
     protected static final List<AABB> NORTH_EAST_FACE_Y = NORTH_EAST_SHAPE.getFaceShape(Direction.UP).toAabbs();
     protected static final List<AABB> SOUTH_WEST_FACE_Y = SOUTH_WEST_SHAPE.getFaceShape(Direction.UP).toAabbs();
     protected static final List<AABB> SOUTH_EAST_FACE_Y = SOUTH_EAST_SHAPE.getFaceShape(Direction.UP).toAabbs();
+    protected static final List<AABB> NORTH_WEST_INNER_FACE_Y = NORTH_WEST_INNER_SHAPE.getFaceShape(Direction.UP).toAabbs();
+    protected static final List<AABB> NORTH_EAST_INNER_FACE_Y = NORTH_EAST_INNER_SHAPE.getFaceShape(Direction.UP).toAabbs();
+    protected static final List<AABB> SOUTH_WEST_INNER_FACE_Y = SOUTH_WEST_INNER_SHAPE.getFaceShape(Direction.UP).toAabbs();
+    protected static final List<AABB> SOUTH_EAST_INNER_FACE_Y = SOUTH_EAST_INNER_SHAPE.getFaceShape(Direction.UP).toAabbs();
     protected static final EnumMap<Direction, Direction[]> UPDATE_SHAPE_DIRECTIONS = new EnumMap<>(Direction.class);
     static {
         for(Direction dir : Direction.Plane.HORIZONTAL) UPDATE_SHAPE_DIRECTIONS.put(dir, new Direction[] {dir, dir.getClockWise(), dir.getCounterClockWise()});
@@ -142,11 +161,11 @@ public class SidingBlock extends BlockNF implements IWaterloggedBlock, ICustomPa
 
     protected Shape getSidingShape(LevelAccessor level, BlockPos pos, Direction curDir) {
         BlockState state1 = level.getBlockState(pos.relative(curDir));
-        if(state1.getBlock() instanceof SidingBlock && state1.getValue(SHAPE) == Shape.FULL && state1.getValue(TYPE) != Type.DOUBLE) {
+        if(state1.getBlock() instanceof SidingBlock && state1.getValue(SHAPE).inner && state1.getValue(TYPE) != Type.DOUBLE) {
             Direction dir1 = state1.getValue(TYPE).direction;
             if(dir1.getAxis() != curDir.getAxis()) {
                 BlockState state2 = level.getBlockState(pos.relative(dir1));
-                if(state2.getBlock() instanceof SidingBlock && state2.getValue(SHAPE) == Shape.FULL && state2.getValue(TYPE) != Type.DOUBLE) {
+                if(state2.getBlock() instanceof SidingBlock && state2.getValue(SHAPE).inner && state2.getValue(TYPE) != Type.DOUBLE) {
                     Direction dir2 = state2.getValue(TYPE).direction;
                     if(curDir == dir2) {
                         if(curDir == Direction.SOUTH || curDir == Direction.WEST) {
@@ -155,6 +174,18 @@ public class SidingBlock extends BlockNF implements IWaterloggedBlock, ICustomPa
                         else return dir1.getAxisDirection() == Direction.AxisDirection.NEGATIVE ? Shape.NEGATIVE_QUARTET : Shape.POSITIVE_QUARTET;
                     }
                 }
+            }
+        }
+        //Inner shape needs only one connection point
+        curDir = curDir.getOpposite();
+        state1 = level.getBlockState(pos.relative(curDir));
+        if(state1.getBlock() instanceof SidingBlock && state1.getValue(SHAPE).inner && state1.getValue(TYPE) != Type.DOUBLE) {
+            Direction dir1 = state1.getValue(TYPE).direction.getOpposite();
+            if(dir1.getAxis() != curDir.getAxis()) {
+                if(curDir == Direction.SOUTH || curDir == Direction.WEST) {
+                    return dir1.getAxisDirection() == Direction.AxisDirection.NEGATIVE ? Shape.POSITIVE_INNER : Shape.NEGATIVE_INNER;
+                }
+                else return dir1.getAxisDirection() == Direction.AxisDirection.NEGATIVE ? Shape.NEGATIVE_INNER : Shape.POSITIVE_INNER;
             }
         }
         return Shape.FULL;
@@ -185,10 +216,10 @@ public class SidingBlock extends BlockNF implements IWaterloggedBlock, ICustomPa
         }
         else {
             return switch(type) {
-                case NORTH -> shape == Shape.POSITIVE_QUARTET ? NORTH_EAST_SHAPE : NORTH_WEST_SHAPE;
-                case SOUTH -> shape == Shape.POSITIVE_QUARTET ? SOUTH_WEST_SHAPE : SOUTH_EAST_SHAPE;
-                case WEST -> shape == Shape.POSITIVE_QUARTET ? NORTH_WEST_SHAPE : SOUTH_WEST_SHAPE;
-                default -> shape == Shape.POSITIVE_QUARTET ? SOUTH_EAST_SHAPE : NORTH_EAST_SHAPE;
+                case NORTH -> shape.positive ? (shape.inner ? NORTH_EAST_INNER_SHAPE : NORTH_EAST_SHAPE) : (shape.inner ? NORTH_WEST_INNER_SHAPE : NORTH_WEST_SHAPE);
+                case SOUTH -> shape.positive ? (shape.inner ? SOUTH_WEST_INNER_SHAPE : SOUTH_WEST_SHAPE) : (shape.inner ? SOUTH_EAST_INNER_SHAPE : SOUTH_EAST_SHAPE);
+                case WEST -> shape.positive ? (shape.inner ? NORTH_WEST_INNER_SHAPE : NORTH_WEST_SHAPE) : (shape.inner ? SOUTH_WEST_INNER_SHAPE : SOUTH_WEST_SHAPE);
+                default -> shape.positive ? (shape.inner ? SOUTH_EAST_INNER_SHAPE : SOUTH_EAST_SHAPE) : (shape.inner ? NORTH_EAST_INNER_SHAPE : NORTH_EAST_SHAPE);
             };
         }
     }
@@ -253,7 +284,7 @@ public class SidingBlock extends BlockNF implements IWaterloggedBlock, ICustomPa
         Direction curDir = state.getValue(TYPE).direction;
         if(curDir.getAxis().isHorizontal()) {
             for(Direction dir : UPDATE_SHAPE_DIRECTIONS.get(curDir)) {
-                if(dir == facing) {
+                if(dir.getAxis() == facing.getAxis()) {
                     Shape shape = getSidingShape(level, currentPos, curDir);
                     if(state.getValue(SHAPE) != shape) {
                         state = state.setValue(SHAPE, getSidingShape(level, currentPos, curDir));
@@ -293,11 +324,17 @@ public class SidingBlock extends BlockNF implements IWaterloggedBlock, ICustomPa
                 case WEST -> OctalDirection.EAST_SINGLE;
                 default -> OctalDirection.WEST_SINGLE;
             };
+            else if(shape.inner) gapDirections = switch(type) {
+                case NORTH -> shape.positive ? OctalDirection.SOUTHWEST_SINGLE : OctalDirection.SOUTHEAST_SINGLE;
+                case SOUTH -> shape.positive ? OctalDirection.NORTHEAST_SINGLE : OctalDirection.NORTHWEST_SINGLE;
+                case WEST -> shape.positive ? OctalDirection.SOUTHEAST_SINGLE : OctalDirection.NORTHEAST_SINGLE;
+                default -> shape.positive ? OctalDirection.NORTHWEST_SINGLE : OctalDirection.SOUTHWEST_SINGLE;
+            };
             else gapDirections = switch(type) {
-                case NORTH -> shape == Shape.POSITIVE_QUARTET ? OctalDirection.SOUTH_AND_WEST : OctalDirection.SOUTH_AND_EAST;
-                case SOUTH -> shape == Shape.POSITIVE_QUARTET ? OctalDirection.NORTH_AND_EAST : OctalDirection.NORTH_AND_WEST;
-                case WEST -> shape == Shape.POSITIVE_QUARTET ? OctalDirection.SOUTH_AND_EAST : OctalDirection.NORTH_AND_EAST;
-                default -> shape == Shape.POSITIVE_QUARTET ? OctalDirection.NORTH_AND_WEST : OctalDirection.SOUTH_AND_WEST;
+                case NORTH -> shape.positive ? OctalDirection.SOUTH_AND_WEST : OctalDirection.SOUTH_AND_EAST;
+                case SOUTH -> shape.positive ? OctalDirection.NORTH_AND_EAST : OctalDirection.NORTH_AND_WEST;
+                case WEST -> shape.positive ? OctalDirection.SOUTH_AND_EAST : OctalDirection.NORTH_AND_EAST;
+                default -> shape.positive ? OctalDirection.NORTH_AND_WEST : OctalDirection.SOUTH_AND_WEST;
             };
             float y = pos.getY();
             for(OctalDirection gapDirection : gapDirections) {
@@ -316,9 +353,6 @@ public class SidingBlock extends BlockNF implements IWaterloggedBlock, ICustomPa
     @Override
     public NodeType getFloorNodeType(NodeManager nodeManager, BlockState state, BlockGetter level, BlockPos pos) {
         return NodeType.CLOSED;
-        /*Type type = state.getValue(TYPE);
-        if(type == Type.DOUBLE) return NodeType.CLOSED;
-        else return hasFloorForNodeAbove(nodeManager, state, level, pos) ? NodeType.CLOSED : NodeType.OPEN;*/
     }
 
     @Override
@@ -336,10 +370,10 @@ public class SidingBlock extends BlockNF implements IWaterloggedBlock, ICustomPa
         }
         else {
             return switch(type) {
-                case NORTH -> shape == Shape.POSITIVE_QUARTET ? NORTH_EAST_FACE_Y : NORTH_WEST_FACE_Y;
-                case SOUTH -> shape == Shape.POSITIVE_QUARTET ? SOUTH_WEST_FACE_Y : SOUTH_EAST_FACE_Y;
-                case WEST -> shape == Shape.POSITIVE_QUARTET ? NORTH_WEST_FACE_Y : SOUTH_WEST_FACE_Y;
-                default -> shape == Shape.POSITIVE_QUARTET ? SOUTH_EAST_FACE_Y : NORTH_EAST_FACE_Y;
+                case NORTH -> shape.positive ? (shape.inner ? NORTH_EAST_INNER_FACE_Y : NORTH_EAST_FACE_Y) : (shape.inner ? NORTH_WEST_INNER_FACE_Y : NORTH_WEST_FACE_Y);
+                case SOUTH -> shape.positive ? (shape.inner ? SOUTH_WEST_INNER_FACE_Y : SOUTH_WEST_FACE_Y) : (shape.inner ? SOUTH_EAST_INNER_FACE_Y : SOUTH_EAST_FACE_Y);
+                case WEST -> shape.positive ? (shape.inner ? NORTH_WEST_INNER_FACE_Y : NORTH_WEST_FACE_Y) : (shape.inner ? SOUTH_WEST_INNER_FACE_Y : SOUTH_WEST_FACE_Y);
+                default -> shape.positive ? (shape.inner ? SOUTH_EAST_INNER_FACE_Y : SOUTH_EAST_FACE_Y) : (shape.inner ? NORTH_EAST_INNER_FACE_Y : NORTH_EAST_FACE_Y);
             };
         }
     }
@@ -360,10 +394,10 @@ public class SidingBlock extends BlockNF implements IWaterloggedBlock, ICustomPa
             default -> OctalDirection.EAST;
         };
         else return switch(type) {
-            case SOUTH -> shape == Shape.POSITIVE_QUARTET ? OctalDirection.SOUTHWEST : OctalDirection.SOUTHEAST;
-            case NORTH -> shape == Shape.POSITIVE_QUARTET ? OctalDirection.NORTHEAST : OctalDirection.NORTHWEST;
-            case EAST -> shape == Shape.POSITIVE_QUARTET ? OctalDirection.SOUTHEAST : OctalDirection.NORTHEAST;
-            default -> shape == Shape.POSITIVE_QUARTET ? OctalDirection.NORTHWEST : OctalDirection.SOUTHWEST;
+            case SOUTH -> shape.positive ? OctalDirection.SOUTHWEST : OctalDirection.SOUTHEAST;
+            case NORTH -> shape.positive ? OctalDirection.NORTHEAST : OctalDirection.NORTHWEST;
+            case EAST -> shape.positive ? OctalDirection.SOUTHEAST : OctalDirection.NORTHEAST;
+            default -> shape.positive ? OctalDirection.NORTHWEST : OctalDirection.SOUTHWEST;
         };
     }
 
@@ -378,23 +412,11 @@ public class SidingBlock extends BlockNF implements IWaterloggedBlock, ICustomPa
         Shape shape = state.getValue(SHAPE);
         switch(pMirror) {
             case LEFT_RIGHT:
-                if(direction.getAxis() == Direction.Axis.Z) {
-                    if(shape == Shape.POSITIVE_QUARTET) return state.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, Shape.NEGATIVE_QUARTET);
-                    else if(shape == Shape.NEGATIVE_QUARTET) return state.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, Shape.POSITIVE_QUARTET);
-                    return state.rotate(Rotation.CLOCKWISE_180);
-                }
-                else if(shape == Shape.POSITIVE_QUARTET) return state.setValue(SHAPE, Shape.NEGATIVE_QUARTET);
-                else if(shape == Shape.NEGATIVE_QUARTET) return state.setValue(SHAPE, Shape.POSITIVE_QUARTET);
-                break;
+                if(direction.getAxis() == Direction.Axis.Z) return state.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, shape.getOpposite());
+                else return state.setValue(SHAPE, shape.getOpposite());
             case FRONT_BACK:
-                if(direction.getAxis() == Direction.Axis.X) {
-                    if(shape == Shape.POSITIVE_QUARTET) return state.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, Shape.NEGATIVE_QUARTET);
-                    else if(shape == Shape.NEGATIVE_QUARTET) return state.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, Shape.POSITIVE_QUARTET);
-                    return state.rotate(Rotation.CLOCKWISE_180);
-                }
-                else if(shape == Shape.POSITIVE_QUARTET) return state.setValue(SHAPE, Shape.NEGATIVE_QUARTET);
-                else if(shape == Shape.NEGATIVE_QUARTET) return state.setValue(SHAPE, Shape.POSITIVE_QUARTET);
-                break;
+                if(direction.getAxis() == Direction.Axis.X) return state.rotate(Rotation.CLOCKWISE_180).setValue(SHAPE, shape.getOpposite());
+                else return state.setValue(SHAPE, shape.getOpposite());
         }
         return super.mirror(state, pMirror);
     }

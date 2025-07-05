@@ -354,6 +354,22 @@ public class CapabilityEventHandler {
             MobEffectInstance finalStarvation = starvation;
             clone.server.execute(() -> clone.connection.send(new ClientboundUpdateMobEffectPacket(clone.getId(), finalStarvation)));
         }
+        if(!clone.isCreative() && !clone.isSpectator()) {
+            MobEffectInstance despair = original.getEffect(EffectsNF.DESPAIR.get());
+            if(despair == null) {
+                if(event.isWasDeath()) {
+                    MobEffectInstance newDespair = new MobEffectInstance(EffectsNF.DESPAIR.get(), (int) ContinentalWorldType.DAY_LENGTH);
+                    clone.addEffect(newDespair);
+                    clone.server.execute(() -> clone.connection.send(new ClientboundUpdateMobEffectPacket(clone.getId(), newDespair)));
+                }
+            }
+            else {
+                MobEffectInstance newDespair = !event.isWasDeath() ? despair :
+                        new MobEffectInstance(EffectsNF.DESPAIR.get(), (int) ContinentalWorldType.DAY_LENGTH, Math.min(2, despair.getAmplifier() + 1));
+                clone.addEffect(newDespair);
+                clone.server.execute(() -> clone.connection.send(new ClientboundUpdateMobEffectPacket(clone.getId(), newDespair)));
+            }
+        }
 
         cCapP.readEncyclopediaNBT(oCapP.writeEncyclopediaNBT(new CompoundTag()));
         cCapP.setStamina(oCapP.getStamina());
