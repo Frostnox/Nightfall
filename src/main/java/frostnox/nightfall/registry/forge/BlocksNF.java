@@ -227,7 +227,7 @@ public class BlocksNF {
     public static final Map<Stone, RegistryObject<Block>> COAL_ORES = DataUtil.mapEnum(Stone.class, stone -> stone == Stone.PUMICE || stone == Stone.MOONSTONE, stone ->
             register(stone.getName() + "_coal_ore", () -> new Block(BlockBehaviour.Properties.copy(STONE_BLOCKS.get(stone).get()))));
     public static final Map<Stone, RegistryObject<Block>> HALITE_ORES = DataUtil.mapEnum(Stone.class, stone -> stone.getType() != StoneType.SEDIMENTARY, stone ->
-            register(stone.getName() + "_halite_ore", () -> new Block(BlockBehaviour.Properties.copy(STONE_BLOCKS.get(stone).get()).noOcclusion())));
+            register(stone.getName() + "_halite_ore", () -> new Block(BlockBehaviour.Properties.copy(STONE_BLOCKS.get(stone).get()))));
     public static final RegistryObject<Block> METEORITE_ORE = BLOCKS.register("meteorite_ore", () -> new Block(BlockBehaviour.Properties
             .copy(STONE_BLOCKS.get(Stone.MOONSTONE).get())));
 
