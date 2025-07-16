@@ -37,6 +37,20 @@ public class EntitiesNF {
             .sized(11F/16F, 15.95F/16F).clientTrackingRange(10).setShouldReceiveVelocityUpdates(false).build("cockatrice"));
     public static final RegistryObject<EntityType<SpiderEntity>> SPIDER = ENTITIES.register("spider", () -> EntityType.Builder.of(SpiderEntity::new, MobCategory.MONSTER)
             .sized(10F/16F, 6.5F/16F).clientTrackingRange(10).setShouldReceiveVelocityUpdates(false).build("spider"));
+    public static final RegistryObject<EntityType<SkullwormEntity>> SKULLWORM = ENTITIES.register("skullworm", () -> EntityType.Builder.of(SkullwormEntity::new, MobCategory.MONSTER)
+            .sized(6F/16F, 10F/16F).clientTrackingRange(10).setShouldReceiveVelocityUpdates(false).build("skullworm"));
+    public static final RegistryObject<EntityType<PitDevilEntity>> PIT_DEVIL = ENTITIES.register("pit_devil", () -> EntityType.Builder.of(PitDevilEntity::new, MobCategory.MONSTER)
+            .sized(6F/16F, 10F/16F).clientTrackingRange(10).setShouldReceiveVelocityUpdates(false).build("pit_devil"));
+    public static final RegistryObject<EntityType<SlimeEntity>> SLIME = ENTITIES.register("slime", () -> EntityType.Builder.of(SlimeEntity::new, MobCategory.MONSTER)
+            .sized(6F/16F, 10F/16F).clientTrackingRange(10).setShouldReceiveVelocityUpdates(false).build("slime"));
+    public static final RegistryObject<EntityType<ScorpionEntity>> SCORPION = ENTITIES.register("scorpion", () -> EntityType.Builder.of(ScorpionEntity::new, MobCategory.MONSTER)
+            .sized(6F/16F, 10F/16F).clientTrackingRange(10).setShouldReceiveVelocityUpdates(false).build("scorpion"));
+    public static final RegistryObject<EntityType<ScarabEntity>> SCARAB = ENTITIES.register("scarab", () -> EntityType.Builder.of(ScarabEntity::new, MobCategory.MONSTER)
+            .sized(6F/16F, 10F/16F).clientTrackingRange(10).setShouldReceiveVelocityUpdates(false).build("scarab"));
+    public static final RegistryObject<EntityType<TrollEntity>> TROLL = ENTITIES.register("troll", () -> EntityType.Builder.of(TrollEntity::new, MobCategory.MONSTER)
+            .sized(6F/16F, 10F/16F).clientTrackingRange(10).setShouldReceiveVelocityUpdates(false).build("troll"));
+    public static final RegistryObject<EntityType<OlmurEntity>> OLMUR = ENTITIES.register("olmur", () -> EntityType.Builder.of(OlmurEntity::new, MobCategory.MONSTER)
+            .sized(6F/16F, 10F/16F).clientTrackingRange(10).setShouldReceiveVelocityUpdates(false).build("olmur"));
     public static final RegistryObject<EntityType<JellyfishEntity>> JELLYFISH = ENTITIES.register("jellyfish", () -> EntityType.Builder.of(JellyfishEntity::new, MobCategory.WATER_AMBIENT)
             .sized(6.1F/16F, 14.1F/16F).clientTrackingRange(10).setShouldReceiveVelocityUpdates(false).build("jellyfish"));
     public static final RegistryObject<EntityType<ArmorStandDummyEntity>> ARMOR_STAND = ENTITIES.register("armor_stand", () -> EntityType.Builder.of(ArmorStandDummyEntity::new, MobCategory.MISC)

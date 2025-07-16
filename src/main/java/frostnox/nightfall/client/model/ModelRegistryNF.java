@@ -41,6 +41,13 @@ public class ModelRegistryNF {
     public static ModelLayerLocation CREEPER;
     public static ModelLayerLocation COCKATRICE;
     public static ModelLayerLocation SPIDER;
+    public static ModelLayerLocation SKULLWORM;
+    public static ModelLayerLocation PIT_DEVIL;
+    public static ModelLayerLocation SLIME;
+    public static ModelLayerLocation SCORPION;
+    public static ModelLayerLocation SCARAB;
+    public static ModelLayerLocation TROLL;
+    public static ModelLayerLocation OLMUR;
     public static ModelLayerLocation JELLYFISH_INNER, JELLYFISH_OUTER;
     //Armor
     public static ModelLayerLocation INNER_ARMOR, OUTER_ARMOR; //Vanilla
@@ -78,6 +85,13 @@ public class ModelRegistryNF {
         CREEPER = register("creeper", CreeperModel.createBodyLayer());
         COCKATRICE = register("cockatrice", CockatriceModel.createBodyLayer());
         SPIDER = register("spider", SpiderModel.createBodyLayer());
+        SKULLWORM = register("skullworm", SkullwormModel.createBodyLayer());
+        PIT_DEVIL = register("pit_devil", PitDevilModel.createBodyLayer());
+        SLIME = register("slime", SlimeModel.createBodyLayer());
+        SCORPION = register("scorpion", ScorpionModel.createBodyLayer());
+        SCARAB = register("scarab", ScarabModel.createBodyLayer());
+        TROLL = register("troll", TrollModel.createBodyLayer());
+        OLMUR = register("olmur", OlmurModel.createBodyLayer());
         JELLYFISH_INNER = register("jellyfish_inner", JellyfishInnerModel.createInnerLayer());
         JELLYFISH_OUTER = register("jellyfish_outer", JellyfishOuterModel.createOuterLayer());
         //Armor

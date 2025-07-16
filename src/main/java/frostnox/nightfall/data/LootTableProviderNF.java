@@ -650,6 +650,13 @@ public class LootTableProviderNF extends LootTableProvider {
                     .withPool(pool(entry(ItemsNF.COCKATRICE_FEATHER.get(), 6, 8)))
                     .withPool(pool(entry(ItemsNF.RAW_GAME.get(), 1, 2))).withPool(pool(entry(ItemsNF.RAW_POULTRY.get(), 2, 2))));
             add(EntitiesNF.SPIDER.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.SILK.get(), 1, 2))));
+            add(EntitiesNF.SKULLWORM.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.SILK.get(), 1, 2))));
+            add(EntitiesNF.PIT_DEVIL.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.SILK.get(), 1, 2))));
+            add(EntitiesNF.SLIME.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.SILK.get(), 1, 2))));
+            add(EntitiesNF.SCORPION.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.SILK.get(), 1, 2))));
+            add(EntitiesNF.SCARAB.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.SILK.get(), 1, 2))));
+            add(EntitiesNF.TROLL.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.SILK.get(), 1, 2))));
+            add(EntitiesNF.OLMUR.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.SILK.get(), 1, 2))));
             add(EntitiesNF.JELLYFISH.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.RAW_JELLYFISH.get(), 1, 1))));
         }
     }

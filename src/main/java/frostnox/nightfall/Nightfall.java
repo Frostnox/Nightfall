@@ -360,6 +360,13 @@ public class Nightfall {
         event.put(EntitiesNF.CREEPER.get(), CreeperEntity.getAttributeMap().build());
         event.put(EntitiesNF.COCKATRICE.get(), CockatriceEntity.getAttributeMap().build());
         event.put(EntitiesNF.SPIDER.get(), SpiderEntity.getAttributeMap().build());
+        event.put(EntitiesNF.SKULLWORM.get(), SkullwormEntity.getAttributeMap().build());
+        event.put(EntitiesNF.PIT_DEVIL.get(), PitDevilEntity.getAttributeMap().build());
+        event.put(EntitiesNF.SLIME.get(), SlimeEntity.getAttributeMap().build());
+        event.put(EntitiesNF.SCORPION.get(), ScorpionEntity.getAttributeMap().build());
+        event.put(EntitiesNF.SCARAB.get(), ScarabEntity.getAttributeMap().build());
+        event.put(EntitiesNF.TROLL.get(), TrollEntity.getAttributeMap().build());
+        event.put(EntitiesNF.OLMUR.get(), OlmurEntity.getAttributeMap().build());
         event.put(EntitiesNF.JELLYFISH.get(), JellyfishEntity.getAttributeMap().build());
         event.put(EntitiesNF.ARMOR_STAND.get(), LivingEntity.createLivingAttributes().add(Attributes.MAX_HEALTH, 100D).build());
     }
@@ -515,6 +522,13 @@ public class Nightfall {
             event.registerEntityRenderer(EntitiesNF.CREEPER.get(), CreeperRenderer::new);
             event.registerEntityRenderer(EntitiesNF.COCKATRICE.get(), CockatriceRenderer::new);
             event.registerEntityRenderer(EntitiesNF.SPIDER.get(), SpiderRenderer::new);
+            event.registerEntityRenderer(EntitiesNF.SKULLWORM.get(), SkullwormRenderer::new);
+            event.registerEntityRenderer(EntitiesNF.PIT_DEVIL.get(), PitDevilRenderer::new);
+            event.registerEntityRenderer(EntitiesNF.SLIME.get(), SlimeRenderer::new);
+            event.registerEntityRenderer(EntitiesNF.SCORPION.get(), ScorpionRenderer::new);
+            event.registerEntityRenderer(EntitiesNF.SCARAB.get(), ScarabRenderer::new);
+            event.registerEntityRenderer(EntitiesNF.TROLL.get(), TrollRenderer::new);
+            event.registerEntityRenderer(EntitiesNF.OLMUR.get(), OlmurRenderer::new);
             event.registerEntityRenderer(EntitiesNF.JELLYFISH.get(), JellyfishRenderer::new);
             event.registerEntityRenderer(EntitiesNF.ARMOR_STAND.get(), ArmorStandDummyRenderer::new);
             event.registerEntityRenderer(EntitiesNF.BOAT.get(), BoatRendererNF::new);

@@ -290,6 +290,18 @@ public class ItemsNF {
             () -> new ForgeSpawnEggItem(EntitiesNF.COCKATRICE, 0x526c1f, 0xc25217, utility()));
     public static final RegistryObject<SpawnEggItem> SPIDER_SPAWN_EGG = register(EntitiesNF.SPIDER.getId().getPath() + "_spawn_egg",
             () -> new ForgeSpawnEggItem(EntitiesNF.SPIDER, 0x95150d, 0x2c2622, utility()));
+    public static final RegistryObject<SpawnEggItem> PIT_DEVIL_SPAWN_EGG = register(EntitiesNF.PIT_DEVIL.getId().getPath() + "_spawn_egg",
+            () -> new ForgeSpawnEggItem(EntitiesNF.PIT_DEVIL, 0x95150d, 0x2c2622, utility()));
+    public static final RegistryObject<SpawnEggItem> SLIME_SPAWN_EGG = register(EntitiesNF.SLIME.getId().getPath() + "_spawn_egg",
+            () -> new ForgeSpawnEggItem(EntitiesNF.SLIME, 0x95150d, 0x2c2622, utility()));
+    public static final RegistryObject<SpawnEggItem> SCORPION_SPAWN_EGG = register(EntitiesNF.SCORPION.getId().getPath() + "_spawn_egg",
+            () -> new ForgeSpawnEggItem(EntitiesNF.SCORPION, 0x95150d, 0x2c2622, utility()));
+    public static final RegistryObject<SpawnEggItem> SCARAB_SPAWN_EGG = register(EntitiesNF.SCARAB.getId().getPath() + "_spawn_egg",
+            () -> new ForgeSpawnEggItem(EntitiesNF.SCARAB, 0x95150d, 0x2c2622, utility()));
+    public static final RegistryObject<SpawnEggItem> TROLL_SPAWN_EGG = register(EntitiesNF.TROLL.getId().getPath() + "_spawn_egg",
+            () -> new ForgeSpawnEggItem(EntitiesNF.TROLL, 0x95150d, 0x2c2622, utility()));
+    public static final RegistryObject<SpawnEggItem> OLMUR_SPAWN_EGG = register(EntitiesNF.OLMUR.getId().getPath() + "_spawn_egg",
+            () -> new ForgeSpawnEggItem(EntitiesNF.OLMUR, 0x95150d, 0x2c2622, utility()));
     public static final RegistryObject<SpawnEggItem> JELLYFISH_SPAWN_EGG = register(EntitiesNF.JELLYFISH.getId().getPath() + "_spawn_egg",
             () -> new ForgeSpawnEggItem(EntitiesNF.JELLYFISH, 0xec5c83, 0xf5b7cf, utility()));
     //Armaments

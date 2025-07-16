@@ -19,11 +19,13 @@ public class EntityTypeTagsProviderNF extends EntityTypeTagsProvider {
         tag(TagsNF.IMPACT_TYPE_STONE);
         tag(TagsNF.IMPACT_TYPE_GASEOUS);
         tag(EntityTypeTags.IMPACT_PROJECTILES).add(EntitiesNF.THROWN_ROCK.get(), EntitiesNF.ARROW.get(), EntitiesNF.THROWN_WEAPON.get());
-        tag(TagsNF.RABBIT_PREDATOR).add(EntitiesNF.COCKATRICE.get(), EntitiesNF.SPIDER.get());
-        tag(TagsNF.DEER_PREDATOR).add(EntitiesNF.COCKATRICE.get());
-        tag(TagsNF.COCKATRICE_PREDATOR);
+        tag(TagsNF.RABBIT_PREDATOR).add(EntitiesNF.COCKATRICE.get(), EntitiesNF.SPIDER.get(), EntitiesNF.SKULLWORM.get(), EntitiesNF.PIT_DEVIL.get(),
+                EntitiesNF.SCORPION.get(), EntitiesNF.OLMUR.get());
+        tag(TagsNF.DEER_PREDATOR).add(EntitiesNF.COCKATRICE.get(), EntitiesNF.SKULLWORM.get(), EntitiesNF.PIT_DEVIL.get(),
+                EntitiesNF.SCORPION.get(), EntitiesNF.TROLL.get(), EntitiesNF.OLMUR.get());
+        tag(TagsNF.COCKATRICE_PREDATOR).add(EntitiesNF.SKULLWORM.get(), EntitiesNF.TROLL.get(), EntitiesNF.OLMUR.get());
         tag(TagsNF.COCKATRICE_PREY).add(EntitiesNF.RABBIT.get(), EntitiesNF.DEER.get(), EntitiesNF.SPIDER.get());
-        tag(TagsNF.SPIDER_PREDATOR);
+        tag(TagsNF.SPIDER_PREDATOR).add(EntitiesNF.SKULLWORM.get());
         tag(TagsNF.SPIDER_PREY).add(EntitiesNF.RABBIT.get());
         tag(TagsNF.JELLYFISH_IMMUNE).add(EntitiesNF.JELLYFISH.get());
     }

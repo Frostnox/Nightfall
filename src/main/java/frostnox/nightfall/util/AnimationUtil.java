@@ -196,11 +196,11 @@ public class AnimationUtil {
         float p = symmetric ? getSymmetricProgress(rawAmount, slow) : getLinearProgress(rawAmount, slow);
         if(!symmetric) return easing.apply(p);
         else return switch(easing) {
-            case inSine, outSine, inOutSine -> p < 0.0F ? -AnimationUtil.applyEasing(Math.abs(p), Easing.outSine) : AnimationUtil.applyEasing(p, Easing.outSine);
-            case inQuart, outQuart, inOutQuart -> p < 0.0F ? -AnimationUtil.applyEasing(Math.abs(p), Easing.outQuart) : AnimationUtil.applyEasing(p, Easing.outQuart);
-            case inQuad, outQuad, inOutQuad -> p < 0.0F ? -AnimationUtil.applyEasing(Math.abs(p), Easing.outQuad) : AnimationUtil.applyEasing(p, Easing.outQuad);
-            case inCubic, outCubic, inOutCubic -> p < 0.0F ? -AnimationUtil.applyEasing(Math.abs(p), Easing.outCubic) : AnimationUtil.applyEasing(p, Easing.outCubic);
-            case inBack, outBack, inOutBack -> p < 0.0F ? -AnimationUtil.applyEasing(Math.abs(p), Easing.outBack) : AnimationUtil.applyEasing(p, Easing.outBack);
+            case inSine, outSine, inOutSine -> p < 0.0F ? -Easing.outSine.apply(Math.abs(p)) : Easing.outSine.apply(p);
+            case inQuart, outQuart, inOutQuart -> p < 0.0F ? -Easing.outQuart.apply(Math.abs(p)) : Easing.outQuart.apply(p);
+            case inQuad, outQuad, inOutQuad -> p < 0.0F ? -Easing.outQuad.apply(Math.abs(p)) : Easing.outQuad.apply(p);
+            case inCubic, outCubic, inOutCubic -> p < 0.0F ? -Easing.outCubic.apply(Math.abs(p)) : Easing.outCubic.apply(p);
+            case inBack, outBack, inOutBack -> p < 0.0F ? -Easing.outBack.apply(Math.abs(p)) : Easing.outBack.apply(p);
             default -> p;
         };
     }
