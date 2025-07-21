@@ -2,25 +2,31 @@ package frostnox.nightfall.registry;
 
 import frostnox.nightfall.Nightfall;
 import frostnox.nightfall.action.*;
-import frostnox.nightfall.action.npc.deer.DeerGraze;
 import frostnox.nightfall.action.npc.cockatrice.CockatriceBite;
 import frostnox.nightfall.action.npc.cockatrice.CockatriceClaw;
 import frostnox.nightfall.action.npc.cockatrice.CockatriceSpit;
-import frostnox.nightfall.action.npc.dreg.*;
+import frostnox.nightfall.action.npc.deer.DeerGraze;
+import frostnox.nightfall.action.npc.dreg.DregBuff;
+import frostnox.nightfall.action.npc.dreg.DregBuild;
+import frostnox.nightfall.action.npc.dreg.DregCower;
+import frostnox.nightfall.action.npc.dreg.DregResurrect;
 import frostnox.nightfall.action.npc.husk.HuskLeftSwipe;
 import frostnox.nightfall.action.npc.husk.HuskOverhead;
 import frostnox.nightfall.action.npc.husk.HuskRightSwipe;
+import frostnox.nightfall.action.npc.rockworm.RockwormBite;
+import frostnox.nightfall.action.npc.rockworm.RockwormEmerge;
+import frostnox.nightfall.action.npc.rockworm.RockwormRetreat;
 import frostnox.nightfall.action.npc.skeleton.SkeletonShoot;
 import frostnox.nightfall.action.npc.skeleton.SkeletonThrust;
 import frostnox.nightfall.action.npc.spider.SpiderBite;
 import frostnox.nightfall.action.player.action.*;
 import frostnox.nightfall.action.player.action.guard.ShieldGuardAction;
 import frostnox.nightfall.action.player.action.guard.WeaponGuardAction;
-import frostnox.nightfall.action.player.attack.*;
-import frostnox.nightfall.action.player.technique.HammerTechnique;
 import frostnox.nightfall.action.player.action.thrown.ThrowAxeTechnique;
 import frostnox.nightfall.action.player.action.thrown.ThrowDaggerTechnique;
 import frostnox.nightfall.action.player.action.thrown.ThrowSpearTechnique;
+import frostnox.nightfall.action.player.attack.*;
+import frostnox.nightfall.action.player.technique.HammerTechnique;
 import frostnox.nightfall.block.block.anvil.AnvilAction;
 import frostnox.nightfall.capability.ActionTracker;
 import frostnox.nightfall.capability.PlayerData;
@@ -442,6 +448,14 @@ public class ActionsNF {
     public static final RegistryObject<SpiderBite> SPIDER_BITE_POISONOUS = ACTIONS.register("spider_bite_poisonous", () ->
             new SpiderBite(18F, DamageType.PIERCING.asArray(), HurtSphere.SPIDER_BITE, 1, CombatUtil.STUN_MEDIUM,
                     new int[] {9, 5, 8}, new Action.Properties().setSound(SoundsNF.SPIDER_BITE), new AttackEffect(EffectsNF.POISON, 10 * 20, 0, 1)));
+
+    public static final RegistryObject<RockwormRetreat> ROCKWORM_RETREAT = ACTIONS.register("rockworm_retreat", () ->
+            new RockwormRetreat(new Action.Properties(), 10));
+    public static final RegistryObject<RockwormEmerge> ROCKWORM_EMERGE = ACTIONS.register("rockworm_emerge", () ->
+            new RockwormEmerge(new Action.Properties(), 10));
+    public static final RegistryObject<RockwormBite> ROCKWORM_BITE = ACTIONS.register("rockworm_bite", () ->
+            new RockwormBite(35F, DamageType.PIERCING.asArray(), HurtSphere.ROCKWORM_BITE, 2, 6,
+                    new int[] {5, 7}, new Action.Properties().setKnockback(-1F).setSound(SoundsNF.SPIDER_BITE)));
 
     public static void register() {
         ACTIONS.register(Nightfall.MOD_EVENT_BUS);

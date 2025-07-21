@@ -73,6 +73,8 @@ import net.minecraft.sounds.Music;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.InventoryMenu;
@@ -94,6 +96,7 @@ import org.apache.commons.compress.utils.Lists;
 import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.*;
+import java.util.function.Predicate;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -721,6 +724,13 @@ public class ClientEngine {
 
     public Player getPlayer() {
         return mc.player;
+    }
+
+    public List<Entity> getPlayerToPush(Entity pusher) {
+        if(mc.player != null && pusher.getBoundingBox().intersects(mc.player.getBoundingBox()) && EntitySelector.pushableBy(pusher).test(mc.player)) {
+            return List.of(mc.player);
+        }
+        return List.of();
     }
 
     public Vec3 getPlayerPosition(float partialTick) {

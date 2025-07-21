@@ -360,7 +360,7 @@ public class Nightfall {
         event.put(EntitiesNF.CREEPER.get(), CreeperEntity.getAttributeMap().build());
         event.put(EntitiesNF.COCKATRICE.get(), CockatriceEntity.getAttributeMap().build());
         event.put(EntitiesNF.SPIDER.get(), SpiderEntity.getAttributeMap().build());
-        event.put(EntitiesNF.SKULLWORM.get(), SkullwormEntity.getAttributeMap().build());
+        event.put(EntitiesNF.ROCKWORM.get(), RockwormEntity.getAttributeMap().build());
         event.put(EntitiesNF.PIT_DEVIL.get(), PitDevilEntity.getAttributeMap().build());
         event.put(EntitiesNF.SLIME.get(), SlimeEntity.getAttributeMap().build());
         event.put(EntitiesNF.SCORPION.get(), ScorpionEntity.getAttributeMap().build());
@@ -522,7 +522,7 @@ public class Nightfall {
             event.registerEntityRenderer(EntitiesNF.CREEPER.get(), CreeperRenderer::new);
             event.registerEntityRenderer(EntitiesNF.COCKATRICE.get(), CockatriceRenderer::new);
             event.registerEntityRenderer(EntitiesNF.SPIDER.get(), SpiderRenderer::new);
-            event.registerEntityRenderer(EntitiesNF.SKULLWORM.get(), SkullwormRenderer::new);
+            event.registerEntityRenderer(EntitiesNF.ROCKWORM.get(), RockwormRenderer::new);
             event.registerEntityRenderer(EntitiesNF.PIT_DEVIL.get(), PitDevilRenderer::new);
             event.registerEntityRenderer(EntitiesNF.SLIME.get(), SlimeRenderer::new);
             event.registerEntityRenderer(EntitiesNF.SCORPION.get(), ScorpionRenderer::new);

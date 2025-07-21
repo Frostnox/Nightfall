@@ -105,6 +105,9 @@ public class SoundsNF {
     public static final RegistryObject<SoundEvent> COCKATRICE_BITE = generic("entity.cockatrice.bite");
     public static final RegistryObject<SoundEvent> COCKATRICE_SPIT = generic("entity.cockatrice.spit");
     public static final RegistryObject<SoundEvent> SPIDER_BITE = generic("entity.spider.bite");
+    public static final RegistryObject<SoundEvent> ROCKWORM_DEATH = generic("entity.rockworm.death");
+    public static final RegistryObject<SoundEvent> ROCKWORM_HURT = generic("entity.rockworm.hurt");
+    public static final RegistryObject<SoundEvent> ROCKWORM_BITE = generic("entity.rockworm.bite");
     public static final RegistryObject<SoundEvent> JELLYFISH_DEATH = generic("entity.jellyfish.death");
     public static final RegistryObject<SoundEvent> JELLYFISH_HURT = generic("entity.jellyfish.hurt");
     public static final RegistryObject<SoundEvent> JELLYFISH_STING = generic("entity.jellyfish.sting");

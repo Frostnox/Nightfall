@@ -37,8 +37,8 @@ public class EntitiesNF {
             .sized(11F/16F, 15.95F/16F).clientTrackingRange(10).setShouldReceiveVelocityUpdates(false).build("cockatrice"));
     public static final RegistryObject<EntityType<SpiderEntity>> SPIDER = ENTITIES.register("spider", () -> EntityType.Builder.of(SpiderEntity::new, MobCategory.MONSTER)
             .sized(10F/16F, 6.5F/16F).clientTrackingRange(10).setShouldReceiveVelocityUpdates(false).build("spider"));
-    public static final RegistryObject<EntityType<SkullwormEntity>> SKULLWORM = ENTITIES.register("skullworm", () -> EntityType.Builder.of(SkullwormEntity::new, MobCategory.MONSTER)
-            .sized(6F/16F, 10F/16F).clientTrackingRange(10).setShouldReceiveVelocityUpdates(false).build("skullworm"));
+    public static final RegistryObject<EntityType<RockwormEntity>> ROCKWORM = ENTITIES.register("rockworm", () -> EntityType.Builder.of(RockwormEntity::new, MobCategory.MONSTER)
+            .sized(7F/16F, 29F/16F).clientTrackingRange(10).setShouldReceiveVelocityUpdates(false).build("rockworm"));
     public static final RegistryObject<EntityType<PitDevilEntity>> PIT_DEVIL = ENTITIES.register("pit_devil", () -> EntityType.Builder.of(PitDevilEntity::new, MobCategory.MONSTER)
             .sized(6F/16F, 10F/16F).clientTrackingRange(10).setShouldReceiveVelocityUpdates(false).build("pit_devil"));
     public static final RegistryObject<EntityType<SlimeEntity>> SLIME = ENTITIES.register("slime", () -> EntityType.Builder.of(SlimeEntity::new, MobCategory.MONSTER)

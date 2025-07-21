@@ -44,6 +44,7 @@ public class DamageTypeSource extends DamageSource {
     public static final DamageTypeSource DRAGON_BREATH = (new DamageTypeSource("dragonBreath", DamageType.ABSOLUTE)).fromBlock();
     public static final DamageTypeSource DRY_OUT = new DamageTypeSource("dryout", DamageType.ABSOLUTE).setDoT();
     public static final DamageTypeSource SWEET_BERRY_BUSH = new DamageTypeSource("sweetBerryBush", DamageType.PIERCING).fromBlock();
+    public static final DamageTypeSource UPROOTED = new DamageTypeSource("uprooted", DamageType.ABSOLUTE);
     //New
     public static final DamageTypeSource PHYSICAL = new DamageTypeSource("physical", DamageType.STRIKING, DamageType.SLASHING, DamageType.PIERCING);
     public static final DamageTypeSource EXPLOSION = (DamageTypeSource) new DamageTypeSource("explosion", DamageType.STRIKING).setExplosion();

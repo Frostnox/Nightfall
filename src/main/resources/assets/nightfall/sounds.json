@@ -370,6 +370,18 @@
     "subtitle": "nightfall.entity.spider.bite",
     "sounds": ["nightfall:entity/spider/bite_0", "nightfall:entity/spider/bite_1", "nightfall:entity/spider/bite_2"]
   },
+  "entity.rockworm.death": {
+    "subtitle": "nightfall.entity.rockworm.death",
+    "sounds": ["nightfall:entity/rockworm/death"]
+  },
+  "entity.rockworm.hurt": {
+    "subtitle": "nightfall.entity.rockworm.hurt",
+    "sounds": ["nightfall:entity/rockworm/hurt_0", "nightfall:entity/rockworm/hurt_1", "nightfall:entity/rockworm/hurt_2"]
+  },
+  "entity.rockworm.bite": {
+    "subtitle": "nightfall.entity.rockworm.bite",
+    "sounds": ["nightfall:entity/rockworm/bite_0", "nightfall:entity/rockworm/bite_1", "nightfall:entity/rockworm/bite_2"]
+  },
   "entity.jellyfish.death": {
     "subtitle": "nightfall.entity.jellyfish.death",
     "sounds": ["mob/slime/small1", "mob/slime/small2", "mob/slime/small3", "mob/slime/small4", "mob/slime/small5"]

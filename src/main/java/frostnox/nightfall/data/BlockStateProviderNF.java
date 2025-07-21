@@ -108,6 +108,14 @@ public class BlockStateProviderNF extends BlockStateProvider {
         getVariantBuilder(block).partialState().addModels(ConfiguredModel.builder().modelFile(model).build());
     }
 
+    public void cubeTopBlock(Block block) {
+        getVariantBuilder(block).partialState().addModels(ConfiguredModel.builder().modelFile(cubeTop(block)).build());
+    }
+
+    public ModelFile cubeTop(Block block) {
+        return models().cubeTop(name(block), resource(block), resource(block, "_top"));
+    }
+
     public ModelFile cubeColumn(Block block) {
         return models().cubeColumn(name(block), resource(block), resource(block, "_top"));
     }
@@ -1108,6 +1116,7 @@ public class BlockStateProviderNF extends BlockStateProvider {
         multifaceBlock(BlocksNF.SPIDER_WEB.get(), templateModel(BlocksNF.SPIDER_WEB.get(), resource("cover"),
                 Pair.of("0", resource(BlocksNF.SPIDER_WEB.get())), Pair.of("particle", resource(BlocksNF.SPIDER_WEB.get()))));
         columnBlock(BlocksNF.SPIDER_NEST.get());
+        cubeTopBlock(BlocksNF.ANCHORING_RESIN.get());
 
         //Note that generated models used in generation of others will still need to be manually created before
         for(RegistryObject<? extends Block> block : BlocksNF.BLOCKS.getEntries()) {

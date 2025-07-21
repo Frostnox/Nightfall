@@ -132,6 +132,7 @@ public class ItemsNF {
             () -> SoundEvents.FLINTANDSTEEL_USE, 1F/32F, ingredient()));
     public static final RegistryObject<Item> BONE_SHARD = register("bone_shard", INGREDIENTS_TAB);
     public static final RegistryObject<Item> OBSIDIAN_SHARD = ITEMS.register("obsidian_shard", () -> new Item(ingredient()));
+    public static final RegistryObject<Item> ANCHORING_RESIN = ITEMS.register("anchoring_resin", () -> new Item(ingredient()));
     public static final RegistryObject<FireStarterItem> STICK = ITEMS.register("stick", () -> new FireStarterItem(Map.of(TagsNF.STICK_FIRE_STARTER, 20),
             SoundsNF.STICK_FIRE_STRIKE, 1F/16F, ingredient()));
     public static final RegistryObject<BuildingMaterialItem> PLANT_FIBERS = ITEMS.register("plant_fibers", () -> new BuildingMaterialItem(building()));
@@ -662,6 +663,7 @@ public class ItemsNF {
 
     public static final RegistryObject<BlockItemNF> SPIDER_WEB = register(BlocksNF.SPIDER_WEB, 16, NATURAL_TAB);
     public static final RegistryObject<BlockItemNF> SPIDER_NEST = register(BlocksNF.SPIDER_NEST, NATURAL_TAB);
+    public static final RegistryObject<BlockItemNF> ANCHORING_RESIN_BLOCK = register(BlocksNF.ANCHORING_RESIN, NATURAL_TAB);
 
     public static void register() {
         ITEMS.register(Nightfall.MOD_EVENT_BUS);

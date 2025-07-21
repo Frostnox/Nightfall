@@ -11,6 +11,7 @@ import frostnox.nightfall.block.block.barrel.BarrelBlockNF;
 import frostnox.nightfall.block.block.bowl.BowlBlock;
 import frostnox.nightfall.block.block.ChairBlock;
 import frostnox.nightfall.block.block.itemframe.ItemFrameBlock;
+import frostnox.nightfall.block.block.nest.AnchoringResinBlock;
 import frostnox.nightfall.block.block.nest.RabbitBurrowBlock;
 import frostnox.nightfall.block.block.campfire.CampfireBlockNF;
 import frostnox.nightfall.block.block.cauldron.CauldronBlockNF;
@@ -722,6 +723,8 @@ public class BlocksNF {
             BlockBehaviour.Properties.of(FLAMMABLE_DECORATION).strength(1F).noCollission().noOcclusion().speedFactor(0.5F).jumpFactor(0.6F).sound(SoundType.WOOL)));
     public static final RegistryObject<SpiderNestBlock> SPIDER_NEST = BLOCKS.register("spider_nest", () -> new SpiderNestBlock(
             BlockBehaviour.Properties.of(Material.WOOL).randomTicks().strength(8F).speedFactor(0.5F).jumpFactor(0.6F).sound(SoundType.WOOL)));
+    public static final RegistryObject<AnchoringResinBlock> ANCHORING_RESIN = BLOCKS.register("anchoring_resin_block", () -> new AnchoringResinBlock(
+            BlockBehaviour.Properties.of(Material.STONE, MaterialColor.TERRACOTTA_YELLOW).strength(16F).speedFactor(0.05F).sound(SoundType.CALCITE)));
 
     public static void register() {
         BLOCKS.register(Nightfall.MOD_EVENT_BUS);

@@ -4,6 +4,7 @@ import com.mojang.math.Vector3d;
 import com.mojang.math.Vector3f;
 import frostnox.nightfall.action.*;
 import frostnox.nightfall.block.IAdjustableNodeType;
+import frostnox.nightfall.client.ClientEngine;
 import frostnox.nightfall.entity.EntityPart;
 import frostnox.nightfall.entity.ai.pathfinding.ActionableMoveControl;
 import frostnox.nightfall.entity.ai.pathfinding.EntityNavigator;
@@ -46,6 +47,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.BaseFireBlock;
@@ -62,6 +64,7 @@ import net.minecraftforge.common.ToolAction;
 import javax.annotation.Nullable;
 import java.util.EnumMap;
 import java.util.List;
+import java.util.function.Predicate;
 
 public abstract class ActionableEntity extends PathfinderMob {
     protected static final EntityDataAccessor<Integer> RANDOM = SynchedEntityData.defineId(ActionableEntity.class, EntityDataSerializers.INT);
@@ -493,7 +496,21 @@ public abstract class ActionableEntity extends PathfinderMob {
 
     @Override
     protected void pushEntities() {
-        if(!level.isClientSide && !isDeadOrDying()) super.pushEntities();
+        if(!isDeadOrDying()) {
+            List<Entity> entities = level.isClientSide ? ClientEngine.get().getPlayerToPush(this) :
+                level.getEntities(this, getBoundingBox(), EntitySelector.pushableBy(this));
+            if(!entities.isEmpty()) {
+                int maxGroup = level.getGameRules().getInt(GameRules.RULE_MAX_ENTITY_CRAMMING);
+                if(maxGroup > 0 && entities.size() > maxGroup - 1 && random.nextInt(4) == 0) {
+                    int count = 0;
+                    for(Entity entity : entities) {
+                        if(!entity.isPassenger()) ++count;
+                    }
+                    if(count > maxGroup - 1) hurt(DamageSource.CRAMMING, 6.0F);
+                }
+                for(Entity entity : entities) doPush(entity);
+            }
+        }
     }
 
     @Override
@@ -603,7 +620,7 @@ public abstract class ActionableEntity extends PathfinderMob {
     protected void tickDeath() {
         deathTime++;
         if(deathTime == (dropLootFromSkinning() ? 6000 : 20) && !level.isClientSide()) {
-            if(!dropLootFromSkinning()) level.broadcastEntityEvent(this, (byte)60);
+            level.broadcastEntityEvent(this, (byte)60);
             remove(Entity.RemovalReason.KILLED);
         }
     }

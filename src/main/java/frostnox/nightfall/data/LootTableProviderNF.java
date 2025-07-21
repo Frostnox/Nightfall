@@ -330,6 +330,7 @@ public class LootTableProviderNF extends LootTableProvider {
 
             dropOthers(BlocksNF.SPIDER_WEB.get(), entry(ItemsNF.SILK.get(), -1, 1));
             dropOthers(BlocksNF.SPIDER_NEST.get(), entry(ItemsNF.SILK.get(), 10, 12));
+            dropOtherPerception(BlocksNF.ANCHORING_RESIN.get(), ItemsNF.ANCHORING_RESIN.get(), 3, 1, 0.5F, 0.1F, 1);
 
             for(var block : getKnownBlocks()) {
                 if(!addedBlocks.contains(block)) dropSelf(block);
@@ -650,7 +651,7 @@ public class LootTableProviderNF extends LootTableProvider {
                     .withPool(pool(entry(ItemsNF.COCKATRICE_FEATHER.get(), 6, 8)))
                     .withPool(pool(entry(ItemsNF.RAW_GAME.get(), 1, 2))).withPool(pool(entry(ItemsNF.RAW_POULTRY.get(), 2, 2))));
             add(EntitiesNF.SPIDER.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.SILK.get(), 1, 2))));
-            add(EntitiesNF.SKULLWORM.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.SILK.get(), 1, 2))));
+            add(EntitiesNF.ROCKWORM.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.SILK.get(), 1, 2))));
             add(EntitiesNF.PIT_DEVIL.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.SILK.get(), 1, 2))));
             add(EntitiesNF.SLIME.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.SILK.get(), 1, 2))));
             add(EntitiesNF.SCORPION.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.SILK.get(), 1, 2))));

@@ -27,6 +27,7 @@ import frostnox.nightfall.capability.ChunkData;
 import frostnox.nightfall.capability.IChunkData;
 import frostnox.nightfall.capability.LevelData;
 import frostnox.nightfall.entity.entity.animal.RabbitEntity;
+import frostnox.nightfall.entity.entity.monster.RockwormEntity;
 import frostnox.nightfall.entity.entity.monster.SpiderEntity;
 import frostnox.nightfall.world.ContinentalWorldType;
 import net.minecraft.world.entity.MobSpawnType;
@@ -93,6 +94,14 @@ public class BlockEntitiesNF {
                                 return spider;
                             }, 8),
                     BlocksNF.SPIDER_NEST.get()).build(null));
+    public static final RegistryObject<BlockEntityType<GuardedNestBlockEntity>> ROCKWORM_NEST = BLOCK_ENTITIES.register("rockworm_nest", () ->
+            BlockEntityType.Builder.of((pos, state) -> new GuardedNestBlockEntity(BlockEntitiesNF.ROCKWORM_NEST.get(), pos, state, 1, (int) ContinentalWorldType.DAY_LENGTH * 7,
+                            (level, homePos) -> {
+                                RockwormEntity rockworm = EntitiesNF.ROCKWORM.get().create(level.getLevel());
+                                rockworm.finalizeSpawn(level, level.getCurrentDifficultyAt(homePos), MobSpawnType.STRUCTURE, null, null);
+                                return rockworm;
+                            }, 15),
+                    BlocksNF.ANCHORING_RESIN.get()).build(null));
     public static final RegistryObject<BlockEntityType<TimeDataBlockEntity>> TIME_DATA = BLOCK_ENTITIES.register("time_data", () ->
             BlockEntityType.Builder.of(TimeDataBlockEntity::new, BlocksNF.WET_MUD_BRICKS.get(), BlocksNF.POTATOES.get(), BlocksNF.CARROTS.get(), BlocksNF.FLAX.get(),
                     BlocksNF.YARROW.get(), BlocksNF.BERRY_BUSH.get()).build(null));

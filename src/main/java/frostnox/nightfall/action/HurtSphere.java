@@ -60,6 +60,7 @@ public class HurtSphere {
     public static final HurtSphere COCKATRICE_BITE = new HurtSphere(0.25D, 1, 0, 0, 0);
     public static final HurtSphere COCKATRICE_CLAW = new HurtSphere(0.35D, 1, 0, 0, 0);
     public static final HurtSphere SPIDER_BITE = new HurtSphere(0.25D, 1, 0, 0, 0);
+    public static final HurtSphere ROCKWORM_BITE = new HurtSphere(0.4D, 1, 0, 0, 0);
 
     public static final ImmutableMap<HurtSphere, HurtSphere> WEAPONS_TP;
     protected static void addTP(ImmutableMap.Builder<HurtSphere, HurtSphere> builder, HurtSphere hurtSphere) {

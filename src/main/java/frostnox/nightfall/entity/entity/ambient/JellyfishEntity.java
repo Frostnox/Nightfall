@@ -167,25 +167,21 @@ public class JellyfishEntity extends AquaticAmbientEntity {
     @Override
     protected void pushEntities() {
         if(level.isClientSide) return;
-        List<Entity> list = this.level.getEntities(this, this.getBoundingBox(), EntitySelector.pushableBy(this));
-        if(!list.isEmpty()) {
-            int i = this.level.getGameRules().getInt(GameRules.RULE_MAX_ENTITY_CRAMMING);
-            if (i > 0 && list.size() > i - 1 && this.random.nextInt(4) == 0) {
-                int j = 0;
-                for(int k = 0; k < list.size(); ++k) {
-                    if (!list.get(k).isPassenger()) {
-                        ++j;
-                    }
+        List<Entity> entities = level.getEntities(this, this.getBoundingBox(), EntitySelector.pushableBy(this));
+        if(!entities.isEmpty()) {
+            int maxGroup = level.getGameRules().getInt(GameRules.RULE_MAX_ENTITY_CRAMMING);
+            if(maxGroup > 0 && entities.size() > maxGroup - 1 && random.nextInt(4) == 0) {
+                int count = 0;
+                for(Entity entity : entities) {
+                    if(!entity.isPassenger()) ++count;
                 }
-                if (j > i - 1) {
-                    this.hurt(DamageSource.CRAMMING, 6.0F);
-                }
+                if(count > maxGroup - 1) hurt(DamageSource.CRAMMING, 6.0F);
             }
 
             DamageTypeSource damageSource = DamageTypeSource.createEntitySource(this, "sting", DamageType.ABSOLUTE).setSound(SoundsNF.JELLYFISH_STING);
             if(getJellyfishType().paralyzing) damageSource.setEffects(new AttackEffect(EffectsNF.PARALYSIS, 60 * 20, 0, 1));
             boolean stung = false;
-            for(Entity entity : list) {
+            for(Entity entity : entities) {
                 if(entity instanceof AmbientEntity) doPush(entity);
                 if(stingCooldown <= 0 && !entity.getType().is(TagsNF.JELLYFISH_IMMUNE)) {
                     stung = true;

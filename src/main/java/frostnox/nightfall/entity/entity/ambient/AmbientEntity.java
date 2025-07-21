@@ -18,29 +18,18 @@ public abstract class AmbientEntity extends ActionableEntity {
     @Override
     protected void pushEntities() {
         if(level.isClientSide || isDeadOrDying()) return;
-        List<Entity> list = this.level.getEntities(this, this.getBoundingBox(), EntitySelector.pushableBy(this).and(entity -> entity instanceof AmbientEntity));
-        if (!list.isEmpty()) {
-            int i = this.level.getGameRules().getInt(GameRules.RULE_MAX_ENTITY_CRAMMING);
-            if (i > 0 && list.size() > i - 1 && this.random.nextInt(4) == 0) {
-                int j = 0;
-
-                for(int k = 0; k < list.size(); ++k) {
-                    if (!list.get(k).isPassenger()) {
-                        ++j;
-                    }
+        List<Entity> entities = this.level.getEntities(this, this.getBoundingBox(), EntitySelector.pushableBy(this).and(entity -> entity instanceof AmbientEntity));
+        if(!entities.isEmpty()) {
+            int maxGroup = level.getGameRules().getInt(GameRules.RULE_MAX_ENTITY_CRAMMING);
+            if(maxGroup > 0 && entities.size() > maxGroup - 1 && random.nextInt(4) == 0) {
+                int count = 0;
+                for(Entity entity : entities) {
+                    if(!entity.isPassenger()) ++count;
                 }
-
-                if (j > i - 1) {
-                    this.hurt(DamageSource.CRAMMING, 6.0F);
-                }
+                if(count > maxGroup - 1) hurt(DamageSource.CRAMMING, 6.0F);
             }
-
-            for(int l = 0; l < list.size(); ++l) {
-                Entity entity = list.get(l);
-                this.doPush(entity);
-            }
+            for(Entity entity : entities) doPush(entity);
         }
-
     }
 
     @Override
