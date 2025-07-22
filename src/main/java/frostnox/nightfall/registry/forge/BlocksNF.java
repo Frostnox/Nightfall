@@ -725,6 +725,9 @@ public class BlocksNF {
             BlockBehaviour.Properties.of(Material.WOOL).randomTicks().strength(8F).speedFactor(0.5F).jumpFactor(0.6F).sound(SoundType.WOOL)));
     public static final RegistryObject<AnchoringResinBlock> ANCHORING_RESIN = BLOCKS.register("anchoring_resin_block", () -> new AnchoringResinBlock(
             BlockBehaviour.Properties.of(Material.STONE, MaterialColor.TERRACOTTA_YELLOW).strength(16F).speedFactor(0.05F).sound(SoundType.CALCITE)));
+    public static final Map<Stone, RegistryObject<RotatedPillarBlock>> STONE_TUNNELS = DataUtil.mapEnum(Stone.class,
+            stone -> stone == Stone.PUMICE || stone == Stone.MOONSTONE, stone -> register(stone.getName() + "_tunnel",
+                    () -> new RotatedPillarBlock(BlockBehaviour.Properties.copy(STONE_BLOCKS.get(stone).get()))));
 
     public static void register() {
         BLOCKS.register(Nightfall.MOD_EVENT_BUS);

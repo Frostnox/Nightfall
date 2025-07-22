@@ -213,6 +213,7 @@ public class BlockTagsProviderNF extends BlockTagsProvider {
             addSupports(sup, 6, BlocksNF.STONE_BLOCKS.get(type), BlocksNF.STONE_BRICK_BLOCKS.get(type), BlocksNF.STONE_BRICK_STAIRS.get(type),
                     BlocksNF.STONE_BRICK_SLABS.get(type), BlocksNF.STONE_BRICK_SIDINGS.get(type));
         }
+        for(var block : BlocksNF.STONE_TUNNELS.values()) sup.put(block, 6);
         for(var block : BlocksNF.getOres()) {
             sup.put(block, 4);
         }

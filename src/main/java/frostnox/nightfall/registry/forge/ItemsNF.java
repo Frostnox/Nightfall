@@ -180,6 +180,7 @@ public class ItemsNF {
             ActionsNF.TWISTED_BOW_SHOOT, ItemTags.ARROWS, armament().durability(240)));
     public static final RegistryObject<Item> SILK = ITEMS.register("silk", () -> new Item(ingredient()));
     public static final RegistryObject<Item> RAW_JELLYFISH = ITEMS.register("raw_jellyfish", () -> new Item(ingredient().stacksTo(4)));
+    public static final RegistryObject<Item> RAW_PALE_FLESH = ITEMS.register("raw_pale_flesh", () -> new Item(ingredient().stacksTo(4)));
     //Food
     public static final RegistryObject<Item> POTATO = ITEMS.register("potato", () -> new Item(new Item.Properties().food(
             food(2, 0F)).tab(FOOD_TAB).stacksTo(4)));
@@ -664,6 +665,8 @@ public class ItemsNF {
     public static final RegistryObject<BlockItemNF> SPIDER_WEB = register(BlocksNF.SPIDER_WEB, 16, NATURAL_TAB);
     public static final RegistryObject<BlockItemNF> SPIDER_NEST = register(BlocksNF.SPIDER_NEST, NATURAL_TAB);
     public static final RegistryObject<BlockItemNF> ANCHORING_RESIN_BLOCK = register(BlocksNF.ANCHORING_RESIN, NATURAL_TAB);
+    public static final Map<Stone, RegistryObject<BlockItemNF>> STONE_TUNNELS = DataUtil.mapEnum(Stone.class, stone -> !BlocksNF.STONE_TUNNELS.containsKey(stone), stone ->
+            register(BlocksNF.STONE_TUNNELS.get(stone), NATURAL_TAB));
 
     public static void register() {
         ITEMS.register(Nightfall.MOD_EVENT_BUS);

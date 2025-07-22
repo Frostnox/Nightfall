@@ -360,6 +360,9 @@ public class TextureProviderNF extends TextureProvider {
         replaceImagePalette(tempBlock(BlocksNF.SMELTED_AZURITE), block(BlocksNF.SMELTED_AZURITE, "_overlay"), subset(METAL_PALETTES.get(Metal.COPPER), 7, 0));
         layerImages(block(BlocksNF.SMELTED_AZURITE), block(BlocksNF.SLAG), tempBlock(BlocksNF.SMELTED_AZURITE));
         layerImages(block(BlocksNF.SMELTED_HEMATITE), block(BlocksNF.SLAG), block(BlocksNF.SMELTED_HEMATITE, "_overlay"));
+        for(Stone type : BlocksNF.STONE_TUNNELS.keySet()) {
+            layerImages(block(BlocksNF.STONE_TUNNELS.get(type)), block(BlocksNF.STONE_BLOCKS.get(type)), block("hole"));
+        }
 
         replaceImagePalette(item(ItemsNF.STICK), item(ItemsNF.STICK), STICK);
         replaceImagePalette(item(ItemsNF.LEATHER), item(ItemsNF.LEATHER), subset(LEATHER, 6, 1));

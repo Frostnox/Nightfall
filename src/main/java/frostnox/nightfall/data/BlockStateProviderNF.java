@@ -1117,6 +1117,8 @@ public class BlockStateProviderNF extends BlockStateProvider {
                 Pair.of("0", resource(BlocksNF.SPIDER_WEB.get())), Pair.of("particle", resource(BlocksNF.SPIDER_WEB.get()))));
         columnBlock(BlocksNF.SPIDER_NEST.get());
         cubeTopBlock(BlocksNF.ANCHORING_RESIN.get());
+        for(var type : BlocksNF.STONE_TUNNELS.keySet()) axisBlock(BlocksNF.STONE_TUNNELS.get(type).get(),
+                resource(BlocksNF.STONE_BLOCKS.get(type).get()), resource(BlocksNF.STONE_TUNNELS.get(type).get()));
 
         //Note that generated models used in generation of others will still need to be manually created before
         for(RegistryObject<? extends Block> block : BlocksNF.BLOCKS.getEntries()) {

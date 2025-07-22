@@ -170,6 +170,7 @@ public class LootTableProviderNF extends LootTableProvider {
             dropOther(BlocksNF.FIRE_CLAY.get(), ItemsNF.FIRE_CLAY.get(), 4);
 
             for(Stone type : BlocksNF.STONE_BLOCKS.keySet()) dropStone(BlocksNF.STONE_BLOCKS.get(type).get(), type, 4);
+            for(Stone type : BlocksNF.STONE_TUNNELS.keySet()) dropStone(BlocksNF.STONE_TUNNELS.get(type).get(), type, 4);
             for(Stone type : BlocksNF.ROCK_CLUSTERS.keySet()) dropCluster(BlocksNF.ROCK_CLUSTERS.get(type).get());
             dropCluster(BlocksNF.FLINT_CLUSTER.get());
             for(var block : BlocksNF.TIN_ORES.values()) {
