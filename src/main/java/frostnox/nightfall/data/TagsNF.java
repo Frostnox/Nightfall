@@ -64,6 +64,7 @@ public class TagsNF {
     public static final TagKey<Block> WOODEN_SHELVES = blockTag("wooden_shelves");
     public static final TagKey<Block> WOODEN_BARRELS = blockTag("wooden_barrels");
     public static final TagKey<Block> WOODEN_FENCE_GATES = blockTag("wooden_fence_gates");
+    public static final TagKey<Block> STONE_TUNNELS = blockTag("stone_tunnels");
     public static final TagKey<Block> ANVILS = blockTag("anvils");
     public static final TagKey<Block> METAL_ANVILS = blockTag("metal_anvils");
     public static final TagKey<Block> METAL_BLOCKS = blockTag("metal_blocks");

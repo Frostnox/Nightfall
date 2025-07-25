@@ -2,7 +2,10 @@ package frostnox.nightfall.block.block.nest;
 
 import frostnox.nightfall.block.BlockEventListener;
 import frostnox.nightfall.entity.entity.ActionableEntity;
+import frostnox.nightfall.network.NetworkHandler;
+import frostnox.nightfall.network.message.entity.HeadYRotToClient;
 import frostnox.nightfall.registry.vanilla.GameEventsNF;
+import frostnox.nightfall.util.MathUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -17,6 +20,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.gameevent.GameEventListener;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.UUID;
 import java.util.function.BiFunction;
 
@@ -39,14 +43,30 @@ public class GuardedNestBlockEntity extends NestBlockEntity {
         return eventListener;
     }
 
+    protected boolean isEventInRange(float range, BlockPos pos) {
+        return pos.distSqr(worldPosition) <= range * range;
+    }
+
     protected boolean handleGameEvent(Level level, GameEvent event, @Nullable Entity entity, BlockPos pos) {
         if(!hasAnyEntities() || !(entity instanceof LivingEntity livingEntity) || (entity instanceof Player player && player.isCreative())) return false;
-        float range = GameEventsNF.getEventRange(event, entity);
-        double blockDistSqr = pos.distSqr(worldPosition);
-        if(blockDistSqr <= range * range) {
+        if(isEventInRange(GameEventsNF.getEventRange(event, entity), pos)) {
             if(dummy == null) dummy = respawnFunc.apply((ServerLevel) level, pos);
             if(dummy.canTargetFromSound(livingEntity)) {
-                if(canSafelyRemoveEntity()) removeAllEntities(false);
+                if(removeEntityToSafePos(null) != null) {
+                    while(hasAnyEntities()) {
+                        if(popEntity(false) instanceof ActionableEntity guard) {
+                            guard.getAudioSensing().getEventListener().handleGameEvent(level, event, entity, pos);
+                            List<Entity> heardEntities = guard.getAudioSensing().getHeardEntities();
+                            if(!heardEntities.isEmpty()) {
+                                Entity target = heardEntities.get(0);
+                                guard.setYRot(MathUtil.getAngleDegrees(target.getZ() - guard.getZ(), target.getX() - guard.getX()));
+                                guard.setYHeadRot(guard.getYRot());
+                                guard.setYBodyRot(guard.getYRot());
+                                NetworkHandler.toAllTracking(guard, new HeadYRotToClient(guard.getYRot(), guard.getId()));
+                            }
+                        }
+                    }
+                }
                 return true;
             }
         }

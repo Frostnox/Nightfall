@@ -70,6 +70,9 @@ public class RockwormModel extends AnimatedModel<RockwormEntity> implements Head
     @Override
     public void setupAnim(RockwormEntity entity, float limbSwing, float limbSwingAmount, float time, float netHeadYaw, float headPitch) {
         resetPose();
+        //Look
+        head.yRot = netHeadYaw * (MathUtil.PI / 180F);
+        head.xRot += headPitch * (MathUtil.PI / 180F);
         //Idle
         if(!entity.isDeadOrDying()) {
             int hash = entity.getUUID().hashCode();

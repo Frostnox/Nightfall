@@ -7,10 +7,6 @@ import it.unimi.dsi.fastutil.ints.Int2IntMap;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 import it.unimi.dsi.fastutil.ints.IntArraySet;
 import it.unimi.dsi.fastutil.ints.IntSet;
-import it.unimi.dsi.fastutil.objects.Object2FloatMap;
-import it.unimi.dsi.fastutil.objects.Object2FloatMaps;
-import it.unimi.dsi.fastutil.objects.Object2FloatOpenHashMap;
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -33,7 +29,7 @@ public class AudioSensing  {
     protected @Nullable BlockPos closestHeardPos = null;
     protected double closestHeardDistSqr = Double.MAX_VALUE;
     protected final int memoryDuration;
-    private final GameEventListenerRegistrar gameEventListener = new GameEventListenerRegistrar(new GameEventListener() {
+    private final GameEventListener eventListener = new GameEventListener() {
         @Override
         public @NotNull PositionSource getListenerSource() {
             return new EntityPositionSource(entity.getId());
@@ -53,7 +49,7 @@ public class AudioSensing  {
                 if(eventEntity != null) {
                     int id = eventEntity.getId();
                     if(!eventEntity.isAlive() || (eventEntity instanceof LivingEntity livingEntity && !entity.canTargetFromSound(livingEntity))) return false;
-                    else heardEntities.put(id, 20);
+                    else heardEntities.put(id, memoryDuration);
                     return true;
                 }
                 else if(blockDistSqr < closestHeardDistSqr) {
@@ -64,7 +60,8 @@ public class AudioSensing  {
             }
             return false;
         }
-    });
+    };
+    private final GameEventListenerRegistrar eventListenerRegistrar = new GameEventListenerRegistrar(eventListener);
 
     public AudioSensing(ActionableEntity entity, int memoryDuration) {
         this.entity = entity;
@@ -106,7 +103,11 @@ public class AudioSensing  {
         return GameEventsNF.getEventRange(event, eventEntity);
     }
 
-    public GameEventListenerRegistrar getGameEventListener() {
-        return gameEventListener;
+    public GameEventListener getEventListener() {
+        return eventListener;
+    }
+
+    public GameEventListenerRegistrar getEventListenerRegistrar() {
+        return eventListenerRegistrar;
     }
 }

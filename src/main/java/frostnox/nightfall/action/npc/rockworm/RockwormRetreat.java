@@ -4,11 +4,11 @@ import frostnox.nightfall.action.Action;
 import frostnox.nightfall.capability.ActionTracker;
 import frostnox.nightfall.capability.IActionTracker;
 import frostnox.nightfall.entity.EntityPart;
+import frostnox.nightfall.entity.entity.monster.RockwormEntity;
 import frostnox.nightfall.util.animation.AnimationCalculator;
 import frostnox.nightfall.util.animation.AnimationData;
 import frostnox.nightfall.util.math.Easing;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 
 import java.util.EnumMap;
 
@@ -34,9 +34,9 @@ public class RockwormRetreat extends Action {
 
     @Override
     public void onTick(LivingEntity user) {
-        if(!user.level.isClientSide && user instanceof Mob mob) {
+        if(!user.level.isClientSide && user instanceof RockwormEntity rockworm) {
             IActionTracker capA = ActionTracker.get(user);
-
+            if(capA.getFrame() == capA.getDuration() - 1) rockworm.enterNest(false);
         }
     }
 }

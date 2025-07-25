@@ -83,7 +83,7 @@ public class SpiderNestBlock extends GuardedNestBlock {
         super.randomTick(state, level, pos, random);
         if(level.getBlockEntity(pos) instanceof GuardedNestBlockEntity nest) {
             if(nest.scout == null || !nest.trackedEntities.contains(nest.scout)) {
-                if(nest.canSafelyRemoveEntity() && nest.popEntity(false) instanceof SpiderEntity spider) {
+                if(nest.removeEntityToSafePos(null) != null && nest.popEntity(false) instanceof SpiderEntity spider) {
                     spider.isScout = true;
                     nest.scout = spider.getUUID();
                 }
@@ -105,7 +105,7 @@ public class SpiderNestBlock extends GuardedNestBlock {
         if(elapsedTime != Long.MAX_VALUE && chunk.getBlockEntity(pos) instanceof GuardedNestBlockEntity nest) {
             if(nest.hasAnyEntities() && (nest.scout == null || !nest.trackedEntities.contains(nest.scout))) {
                 if(MathUtil.getRandomSuccesses(randomTickChance, elapsedTime, 1, random) >= 1) {
-                    if(nest.canSafelyRemoveEntity() && nest.popEntity(false) instanceof SpiderEntity spider) {
+                    if(nest.removeEntityToSafePos(null) != null && nest.popEntity(false) instanceof SpiderEntity spider) {
                         spider.isScout = true;
                         nest.scout = spider.getUUID();
                     }
@@ -120,7 +120,7 @@ public class SpiderNestBlock extends GuardedNestBlock {
                     nest.lastFullTime = gameTime - successesAndTicks.secondLong();
                     nest.respawnEntity(pos);
                     if(nest.scout == null || !nest.trackedEntities.contains(nest.scout)) {
-                        if(nest.canSafelyRemoveEntity() && nest.popEntity(false) instanceof SpiderEntity spider) {
+                        if(nest.removeEntityToSafePos(null) != null && nest.popEntity(false) instanceof SpiderEntity spider) {
                             spider.isScout = true;
                             nest.scout = spider.getUUID();
                         }

@@ -3,6 +3,7 @@ package frostnox.nightfall.block.block.nest;
 import frostnox.nightfall.entity.IHomeEntity;
 import frostnox.nightfall.entity.entity.ActionableEntity;
 import frostnox.nightfall.util.LevelUtil;
+import frostnox.nightfall.util.MathUtil;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectArraySet;
 import net.minecraft.core.BlockPos;
@@ -89,6 +90,10 @@ public class NestBlockEntity extends BlockEntity implements Clearable {
         entityData.clear(); //Clear for when block falls since nested entities are preserved
     }
 
+    public boolean isFull() {
+        return entityData.size() >= capacity;
+    }
+
     public boolean hasAnyEntities() {
         return !entityData.isEmpty();
     }
@@ -118,22 +123,33 @@ public class NestBlockEntity extends BlockEntity implements Clearable {
         return removeEntity(entityData.size() - 1, forgetHome);
     }
 
-    public boolean canSafelyRemoveEntity() {
-        if(entityData.isEmpty()) return true;
-        CompoundTag data = entityData.get(entityData.size() - 1);
-        Entity entity = EntityType.loadEntityRecursive(data, level, (e) -> e);
-        if(entity.getSoundSource() == SoundSource.HOSTILE && level.getDifficulty() == Difficulty.PEACEFUL) return false;
+    protected Direction[] getExitDirections() {
+        return LevelUtil.HORIZONTAL_DIRECTIONS;
+    }
+
+    public @Nullable BlockPos removeEntityToSafePos(@Nullable Entity entity) {
+        if(entity == null) {
+            if(entityData.isEmpty()) return null;
+            CompoundTag data = entityData.get(entityData.size() - 1);
+            entity = EntityType.loadEntityRecursive(data, level, (e) -> e);
+        }
+        if(entity.getSoundSource() == SoundSource.HOSTILE && level.getDifficulty() == Difficulty.PEACEFUL) return null;
         BlockPos pos = getBlockPos();
-        entity.moveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
-        if(canPlaceEntityAt(entity, getBlockPos(), level)) return true;
+        int randYRot = level.random.nextInt(360);
+        entity.moveTo(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, randYRot, 0);
+        if(canPlaceEntityAt(entity, getBlockPos(), level)) return getBlockPos();
         if(getBlockState().getMaterial().blocksMotion()) {
-            for(Direction direction : LevelUtil.HORIZONTAL_DIRECTIONS) {
+            List<Direction> directions = new ObjectArrayList<>(getExitDirections());
+            Collections.shuffle(directions, level.random);
+            while(!directions.isEmpty()) {
+                Direction direction = directions.remove(0);
                 pos = getBlockPos().relative(direction);
-                entity.moveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
-                if(canPlaceEntityAt(entity, pos, level)) return true;
+                entity.moveTo(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D,
+                        direction.getAxis() == Direction.Axis.Y ? randYRot : (direction.toYRot() % 360), 0);
+                if(canPlaceEntityAt(entity, pos, level)) return pos;
             }
         }
-        return false;
+        return null;
     }
 
     public static boolean canPlaceEntityAt(Entity entity, BlockPos pos, BlockGetter level) {
@@ -148,18 +164,7 @@ public class NestBlockEntity extends BlockEntity implements Clearable {
         Entity entity = EntityType.loadEntityRecursive(data, level, (e) -> e);
         setChanged();
         if(entity != null) {
-            BlockPos pos = getBlockPos();
-            entity.moveTo(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, level.random.nextInt(360), 0);
-            if(getBlockState().getMaterial().blocksMotion() && !canPlaceEntityAt(entity, pos, level)) {
-                List<Direction> directions = new ObjectArrayList<>(LevelUtil.HORIZONTAL_DIRECTIONS);
-                Collections.shuffle(directions, level.random);
-                while(!directions.isEmpty()) {
-                    Direction direction = directions.remove(0);
-                    pos = getBlockPos().relative(direction);
-                    entity.moveTo(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, direction.toYRot() % 360, 0);
-                    if(canPlaceEntityAt(entity, pos, level)) break;
-                }
-            }
+            removeEntityToSafePos(entity);
             if(entity instanceof IHomeEntity homeEntity) {
                 if(forgetHome) homeEntity.setHomePos(null);
                 else trackedEntities.add(entity.getUUID());

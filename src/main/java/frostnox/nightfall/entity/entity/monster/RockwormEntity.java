@@ -3,32 +3,37 @@ package frostnox.nightfall.entity.entity.monster;
 import com.mojang.math.Vector3d;
 import com.mojang.math.Vector3f;
 import frostnox.nightfall.action.DamageTypeSource;
+import frostnox.nightfall.block.block.nest.GuardedNestBlockEntity;
 import frostnox.nightfall.capability.IActionTracker;
+import frostnox.nightfall.data.TagsNF;
 import frostnox.nightfall.entity.EntityPart;
+import frostnox.nightfall.entity.ai.sensing.AudioSensing;
 import frostnox.nightfall.registry.ActionsNF;
 import frostnox.nightfall.registry.forge.AttributesNF;
 import frostnox.nightfall.registry.forge.BlocksNF;
 import frostnox.nightfall.registry.forge.ParticleTypesNF;
 import frostnox.nightfall.registry.forge.SoundsNF;
+import frostnox.nightfall.util.MathUtil;
 import frostnox.nightfall.util.animation.AnimationData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.EntityDimensions;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.EnumMap;
 
 public class RockwormEntity extends MonsterEntity {
+    public int retreatCooldown;
+
     public RockwormEntity(EntityType<? extends MonsterEntity> type, Level worldIn) {
         super(type, worldIn);
     }
@@ -52,23 +57,78 @@ public class RockwormEntity extends MonsterEntity {
         return map;
     }
 
+    public boolean enterNest(boolean simulate) {
+        BlockPos.MutableBlockPos pos = blockPosition().mutable();
+        LevelChunk chunk = level.getChunkAt(pos);
+        for(int i = 0; i < 16; i++) {
+            BlockState belowState = chunk.getBlockState(pos.setY(pos.getY() - 1));
+            if(belowState.is(BlocksNF.ANCHORING_RESIN.get())) {
+                if(chunk.getBlockEntity(pos) instanceof GuardedNestBlockEntity nest) {
+                    if(!nest.isFull()) {
+                        if(!simulate) {
+                            getActionTracker().startAction(ActionsNF.EMPTY.getId());
+                            nest.addEntity(this);
+                        }
+                        return true;
+                    }
+                    else return false;
+                }
+            }
+            else if(!belowState.is(TagsNF.STONE_TUNNELS)) return false;
+        }
+        return false;
+    }
+
     @Override
     public void tick() {
         super.tick();
+        setYBodyRot(getYHeadRot());
         if(!level.isClientSide && isAlive()) {
             if(tickCount > 1 && !verticalCollisionBelow) hurt(DamageTypeSource.UPROOTED, Float.MAX_VALUE);
             else {
                 IActionTracker capA = getActionTracker();
-                if(capA.isInactive()) {
-                    //startAction(ActionsNF.ROCKWORM_BITE.getId());
-                    BlockPos belowPos = blockPosition().below();
-                    BlockState belowState = level.getBlockState(belowPos);
-                    if(belowState.is(BlocksNF.ANCHORING_RESIN.get())) {
-
+                Entity target = null;
+                double bestDistSqr = Double.MAX_VALUE;
+                Vec3 eyePos = getEyePosition();
+                for(Entity entity : audioSensing.getHeardEntities()) {
+                    double dist = MathUtil.getShortestDistanceSqrPointToBox(eyePos.x, eyePos.y, eyePos.z, entity.getBoundingBox());
+                    if(dist < bestDistSqr && dist < 2.1 * 2.1) target = entity;
+                }
+                if(target != null) {
+                    getLookControl().setLookAt(target);
+                    if(capA.isInactive()) startAction(ActionsNF.ROCKWORM_BITE.getId());
+                }
+                else if(capA.isInactive()) {
+                    if(retreatCooldown > 0) retreatCooldown--;
+                    if(retreatCooldown == 0 && tickCount > 20 && enterNest(true)) {
+                        startAction(ActionsNF.ROCKWORM_RETREAT.getId());
+                        retreatCooldown = 20 * 20 + random.nextInt(20 * 10);
                     }
                 }
             }
         }
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        retreatCooldown = tag.getInt("retreatCooldown");
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        tag.putInt("retreatCooldown", retreatCooldown);
+    }
+
+    @Override
+    public int getHeadRotSpeed() {
+        return 20;
+    }
+
+    @Override
+    protected AudioSensing createAudioSensing() {
+        return new AudioSensing(this, 30);
     }
 
     @Override

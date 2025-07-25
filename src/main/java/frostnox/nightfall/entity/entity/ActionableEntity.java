@@ -64,7 +64,6 @@ import net.minecraftforge.common.ToolAction;
 import javax.annotation.Nullable;
 import java.util.EnumMap;
 import java.util.List;
-import java.util.function.Predicate;
 
 public abstract class ActionableEntity extends PathfinderMob {
     protected static final EntityDataAccessor<Integer> RANDOM = SynchedEntityData.defineId(ActionableEntity.class, EntityDataSerializers.INT);
@@ -99,7 +98,7 @@ public abstract class ActionableEntity extends PathfinderMob {
     }
 
     protected AudioSensing createAudioSensing() {
-        return new AudioSensing(this, 10);
+        return new AudioSensing(this, 20);
     }
 
     public boolean canTargetFromSound(LivingEntity target) {
@@ -666,7 +665,7 @@ public abstract class ActionableEntity extends PathfinderMob {
     @Override
     @Nullable
     public GameEventListenerRegistrar getGameEventListenerRegistrar() {
-        if(getAttribute(AttributesNF.HEARING_RANGE.get()).getValue() > 0.0) return audioSensing.getGameEventListener();
+        if(getAttribute(AttributesNF.HEARING_RANGE.get()).getValue() > 0.0) return audioSensing.getEventListenerRegistrar();
         else return null;
     }
 

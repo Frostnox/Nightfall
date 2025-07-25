@@ -80,6 +80,7 @@ public class BlockTagsProviderNF extends BlockTagsProvider {
         tag(TagsNF.TERRACOTTA).add(BlocksNF.TERRACOTTA.get(), BlocksNF.TERRACOTTA_TILES.get(), BlocksNF.TERRACOTTA_TILE_STAIRS.get(),
                 BlocksNF.TERRACOTTA_TILE_SLAB.get(), BlocksNF.TERRACOTTA_TILE_SIDING.get(), BlocksNF.TERRACOTTA_MOSAIC.get(),
                 BlocksNF.TERRACOTTA_MOSAIC_STAIRS.get(), BlocksNF.TERRACOTTA_MOSAIC_SLAB.get(), BlocksNF.TERRACOTTA_MOSAIC_SIDING.get());
+        for(var block : BlocksNF.STONE_TUNNELS.values()) tag(TagsNF.STONE_TUNNELS).add(block.get());
 
         for(Tree type : Tree.values()) {
             tag(TagsNF.TREE_WOOD).addTag(type.getTag());

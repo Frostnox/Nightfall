@@ -450,9 +450,9 @@ public class ActionsNF {
                     new int[] {9, 5, 8}, new Action.Properties().setSound(SoundsNF.SPIDER_BITE), new AttackEffect(EffectsNF.POISON, 10 * 20, 0, 1)));
 
     public static final RegistryObject<RockwormRetreat> ROCKWORM_RETREAT = ACTIONS.register("rockworm_retreat", () ->
-            new RockwormRetreat(new Action.Properties(), 10));
+            new RockwormRetreat(new Action.Properties(), 6));
     public static final RegistryObject<RockwormEmerge> ROCKWORM_EMERGE = ACTIONS.register("rockworm_emerge", () ->
-            new RockwormEmerge(new Action.Properties(), 10));
+            new RockwormEmerge(new Action.Properties(), 6));
     public static final RegistryObject<RockwormBite> ROCKWORM_BITE = ACTIONS.register("rockworm_bite", () ->
             new RockwormBite(35F, DamageType.PIERCING.asArray(), HurtSphere.ROCKWORM_BITE, 2, 6,
                     new int[] {5, 7}, new Action.Properties().setKnockback(-1F).setSound(SoundsNF.SPIDER_BITE)));

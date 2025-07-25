@@ -17,6 +17,7 @@ import frostnox.nightfall.block.block.fireable.FireableHoldableBlockEntity;
 import frostnox.nightfall.block.block.fuel.BurningFuelBlockEntity;
 import frostnox.nightfall.block.block.crucible.CrucibleBlockEntity;
 import frostnox.nightfall.block.block.mold.ItemMoldBlockEntity;
+import frostnox.nightfall.block.block.nest.RockwormNestBlockEntity;
 import frostnox.nightfall.block.block.pot.PotBlockEntity;
 import frostnox.nightfall.block.block.rack.RackBlockEntity;
 import frostnox.nightfall.block.block.shelf.ShelfBlockEntity;
@@ -94,13 +95,13 @@ public class BlockEntitiesNF {
                                 return spider;
                             }, 8),
                     BlocksNF.SPIDER_NEST.get()).build(null));
-    public static final RegistryObject<BlockEntityType<GuardedNestBlockEntity>> ROCKWORM_NEST = BLOCK_ENTITIES.register("rockworm_nest", () ->
-            BlockEntityType.Builder.of((pos, state) -> new GuardedNestBlockEntity(BlockEntitiesNF.ROCKWORM_NEST.get(), pos, state, 1, (int) ContinentalWorldType.DAY_LENGTH * 7,
+    public static final RegistryObject<BlockEntityType<RockwormNestBlockEntity>> ROCKWORM_NEST = BLOCK_ENTITIES.register("rockworm_nest", () ->
+            BlockEntityType.Builder.of((pos, state) -> new RockwormNestBlockEntity(BlockEntitiesNF.ROCKWORM_NEST.get(), pos, state, 1, (int) ContinentalWorldType.DAY_LENGTH * 7,
                             (level, homePos) -> {
                                 RockwormEntity rockworm = EntitiesNF.ROCKWORM.get().create(level.getLevel());
                                 rockworm.finalizeSpawn(level, level.getCurrentDifficultyAt(homePos), MobSpawnType.STRUCTURE, null, null);
                                 return rockworm;
-                            }, 15),
+                            }, 9),
                     BlocksNF.ANCHORING_RESIN.get()).build(null));
     public static final RegistryObject<BlockEntityType<TimeDataBlockEntity>> TIME_DATA = BLOCK_ENTITIES.register("time_data", () ->
             BlockEntityType.Builder.of(TimeDataBlockEntity::new, BlocksNF.WET_MUD_BRICKS.get(), BlocksNF.POTATOES.get(), BlocksNF.CARROTS.get(), BlocksNF.FLAX.get(),

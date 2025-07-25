@@ -55,10 +55,11 @@ public class HeadYRotToClient {
             ctx.enqueueWork(() -> {
                 LivingEntity entity = (LivingEntity) world.get().getEntity(msg.entityID);
                 if(entity == null || !entity.isAlive()) {
-                    Nightfall.LOGGER.warn("Player is null or dead.");
+                    Nightfall.LOGGER.warn("LivingEntity is null or dead.");
                     return;
                 }
                 entity.setYHeadRot(msg.yRot);
+                entity.yHeadRotO = msg.yRot;
             });
         }
         else if(sideReceived.isServer()) {
