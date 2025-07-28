@@ -80,12 +80,12 @@ public class RockwormModel extends AnimatedModel<RockwormEntity> implements Head
             rotateZ(lowerBody, 0.6F, 60F, 0, 0, idle, 1, Easing.inOutSine, true);
             rotateZ(upperBody, 1.2F, 60F, MathUtil.PI * 0.4F, 0, idle, 1, Easing.inOutSine, true);
             IActionTracker capA = entity.getActionTracker();
-            if(capA.getActionID().equals(ActionsNF.ROCKWORM_RETREAT.getId())) {
+            if(!capA.isStunned() && capA.getActionID().equals(ActionsNF.ROCKWORM_RETREAT.getId())) {
                 float progress = capA.getProgress(ClientEngine.get().getPartialTick());
                 lowerBodyCubes.visible = progress < 0.5F;
                 upperBodyCubes.visible = progress < 0.8F;
             }
-            else if(capA.getActionID().equals(ActionsNF.ROCKWORM_EMERGE.getId())) {
+            else if(!capA.isStunned() && capA.getActionID().equals(ActionsNF.ROCKWORM_EMERGE.getId())) {
                 float progress = capA.getProgress(ClientEngine.get().getPartialTick());
                 lowerBodyCubes.visible = progress > 0.5F;
                 upperBodyCubes.visible = progress > 0.2F;

@@ -45,12 +45,11 @@ public class RockwormBite extends NPCAttack {
         AnimationData head = data.get(EntityPart.HEAD);
         AnimationData lowerBody = data.get(EntityPart.BODY);
         AnimationData upperBody = data.get(EntityPart.BODY_2);
-        pitch = 90;
         switch(state) {
             case 0 -> {
                 lowerBody.rCalc.add(35 + pitch * 0.5F, 0, 0, Easing.outCubic);
                 upperBody.rCalc.add(-10 + pitch * 0.25F, 0, 0, Easing.outCubic);
-                head.rCalc.add(-25 - pitch * 0.25F, 0, 0, Easing.outCubic);
+                head.rCalc.add(-pitch * 0.25F, 0, 0, Easing.outCubic);
                 head.tCalc.add(0, 0, -1, Easing.outCubic);
             }
             case 1 -> {
@@ -63,7 +62,7 @@ public class RockwormBite extends NPCAttack {
 
     @Override
     public float getPitch(LivingEntity user, float partialTicks) {
-        return Mth.clamp(user.getViewXRot(partialTicks), 0F, 75F);
+        return Mth.clamp(user.getViewXRot(partialTicks) + 30, 0F, 75F);
     }
 
     @Override
