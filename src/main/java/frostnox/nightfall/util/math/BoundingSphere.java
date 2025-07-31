@@ -166,8 +166,8 @@ public class BoundingSphere {
     }
 
     public boolean intersectsAndSeesEntity(LivingEntity user, Entity entity, HitData hitData) {
-        if(intersectsAndSeesAABB(user, entity.getBoundingBox(), hitData)) return true;
-        else if(entity instanceof IOrientedHitBoxes hitBoxesEntity) {
+        if(entity instanceof IOrientedHitBoxes hitBoxesEntity) {
+            if(hitBoxesEntity.includeAABB() && intersectsAndSeesAABB(user, entity.getBoundingBox(), hitData)) return true;
             OBB[] obbs = hitBoxesEntity.getOBBs(1F);
             for(int i = 0; i < obbs.length; i++) {
                 if(intersectsAndSeesOBB(user, obbs[i], entity.position(), hitData)) {
@@ -176,6 +176,7 @@ public class BoundingSphere {
                 }
             }
         }
+        else return intersectsAndSeesAABB(user, entity.getBoundingBox(), hitData);
         return false;
     }
 

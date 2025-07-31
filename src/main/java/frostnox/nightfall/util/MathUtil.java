@@ -31,12 +31,20 @@ public class MathUtil {
         return degrees / 180F * PI;
     }
 
+    public static double toRadians(double degrees) {
+        return degrees / 180D * Math.PI;
+    }
+
     public static Vector3f toRadians(Vector3f vec) {
         return new Vector3f(toRadians(vec.x()), toRadians(vec.y()), toRadians(vec.z()));
     }
 
     public static float toDegrees(float radians) {
         return radians / PI * 180F;
+    }
+
+    public static double toDegrees(double radians) {
+        return radians / Math.PI * 180D;
     }
 
     public static Vector3f toDegrees(Vector3f vec) {
@@ -53,6 +61,13 @@ public class MathUtil {
 
     public static int distManhattanXZ(Vec3i pos1, Vec3i pos2) {
         return Math.abs(pos1.getX() - pos2.getX()) + Math.abs(pos1.getZ() - pos2.getZ());
+    }
+
+    public static void rotateVector3dByYaw(Vector3d point, float yawDegrees) {
+        if(yawDegrees == 0) return;
+        float cos = Mth.cos(toRadians(yawDegrees));
+        float sin = Mth.sin(toRadians(yawDegrees));
+        point.set(point.x * cos - point.z * sin, point.y, point.x * sin + point.z * cos);
     }
 
     public static Vector3f rotatePointByYaw(Vector3f point, float yawDegrees, @Nullable Vec2 offset) {

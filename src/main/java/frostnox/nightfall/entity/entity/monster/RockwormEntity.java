@@ -53,7 +53,10 @@ public class RockwormEntity extends MonsterEntity implements IOrientedHitBoxes {
                 .add(AttributesNF.HEARING_RANGE.get(), 15)
                 .add(AttributesNF.STRIKING_ABSORPTION.get(), 0.25)
                 .add(AttributesNF.SLASHING_ABSORPTION.get(), 0.5)
-                .add(AttributesNF.PIERCING_ABSORPTION.get(), 0.5);
+                .add(AttributesNF.PIERCING_ABSORPTION.get(), 0.5)
+                .add(AttributesNF.FIRE_ABSORPTION.get(), 0.25)
+                .add(AttributesNF.FROST_ABSORPTION.get(), 0.25)
+                .add(AttributesNF.ELECTRIC_ABSORPTION.get(), 0.25);
     }
 
     public static EnumMap<EntityPart, AnimationData> getHeadAnimMap() {
@@ -103,7 +106,9 @@ public class RockwormEntity extends MonsterEntity implements IOrientedHitBoxes {
                 }
                 if(target != null) {
                     getLookControl().setLookAt(target);
-                    if(capA.isInactive()) startAction(ActionsNF.ROCKWORM_BITE.getId());
+                    if(capA.isInactive()) {
+                        startAction(ActionsNF.ROCKWORM_BITE.getId());
+                    }
                 }
                 else if(capA.isInactive()) {
                     if(retreatCooldown > 0) retreatCooldown--;
@@ -171,8 +176,21 @@ public class RockwormEntity extends MonsterEntity implements IOrientedHitBoxes {
 
     @Override
     public EquipmentSlot getHitSlot(Vector3d hitPos, int boxIndex) {
-        //TODO: Weak spot in front?
-        return EquipmentSlot.CHEST;
+        if(boxIndex == 2) return EquipmentSlot.HEAD;
+        MathUtil.rotateVector3dByYaw(hitPos, -yBodyRot);
+        if(Math.abs(MathUtil.toDegrees(Math.atan2(hitPos.x, hitPos.z))) < 35) return EquipmentSlot.HEAD;
+        else return EquipmentSlot.CHEST;
+    }
+
+    @Override
+    protected float modifyIncomingDamageBySlot(EquipmentSlot slot, float damage) {
+        if(slot == EquipmentSlot.HEAD) return damage * 1.5F;
+        else return damage;
+    }
+
+    @Override
+    public boolean includeAABB() {
+        return !isAlive();
     }
 
     @Override
@@ -182,7 +200,7 @@ public class RockwormEntity extends MonsterEntity implements IOrientedHitBoxes {
             IActionTracker capA = getActionTracker();
             EnumMap<EntityPart, AnimationData> transforms = getHeadAnimMap();
             AnimationCalculator mCalc = new AnimationCalculator();
-            if(!capA.isInactive()) {
+            if(!capA.isInactive() && !capA.isStunned()) {
                 Action action = capA.getAction();
                 for(AnimationData transform : transforms.values()) transform.update(capA.getFrame(), capA.getDuration(), partial);
                 mCalc.update(capA.getFrame(), capA.getDuration(), partial, Easing.inOutSine);

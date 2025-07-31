@@ -153,8 +153,14 @@ public abstract class UndeadEntity extends MonsterEntity {
     }
 
     @Override
+    public boolean canTargetFromSound(LivingEntity target) {
+        return target instanceof Player player && !player.isCreative() && !player.isSpectator();
+    }
+
+    @Override
     public boolean canAttack(LivingEntity pTarget) {
-        return pTarget instanceof Player player && !player.isCreative() && !player.isSpectator();
+        if(pTarget instanceof Player player) return !player.isCreative() && !player.isSpectator();
+        return pTarget.getMobType() != MobType.UNDEAD && pTarget.canBeSeenAsEnemy();
     }
 
     @Override

@@ -35,7 +35,6 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -231,6 +230,11 @@ public class RabbitEntity extends AnimalEntity implements IOrientedHitBoxes, IHo
     @Override
     protected void playStepSound(BlockPos pos, BlockState pBlock) {
 
+    }
+
+    @Override
+    public boolean includeAABB() {
+        return true;
     }
 
     @Override

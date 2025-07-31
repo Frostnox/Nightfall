@@ -12,8 +12,6 @@ import frostnox.nightfall.entity.Sex;
 import frostnox.nightfall.entity.ai.goals.*;
 import frostnox.nightfall.entity.ai.sensing.AmplifiedAudioSensing;
 import frostnox.nightfall.entity.ai.sensing.AudioSensing;
-import frostnox.nightfall.network.NetworkHandler;
-import frostnox.nightfall.network.message.capability.ActionToClient;
 import frostnox.nightfall.registry.ActionsNF;
 import frostnox.nightfall.registry.forge.AttributesNF;
 import frostnox.nightfall.registry.forge.DataSerializersNF;
@@ -36,7 +34,6 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -229,6 +226,11 @@ public class DeerEntity extends AnimalEntity implements IOrientedHitBoxes {
     @Override
     protected void playStepSound(BlockPos pos, BlockState pBlock) {
         playSound(SoundsNF.DEER_STEP.get(), 0.15F, 1.3F);
+    }
+
+    @Override
+    public boolean includeAABB() {
+        return true;
     }
 
     @Override

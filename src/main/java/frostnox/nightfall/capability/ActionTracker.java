@@ -460,6 +460,7 @@ public class ActionTracker implements IActionTracker {
         dequeue();
         hitEntities.clear();
         livingEntitiesHit = 0;
+        stunFrame = -1;
         if(user instanceof Player player) PlayerData.get(player).setInteracted(false);
         action.onStart(user);
     }

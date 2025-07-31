@@ -43,7 +43,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -305,6 +304,11 @@ public class CockatriceEntity extends HungryMonsterEntity implements IOrientedHi
     @Override
     public SoundEvent getEatSound() {
         return null; //TODO:
+    }
+
+    @Override
+    public boolean includeAABB() {
+        return true;
     }
 
     @Override

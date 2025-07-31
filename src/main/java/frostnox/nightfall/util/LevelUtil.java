@@ -436,17 +436,20 @@ public class LevelUtil {
         double inflation = Math.max(projectile.getBbWidth() * 0.5, projectile.getBbHeight() * 0.5);
         int boxIndex = -1;
         for(Entity entity : level.getEntities(projectile, box.inflate(IOrientedHitBoxes.MAX_DIST_FROM_AABB), filter)) {
-            AABB aabb = entity.getBoundingBox().inflate(inflation);
-            Optional<Vec3> point = aabb.clip(start, end);
-            if(point.isPresent()) {
-                double distSqr = start.distanceToSqr(point.get());
-                if(distSqr < minDistSqr) {
-                    closestEntity = entity;
-                    minDistSqr = distSqr;
-                    collisionVec = point.get();
+            if(!(entity instanceof IOrientedHitBoxes hitBoxesEntity) || hitBoxesEntity.includeAABB()) {
+                AABB aabb = entity.getBoundingBox().inflate(inflation);
+                Optional<Vec3> point = aabb.clip(start, end);
+                if(point.isPresent()) {
+                    double distSqr = start.distanceToSqr(point.get());
+                    if(distSqr < minDistSqr) {
+                        closestEntity = entity;
+                        minDistSqr = distSqr;
+                        collisionVec = point.get();
+                        continue;
+                    }
                 }
             }
-            else if(entity instanceof IOrientedHitBoxes hitBoxesEntity) {
+            if(entity instanceof IOrientedHitBoxes hitBoxesEntity) {
                 Vec3 startOrigin = start.subtract(entity.position()), endOrigin = end.subtract(entity.position());
                 OBB[] obbs = hitBoxesEntity.getOBBs(1F);
                 for(int i = 0; i < obbs.length; i++) {

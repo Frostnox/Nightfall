@@ -47,29 +47,31 @@ public abstract class GameRendererMixin implements ResourceManagerReloadListener
         Vec3 bestPoint = null;
         int boxIndex = -1;
         for(Entity entity : level.getEntities(viewer, box.inflate(IOrientedHitBoxes.MAX_DIST_FROM_AABB), filter)) {
-            AABB aabb = entity.getBoundingBox().inflate(entity.getPickRadius());
-            Optional<Vec3> result = aabb.clip(start, end);
-            if(aabb.contains(start)) {
-                if(bestDistSqr >= 0.0D) {
-                    bestEntity = entity;
-                    bestPoint = result.orElse(start);
-                    bestDistSqr = 0.0D;
+            if(!(entity instanceof IOrientedHitBoxes hitBoxesEntity) || hitBoxesEntity.includeAABB()) {
+                AABB aabb = entity.getBoundingBox().inflate(entity.getPickRadius());
+                Optional<Vec3> result = aabb.clip(start, end);
+                if(aabb.contains(start)) {
+                    if(bestDistSqr >= 0.0D) {
+                        bestEntity = entity;
+                        bestPoint = result.orElse(start);
+                        bestDistSqr = 0.0D;
+                    }
                 }
-            }
-            else if(result.isPresent() && box.contains(result.get())) {
-                Vec3 point = result.get();
-                double distSqr = start.distanceToSqr(point);
-                if(distSqr < bestDistSqr || bestDistSqr == 0.0D) {
-                    if(entity.getRootVehicle() == viewer.getRootVehicle() && !entity.canRiderInteract()) {
-                        if(bestDistSqr == 0.0D) {
+                else if(result.isPresent() && box.contains(result.get())) {
+                    Vec3 point = result.get();
+                    double distSqr = start.distanceToSqr(point);
+                    if(distSqr < bestDistSqr || bestDistSqr == 0.0D) {
+                        if(entity.getRootVehicle() == viewer.getRootVehicle() && !entity.canRiderInteract()) {
+                            if(bestDistSqr == 0.0D) {
+                                bestEntity = entity;
+                                bestPoint = point;
+                            }
+                        }
+                        else {
                             bestEntity = entity;
                             bestPoint = point;
+                            bestDistSqr = distSqr;
                         }
-                    }
-                    else {
-                        bestEntity = entity;
-                        bestPoint = point;
-                        bestDistSqr = distSqr;
                     }
                 }
             }
