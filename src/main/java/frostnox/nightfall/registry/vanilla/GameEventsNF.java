@@ -12,9 +12,11 @@ import net.minecraft.world.level.gameevent.GameEvent;
 
 public class GameEventsNF {
     public static GameEvent ACTION_SOUND;
+    public static GameEvent PLAYER_PUNCH;
 
     public static void register() {
         ACTION_SOUND = register("action_sound");
+        PLAYER_PUNCH = register("player_punch");
     }
 
     private static GameEvent register(String pName) {
@@ -65,6 +67,7 @@ public class GameEventsNF {
         map.put(GameEvent.EXPLODE, 24);
         map.put(GameEvent.LIGHTNING_STRIKE, 32);
         map.put(ACTION_SOUND, 12);
+        map.put(PLAYER_PUNCH, 12);
     }));
 
     public static float getEventRange(GameEvent event, Entity eventEntity) {

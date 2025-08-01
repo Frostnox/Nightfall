@@ -21,6 +21,10 @@ public class OBB {
         this(xSize, ySize, zSize, xCenter, yCenter, zCenter, 0, 0, 0, rotation);
     }
 
+    public OBB(double xSize, double ySize, double zSize, double xCenter, double yCenter, double zCenter, double x, double y, double z) {
+        this(xSize, ySize, zSize, xCenter, yCenter, zCenter, x, y, z, new Quaternion(0F, 0F, 0F, 1F));
+    }
+
     public OBB(double xSize, double ySize, double zSize, double xCenter, double yCenter, double zCenter, double x, double y, double z, Quaternion rotation) {
         center = new Vector3f((float) xCenter, (float) yCenter, (float) zCenter);
         extents = new Vec3(xSize / 2, ySize / 2, zSize / 2);

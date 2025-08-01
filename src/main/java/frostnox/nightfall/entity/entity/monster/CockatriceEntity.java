@@ -1,11 +1,9 @@
 package frostnox.nightfall.entity.entity.monster;
 
-import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3d;
 import com.mojang.math.Vector3f;
 import frostnox.nightfall.block.IFoodBlock;
 import frostnox.nightfall.capability.ChunkData;
-import frostnox.nightfall.capability.IActionTracker;
 import frostnox.nightfall.data.TagsNF;
 import frostnox.nightfall.entity.EntityPart;
 import frostnox.nightfall.entity.IChaser;
@@ -21,6 +19,7 @@ import frostnox.nightfall.registry.ActionsNF;
 import frostnox.nightfall.registry.forge.AttributesNF;
 import frostnox.nightfall.registry.forge.DataSerializersNF;
 import frostnox.nightfall.registry.forge.SoundsNF;
+import frostnox.nightfall.util.AnimationUtil;
 import frostnox.nightfall.util.animation.AnimationData;
 import frostnox.nightfall.util.math.Easing;
 import frostnox.nightfall.util.math.OBB;
@@ -35,7 +34,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -59,6 +57,7 @@ public class CockatriceEntity extends HungryMonsterEntity implements IOrientedHi
     public enum Type {
         BRONZE, EMERALD
     }
+    private static final EntityPart[] OBB_PARTS = new EntityPart[]{EntityPart.BODY, EntityPart.NECK, EntityPart.HEAD};
     protected static final EntityDataAccessor<CockatriceEntity.Type> TYPE = SynchedEntityData.defineId(CockatriceEntity.class, DataSerializersNF.COCKATRICE_TYPE);
     protected static final EntityDataAccessor<Boolean> SPECIAL = SynchedEntityData.defineId(CockatriceEntity.class, EntityDataSerializers.BOOLEAN);
     public int targetTime, targetTimeLast;
@@ -138,7 +137,7 @@ public class CockatriceEntity extends HungryMonsterEntity implements IOrientedHi
         }) {
             @Override
             protected double getFollowDistance() {
-                return super.getFollowDistance() * (1D - getSatietyPercent());
+                return super.getFollowDistance() * Math.max(0.3, (1D - getSatietyPercent()));
             }
         });
     }
@@ -312,36 +311,32 @@ public class CockatriceEntity extends HungryMonsterEntity implements IOrientedHi
     }
 
     @Override
-    public OBB[] getOBBs(float partial) {
-        if(!isAlive()) return new OBB[0];
-        else {
-            float yaw = getViewYRot(partial);
-            Quaternion headRot = Vector3f.YP.rotationDegrees(-yaw);
-            Quaternion neckRot = Vector3f.YP.rotationDegrees(-Mth.clamp(yaw, yaw - 60, yaw + 60));
-            IActionTracker capA = getActionTracker();
-            boolean claw = capA.getActionID().equals(ActionsNF.COCKATRICE_CLAW.getId());
-            boolean headLowered = isChasingTarget && !claw;
-            Vector3f neck = new Vector3f(0, 11.5F/16F + (headLowered ? 1F/16F : 0.25F/16F), 4F/16F);
-            Vector3f head = new Vector3f(0, 8F/16F, 0.5F/16F);
-            head.transform(Vector3f.XP.rotationDegrees(headLowered ? 80 : (claw ? 25 : 35)));
-            head.add(0, 11.5F/16F + (headLowered ? -0.25F/16F : 0.25F/16F), 5.5F/16F + (headLowered ? 0.5F/16F : 0));
-            if(claw) {
-                float progress;
-                if(capA.getState() == 0) progress = Easing.inOutSine.apply(capA.getProgress(partial));
-                else if(capA.getState() == 1) progress = 1;
-                else progress = 1F - Easing.inOutSine.apply(capA.getProgress(partial));
-                head.add(0, 5F/16F * progress, -1F/16F * progress);
-                neck.add(0, 5F/16F * progress, -1F/16F * progress);
-            }
-            neck.transform(neckRot);
-            head.transform(headRot);
-            neckRot.mul(Vector3f.XP.rotationDegrees(headLowered ? 80 : (claw ? 25 : 35)));
-            headRot.mul(Vector3f.XP.rotationDegrees(getViewXRot(partial)));
-            return new OBB[] {
-                    new OBB(3.5F/16F, 10.5F/16F, 3.5F/16F, 0, 5F/16F - 1F/16F, 0.5F/16F, neck.x(), neck.y(), neck.z(), neckRot),
-                    new OBB(4.5F/16F, 4.5F/16F, 6.5F/16F, 0, 2F/16F, -0.5F/16F, head.x(), head.y(), head.z(), headRot)
-            };
-        }
+    public Vector3f getOBBTranslation() {
+        return new Vector3f(0, 12F/16F, 0);
+    }
+
+    @Override
+    public EnumMap<EntityPart, AnimationData> getDefaultAnimMap() {
+        EnumMap<EntityPart, AnimationData> map = getGenericAnimMap();
+        float trackAmount = AnimationUtil.applyEasing(targetTime / 9F, Easing.inOutSine);
+        map.put(EntityPart.BODY, new AnimationData(new Vector3f(0F/16F, -7.5F/16F, -5F/16F)));
+        map.put(EntityPart.NECK, new AnimationData(new Vector3f(0F/16F, -8F/16F, 0F/16F), new Vector3f(35 + trackAmount * 45, 0, 0)));
+        map.put(EntityPart.HEAD, new AnimationData(new Vector3f(0F/16F, 0F/16F, 0F/16F), new Vector3f(-35 + trackAmount * -45, 0, 0),
+                new Vector3f(0, 0, -1 * trackAmount)));
+        return map;
+    }
+
+    @Override
+    public EntityPart[] getOrderedOBBParts() {
+        return OBB_PARTS;
+    }
+
+    @Override
+    public OBB[] getDefaultOBBs() {
+        return new OBB[] {
+                new OBB(3.5F/16F, 10.5F/16F, 3.5F/16F, 0, 4F/16F, -0.5F/16F),
+                new OBB(4.5F/16F, 4.5F/16F, 6.5F/16F, 0, 2F/16F, 0.5F/16F)
+        };
     }
 
     @Override

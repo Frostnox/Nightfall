@@ -89,8 +89,12 @@ public abstract class ActionableEntity extends PathfinderMob {
 
     public static EnumMap<EntityPart, AnimationData> getGenericAnimMap() {
         EnumMap<EntityPart, AnimationData> map = new EnumMap<>(EntityPart.class);
-        map.put(EntityPart.BODY, new AnimationData(new Vector3f(0F/16F, 0F/16F, 0F/16F)));
+        for(EntityPart part : EntityPart.values()) map.put(part, new AnimationData(new Vector3f(0F/16F, 0F/16F, 0F/16F)));
         return map;
+    }
+
+    public ActionableEntity getEntity() {
+        return this;
     }
 
     protected float getBaseReach() {

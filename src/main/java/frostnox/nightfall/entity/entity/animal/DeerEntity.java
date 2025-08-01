@@ -1,12 +1,12 @@
 package frostnox.nightfall.entity.entity.animal;
 
-import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3d;
 import com.mojang.math.Vector3f;
 import frostnox.nightfall.block.IFoodBlock;
 import frostnox.nightfall.capability.ChunkData;
 import frostnox.nightfall.capability.IActionTracker;
 import frostnox.nightfall.data.TagsNF;
+import frostnox.nightfall.entity.EntityPart;
 import frostnox.nightfall.entity.IOrientedHitBoxes;
 import frostnox.nightfall.entity.Sex;
 import frostnox.nightfall.entity.ai.goals.*;
@@ -16,6 +16,7 @@ import frostnox.nightfall.registry.ActionsNF;
 import frostnox.nightfall.registry.forge.AttributesNF;
 import frostnox.nightfall.registry.forge.DataSerializersNF;
 import frostnox.nightfall.registry.forge.SoundsNF;
+import frostnox.nightfall.util.animation.AnimationData;
 import frostnox.nightfall.util.math.OBB;
 import frostnox.nightfall.world.ContinentalWorldType;
 import net.minecraft.core.BlockPos;
@@ -27,7 +28,6 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -43,11 +43,13 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
+import java.util.EnumMap;
 
 public class DeerEntity extends AnimalEntity implements IOrientedHitBoxes {
     public enum Type {
         BRIAR, RED, SPOTTED
     }
+    private static final EntityPart[] OBB_PARTS = new EntityPart[]{EntityPart.BODY, EntityPart.NECK, EntityPart.HEAD};
     protected static final EntityDataAccessor<Type> TYPE = SynchedEntityData.defineId(DeerEntity.class, DataSerializersNF.DEER_TYPE);
     protected static final EntityDataAccessor<Boolean> SPECIAL = SynchedEntityData.defineId(DeerEntity.class, EntityDataSerializers.BOOLEAN);
     protected static final EntityDataAccessor<Sex> SEX = SynchedEntityData.defineId(DeerEntity.class, DataSerializersNF.SEX);
@@ -234,34 +236,35 @@ public class DeerEntity extends AnimalEntity implements IOrientedHitBoxes {
     }
 
     @Override
-    public OBB[] getOBBs(float partial) {
-        if(!isAlive()) return new OBB[0];
-        else {
-            float yaw = getViewYRot(partial);
-            Quaternion headRot = Vector3f.YP.rotationDegrees(-yaw);
-            Quaternion neckRot = Vector3f.YP.rotationDegrees(-Mth.clamp(yaw, yaw - 60, yaw + 60));
-            Vector3f neck = new Vector3f(0, 12F/16F, 5.5F/16F);
-            Vector3f head = new Vector3f(0, 7F/16F, 0F/16F);
-            float scale = 1F;
-            if(getSex() == Sex.MALE) {
-                scale = 17F/16F;
-                neck.mul(scale);
-                head.mul(scale);
-                head.add(0, 1F/16F, 0);
-            }
-            neck.transform(neckRot);
-            boolean grazing = getActionTracker().getActionID().equals(ActionsNF.DEER_GRAZE.getId());
-            neckRot.mul(Vector3f.XP.rotationDegrees(grazing ? 140 : 15));
-            head.transform(Vector3f.XP.rotationDegrees(grazing ? 140 : 15));
-            head.add(0, 12F/16F, 5.5F/16F);
-            head.transform(headRot);
-            if(grazing) headRot.mul(Vector3f.XP.rotationDegrees(90));
-            else headRot.mul(Vector3f.XP.rotationDegrees(getViewXRot(partial)));
-            return new OBB[] {
-                    new OBB(3.5F/16F * scale, 8.5F/16F * scale, 3.5F/16F * scale, 0, 4F/16F, 0, neck.x(), neck.y(), neck.z(), neckRot),
-                    new OBB(4.5F/16F * scale, 4.5F/16F * scale, 4.5F/16F * scale, 0, 2F/16F, 0, head.x(), head.y(), head.z(), headRot)
-            };
-        }
+    public float getModelScale() {
+        return getSex() == Sex.MALE ? 17F/16F : 1F;
+    }
+
+    @Override
+    public Vector3f getOBBTranslation() {
+        return new Vector3f(0F/16F, 12.5F/16F, 0F/16F);
+    }
+
+    @Override
+    public EnumMap<EntityPart, AnimationData> getDefaultAnimMap() {
+        EnumMap<EntityPart, AnimationData> map = getGenericAnimMap();
+        map.put(EntityPart.BODY, new AnimationData(new Vector3f(0, -6.5F/16F, -5.5F/16F), new Vector3f(0, 0, 0)));
+        map.put(EntityPart.NECK, new AnimationData(new Vector3f(0F/16F, -7F/16F, 0F/16F), new Vector3f(15, 0, 0)));
+        map.put(EntityPart.HEAD, new AnimationData(new Vector3f(0F/16F, 0F/16F, 0F/16F), new Vector3f(-15, 0, 0)));
+        return map;
+    }
+
+    @Override
+    public EntityPart[] getOrderedOBBParts() {
+        return OBB_PARTS;
+    }
+
+    @Override
+    public OBB[] getDefaultOBBs() {
+        return new OBB[] {
+                new OBB(3.5F/16F, 8.5F/16F, 3.5F/16F, 0, 4F/16F, 0),
+                new OBB(4.5F/16F, 4.5F/16F, 4.5F/16F, 0, 2F/16F, 0)
+        };
     }
 
     @Override

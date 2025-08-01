@@ -68,11 +68,6 @@ public abstract class HungryEntity extends ActionableEntity implements IHungerEn
     }
 
     @Override
-    public ActionableEntity getEntity() {
-        return this;
-    }
-
-    @Override
     public void addSatiety(int amount) {
         satiety = Mth.clamp(satiety + amount, 0, getMaxSatiety());
     }

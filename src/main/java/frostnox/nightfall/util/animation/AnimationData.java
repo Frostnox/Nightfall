@@ -21,8 +21,8 @@ public class AnimationData {
         this(new Vector3f(), dRotation, new Vector3f(), offset);
     }
 
-    public AnimationData(Vector3f dTranslation, Vector3f dRotation, Vector3f dScale) {
-        this(dTranslation, dRotation, dScale, new Vector3f());
+    public AnimationData(Vector3f offset, Vector3f dRotation, Vector3f dTranslation) {
+        this(dTranslation, dRotation, new Vector3f(), offset);
     }
 
     public AnimationData(Vector3f dTranslation, Vector3f dRotation, Vector3f dScale, Vector3f offset) {

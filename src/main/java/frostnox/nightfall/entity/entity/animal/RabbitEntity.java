@@ -1,6 +1,5 @@
 package frostnox.nightfall.entity.entity.animal;
 
-import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3d;
 import com.mojang.math.Vector3f;
 import frostnox.nightfall.block.IFoodBlock;
@@ -8,6 +7,7 @@ import frostnox.nightfall.block.block.nest.NestBlockEntity;
 import frostnox.nightfall.capability.ChunkData;
 import frostnox.nightfall.capability.IChunkData;
 import frostnox.nightfall.data.TagsNF;
+import frostnox.nightfall.entity.EntityPart;
 import frostnox.nightfall.entity.IHomeEntity;
 import frostnox.nightfall.entity.IOrientedHitBoxes;
 import frostnox.nightfall.entity.ai.goals.*;
@@ -16,6 +16,7 @@ import frostnox.nightfall.entity.ai.sensing.AudioSensing;
 import frostnox.nightfall.registry.forge.AttributesNF;
 import frostnox.nightfall.registry.forge.DataSerializersNF;
 import frostnox.nightfall.util.LevelUtil;
+import frostnox.nightfall.util.animation.AnimationData;
 import frostnox.nightfall.util.math.OBB;
 import frostnox.nightfall.world.ContinentalWorldType;
 import net.minecraft.core.BlockPos;
@@ -44,11 +45,13 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
+import java.util.EnumMap;
 
 public class RabbitEntity extends AnimalEntity implements IOrientedHitBoxes, IHomeEntity {
     public enum Type {
         BRUSH, COTTONTAIL, ARCTIC, STRIPED
     }
+    private static final EntityPart[] OBB_PARTS = new EntityPart[]{EntityPart.BODY, EntityPart.HEAD};
     protected static final EntityDataAccessor<Type> TYPE = SynchedEntityData.defineId(RabbitEntity.class, DataSerializersNF.RABBIT_TYPE);
     protected static final EntityDataAccessor<Boolean> SPECIAL = SynchedEntityData.defineId(RabbitEntity.class, EntityDataSerializers.BOOLEAN);
     protected BlockPos homePos = null;
@@ -238,17 +241,28 @@ public class RabbitEntity extends AnimalEntity implements IOrientedHitBoxes, IHo
     }
 
     @Override
-    public OBB[] getOBBs(float partial) {
-        if(!isAlive()) return new OBB[0];
-        else {
-            Quaternion rot = Vector3f.YP.rotationDegrees(-getViewYRot(partial));
-            Vector3f head = new Vector3f(0, 4.5F/16F, 3.5F/16F);
-            head.transform(rot);
-            rot.mul(Vector3f.XP.rotationDegrees(getViewXRot(partial)));
-            return new OBB[] {
-                    new OBB(3.5F/16F, 4F/16F, 4.5F/16F, 0, 1F/16F, 1.5F/16F, head.x(), head.y(), head.z(), rot)
-            };
-        }
+    public Vector3f getOBBTranslation() {
+        return new Vector3f(0F/16F, 2.5F/16F + 2.5F/16F * Math.min(1, animationSpeed * 2), 0F/16F);
+    }
+
+    @Override
+    public EnumMap<EntityPart, AnimationData> getDefaultAnimMap() {
+        EnumMap<EntityPart, AnimationData> map = getGenericAnimMap();
+        map.put(EntityPart.BODY, new AnimationData(new Vector3f(0F/16F, -2F/16F, -3.5F/16F), new Vector3f(0, 0, 0)));
+        map.put(EntityPart.HEAD, new AnimationData(new Vector3f(0F/16F, 0F/16F, 0F/16F), new Vector3f(0, 0, 0)));
+        return map;
+    }
+
+    @Override
+    public EntityPart[] getOrderedOBBParts() {
+        return OBB_PARTS;
+    }
+
+    @Override
+    public OBB[] getDefaultOBBs() {
+        return new OBB[] {
+                new OBB(3.25F/16F, 3.25F/16F, 4.25F/16F, 0, 0.5F/16F, 1.5F/16F)
+        };
     }
 
     @Override

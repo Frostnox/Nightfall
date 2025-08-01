@@ -29,7 +29,7 @@ public class AnimatedModelPart extends ModelPart {
         defaultX = x;
         defaultY = y;
         defaultZ = z;
-        animationData = new AnimationData(new Vector3f(x, y, z), new Vector3f(xRot, yRot, zRot), new Vector3f(xScale, yScale, zScale));
+        animationData = new AnimationData(new Vector3f(x, y, z), new Vector3f(xRot, yRot, zRot), new Vector3f(xScale, yScale, zScale), new Vector3f());
     }
 
     @Override

@@ -22,7 +22,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class EntitiesNF {
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, Nightfall.MODID);
     public static final RegistryObject<EntityType<RabbitEntity>> RABBIT = ENTITIES.register("rabbit", () -> EntityType.Builder.of(RabbitEntity::new, MobCategory.CREATURE)
-            .sized(8F/16F, 5.5F/16F).clientTrackingRange(10).setShouldReceiveVelocityUpdates(false).build("rabbit"));
+            .sized(8F/16F, 6F/16F).clientTrackingRange(10).setShouldReceiveVelocityUpdates(false).build("rabbit"));
     public static final RegistryObject<EntityType<DeerEntity>> DEER = ENTITIES.register("deer", () -> EntityType.Builder.of(DeerEntity::new, MobCategory.CREATURE)
             .sized(13F/16F, 15.5F/16F).clientTrackingRange(10).setShouldReceiveVelocityUpdates(false).build("deer"));
     public static final RegistryObject<EntityType<HuskEntity>> HUSK = ENTITIES.register("husk", () -> EntityType.Builder.of(HuskEntity::new, MobCategory.MONSTER)

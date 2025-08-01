@@ -1,9 +1,7 @@
 package frostnox.nightfall.entity.entity.monster;
 
-import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3d;
 import com.mojang.math.Vector3f;
-import frostnox.nightfall.action.Action;
 import frostnox.nightfall.action.DamageTypeSource;
 import frostnox.nightfall.block.block.nest.GuardedNestBlockEntity;
 import frostnox.nightfall.capability.IActionTracker;
@@ -17,15 +15,12 @@ import frostnox.nightfall.registry.forge.BlocksNF;
 import frostnox.nightfall.registry.forge.ParticleTypesNF;
 import frostnox.nightfall.registry.forge.SoundsNF;
 import frostnox.nightfall.util.MathUtil;
-import frostnox.nightfall.util.animation.AnimationCalculator;
 import frostnox.nightfall.util.animation.AnimationData;
-import frostnox.nightfall.util.math.Easing;
 import frostnox.nightfall.util.math.OBB;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -39,6 +34,7 @@ import net.minecraft.world.phys.Vec3;
 import java.util.EnumMap;
 
 public class RockwormEntity extends MonsterEntity implements IOrientedHitBoxes {
+    private static final EntityPart[] OBB_PARTS = new EntityPart[]{EntityPart.BODY, EntityPart.BODY_2, EntityPart.HEAD};
     public int retreatCooldown;
 
     public RockwormEntity(EntityType<? extends MonsterEntity> type, Level worldIn) {
@@ -194,66 +190,25 @@ public class RockwormEntity extends MonsterEntity implements IOrientedHitBoxes {
     }
 
     @Override
-    public OBB[] getOBBs(float partial) {
-        if(!isAlive()) return new OBB[0];
-        else {
-            IActionTracker capA = getActionTracker();
-            EnumMap<EntityPart, AnimationData> transforms = getHeadAnimMap();
-            AnimationCalculator mCalc = new AnimationCalculator();
-            if(!capA.isInactive() && !capA.isStunned()) {
-                Action action = capA.getAction();
-                for(AnimationData transform : transforms.values()) transform.update(capA.getFrame(), capA.getDuration(), partial);
-                mCalc.update(capA.getFrame(), capA.getDuration(), partial, Easing.inOutSine);
-                action.transformModel(capA.getState(), capA.getFrame(), capA.getDuration(), action.getChargeProgress(capA.getCharge(), capA.getChargePartial()),
-                        action.getPitch(this, partial), this, transforms, mCalc);
-            }
-            EntityPart[] parts = new EntityPart[]{EntityPart.BODY, EntityPart.BODY_2, EntityPart.HEAD};
-            OBB[] boxes = new OBB[]{new OBB(6.5F/16F, 13.5F/16F, 6.5F/16F, 0, 6.5F/16F, 0),
-                    new OBB(6.45F/16F, 12.45F/16F, 6.45F/16F, 0, 5.5F/16F, 0),
-                    new OBB(6.4F/16F, 9.4F/16F, 6.4F/16F, 0, 1.5F/16F, 0)};
-            Quaternion bodyYaw = Vector3f.YP.rotationDegrees(-Mth.lerp(partial, yBodyRotO, yBodyRot));
-            Quaternion headPitch = Vector3f.XP.rotationDegrees(getViewXRot(partial));
-            int boxOff = 0;
-            for(int i = 0; i < boxes.length; i++) {
-                OBB box = boxes[i];
-                if(parts[i + boxOff] == EntityPart.HEAD) box.rotation.mul(Vector3f.YP.rotationDegrees(-getViewYRot(partial)));
-                else box.rotation.mul(bodyYaw);
-                for(int j = i + boxOff; j >= 0; j--) {
-                    AnimationData data = transforms.get(parts[j]);
-                    Vector3f t = new Vector3f();
-                    Vector3f translations = data.tCalc.getTransformations();
-                    translations.mul(1F/16F, -1/16F, -1F/16F);
-                    if(j > 0) {
-                        Quaternion r = new Quaternion(0, 0, 0, 1);
-                        t.add(data.offset);
-                        t.sub(transforms.get(parts[j - 1]).offset);
-                        for(int k = 0; k <= j - 1; k++) {
-                            AnimationData dataRoot = transforms.get(parts[k]);
-                            Vector3f rotationsRoot = dataRoot.rCalc.getTransformations();
-                            r.mul(Vector3f.ZP.rotationDegrees(-rotationsRoot.z()));
-                            r.mul(Vector3f.YP.rotationDegrees(-rotationsRoot.y()));
-                            r.mul(Vector3f.XP.rotationDegrees(rotationsRoot.x()));
-                        }
-                        t.transform(r);
-                        translations.transform(r);
-                    }
-                    t.add(translations);
-                    t.transform(bodyYaw);
-                    box.translation = box.translation.add(t.x(), t.y(), t.z());
-                }
-                Quaternion r = new Quaternion(0, 0, 0, 1);
-                for(int j = boxOff; j <= i + boxOff; j++) {
-                    AnimationData data = transforms.get(parts[j]);
-                    Vector3f rotations = data.rCalc.getTransformations();
-                    r.mul(Vector3f.ZP.rotationDegrees(-rotations.z()));
-                    r.mul(Vector3f.YP.rotationDegrees(-rotations.y()));
-                    r.mul(Vector3f.XP.rotationDegrees(rotations.x()));
-                }
-                box.rotation.mul(r);
-                if(parts[i + boxOff] == EntityPart.HEAD) box.rotation.mul(headPitch);
-            }
-            return boxes;
-        }
+    public Vector3f getOBBTranslation() {
+        return Vector3f.ZERO;
+    }
+
+    @Override
+    public EnumMap<EntityPart, AnimationData> getDefaultAnimMap() {
+        return getHeadAnimMap();
+    }
+
+    @Override
+    public EntityPart[] getOrderedOBBParts() {
+        return OBB_PARTS;
+    }
+
+    @Override
+    public OBB[] getDefaultOBBs() {
+        return new OBB[]{new OBB(6.5F/16F, 13.5F/16F, 6.5F/16F, 0, 6.5F/16F, 0),
+                new OBB(6.45F/16F, 12.45F/16F, 6.45F/16F, 0, 5.5F/16F, 0),
+                new OBB(6.4F/16F, 9.4F/16F, 6.4F/16F, 0, 1.5F/16F, 0)};
     }
 
     @Override

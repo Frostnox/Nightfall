@@ -17,6 +17,7 @@ import frostnox.nightfall.network.NetworkHandler;
 import frostnox.nightfall.network.message.GenericEntityToClient;
 import frostnox.nightfall.network.message.capability.ActionTrackerToClient;
 import frostnox.nightfall.registry.forge.AttributesNF;
+import frostnox.nightfall.registry.vanilla.GameEventsNF;
 import frostnox.nightfall.util.data.Vec3f;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -209,6 +210,7 @@ public class HitTargetToServer {
                                 player.setSprinting(false);
                                 boolean notLiving = (!(target instanceof LivingEntity)) || target instanceof ArmorStandDummyEntity || target instanceof ArmorStand;
                                 if(!target.skipAttackInteraction(player) && (notLiving || PlayerData.get(player).getPunchTicks() <= 0)) {
+                                    player.gameEvent(GameEventsNF.PLAYER_PUNCH);
                                     PlayerData.get(player).setPunchTicks(8);
                                     DamageSource source = notLiving ? DamageTypeSource.playerAttack(player) : DamageTypeSource.createPlayerSource(player, DamageType.STRIKING,
                                             new HitData(target, msg.x, msg.y, msg.z, msg.force.normalize(), msg.boxIndex)).setSound(() -> SoundEvents.PLAYER_ATTACK_WEAK);
