@@ -34,9 +34,12 @@ public class RockwormRetreat extends Action {
 
     @Override
     public void onTick(LivingEntity user) {
-        if(!user.level.isClientSide && user instanceof RockwormEntity rockworm) {
+        if(user instanceof RockwormEntity rockworm) {
             IActionTracker capA = ActionTracker.get(user);
-            if(capA.getFrame() == capA.getDuration() - 1) rockworm.enterNest(false);
+            if(capA.getFrame() == capA.getDuration()) {
+                if(!user.level.isClientSide) rockworm.enterNest(false);
+                else if(rockworm.enterNest(true)) rockworm.discard();
+            }
         }
     }
 }

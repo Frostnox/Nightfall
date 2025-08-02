@@ -12,15 +12,18 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.BiFunction;
 
 public class RockwormNestBlockEntity extends GuardedNestBlockEntity {
     private static final Direction[] EXIT_UP = new Direction[] {Direction.UP};
+    protected long lastDigTime = 0;
 
     public RockwormNestBlockEntity(BlockEntityType<?> pType, BlockPos pos, BlockState pBlockState, int capacity, int respawnTime, BiFunction<ServerLevel, BlockPos, ActionableEntity> respawnFunc, int listenRange) {
         super(pType, pos, pBlockState, capacity, respawnTime, respawnFunc, listenRange);
@@ -79,5 +82,35 @@ public class RockwormNestBlockEntity extends GuardedNestBlockEntity {
     protected boolean isEventInRange(float range, BlockPos pos) {
         double blockDistSqr = getEmergePos().above().distSqr(pos);
         return blockDistSqr <= range * range &&  blockDistSqr < 3.1 * 3.1;
+    }
+
+    @Override
+    protected boolean handleGameEvent(Level level, GameEvent event, @Nullable Entity entity, BlockPos pos) {
+        if(super.handleGameEvent(level, event, entity, pos)) {
+            if(hasAnyEntities() && level.getGameTime() - lastDigTime >= 15L) {
+                BlockPos digPos = getBlockPos();
+                for(int i = 0; i < 5; i++) {
+                    digPos = digPos.above();
+                    BlockState block = level.getBlockState(digPos);
+                    if(!block.is(TagsNF.STONE_TUNNELS) || block.getValue(RotatedPillarBlock.AXIS) != Direction.Axis.Y) break;
+                }
+                dummy.mineBlock(level, digPos);
+                lastDigTime = level.getGameTime();
+            }
+            return true;
+        }
+        else return false;
+    }
+
+    @Override
+    public void load(CompoundTag tag) {
+        super.load(tag);
+        lastDigTime = tag.getLong("lastDigTime");
+    }
+
+    @Override
+    protected void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
+        tag.putLong("lastDigTime", lastDigTime);
     }
 }

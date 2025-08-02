@@ -13,6 +13,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.*;
+import net.minecraftforge.common.util.FakePlayer;
 import org.apache.commons.compress.utils.Lists;
 import org.jetbrains.annotations.NotNull;
 
@@ -42,7 +43,7 @@ public class AudioSensing  {
 
         @Override
         public boolean handleGameEvent(@NotNull Level level, @NotNull GameEvent event, @Nullable Entity eventEntity, @NotNull BlockPos pos) {
-            if(eventEntity == entity || (eventEntity instanceof Player player && player.isCreative())) return false;
+            if(eventEntity == entity || eventEntity instanceof FakePlayer || (eventEntity instanceof Player player && player.isCreative())) return false;
             float soundRange = getSoundRange(event, eventEntity);
             double blockDistSqr = pos.distToCenterSqr(entity.position());
             if(blockDistSqr <= soundRange * soundRange) {

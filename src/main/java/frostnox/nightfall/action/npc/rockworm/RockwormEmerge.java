@@ -1,11 +1,15 @@
 package frostnox.nightfall.action.npc.rockworm;
 
 import frostnox.nightfall.action.Action;
+import frostnox.nightfall.capability.ActionTracker;
+import frostnox.nightfall.capability.IActionTracker;
 import frostnox.nightfall.entity.EntityPart;
+import frostnox.nightfall.entity.entity.monster.RockwormEntity;
 import frostnox.nightfall.registry.ActionsNF;
 import frostnox.nightfall.util.animation.AnimationCalculator;
 import frostnox.nightfall.util.animation.AnimationData;
 import frostnox.nightfall.util.math.Easing;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 
 import java.util.EnumMap;
@@ -29,5 +33,16 @@ public class RockwormEmerge extends Action {
         lowerBody.rCalc.extend(lowerBody.dRotation, Easing.outSine);
         upperBody.rCalc.extend(upperBody.dRotation, Easing.outSine);
         head.rCalc.extend(head.dRotation, Easing.outSine);
+    }
+
+    @Override
+    public void onTick(LivingEntity user) {
+        if(!user.level.isClientSide && user instanceof RockwormEntity rockworm) {
+            IActionTracker capA = ActionTracker.get(user);
+            if(capA.getFrame() == capA.getDuration() / 2) {
+                BlockPos pos = rockworm.blockPosition().above();
+                if(rockworm.canMineBlock(pos)) rockworm.mineBlock(rockworm.level, pos);
+            }
+        }
     }
 }

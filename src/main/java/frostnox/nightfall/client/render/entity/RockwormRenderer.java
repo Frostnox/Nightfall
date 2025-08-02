@@ -7,14 +7,28 @@ import frostnox.nightfall.client.model.ModelRegistryNF;
 import frostnox.nightfall.client.model.entity.RockwormModel;
 import frostnox.nightfall.entity.entity.monster.RockwormEntity;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Pose;
+import net.minecraft.world.level.LightLayer;
 
 public class RockwormRenderer extends AnimatedMobRenderer<RockwormEntity, RockwormModel> {
     public static final ResourceLocation ROCKWORM_0 = ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "textures/entity/rockworm/rockworm_0.png");
 
     public RockwormRenderer(EntityRendererProvider.Context renderer) {
         super(renderer, new RockwormModel(renderer.bakeLayer(ModelRegistryNF.ROCKWORM)), 0.3F);
+    }
+
+    @Override
+    protected int getSkyLightLevel(RockwormEntity pEntity, BlockPos pPos) {
+        if(!pEntity.isAlive()) return super.getSkyLightLevel(pEntity, pPos);
+        else return Math.max(super.getSkyLightLevel(pEntity, pPos), pEntity.level.getBrightness(LightLayer.SKY, pPos.below()));
+    }
+
+    @Override
+    protected int getBlockLightLevel(RockwormEntity pEntity, BlockPos pPos) {
+        if(!pEntity.isAlive()) return super.getBlockLightLevel(pEntity, pPos);
+        else return Math.max(super.getBlockLightLevel(pEntity, pPos), pEntity.level.getBrightness(LightLayer.BLOCK, pPos.below()));
     }
 
     @Override

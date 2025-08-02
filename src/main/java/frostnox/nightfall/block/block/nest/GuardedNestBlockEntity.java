@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.BlockPositionSource;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.gameevent.GameEventListener;
+import net.minecraftforge.common.util.FakePlayer;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -48,7 +49,7 @@ public class GuardedNestBlockEntity extends NestBlockEntity {
     }
 
     protected boolean handleGameEvent(Level level, GameEvent event, @Nullable Entity entity, BlockPos pos) {
-        if(!hasAnyEntities() || !(entity instanceof LivingEntity livingEntity) || (entity instanceof Player player && player.isCreative())) return false;
+        if(!hasAnyEntities() || !(entity instanceof LivingEntity livingEntity) || entity instanceof FakePlayer || (entity instanceof Player player && player.isCreative())) return false;
         if(isEventInRange(GameEventsNF.getEventRange(event, entity), pos)) {
             if(dummy == null) dummy = respawnFunc.apply((ServerLevel) level, pos);
             if(dummy.canTargetFromSound(livingEntity)) {

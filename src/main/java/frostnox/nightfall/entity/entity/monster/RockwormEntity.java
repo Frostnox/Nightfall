@@ -30,6 +30,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.shapes.Shapes;
 
 import java.util.EnumMap;
 
@@ -85,6 +87,23 @@ public class RockwormEntity extends MonsterEntity implements IOrientedHitBoxes {
         return false;
     }
 
+    public boolean isInsideBlock(BlockPos pos, BlockState block) {
+        if(!block.isAir() && block.isSuffocating(level, pos)) {
+            return Shapes.joinIsNotEmpty(block.getCollisionShape(level, pos).move(pos.getX(), pos.getY(), pos.getZ()), Shapes.create(getBoundingBox()), BooleanOp.AND);
+        }
+        else return false;
+    }
+
+    @Override
+    public boolean canMineAnything() {
+        return true;
+    }
+
+    @Override
+    public float getMineSpeed(BlockState block) {
+        return 20F;
+    }
+
     @Override
     public void tick() {
         super.tick();
@@ -93,24 +112,35 @@ public class RockwormEntity extends MonsterEntity implements IOrientedHitBoxes {
             if(tickCount > 1 && !verticalCollisionBelow) hurt(DamageTypeSource.UPROOTED, Float.MAX_VALUE);
             else {
                 IActionTracker capA = getActionTracker();
-                Entity target = null;
-                double bestDistSqr = Double.MAX_VALUE;
-                Vec3 eyePos = getEyePosition();
-                for(Entity entity : audioSensing.getHeardEntities()) {
-                    double dist = MathUtil.getShortestDistanceSqrPointToBox(eyePos.x, eyePos.y, eyePos.z, entity.getBoundingBox());
-                    if(dist < bestDistSqr && dist < 2.1 * 2.1) target = entity;
-                }
-                if(target != null) {
-                    getLookControl().setLookAt(target);
-                    if(capA.isInactive()) {
-                        startAction(ActionsNF.ROCKWORM_BITE.getId());
+                BlockPos.MutableBlockPos pos = blockPosition().mutable();
+                if(capA.isInactive() && (isInsideBlock(pos, level.getBlockState(pos)) || isInsideBlock(pos.setY(pos.getY() + 1), level.getBlockState(pos)))) {
+                    if(retreatCooldown > 10) retreatCooldown = 10;
+                    else if(retreatCooldown > 0) retreatCooldown--;
+                    if(retreatCooldown == 0 && enterNest(true)) {
+                        startAction(ActionsNF.ROCKWORM_RETREAT.getId());
+                        retreatCooldown = 10;
                     }
                 }
-                else if(capA.isInactive()) {
-                    if(retreatCooldown > 0) retreatCooldown--;
-                    if(retreatCooldown == 0 && tickCount > 20 && enterNest(true)) {
-                        startAction(ActionsNF.ROCKWORM_RETREAT.getId());
-                        retreatCooldown = 20 * 20 + random.nextInt(20 * 10);
+                else {
+                    Entity target = null;
+                    double bestDistSqr = Double.MAX_VALUE;
+                    Vec3 eyePos = getEyePosition();
+                    for(Entity entity : audioSensing.getHeardEntities()) {
+                        double dist = MathUtil.getShortestDistanceSqrPointToBox(eyePos.x, eyePos.y, eyePos.z, entity.getBoundingBox());
+                        if(dist < bestDistSqr && dist < 2.1 * 2.1) target = entity;
+                    }
+                    if(target != null) {
+                        getLookControl().setLookAt(target);
+                        if(capA.isInactive()) {
+                            startAction(ActionsNF.ROCKWORM_BITE.getId());
+                        }
+                    }
+                    else if(capA.isInactive()) {
+                        if(retreatCooldown > 0) retreatCooldown--;
+                        if(retreatCooldown == 0 && tickCount > 20 && enterNest(true)) {
+                            startAction(ActionsNF.ROCKWORM_RETREAT.getId());
+                            retreatCooldown = 20 * 20 + random.nextInt(20 * 10);
+                        }
                     }
                 }
             }
@@ -147,6 +177,11 @@ public class RockwormEntity extends MonsterEntity implements IOrientedHitBoxes {
 
     @Override
     public boolean isPushedByFluid() {
+        return false;
+    }
+
+    @Override
+    public boolean isInWall() {
         return false;
     }
 

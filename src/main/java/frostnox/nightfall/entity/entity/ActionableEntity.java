@@ -4,6 +4,8 @@ import com.mojang.math.Vector3d;
 import com.mojang.math.Vector3f;
 import frostnox.nightfall.action.*;
 import frostnox.nightfall.block.IAdjustableNodeType;
+import frostnox.nightfall.capability.GlobalChunkData;
+import frostnox.nightfall.capability.IGlobalChunkData;
 import frostnox.nightfall.client.ClientEngine;
 import frostnox.nightfall.entity.EntityPart;
 import frostnox.nightfall.entity.ai.pathfinding.ActionableMoveControl;
@@ -13,6 +15,7 @@ import frostnox.nightfall.entity.ai.pathfinding.NodeType;
 import frostnox.nightfall.entity.ai.sensing.AudioSensing;
 import frostnox.nightfall.item.item.TieredArmorItem;
 import frostnox.nightfall.network.message.GenericEntityToClient;
+import frostnox.nightfall.network.message.world.DigBlockToClient;
 import frostnox.nightfall.registry.ActionsNF;
 import frostnox.nightfall.capability.ActionTracker;
 import frostnox.nightfall.capability.IActionTracker;
@@ -23,6 +26,7 @@ import frostnox.nightfall.registry.forge.AttributesNF;
 import frostnox.nightfall.registry.forge.ParticleTypesNF;
 import frostnox.nightfall.registry.vanilla.GameEventsNF;
 import frostnox.nightfall.util.CombatUtil;
+import frostnox.nightfall.util.LevelUtil;
 import frostnox.nightfall.util.MathUtil;
 import frostnox.nightfall.util.animation.AnimationData;
 import frostnox.nightfall.world.ToolActionsNF;
@@ -33,6 +37,8 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagKey;
@@ -51,7 +57,9 @@ import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.BaseFireBlock;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.gameevent.*;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
@@ -60,6 +68,8 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.ToolAction;
+import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.common.util.FakePlayerFactory;
 
 import javax.annotation.Nullable;
 import java.util.EnumMap;
@@ -123,6 +133,34 @@ public abstract class ActionableEntity extends PathfinderMob {
 
     public long getLastTickedGameTime() {
         return lastTickedGameTime;
+    }
+
+    public float getMineSpeed(BlockState block) {
+        return getItemBySlot(EquipmentSlot.MAINHAND).getDestroySpeed(block);
+    }
+
+    public boolean mineBlock(Level level, BlockPos pos) {
+        LevelChunk chunk = level.getChunkAt(pos);
+        IGlobalChunkData chunkData = GlobalChunkData.get(chunk);
+        BlockState block = chunk.getBlockState(pos);
+        //Formula for one tick of block break progress from player * multiplier
+        float progress = chunkData.getBreakProgress(pos) + getMineSpeed(block) / block.getDestroySpeed(level, pos) / 30 * 4;
+        if(progress >= 1) {
+            FakePlayer player = FakePlayerFactory.get((ServerLevel) level, LevelUtil.FAKE_PROFILE);
+            block.getBlock().playerDestroy(level, player, pos, block, level.getBlockEntity(pos), getItemBySlot(EquipmentSlot.MAINHAND));
+            block.onDestroyedByPlayer(level, pos, player, true, level.getFluidState(pos));
+            chunkData.removeBreakProgress(pos);
+            NetworkHandler.toAllTrackingChunk(level.getChunkAt(pos), new DigBlockToClient(pos.getX(), pos.getY(), pos.getZ(), -1));
+            refreshPath = true;
+            return true;
+        }
+        else {
+            SoundType sound = block.getSoundType(level, pos, this);
+            level.playSound(null, pos, sound.getHitSound(), SoundSource.BLOCKS, (sound.getVolume() + 1.0F) / 2F, sound.getPitch() * 0.75F);
+            chunkData.setBreakProgress(pos, progress);
+            NetworkHandler.toAllTrackingChunk(level.getChunkAt(pos), new DigBlockToClient(pos.getX(), pos.getY(), pos.getZ(), progress));
+            return false;
+        }
     }
 
     /**
