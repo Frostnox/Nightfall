@@ -76,9 +76,8 @@ public class SpiderEntity extends HungryMonsterEntity implements IChaser, IHomeE
                 .add(Attributes.ATTACK_SPEED, 4)
                 .add(Attributes.FOLLOW_RANGE, 15)
                 .add(AttributesNF.HEARING_RANGE.get(), 8)
-                .add(AttributesNF.SLASHING_DEFENSE.get(), 5)
-                .add(AttributesNF.PIERCING_DEFENSE.get(), 5)
-                .add(AttributesNF.SLASHING_ABSORPTION.get(), 0.25);
+                .add(AttributesNF.SLASHING_DEFENSE.get(), 0.25)
+                .add(AttributesNF.PIERCING_DEFENSE.get(), 0.25);
     }
 
     public static EnumMap<EntityPart, AnimationData> getHeadAnimMap() {

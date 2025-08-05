@@ -169,6 +169,10 @@ public abstract class ActionableEntity extends PathfinderMob {
      */
     public abstract EquipmentSlot getHitSlot(Vector3d hitPos, int boxIndex);
 
+    public Impact modifyIncomingImpact(DamageTypeSource source, Impact impact) {
+        return impact;
+    }
+
     protected float modifyIncomingDamageBySlot(EquipmentSlot slot, float damage) {
         if(slot == EquipmentSlot.HEAD) return damage * 1.2F;
         else return damage;
@@ -730,10 +734,10 @@ public abstract class ActionableEntity extends PathfinderMob {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes().add(AttributesNF.STRENGTH.get()).add(AttributesNF.HEARING_RANGE.get()).add(AttributesNF.ACTION_SPEED.get())
-                .add(AttributesNF.STRIKING_DEFENSE.get()).add(AttributesNF.STRIKING_ABSORPTION.get()).add(AttributesNF.SLASHING_DEFENSE.get()).add(AttributesNF.SLASHING_ABSORPTION.get())
-                .add(AttributesNF.PIERCING_DEFENSE.get()).add(AttributesNF.PIERCING_ABSORPTION.get()).add(AttributesNF.FIRE_DEFENSE.get()).add(AttributesNF.FIRE_ABSORPTION.get())
-                .add(AttributesNF.FROST_DEFENSE.get()).add(AttributesNF.FROST_ABSORPTION.get()).add(AttributesNF.ELECTRIC_DEFENSE.get()).add(AttributesNF.ELECTRIC_ABSORPTION.get())
-                .add(AttributesNF.WITHER_DEFENSE.get()).add(AttributesNF.WITHER_ABSORPTION.get()).add(AttributesNF.BLEEDING_RESISTANCE.get()).add(AttributesNF.POISON_RESISTANCE.get())
+                .add(AttributesNF.STRIKING_DEFENSE.get()).add(AttributesNF.SLASHING_DEFENSE.get()).add(AttributesNF.PIERCING_DEFENSE.get())
+                .add(AttributesNF.FIRE_DEFENSE.get()).add(AttributesNF.FROST_DEFENSE.get()).add(AttributesNF.ELECTRIC_DEFENSE.get())
+                .add(AttributesNF.WITHER_DEFENSE.get()).add(AttributesNF.POISE.get())
+                .add(AttributesNF.BLEEDING_RESISTANCE.get()).add(AttributesNF.POISON_RESISTANCE.get())
                 .add(ForgeMod.SWIM_SPEED.get(), 1.4D);
     }
 }

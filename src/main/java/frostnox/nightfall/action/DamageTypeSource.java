@@ -60,6 +60,7 @@ public class DamageTypeSource extends DamageSource {
     private Supplier<SoundEvent> sound = () -> null;
     private @Nullable ImpactSoundType impactSoundType = null;
     private int stunDuration = 0;
+    private @Nullable Impact impact = null;
     private @Nullable AttackEffect[] effects = null;
 
     public DamageTypeSource(String id) {
@@ -131,6 +132,11 @@ public class DamageTypeSource extends DamageSource {
         else return getAttack().getStunDuration();
     }
 
+    public Impact getImpact() {
+        if(impact != null) return impact;
+        else return getAttack().getImpact(null);
+    }
+
     @Override
     public Entity getEntity() {
         return entity;
@@ -184,6 +190,11 @@ public class DamageTypeSource extends DamageSource {
 
     public DamageTypeSource setStun(int stunDuration) {
         this.stunDuration = stunDuration;
+        return this;
+    }
+
+    public DamageTypeSource setImpact(Impact impact) {
+        this.impact = impact;
         return this;
     }
 

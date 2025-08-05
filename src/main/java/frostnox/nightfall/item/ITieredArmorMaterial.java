@@ -15,8 +15,6 @@ public interface ITieredArmorMaterial {
 
     float getDefense(EquipmentSlot slot, DamageType[] types, boolean asAverage);
 
-    float getAbsorption(EquipmentSlot slot, DamageType[] types, boolean asAverage);
-
     float getFinalDamage(EquipmentSlot slot, DamageType[] types, int currentDurability, float damage, boolean asAverage);
 
     int getTier();

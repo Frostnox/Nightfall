@@ -74,7 +74,7 @@ public class RabbitEntity extends AnimalEntity implements IOrientedHitBoxes, IHo
                 .add(Attributes.ATTACK_SPEED, 4)
                 .add(Attributes.FOLLOW_RANGE, 20)
                 .add(AttributesNF.HEARING_RANGE.get(), 30)
-                .add(AttributesNF.FROST_ABSORPTION.get(), 0.2);
+                .add(AttributesNF.FROST_DEFENSE.get(), 0.2);
     }
 
     public Type getRabbitType() {

@@ -64,34 +64,27 @@ public class PlayerStatsComponent extends ScreenGuiComponent {
         RenderUtil.drawCenteredFont(poseStack, mc.font, RenderUtil.RESISTANCES_TEXT.plainCopy().withStyle(ChatFormatting.UNDERLINE), x + 112/2, y, 0x000000, false);
         y += 1;
         EnumMap<DamageType, Double> armorDefenses = new EnumMap<>(DamageType.class);
-        EnumMap<DamageType, Double> armorAbsorptions = new EnumMap<>(DamageType.class);
         EnumMap<DamageType, Double> baseDefenses = new EnumMap<>(DamageType.class);
-        EnumMap<DamageType, Double> baseAbsorptions = new EnumMap<>(DamageType.class);
         for(DamageType type : DamageType.STANDARD_TYPES) {
             armorDefenses.put(type, 0D);
-            armorAbsorptions.put(type, 0D);
-            baseDefenses.put(type, player.getAttribute(AttributesNF.getDefense(type)).getValue());
-            baseAbsorptions.put(type, player.getAttribute(AttributesNF.getAbsorption(type)).getValue() * 100);
+            baseDefenses.put(type, player.getAttribute(AttributesNF.getDefense(type)).getValue() * 100);
         }
         for(int i = 0; i < player.getInventory().armor.size(); i++) {
             ItemStack stack = player.getInventory().armor.get(i);
             if(stack.getItem() instanceof TieredArmorItem armor) {
                 float durabilityPenalty = CombatUtil.getArmorDefenseDurabilityPenalty(stack.getMaxDamage() - stack.getDamageValue(), stack.getMaxDamage());
                 for(DamageType type : DamageType.STANDARD_TYPES) {
-                    armorDefenses.put(type, armorDefenses.get(type) + armor.material.getDefense(armor.slot, type.asArray(), true) * durabilityPenalty);
-                    armorAbsorptions.put(type, armorAbsorptions.get(type) + armor.material.getAbsorption(armor.slot, type.asArray(), true) * 100);
+                    armorDefenses.put(type, armorDefenses.get(type) + armor.material.getDefense(armor.slot, type.asArray(), true) * 100 * durabilityPenalty);
                 }
             }
         }
         //TODO: Accessories
         DecimalFormat format = new DecimalFormat("0.0");
-        DecimalFormat formatShort = new DecimalFormat("0");
         for(DamageType type : DamageType.STANDARD_TYPES) {
             y += 10;
             mc.font.draw(poseStack, RenderUtil.getDamageTypeText(type).getString(), x + 10 + margin, y, 0x000000);
             RenderUtil.drawRightText(poseStack, mc.font,
-                    formatShort.format(armorDefenses.get(type) + baseDefenses.get(type)) + "/" +
-                            formatShort.format((armorAbsorptions.get(type) + baseAbsorptions.get(type))) + "%",
+                    format.format((armorDefenses.get(type) + baseDefenses.get(type))) + "%",
                     x + 112 - margin, y, 0x000000, false, LightTexture.FULL_BRIGHT);
         }
         //Tooltips
@@ -127,16 +120,13 @@ public class PlayerStatsComponent extends ScreenGuiComponent {
                         }
                     }
                     else if(i == 6) {
-                        components.add(new TranslatableComponent("screen.defenses.info_0"));
-                        components.add(new TranslatableComponent("screen.defenses.info_1"));
-                        components.add(new TranslatableComponent("screen.defenses.info_2"));
                     }
                     else {
                         DamageType type = DamageType.values()[i - 7];
-                        components.add(RenderUtil.EFFECT_DEFENSE_TEXT.plainCopy().append(format.format(baseDefenses.get(type)) + "/" +
-                                format.format(baseAbsorptions.get(type)) + "%"));
-                        components.add(RenderUtil.ARMOR_DEFENSE_TEXT.plainCopy().append(format.format(armorDefenses.get(type)) + "/" +
-                                format.format(armorAbsorptions.get(type)) + "%"));
+                        components.add(RenderUtil.EFFECT_DEFENSE_TEXT.plainCopy().append(
+                                format.format(baseDefenses.get(type)) + "%"));
+                        components.add(RenderUtil.ARMOR_DEFENSE_TEXT.plainCopy().append(
+                                format.format(armorDefenses.get(type)) + "%"));
                     }
                     screen.renderTooltip(poseStack, components, Optional.empty(), mouseX, mouseY);
                     break;

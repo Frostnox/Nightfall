@@ -100,12 +100,9 @@ public abstract class GuardAction extends PlayerAction {
             }
             Vec3 attackVec = source.hasHitCoords() ? new Vec3(source.getHitCoords().x + attacker.getX(), source.getHitCoords().y + attacker.getY(), source.getHitCoords().z + attacker.getZ()) : attacker.getEyePosition();
             float hitAngle = CombatUtil.getRelativeHorizontalAngle(user.getEyePosition(), attackVec, user.getYHeadRot());
-            float defense = 0, absorption = 0;
+            float defense = 0;
             InteractionHand hand = user instanceof Player player ? PlayerData.get(player).getActiveHand() : InteractionHand.MAIN_HAND;
-            if(user.getItemInHand(hand).getItem() instanceof IGuardingItem item) {
-                defense = item.getDefense(source);
-                absorption = item.getAbsorption(source);
-            }
+            if(user.getItemInHand(hand).getItem() instanceof IGuardingItem item) defense = item.getDefense(source);
             boolean blocked = false;
             if(hitAngle >= -getGuardAngle() && hitAngle <= getGuardAngle()) blocked = true;
             else if(source.hasHitCoords()) {
@@ -114,7 +111,7 @@ public abstract class GuardAction extends PlayerAction {
                 if(Math.abs(entityAngle - hitAngle) >= 180) blocked = true;
             }
             if(blocked) {
-                newDamage = CombatUtil.applyDamageReduction(damage, defense, absorption);
+                newDamage = CombatUtil.applyDamageReduction(damage, defense);
                 if(!user.level.isClientSide && playSound) {
                     user.level.playSound(null, user, this.getSound().get(), user.getSoundSource(), 1, (newDamage != 0 ? 0.8F : 1) + user.level.random.nextFloat(-0.02F, 0.02F));
                 }
@@ -160,9 +157,8 @@ public abstract class GuardAction extends PlayerAction {
         if(ClientEngine.get().isShiftHeld() && stack.getItem() instanceof IGuardingItem item) {
             for(DamageType type : DamageType.STANDARD_TYPES) {
                 float defense = item.getDefense(new DamageTypeSource(type.toString(), type));
-                float absorption = item.getAbsorption(new DamageTypeSource(type.toString(), type));
                 tooltips.add(new TextComponent(" ").withStyle(ChatFormatting.BLUE).append(new TranslatableComponent("action.guard.block",
-                        format.format(defense) + "/" + format.format(absorption * 100) + "%", RenderUtil.getDamageTypeText(type))));
+                        format.format(defense * 100) + "%", RenderUtil.getDamageTypeText(type))));
             }
         }
         return tooltips;

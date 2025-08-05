@@ -2,6 +2,7 @@ package frostnox.nightfall.entity.entity.monster;
 
 import com.mojang.math.Vector3d;
 import com.mojang.math.Vector3f;
+import frostnox.nightfall.action.Poise;
 import frostnox.nightfall.block.IFoodBlock;
 import frostnox.nightfall.capability.ChunkData;
 import frostnox.nightfall.data.TagsNF;
@@ -76,10 +77,10 @@ public class CockatriceEntity extends HungryMonsterEntity implements IOrientedHi
                 .add(Attributes.ATTACK_SPEED, 4)
                 .add(Attributes.FOLLOW_RANGE, 30)
                 .add(AttributesNF.HEARING_RANGE.get(), 15)
-                .add(AttributesNF.SLASHING_DEFENSE.get(), 5)
-                .add(AttributesNF.SLASHING_ABSORPTION.get(), 0.2)
-                .add(AttributesNF.PIERCING_ABSORPTION.get(), 0.2)
-                .add(AttributesNF.FIRE_ABSORPTION.get(), 0.3);
+                .add(AttributesNF.SLASHING_DEFENSE.get(), 0.35)
+                .add(AttributesNF.PIERCING_DEFENSE.get(), 0.2)
+                .add(AttributesNF.FIRE_DEFENSE.get(), 0.3)
+                .add(AttributesNF.POISE.get(), Poise.LOW.ordinal());
     }
 
     public static EnumMap<EntityPart, AnimationData> getHeadAnimMap() {

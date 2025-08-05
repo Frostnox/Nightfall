@@ -7,8 +7,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.RegistryObject;
 
 public class DyedShieldItem extends ShieldItemNF implements DyeableLeatherItem {
-    public DyedShieldItem(float[] defense, float[] absorption, RegistryObject<? extends Action> useAction, Properties properties) {
-        super(defense, absorption, useAction, properties);
+    public DyedShieldItem(float[] defense, RegistryObject<? extends Action> useAction, Properties properties) {
+        super(defense, useAction, properties);
     }
 
     @Override

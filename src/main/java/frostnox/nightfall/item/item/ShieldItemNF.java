@@ -13,12 +13,11 @@ import net.minecraftforge.registries.RegistryObject;
 import java.util.List;
 
 public class ShieldItemNF extends ActionableItem implements IGuardingItem {
-    public final List<Float> defense, absorption;
+    public final List<Float> defense;
 
-    public ShieldItemNF(float[] defense, float[] absorption, RegistryObject<? extends Action> useAction, Properties properties) {
+    public ShieldItemNF(float[] defense, RegistryObject<? extends Action> useAction, Properties properties) {
         super(useAction, properties);
         this.defense = FloatImmutableList.of(defense);
-        this.absorption = FloatImmutableList.of(absorption);
     }
 
     @Override
@@ -31,15 +30,6 @@ public class ShieldItemNF extends ActionableItem implements IGuardingItem {
         float total = 0;
         for(DamageType type : source.types) {
             if(type.isDefensible()) total += defense.get(type.ordinal());
-        }
-        return total / source.types.length;
-    }
-
-    @Override
-    public float getAbsorption(DamageTypeSource source) {
-        float total = 0;
-        for(DamageType type : source.types) {
-            if(type.isDefensible()) total += absorption.get(type.ordinal());
         }
         return total / source.types.length;
     }

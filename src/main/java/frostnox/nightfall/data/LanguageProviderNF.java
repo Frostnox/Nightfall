@@ -179,7 +179,7 @@ public class LanguageProviderNF extends LanguageProvider {
         add("item.pair", "Pairs with ");
         add("item.durability_penalty", "%s%% Durability Penalty");
         add("item.armor.style.survivor", "+10% Durability");
-        add("item.armor.negation", "Negation");
+        add("item.armor.defense", "Defense");
         add("action.guard.block", "Blocks %1$s %2$s");
         add("action.guard.riposte_1", "Perform basic after successful");
         add("action.guard.riposte_2", "block to trigger riposte");
@@ -282,9 +282,6 @@ public class LanguageProviderNF extends LanguageProvider {
         }
         addComponent(RenderUtil.ATTRIBUTES_TEXT, "Attributes");
         addComponent(RenderUtil.RESISTANCES_TEXT, "Resistances");
-        add("screen.defenses.info_0", "Resistances are displayed as 'Defense/Absorption'");
-        add("screen.defenses.info_1", "Defense reduces damage directly");
-        add("screen.defenses.info_2", "Absorption reduces damage by percentage");
         addComponent(RenderUtil.EFFECT_DEFENSE_TEXT, "Effects: ");
         addComponent(RenderUtil.ARMOR_DEFENSE_TEXT, "Armor average: ");
         addComponent(RenderUtil.FREE_POINTS_TEXT, "Free points: ");

@@ -15,16 +15,12 @@ import javax.annotation.Nullable;
 import java.util.Locale;
 import java.util.function.Supplier;
 
-/**
- * Tiered materials for armor. Armor has a flat defense value plus an absorption scalar for
- * each physical and elemental type. Tiers are primarily used by anvils.
- */
 public enum TieredArmorMaterial implements ITieredArmorMaterial {
-    LEATHER(0, null, null, 8, Weight.LIGHT, false, new float[]{8F, 8F, 6F, 4F, 6F, 4F}, new float[]{0.02F, 0.02F, 0F, 0F, 0.02F, 0.02F},
+    LEATHER(0, null, null, 8, Weight.LIGHT, false, new float[]{0.02F, 0.02F, 0F, 0F, 0.02F, 0.02F},
             10, SoundsNF.LIGHT_ARMOR_EQUIP, 0.1F, RenderUtil.COLOR_LEATHER),
-    PADDED(0, null, null, 8, Weight.LIGHT, false, new float[]{10F, 6F, 4F, 2F, 4F, 2F}, new float[]{0.05F, 0.0F, 0.0F, 0F, 0F, 0F},
+    PADDED(0, null, null, 8, Weight.LIGHT, false, new float[]{0.05F, 0.0F, 0.0F, 0F, 0F, 0F},
             10, SoundsNF.LIGHT_ARMOR_EQUIP, 0.1F, RenderUtil.COLOR_LINEN),
-    RAGGED(0, null, Style.UNDEAD, 8, Weight.LIGHT, false, new float[]{6F, 3F, 3F, 3F, 3F, 3F}, new float[]{0F, 0F, 0F, 0F, 0F, 0F},
+    RAGGED(0, null, Style.UNDEAD, 8, Weight.LIGHT, false, new float[]{0F, 0F, 0F, 0F, 0F, 0F},
             10, SoundsNF.LIGHT_ARMOR_EQUIP, 0F, RenderUtil.COLOR_UNDEAD_CLOTH),
     RUSTED(Metal.METEORITE, ArmorType.PLATE, Style.UNDEAD, 11, Weight.HEAVY,
             SoundsNF.PLATE_ARMOR_EQUIP, 0.25F, RenderUtil.COLOR_UNDEAD_CLOTH),
@@ -126,7 +122,6 @@ public enum TieredArmorMaterial implements ITieredArmorMaterial {
     private @Nullable final IStyle style;
     private final Weight weight;
     private final float[] defense; //striking, slashing, piercing, fire, frost, electric
-    private final float[] absorption; //striking, slashing, piercing, fire, frost, electric
     private final String name, armorName;
     private final int maxDamageFactor;
     private final int enchantability;
@@ -135,7 +130,7 @@ public enum TieredArmorMaterial implements ITieredArmorMaterial {
     private final int defaultColor;
     private final boolean isMetal;
 
-    TieredArmorMaterial(int tier, @Nullable ArmorType armorType, @Nullable IStyle style, int maxDamageFactor, Weight weight, boolean isMetal, float[] defense, float[] absorption, int enchantability, Supplier<SoundEvent> soundEvent, float knockbackResistance, int defaultColor) {
+    TieredArmorMaterial(int tier, @Nullable ArmorType armorType, @Nullable IStyle style, int maxDamageFactor, Weight weight, boolean isMetal, float[] defense, int enchantability, Supplier<SoundEvent> soundEvent, float knockbackResistance, int defaultColor) {
         this.tier = tier;
         this.armorType = armorType;
         this.style = style;
@@ -144,7 +139,6 @@ public enum TieredArmorMaterial implements ITieredArmorMaterial {
         this.armorName = name;
         this.maxDamageFactor = maxDamageFactor;
         this.defense = defense;
-        this.absorption = absorption;
         this.enchantability = enchantability;
         this.soundEvent = soundEvent;
         this.knockbackResistance = knockbackResistance;
@@ -161,10 +155,8 @@ public enum TieredArmorMaterial implements ITieredArmorMaterial {
         this.armorName = name.replace(metal.getName() + "_", "");
         this.maxDamageFactor = maxDamageFactor;
         this.defense = new float[6];
-        this.absorption = new float[6];
         for(int i = 0; i < 6; i++) {
-            this.defense[i] = metal.getBaseDefenses().get(i) * armorType.defenseAbsorptionMul.get(i);
-            this.absorption[i] = metal.getBaseAbsorptions().get(i) * armorType.defenseAbsorptionMul.get(i);
+            this.defense[i] = metal.getBaseDefenses().get(i) * armorType.defenseMul.get(i);
         }
         this.enchantability = 0; //TODO:?
         this.soundEvent = soundEvent;
@@ -197,17 +189,8 @@ public enum TieredArmorMaterial implements ITieredArmorMaterial {
     }
 
     @Override
-    public float getAbsorption(EquipmentSlot slot, DamageType[] types, boolean asAverage) {
-        float total = 0;
-        for(DamageType type : types) {
-            if(type.isDefensible()) total += absorption[type.ordinal()] * (asAverage ? ITieredArmorMaterial.getSlotModifier(slot) : 1);
-        }
-        return total / types.length;
-    }
-
-    @Override
     public float getFinalDamage(EquipmentSlot slot, DamageType[] types, int currentDurability, float damage, boolean asAverage) {
-        return CombatUtil.applyArmorDamageReduction(damage, currentDurability, getDurability(slot), getDefense(slot, types, asAverage), getAbsorption(slot, types, asAverage));
+        return CombatUtil.applyArmorDamageReduction(damage, currentDurability, getDurability(slot), getDefense(slot, types, asAverage));
     }
 
     @Override

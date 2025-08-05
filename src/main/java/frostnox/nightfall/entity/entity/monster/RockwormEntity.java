@@ -3,6 +3,8 @@ package frostnox.nightfall.entity.entity.monster;
 import com.mojang.math.Vector3d;
 import com.mojang.math.Vector3f;
 import frostnox.nightfall.action.DamageTypeSource;
+import frostnox.nightfall.action.Impact;
+import frostnox.nightfall.action.Poise;
 import frostnox.nightfall.block.block.nest.GuardedNestBlockEntity;
 import frostnox.nightfall.capability.IActionTracker;
 import frostnox.nightfall.data.TagsNF;
@@ -49,12 +51,13 @@ public class RockwormEntity extends MonsterEntity implements IOrientedHitBoxes {
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.5D)
                 .add(Attributes.FOLLOW_RANGE, 30)
                 .add(AttributesNF.HEARING_RANGE.get(), 15)
-                .add(AttributesNF.STRIKING_ABSORPTION.get(), 0.25)
-                .add(AttributesNF.SLASHING_ABSORPTION.get(), 0.5)
-                .add(AttributesNF.PIERCING_ABSORPTION.get(), 0.5)
-                .add(AttributesNF.FIRE_ABSORPTION.get(), 0.25)
-                .add(AttributesNF.FROST_ABSORPTION.get(), 0.25)
-                .add(AttributesNF.ELECTRIC_ABSORPTION.get(), 0.25);
+                .add(AttributesNF.STRIKING_DEFENSE.get(), 0.25)
+                .add(AttributesNF.SLASHING_DEFENSE.get(), 0.5)
+                .add(AttributesNF.PIERCING_DEFENSE.get(), 0.5)
+                .add(AttributesNF.FIRE_DEFENSE.get(), 0.25)
+                .add(AttributesNF.FROST_DEFENSE.get(), 0.25)
+                .add(AttributesNF.ELECTRIC_DEFENSE.get(), 0.25)
+                .add(AttributesNF.POISE.get(), Poise.MEDIUM.ordinal());
     }
 
     public static EnumMap<EntityPart, AnimationData> getHeadAnimMap() {
@@ -217,6 +220,11 @@ public class RockwormEntity extends MonsterEntity implements IOrientedHitBoxes {
     protected float modifyIncomingDamageBySlot(EquipmentSlot slot, float damage) {
         if(slot == EquipmentSlot.HEAD) return damage * 1.5F;
         else return damage;
+    }
+
+    @Override
+    public Impact modifyIncomingImpact(DamageTypeSource source, Impact impact) {
+        return getHitSlot(source.getHitCoords(), source.getHitBoxIndex()) == EquipmentSlot.HEAD ? impact.increase() : impact;
     }
 
     @Override

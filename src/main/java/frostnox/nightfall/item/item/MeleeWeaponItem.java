@@ -21,7 +21,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.*;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -402,10 +401,5 @@ public class MeleeWeaponItem extends ItemNF implements IWeaponItem {
             if(type.isDefensible()) total += defense.get(type.ordinal());
         }
         return total / source.types.length;
-    }
-
-    @Override
-    public float getAbsorption(DamageTypeSource source) {
-        return 0;
     }
 }

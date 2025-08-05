@@ -73,7 +73,7 @@ public class DeerEntity extends AnimalEntity implements IOrientedHitBoxes {
                 .add(Attributes.ATTACK_SPEED, 4)
                 .add(Attributes.FOLLOW_RANGE, 30)
                 .add(AttributesNF.HEARING_RANGE.get(), 24)
-                .add(AttributesNF.FROST_ABSORPTION.get(), 0.2);
+                .add(AttributesNF.FROST_DEFENSE.get(), 0.2);
     }
 
     public Type getDeerType() {

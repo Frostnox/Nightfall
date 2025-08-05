@@ -72,8 +72,8 @@ public class JellyfishEntity extends AquaticAmbientEntity {
                 .add(Attributes.ATTACK_SPEED, 4)
                 .add(Attributes.FOLLOW_RANGE, 0)
                 .add(AttributesNF.HEARING_RANGE.get(), 0)
-                .add(AttributesNF.FIRE_ABSORPTION.get(), 0.5)
-                .add(AttributesNF.ELECTRIC_ABSORPTION.get(), -0.5);
+                .add(AttributesNF.FIRE_DEFENSE.get(), 0.5)
+                .add(AttributesNF.ELECTRIC_DEFENSE.get(), -0.5);
     }
 
     public Type getJellyfishType() {

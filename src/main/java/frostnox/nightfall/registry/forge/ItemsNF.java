@@ -571,11 +571,10 @@ public class ItemsNF {
             ActionsNF.BANDAGE_USE, new Item.Properties().tab(CONSUMABLES_TAB).stacksTo(16)));
     public static final RegistryObject<ActionableItem> MEDICINAL_BANDAGE = ITEMS.register("medicinal_bandage", () -> new ActionableItem(
             ActionsNF.MEDICINAL_BANDAGE_USE, new Item.Properties().tab(CONSUMABLES_TAB).stacksTo(16)));
-    private static final float[] SHIELD_DEFENSE = new float[]{16F, 16F, 16F, 2F, 4F, 4F};
-    private static final float[] SHIELD_ABSORPTION = new float[]{0.05F, 0.05F, 0.05F, 0F, 0F, 0F};
-    public static final RegistryObject<ShieldItemNF> IRONWOOD_SHIELD = ITEMS.register("ironwood_shield", () -> new ShieldItemNF(SHIELD_DEFENSE, SHIELD_ABSORPTION,
+    private static final float[] SHIELD_DEFENSES = new float[]{0.05F, 0.05F, 0.05F, 0F, 0F, 0F};
+    public static final RegistryObject<ShieldItemNF> IRONWOOD_SHIELD = ITEMS.register("ironwood_shield", () -> new ShieldItemNF(SHIELD_DEFENSES,
             ActionsNF.SHIELD_GUARD, new Item.Properties().durability((int) (Tree.IRONWOOD.getHardness() * 150)).tab(ARMAMENTS_TAB)));
-    public static final RegistryObject<DyedShieldItem> IRONWOOD_SHIELD_DYED = ITEMS.register("ironwood_shield_dyed", () -> new DyedShieldItem(SHIELD_DEFENSE, SHIELD_ABSORPTION,
+    public static final RegistryObject<DyedShieldItem> IRONWOOD_SHIELD_DYED = ITEMS.register("ironwood_shield_dyed", () -> new DyedShieldItem(SHIELD_DEFENSES,
             ActionsNF.SHIELD_GUARD, new Item.Properties().durability((int) (Tree.IRONWOOD.getHardness() * 150))));
     public static final RegistryObject<WardingCharmItem> WARDING_CHARM = ITEMS.register("warding_charm", () -> new WardingCharmItem(utility().stacksTo(1)));
     //Metallurgy
@@ -599,24 +598,17 @@ public class ItemsNF {
                     register(material.getName() + "_arrowhead"));
 
     private static float[] getShieldDefenses(Metal metal) {
-        float[] defenses = new float[] {5, 5, 5, 0, 0, 0};
+        float[] defenses = SHIELD_DEFENSES.clone();
         for(int i = 0; i < defenses.length; i++) {
-            defenses[i] += metal.getBaseDefenses().get(i);
+            defenses[i] += metal.getBaseDefenses().get(i) / 2F;
         }
         return defenses;
     }
-    private static float[] getShieldAbsorptions(Metal metal) {
-        float[] absorptions = SHIELD_ABSORPTION.clone();
-        for(int i = 0; i < absorptions.length; i++) {
-            absorptions[i] += metal.getBaseAbsorptions().get(i) / 2F;
-        }
-        return absorptions;
-    }
     public static final Map<Metal, RegistryObject<ShieldItemNF>> METAL_SHIELDS = DataUtil.mapEnum(Metal.class, metal -> metal.getCategory() == IMetal.Category.NOBLE, metal ->
-            register(metal.getName() + "_shield", () -> new ShieldItemNF(getShieldDefenses(metal), getShieldAbsorptions(metal),
+            register(metal.getName() + "_shield", () -> new ShieldItemNF(getShieldDefenses(metal),
                     ActionsNF.SHIELD_GUARD, new Item.Properties().durability((int) (metal.getStrength() * 70)).tab(ARMAMENTS_TAB))));
     public static final Map<Metal, RegistryObject<DyedShieldItem>> METAL_SHIELDS_DYED = DataUtil.mapEnum(Metal.class, metal -> metal.getCategory() == IMetal.Category.NOBLE, metal ->
-            register(metal.getName() + "_shield_dyed", () -> new DyedShieldItem(getShieldDefenses(metal), getShieldAbsorptions(metal),
+            register(metal.getName() + "_shield_dyed", () -> new DyedShieldItem(getShieldDefenses(metal),
                     ActionsNF.SHIELD_GUARD, new Item.Properties().durability((int) (metal.getStrength() * 70)))));
     public static final Map<TieredItemMaterial, RegistryObject<ProjectileItem>> METAL_ARROWS = DataUtil.mapEnum(TieredItemMaterial.class,
             (material) -> material.getMetal() == null || material.getMetal().getCategory() == IMetal.Category.NOBLE, (material) -> register(

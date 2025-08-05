@@ -381,19 +381,13 @@ public class Nightfall {
         event.add(EntityType.PLAYER, AttributesNF.STRENGTH.get());
         event.add(EntityType.PLAYER, AttributesNF.PERCEPTION.get());
         event.add(EntityType.PLAYER, AttributesNF.STRIKING_DEFENSE.get());
-        event.add(EntityType.PLAYER, AttributesNF.STRIKING_ABSORPTION.get());
         event.add(EntityType.PLAYER, AttributesNF.SLASHING_DEFENSE.get());
-        event.add(EntityType.PLAYER, AttributesNF.SLASHING_ABSORPTION.get());
         event.add(EntityType.PLAYER, AttributesNF.PIERCING_DEFENSE.get());
-        event.add(EntityType.PLAYER, AttributesNF.PIERCING_ABSORPTION.get());
         event.add(EntityType.PLAYER, AttributesNF.FIRE_DEFENSE.get());
-        event.add(EntityType.PLAYER, AttributesNF.FIRE_ABSORPTION.get());
         event.add(EntityType.PLAYER, AttributesNF.FROST_DEFENSE.get());
-        event.add(EntityType.PLAYER, AttributesNF.FROST_ABSORPTION.get());
         event.add(EntityType.PLAYER, AttributesNF.ELECTRIC_DEFENSE.get());
-        event.add(EntityType.PLAYER, AttributesNF.ELECTRIC_ABSORPTION.get());
         event.add(EntityType.PLAYER, AttributesNF.WITHER_DEFENSE.get());
-        event.add(EntityType.PLAYER, AttributesNF.WITHER_ABSORPTION.get());
+        event.add(EntityType.PLAYER, AttributesNF.POISE.get());
         event.add(EntityType.PLAYER, AttributesNF.BLEEDING_RESISTANCE.get());
         event.add(EntityType.PLAYER, AttributesNF.POISON_RESISTANCE.get());
     }

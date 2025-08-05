@@ -145,8 +145,8 @@ public class CombatUtil {
                 !e.hasPassenger(user))).collect(Collectors.toCollection(ArrayList::new));
     }
 
-    public static float applyDamageReduction(float damage, float defense, float absorption) {
-        return Math.max(0, (damage - defense) * (1F - absorption));
+    public static float applyDamageReduction(float damage, float defense) {
+        return Math.max(0, damage - defense * (1F - defense));
     }
 
     public static float getArmorDefenseDurabilityPenalty(float durability, float maxDurability) {
@@ -154,8 +154,8 @@ public class CombatUtil {
         return durability > halfDurability ? 1 : (1F - (0.5F - (durability / halfDurability * 0.5F)));
     }
 
-    public static float applyArmorDamageReduction(float damage, float durability, float maxDurability, float defense, float absorption) {
-        return Math.max(0, (damage - defense * getArmorDefenseDurabilityPenalty(durability, maxDurability)) * (1F - absorption));
+    public static float applyArmorDamageReduction(float damage, float durability, float maxDurability, float defense) {
+        return Math.max(0, damage * (1F - defense) * getArmorDefenseDurabilityPenalty(durability, maxDurability));
     }
 
     //TODO: Implement this
@@ -166,42 +166,20 @@ public class CombatUtil {
     public static float applyAttributeDamageCalculations(LivingEntity hitEntity, DamageTypeSource source, float damage) {
         if(!source.isDoT()) {
             if(hitEntity.getAttribute(AttributesNF.STRIKING_DEFENSE.get()) != null) {
-                float defense = 0F, absorption = 0F;
+                float defense = 0F;
                 for(DamageType type : source.types) {
                     switch(type) {
-                        case STRIKING -> {
-                            defense += (float) hitEntity.getAttribute(AttributesNF.STRIKING_DEFENSE.get()).getValue();
-                            absorption += (float) hitEntity.getAttribute(AttributesNF.STRIKING_ABSORPTION.get()).getValue();
-                        }
-                        case SLASHING -> {
-                            defense += (float) hitEntity.getAttribute(AttributesNF.SLASHING_DEFENSE.get()).getValue();
-                            absorption += (float) hitEntity.getAttribute(AttributesNF.SLASHING_ABSORPTION.get()).getValue();
-                        }
-                        case PIERCING -> {
-                            defense += (float) hitEntity.getAttribute(AttributesNF.PIERCING_DEFENSE.get()).getValue();
-                            absorption += (float) hitEntity.getAttribute(AttributesNF.PIERCING_ABSORPTION.get()).getValue();
-                        }
-                        case FIRE -> {
-                            defense += (float) hitEntity.getAttribute(AttributesNF.FIRE_DEFENSE.get()).getValue();
-                            absorption += (float) hitEntity.getAttribute(AttributesNF.FIRE_ABSORPTION.get()).getValue();
-                        }
-                        case FROST -> {
-                            defense += (float) hitEntity.getAttribute(AttributesNF.FROST_DEFENSE.get()).getValue();
-                            absorption += (float) hitEntity.getAttribute(AttributesNF.FROST_ABSORPTION.get()).getValue();
-                        }
-                        case ELECTRIC -> {
-                            defense += (float) hitEntity.getAttribute(AttributesNF.ELECTRIC_DEFENSE.get()).getValue();
-                            absorption += (float) hitEntity.getAttribute(AttributesNF.ELECTRIC_ABSORPTION.get()).getValue();
-                        }
-                        case WITHER -> {
-                            defense += (float) hitEntity.getAttribute(AttributesNF.WITHER_DEFENSE.get()).getValue();
-                            absorption += (float) hitEntity.getAttribute(AttributesNF.WITHER_ABSORPTION.get()).getValue();
-                        }
+                        case STRIKING -> defense += (float) hitEntity.getAttribute(AttributesNF.STRIKING_DEFENSE.get()).getValue();
+                        case SLASHING -> defense += (float) hitEntity.getAttribute(AttributesNF.SLASHING_DEFENSE.get()).getValue();
+                        case PIERCING -> defense += (float) hitEntity.getAttribute(AttributesNF.PIERCING_DEFENSE.get()).getValue();
+                        case FIRE -> defense += (float) hitEntity.getAttribute(AttributesNF.FIRE_DEFENSE.get()).getValue();
+                        case FROST -> defense += (float) hitEntity.getAttribute(AttributesNF.FROST_DEFENSE.get()).getValue();
+                        case ELECTRIC -> defense += (float) hitEntity.getAttribute(AttributesNF.ELECTRIC_DEFENSE.get()).getValue();
+                        case WITHER -> defense += (float) hitEntity.getAttribute(AttributesNF.WITHER_DEFENSE.get()).getValue();
                     }
                 }
                 defense /= source.types.length;
-                absorption /= source.types.length;
-                return applyDamageReduction(damage, defense, absorption);
+                return applyDamageReduction(damage, defense);
             }
         }
         return damage;

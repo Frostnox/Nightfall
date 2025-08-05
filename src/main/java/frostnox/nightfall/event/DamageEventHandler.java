@@ -1,9 +1,6 @@
 package frostnox.nightfall.event;
 
-import frostnox.nightfall.action.Attack;
-import frostnox.nightfall.action.AttackEffect;
-import frostnox.nightfall.action.DamageType;
-import frostnox.nightfall.action.DamageTypeSource;
+import frostnox.nightfall.action.*;
 import frostnox.nightfall.capability.ActionTracker;
 import frostnox.nightfall.capability.IActionTracker;
 import frostnox.nightfall.capability.PlayerData;
@@ -15,6 +12,7 @@ import frostnox.nightfall.network.NetworkHandler;
 import frostnox.nightfall.network.message.entity.HitParticlesToClient;
 
 import frostnox.nightfall.network.message.entity.HitTargetToServer;
+import frostnox.nightfall.registry.forge.AttributesNF;
 import frostnox.nightfall.registry.forge.EffectsNF;
 import frostnox.nightfall.util.CombatUtil;
 import frostnox.nightfall.util.data.Vec2f;
@@ -191,9 +189,15 @@ public class DamageEventHandler {
         }
         int stunDuration = source.getStunDuration();
         if(damageAmount > 0) {
-            if(stunDuration > 0 && reducedDamage > 0.5F && (entity instanceof ActionableEntity || entity instanceof Player)) {
+            if(stunDuration > 0 && (entity instanceof ActionableEntity || entity instanceof Player)) {
                 IActionTracker capA = ActionTracker.get(entity);
-                if(!capA.isStunned()) capA.stunServer(Math.round(stunDuration * chargedModifier), false);
+                if(!capA.isStunned()) {
+                    Impact impact = source.getAttack().getImpact(ActionTracker.isPresent(source.getOwner()) ? ActionTracker.get(source.getOwner()) : null);
+                    if(entity instanceof ActionableEntity actionable) impact = actionable.modifyIncomingImpact(source, impact);
+                    if(!impact.negatedBy(AttributesNF.getPoise(entity))) {
+                        capA.stunServer(Math.round(stunDuration * chargedModifier), false);
+                    }
+                }
             }
             if(healthDamage != 0) {
                 float health = entity.getHealth();

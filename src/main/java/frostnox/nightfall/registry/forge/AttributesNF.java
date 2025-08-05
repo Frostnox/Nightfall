@@ -2,6 +2,8 @@ package frostnox.nightfall.registry.forge;
 
 import frostnox.nightfall.Nightfall;
 import frostnox.nightfall.action.DamageType;
+import frostnox.nightfall.action.Impact;
+import frostnox.nightfall.action.Poise;
 import frostnox.nightfall.entity.PlayerAttribute;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.*;
@@ -31,33 +33,21 @@ public class AttributesNF {
     public static final RegistryObject<Attribute> PERCEPTION = ATTRIBUTES.register("perception",
             () -> new RangedAttribute("attribute.name." + Nightfall.MODID +".perception", 10.0D, 1.0D, 20.0D).setSyncable(true));
     public static final RegistryObject<Attribute> STRIKING_DEFENSE = ATTRIBUTES.register("striking_defense",
-            () -> new RangedAttribute("attribute.name." + Nightfall.MODID +".striking_defense", 0.0D, 0.0D, 100.0D).setSyncable(true));
+            () -> new RangedAttribute("attribute.name." + Nightfall.MODID +".striking_defense", 0.0D, -1.0D, 1.0D).setSyncable(true));
     public static final RegistryObject<Attribute> SLASHING_DEFENSE = ATTRIBUTES.register("slashing_defense",
-            () -> new RangedAttribute("attribute.name." + Nightfall.MODID +".slashing_defense", 0.0D, 0.0D, 100.0D).setSyncable(true));
+            () -> new RangedAttribute("attribute.name." + Nightfall.MODID +".slashing_defense", 0.0D, -1.0D, 1.0D).setSyncable(true));
     public static final RegistryObject<Attribute> PIERCING_DEFENSE = ATTRIBUTES.register("piercing_defense",
-            () -> new RangedAttribute("attribute.name." + Nightfall.MODID +".piercing_defense", 0.0D, 0.0D, 100.0D).setSyncable(true));
+            () -> new RangedAttribute("attribute.name." + Nightfall.MODID +".piercing_defense", 0.0D, -1.0D, 1.0D).setSyncable(true));
     public static final RegistryObject<Attribute> FIRE_DEFENSE = ATTRIBUTES.register("fire_defense",
-            () -> new RangedAttribute("attribute.name." + Nightfall.MODID +".fire_defense", 0.0D, 0.0D, 100.0D).setSyncable(true));
+            () -> new RangedAttribute("attribute.name." + Nightfall.MODID +".fire_defense", 0.0D, -1.0D, 1.0D).setSyncable(true));
     public static final RegistryObject<Attribute> FROST_DEFENSE = ATTRIBUTES.register("frost_defense",
-            () -> new RangedAttribute("attribute.name." + Nightfall.MODID +".frost_defense", 0.0D, 0.0D, 100.0D).setSyncable(true));
+            () -> new RangedAttribute("attribute.name." + Nightfall.MODID +".frost_defense", 0.0D, -1.0D, 1.0D).setSyncable(true));
     public static final RegistryObject<Attribute> ELECTRIC_DEFENSE = ATTRIBUTES.register("electric_defense",
-            () -> new RangedAttribute("attribute.name." + Nightfall.MODID +".electric_defense", 0.0D, 0.0D, 100.0D).setSyncable(true));
+            () -> new RangedAttribute("attribute.name." + Nightfall.MODID +".electric_defense", 0.0D, -1.0D, 1.0D).setSyncable(true));
     public static final RegistryObject<Attribute> WITHER_DEFENSE = ATTRIBUTES.register("wither_defense",
-            () -> new RangedAttribute("attribute.name." + Nightfall.MODID +".wither_defense", 0.0D, 0.0D, 100.0D));
-    public static final RegistryObject<Attribute> STRIKING_ABSORPTION = ATTRIBUTES.register("striking_absorption",
-            () -> new RangedAttribute("attribute.name." + Nightfall.MODID +".striking_absorption", 0.0D, -1.0D, 1.0D).setSyncable(true));
-    public static final RegistryObject<Attribute> SLASHING_ABSORPTION = ATTRIBUTES.register("slashing_absorption",
-            () -> new RangedAttribute("attribute.name." + Nightfall.MODID +".slashing_absorption", 0.0D, -1.0D, 1.0D).setSyncable(true));
-    public static final RegistryObject<Attribute> PIERCING_ABSORPTION = ATTRIBUTES.register("piercing_absorption",
-            () -> new RangedAttribute("attribute.name." + Nightfall.MODID +".piercing_absorption", 0.0D, -1.0D, 1.0D).setSyncable(true));
-    public static final RegistryObject<Attribute> FIRE_ABSORPTION = ATTRIBUTES.register("fire_absorption",
-            () -> new RangedAttribute("attribute.name." + Nightfall.MODID +".fire_absorption", 0.0D, -1.0D, 1.0D).setSyncable(true));
-    public static final RegistryObject<Attribute> FROST_ABSORPTION = ATTRIBUTES.register("frost_absorption",
-            () -> new RangedAttribute("attribute.name." + Nightfall.MODID +".frost_absorption", 0.0D, -1.0D, 1.0D).setSyncable(true));
-    public static final RegistryObject<Attribute> ELECTRIC_ABSORPTION = ATTRIBUTES.register("electric_absorption",
-            () -> new RangedAttribute("attribute.name." + Nightfall.MODID +".electric_absorption", 0.0D, -1.0D, 1.0D).setSyncable(true));
-    public static final RegistryObject<Attribute> WITHER_ABSORPTION = ATTRIBUTES.register("wither_absorption",
-            () -> new RangedAttribute("attribute.name." + Nightfall.MODID +".wither_absorption", 0.0D, -1.0D, 1.0D));
+            () -> new RangedAttribute("attribute.name." + Nightfall.MODID +".wither_defense", 0.0D, -1.0D, 1.0D));
+    public static final RegistryObject<Attribute> POISE = ATTRIBUTES.register("poise",
+            () -> new RangedAttribute("attribute.name." + Nightfall.MODID +".poise", 0.0D, 0D, Poise.values().length - 1).setSyncable(true));
     public static final RegistryObject<Attribute> BLEEDING_RESISTANCE = ATTRIBUTES.register("bleeding_resistance",
             () -> new RangedAttribute("attribute.name." + Nightfall.MODID +".bleeding_resistance", 0.0D, -1.0D, 1.0D).setSyncable(true));
     public static final RegistryObject<Attribute> POISON_RESISTANCE = ATTRIBUTES.register("poison_resistance",
@@ -121,19 +111,6 @@ public class AttributesNF {
         };
     }
 
-    public static @Nullable Attribute getAbsorption(DamageType type) {
-        return switch(type) {
-            case STRIKING -> STRIKING_ABSORPTION.get();
-            case SLASHING -> SLASHING_ABSORPTION.get();
-            case PIERCING -> PIERCING_ABSORPTION.get();
-            case FIRE -> FIRE_ABSORPTION.get();
-            case FROST -> FROST_ABSORPTION.get();
-            case ELECTRIC -> ELECTRIC_ABSORPTION.get();
-            case WITHER -> WITHER_ABSORPTION.get();
-            default -> null;
-        };
-    }
-
     public static double getMaxStamina(Player player) {
         return player.getAttribute(ENDURANCE.get()).getValue() * 10D;
     }
@@ -158,5 +135,17 @@ public class AttributesNF {
         AttributeInstance perception = entity.getAttribute(PERCEPTION.get());
         if(perception != null) return (int) (perception.getValue() - PERCEPTION.get().getDefaultValue());
         else return 0;
+    }
+
+    public static Poise getPoise(LivingEntity entity) {
+        AttributeInstance poise = entity.getAttribute(POISE.get());
+        if(poise == null) return Poise.NONE;
+        else {
+            double maxPoise = poise.getBaseValue();
+            for(AttributeModifier modifier : poise.getModifiers()) {
+                if(modifier.getAmount() > maxPoise) maxPoise = modifier.getAmount();
+            }
+            return Poise.values()[(int) maxPoise];
+        }
     }
 }

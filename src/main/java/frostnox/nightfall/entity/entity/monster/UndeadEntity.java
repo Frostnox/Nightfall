@@ -291,7 +291,7 @@ public abstract class UndeadEntity extends MonsterEntity {
 
     public static AttributeSupplier.Builder createAttributes() {
         return ActionableEntity.createAttributes().add(AttributesNF.WILLPOWER.get(), 15)
-                .add(AttributesNF.FROST_ABSORPTION.get(), 0.5);
+                .add(AttributesNF.FROST_DEFENSE.get(), 0.5);
     }
 
     protected void equipHumanoid(Random random, float headChance, float chestChance, float legsFeetChance, float metalChance, float extraChance) {

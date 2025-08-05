@@ -52,10 +52,10 @@ public class HuskEntity extends UndeadEntity {
                 .add(Attributes.ATTACK_SPEED, 1)
                 .add(Attributes.FOLLOW_RANGE, 30)
                 .add(AttributesNF.HEARING_RANGE.get(), 15)
-                .add(AttributesNF.STRIKING_ABSORPTION.get(), 0.1)
-                .add(AttributesNF.SLASHING_ABSORPTION.get(), 0.1)
-                .add(AttributesNF.PIERCING_ABSORPTION.get(), 0.1)
-                .add(AttributesNF.ELECTRIC_ABSORPTION.get(), 0.1);
+                .add(AttributesNF.STRIKING_DEFENSE.get(), 0.1)
+                .add(AttributesNF.SLASHING_DEFENSE.get(), 0.1)
+                .add(AttributesNF.PIERCING_DEFENSE.get(), 0.1)
+                .add(AttributesNF.ELECTRIC_DEFENSE.get(), 0.1);
     }
 
     public static EnumMap<EntityPart, AnimationData> getRightArmAnimMap() {

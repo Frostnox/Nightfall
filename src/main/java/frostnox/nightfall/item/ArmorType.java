@@ -9,9 +9,9 @@ public enum ArmorType {
     SCALE(FloatList.of(0.5F, 0.8F, 0.8F, 0.9F, 0.9F, 0.9F)),
     CHAINMAIL(FloatList.of(0.8F, 0.8F, 0.5F, 0.8F, 0.8F, 0.8F));
 
-    public final List<Float> defenseAbsorptionMul;
+    public final List<Float> defenseMul;
 
-    ArmorType(List<Float> defenseAbsorptionMul) {
-        this.defenseAbsorptionMul = defenseAbsorptionMul;
+    ArmorType(List<Float> defenseMul) {
+        this.defenseMul = defenseMul;
     }
 }

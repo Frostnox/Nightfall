@@ -2,6 +2,10 @@ package frostnox.nightfall.entity.entity.monster;
 
 import com.mojang.math.Vector3d;
 import com.mojang.math.Vector3f;
+import frostnox.nightfall.action.DamageType;
+import frostnox.nightfall.action.DamageTypeSource;
+import frostnox.nightfall.action.Impact;
+import frostnox.nightfall.action.Poise;
 import frostnox.nightfall.block.Tree;
 import frostnox.nightfall.data.TagsNF;
 import frostnox.nightfall.entity.EntityPart;
@@ -71,11 +75,10 @@ public class SkeletonEntity extends UndeadEntity {
                 .add(Attributes.ATTACK_SPEED, 1)
                 .add(Attributes.FOLLOW_RANGE, 30)
                 .add(AttributesNF.HEARING_RANGE.get(), 15)
-                .add(AttributesNF.PIERCING_DEFENSE.get(), 5)
-                .add(AttributesNF.PIERCING_ABSORPTION.get(), 0.5)
-                .add(AttributesNF.SLASHING_DEFENSE.get(), 5)
-                .add(AttributesNF.SLASHING_ABSORPTION.get(), 0.5)
-                .add(AttributesNF.STRIKING_ABSORPTION.get(), -0.25);
+                .add(AttributesNF.PIERCING_DEFENSE.get(), 0.7)
+                .add(AttributesNF.SLASHING_DEFENSE.get(), 0.7)
+                .add(AttributesNF.STRIKING_DEFENSE.get(), -0.25)
+                .add(AttributesNF.POISE.get(), Poise.MEDIUM.ordinal());
     }
 
     public static EnumMap<EntityPart, AnimationData> getRightArmAnimMap() {
@@ -175,6 +178,11 @@ public class SkeletonEntity extends UndeadEntity {
     public ResourceLocation pickActionEnemy(double distanceSqr, Entity target) {
         if(getItemBySlot(EquipmentSlot.MAINHAND).is(TagsNF.BOW)) return ActionsNF.SKELETON_SHOOT.getId();
         else return ActionsNF.SKELETON_THRUST.getId();
+    }
+
+    @Override
+    public Impact modifyIncomingImpact(DamageTypeSource source, Impact impact) {
+        return source.isType(DamageType.STRIKING) ? impact.increase() : impact;
     }
 
     @Override

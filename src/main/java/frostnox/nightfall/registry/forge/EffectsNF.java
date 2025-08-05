@@ -96,12 +96,12 @@ public class EffectsNF {
     public static final RegistryObject<MobEffect> MOON_BLESSING = EFFECTS.register("moon_blessing", () -> new DamageEffect(MobEffectCategory.BENEFICIAL)
             .addAttributeModifier(Attributes.MOVEMENT_SPEED, "07485be1-69a1-4313-9012-c54a7133957b", 0.1D, AttributeModifier.Operation.MULTIPLY_TOTAL)
             .addAttributeModifier(AttributesNF.STRENGTH.get(), "09d6a029-e15f-4731-99e8-d546f22977ed", 0.2D, AttributeModifier.Operation.MULTIPLY_TOTAL)
-            .addAttributeModifier(AttributesNF.STRIKING_ABSORPTION.get(), "eb96b12a-6a7e-4c33-a0a0-055e8c9380dc", 0.2D, AttributeModifier.Operation.ADDITION)
-            .addAttributeModifier(AttributesNF.SLASHING_ABSORPTION.get(), "3875dd84-b979-4752-a8e1-7cf350d1f97c", 0.2D, AttributeModifier.Operation.ADDITION)
-            .addAttributeModifier(AttributesNF.PIERCING_ABSORPTION.get(), "123d9b3a-2dfc-4faf-8d98-ec7a8e6bf655", 0.2D, AttributeModifier.Operation.ADDITION)
-            .addAttributeModifier(AttributesNF.FIRE_ABSORPTION.get(), "29130a79-b037-4bc7-8278-608e4918d707", 0.2D, AttributeModifier.Operation.ADDITION)
-            .addAttributeModifier(AttributesNF.FROST_ABSORPTION.get(), "5abe03c1-9448-48cf-aa59-10c617cbb504", 0.2D, AttributeModifier.Operation.ADDITION)
-            .addAttributeModifier(AttributesNF.ELECTRIC_ABSORPTION.get(), "cf58f418-c961-44ea-9bb2-f02b0bdb6176", 0.2D, AttributeModifier.Operation.ADDITION));
+            .addAttributeModifier(AttributesNF.STRIKING_DEFENSE.get(), "eb96b12a-6a7e-4c33-a0a0-055e8c9380dc", 0.2D, AttributeModifier.Operation.ADDITION)
+            .addAttributeModifier(AttributesNF.SLASHING_DEFENSE.get(), "3875dd84-b979-4752-a8e1-7cf350d1f97c", 0.2D, AttributeModifier.Operation.ADDITION)
+            .addAttributeModifier(AttributesNF.PIERCING_DEFENSE.get(), "123d9b3a-2dfc-4faf-8d98-ec7a8e6bf655", 0.2D, AttributeModifier.Operation.ADDITION)
+            .addAttributeModifier(AttributesNF.FIRE_DEFENSE.get(), "29130a79-b037-4bc7-8278-608e4918d707", 0.2D, AttributeModifier.Operation.ADDITION)
+            .addAttributeModifier(AttributesNF.FROST_DEFENSE.get(), "5abe03c1-9448-48cf-aa59-10c617cbb504", 0.2D, AttributeModifier.Operation.ADDITION)
+            .addAttributeModifier(AttributesNF.ELECTRIC_DEFENSE.get(), "cf58f418-c961-44ea-9bb2-f02b0bdb6176", 0.2D, AttributeModifier.Operation.ADDITION));
     public static final RegistryObject<MobEffect> PARALYSIS = EFFECTS.register("paralysis", () -> new DamageEffect(MobEffectCategory.HARMFUL)
             .addAttributeModifier(Attributes.MOVEMENT_SPEED, "5e59ad86-9311-4fbd-8e70-db765be34d30", -0.2D, AttributeModifier.Operation.MULTIPLY_TOTAL)
             .addAttributeModifier(ForgeMod.SWIM_SPEED.get(), "728607eb-2232-457d-a9ac-f61d42fa91f3", -0.2D, AttributeModifier.Operation.MULTIPLY_TOTAL)

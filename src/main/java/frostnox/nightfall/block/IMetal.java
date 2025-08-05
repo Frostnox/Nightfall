@@ -42,8 +42,6 @@ public interface IMetal extends IBlock {
 
     List<Float> getBaseDefenses();
 
-    List<Float> getBaseAbsorptions();
-
     default String getName() {
         return toString().toLowerCase(Locale.ROOT);
     }

@@ -61,6 +61,7 @@ public abstract class Action extends ForgeRegistryEntry<Action> {
     private final Supplier<SoundEvent> extraSound;
     public final TagKey<Block> harvestableBlocks;
     private final float knockback;
+    private final Impact impact;
 
     public Action(int... duration) {
         this.chainState = -1;
@@ -79,6 +80,7 @@ public abstract class Action extends ForgeRegistryEntry<Action> {
         this.extraSound = () -> null;
         this.harvestableBlocks = null;
         this.knockback = 0F;
+        this.impact = Impact.NONE;
     }
 
     public Action(Properties properties, int... duration) {
@@ -98,6 +100,7 @@ public abstract class Action extends ForgeRegistryEntry<Action> {
         this.extraSound = properties.extraSound;
         this.harvestableBlocks = properties.harvestableBlocks;
         this.knockback = properties.knockback;
+        this.impact = properties.impact;
     }
 
     @Override
@@ -190,6 +193,11 @@ public abstract class Action extends ForgeRegistryEntry<Action> {
 
     public float getKnockback() {
         return knockback;
+    }
+
+    public Impact getImpact(@Nullable IActionTracker capA) {
+        if(capA == null) return impact;
+        else return isChargeable() && capA.isFullyCharged() ? impact.increase() : impact;
     }
 
     public int getDuration(int state, LivingEntity user) {
@@ -529,6 +537,12 @@ public abstract class Action extends ForgeRegistryEntry<Action> {
         private Supplier<SoundEvent> extraSound = () -> null;
         private TagKey<Block> harvestableBlocks;
         private float knockback;
+        private Impact impact;
+
+        public Action.Properties setImpact(Impact impact) {
+            this.impact = impact;
+            return this;
+        }
 
         public Action.Properties setKnockback(float knockback) {
             this.knockback = knockback;

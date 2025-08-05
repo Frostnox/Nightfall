@@ -87,124 +87,124 @@ public class ActionsNF {
 
     //Melee weapons
     public static final RegistryObject<WideSwingRight> SWORD_BASIC_1 = ACTIONS.register("sword_basic_1", () ->
-            new WideSwingRight(DamageType.SLASHING.asArray(), HurtSphere.SWORD, 3, CombatUtil.STUN_MEDIUM, new int[] {6, 11, 2, 8}, new Action.Properties().setChainTo(ActionsNF.SWORD_BASIC_2).setChainState(2).setKnockback(SWORD_KNOCKBACK).setSound(SoundsNF.BLADE_SWING)));
+            new WideSwingRight(DamageType.SLASHING.asArray(), HurtSphere.SWORD, 3, CombatUtil.STUN_MEDIUM, new int[] {6, 11, 2, 8}, new Action.Properties().setChainTo(ActionsNF.SWORD_BASIC_2).setChainState(2).setKnockback(SWORD_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.BLADE_SWING)));
     public static final RegistryObject<WideSwingLeft> SWORD_BASIC_2 = ACTIONS.register("sword_basic_2", () ->
-            new WideSwingLeft(DamageType.SLASHING.asArray(), HurtSphere.SWORD, 3, CombatUtil.STUN_MEDIUM, new int[] {6, 11, 2, 8}, new Action.Properties().setChainFrom(SWORD_BASIC_1).setChainTo(ActionsNF.SWORD_BASIC_3).setChainState(2).setKnockback(SWORD_KNOCKBACK).setSound(SoundsNF.BLADE_SWING)));
+            new WideSwingLeft(DamageType.SLASHING.asArray(), HurtSphere.SWORD, 3, CombatUtil.STUN_MEDIUM, new int[] {6, 11, 2, 8}, new Action.Properties().setChainFrom(SWORD_BASIC_1).setChainTo(ActionsNF.SWORD_BASIC_3).setChainState(2).setKnockback(SWORD_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.BLADE_SWING)));
     public static final RegistryObject<WideSwingRight> SWORD_BASIC_3 = ACTIONS.register("sword_basic_3", () ->
-            new WideSwingRight(DamageType.SLASHING.asArray(), HurtSphere.SWORD, 3, CombatUtil.STUN_MEDIUM, new int[] {6, 11, 2, 8}, new Action.Properties().setChainFrom(SWORD_BASIC_2).setChainTo(SWORD_BASIC_2).setChainState(2).setKnockback(SWORD_KNOCKBACK).setSound(SoundsNF.BLADE_SWING)));
+            new WideSwingRight(DamageType.SLASHING.asArray(), HurtSphere.SWORD, 3, CombatUtil.STUN_MEDIUM, new int[] {6, 11, 2, 8}, new Action.Properties().setChainFrom(SWORD_BASIC_2).setChainTo(SWORD_BASIC_2).setChainState(2).setKnockback(SWORD_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.BLADE_SWING)));
     public static final RegistryObject<ThrustCharged> SWORD_ALTERNATE_1 = ACTIONS.register("sword_alternate_1", () ->
-            new ThrustCharged(DamageType.PIERCING.asArray(), HurtSphere.SWORD, 1, CombatUtil.STUN_LONG, new int[] {24, 5, 4, 7}, new Action.Properties().setChargeState(0).setSound(SoundsNF.BLADE_SWING).setKnockback(SWORD_KNOCKBACK).setExtraSound(SoundsNF.BLADE_SWING_CHARGED)));
+            new ThrustCharged(DamageType.PIERCING.asArray(), HurtSphere.SWORD, 1, CombatUtil.STUN_LONG, new int[] {24, 5, 4, 7}, new Action.Properties().setChargeState(0).setSound(SoundsNF.BLADE_SWING).setKnockback(SWORD_KNOCKBACK).setImpact(Impact.MEDIUM).setExtraSound(SoundsNF.BLADE_SWING_CHARGED)));
     public static final RegistryObject<CrawlingThrust> SWORD_CRAWLING = ACTIONS.register("sword_crawling", () ->
-            new CrawlingThrust(DamageType.PIERCING.asArray(), HurtSphere.SWORD, 1, CombatUtil.STUN_SHORT, new int[] {9, 5, 3, 8}, new Action.Properties().setSprinting().setCrawling().setKnockback(SWORD_KNOCKBACK).setSound(SoundsNF.BLADE_SWING)));
+            new CrawlingThrust(DamageType.PIERCING.asArray(), HurtSphere.SWORD, 1, CombatUtil.STUN_SHORT, new int[] {9, 5, 3, 8}, new Action.Properties().setSprinting().setCrawling().setKnockback(SWORD_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.BLADE_SWING)));
 
     public static final RegistryObject<DiagonalSwingRight> SABRE_BASIC_1 = ACTIONS.register("sabre_basic_1", () ->
-            new DiagonalSwingRight(DamageType.SLASHING.asArray(), HurtSphere.SABRE, 2, CombatUtil.STUN_SHORT, new int[] {7, 7, 3, 8}, new Action.Properties().setChainTo(ActionsNF.SABRE_BASIC_2).setChainState(2).setKnockback(SABRE_KNOCKBACK).setSound(SoundsNF.BLADE_SWING), bleeding(0.4F)));
+            new DiagonalSwingRight(DamageType.SLASHING.asArray(), HurtSphere.SABRE, 2, CombatUtil.STUN_SHORT, new int[] {7, 7, 3, 8}, new Action.Properties().setChainTo(ActionsNF.SABRE_BASIC_2).setChainState(2).setKnockback(SABRE_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.BLADE_SWING), bleeding(0.4F)));
     public static final RegistryObject<DiagonalSwingLeft> SABRE_BASIC_2 = ACTIONS.register("sabre_basic_2", () ->
-            new DiagonalSwingLeft(DamageType.SLASHING.asArray(), HurtSphere.SABRE, 2, CombatUtil.STUN_SHORT, new int[] {7, 7, 3, 7}, new Action.Properties().setChainFrom(SABRE_BASIC_1).setChainTo(ActionsNF.SABRE_BASIC_3).setChainState(2).setKnockback(SABRE_KNOCKBACK).setSound(SoundsNF.BLADE_SWING), bleeding(0.4F)));
+            new DiagonalSwingLeft(DamageType.SLASHING.asArray(), HurtSphere.SABRE, 2, CombatUtil.STUN_SHORT, new int[] {7, 7, 3, 7}, new Action.Properties().setChainFrom(SABRE_BASIC_1).setChainTo(ActionsNF.SABRE_BASIC_3).setChainState(2).setKnockback(SABRE_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.BLADE_SWING), bleeding(0.4F)));
     public static final RegistryObject<DiagonalSwingRight> SABRE_BASIC_3 = ACTIONS.register("sabre_basic_3", () ->
-            new DiagonalSwingRight(DamageType.SLASHING.asArray(), HurtSphere.SABRE, 2, CombatUtil.STUN_SHORT, new int[] {7, 7, 3, 8}, new Action.Properties().setChainFrom(SABRE_BASIC_2).setChainTo(SABRE_BASIC_2).setChainState(2).setKnockback(SABRE_KNOCKBACK).setSound(SoundsNF.BLADE_SWING), bleeding(0.4F)));
+            new DiagonalSwingRight(DamageType.SLASHING.asArray(), HurtSphere.SABRE, 2, CombatUtil.STUN_SHORT, new int[] {7, 7, 3, 8}, new Action.Properties().setChainFrom(SABRE_BASIC_2).setChainTo(SABRE_BASIC_2).setChainState(2).setKnockback(SABRE_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.BLADE_SWING), bleeding(0.4F)));
     public static final RegistryObject<WideSwingCharged> SABRE_ALTERNATE_1 = ACTIONS.register("sabre_alternate_1", () ->
-            new WideSwingCharged(DamageType.SLASHING.asArray(), HurtSphere.SABRE, 3, CombatUtil.STUN_LONG, new int[] {24, 10, 4, 8}, new Action.Properties().setChargeState(0).setKnockback(SABRE_KNOCKBACK).setSound(SoundsNF.BLADE_SWING).setExtraSound(SoundsNF.BLADE_SWING_CHARGED), bleeding(0.4F)));
+            new WideSwingCharged(DamageType.SLASHING.asArray(), HurtSphere.SABRE, 3, CombatUtil.STUN_LONG, new int[] {24, 10, 4, 8}, new Action.Properties().setChargeState(0).setKnockback(SABRE_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.BLADE_SWING).setExtraSound(SoundsNF.BLADE_SWING_CHARGED), bleeding(0.4F)));
     public static final RegistryObject<CrawlingSwing> SABRE_CRAWLING = ACTIONS.register("sabre_crawling", () ->
-            new CrawlingSwing(DamageType.SLASHING.asArray(), HurtSphere.SABRE, 1, CombatUtil.STUN_SHORT, new int[] {8, 6, 3, 7}, new Action.Properties().setSprinting().setCrawling().setKnockback(SABRE_KNOCKBACK).setSound(SoundsNF.BLADE_SWING), bleeding(0.4F)));
+            new CrawlingSwing(DamageType.SLASHING.asArray(), HurtSphere.SABRE, 1, CombatUtil.STUN_SHORT, new int[] {8, 6, 3, 7}, new Action.Properties().setSprinting().setCrawling().setKnockback(SABRE_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.BLADE_SWING), bleeding(0.4F)));
 
     public static final RegistryObject<LongVerticalSwing> MACE_BASIC_1 = ACTIONS.register("mace_basic_1", () ->
-            new LongVerticalSwing(DamageType.STRIKING.asArray(), HurtSphere.MACE, 1, CombatUtil.STUN_MEDIUM, new int[] {9, 6, 3, 8}, new Action.Properties().setChainTo(ActionsNF.MACE_BASIC_2).setChainState(2).setKnockback(MACE_KNOCKBACK).setSound(SoundsNF.SWING), bleeding(0.3F)));
+            new LongVerticalSwing(DamageType.STRIKING.asArray(), HurtSphere.MACE, 1, CombatUtil.STUN_MEDIUM, new int[] {9, 6, 3, 8}, new Action.Properties().setChainTo(ActionsNF.MACE_BASIC_2).setChainState(2).setKnockback(MACE_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.SWING), bleeding(0.3F)));
     public static final RegistryObject<LongVerticalSwing> MACE_BASIC_2 = ACTIONS.register("mace_basic_2", () ->
-            new LongVerticalSwing(DamageType.STRIKING.asArray(), HurtSphere.MACE, 1, CombatUtil.STUN_MEDIUM, new int[] {9, 6, 3, 8}, new Action.Properties().setChainFrom(MACE_BASIC_1).setChainTo(ActionsNF.MACE_BASIC_3).setChainState(2).setKnockback(MACE_KNOCKBACK).setSound(SoundsNF.SWING), bleeding(0.3F)));
+            new LongVerticalSwing(DamageType.STRIKING.asArray(), HurtSphere.MACE, 1, CombatUtil.STUN_MEDIUM, new int[] {9, 6, 3, 8}, new Action.Properties().setChainFrom(MACE_BASIC_1).setChainTo(ActionsNF.MACE_BASIC_3).setChainState(2).setKnockback(MACE_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.SWING), bleeding(0.3F)));
     public static final RegistryObject<LongVerticalSwing> MACE_BASIC_3 = ACTIONS.register("mace_basic_3", () ->
-            new LongVerticalSwing(DamageType.STRIKING.asArray(), HurtSphere.MACE, 1, CombatUtil.STUN_MEDIUM, new int[] {9, 6, 3, 8}, new Action.Properties().setChainFrom(MACE_BASIC_2).setChainTo(MACE_BASIC_2).setChainState(2).setKnockback(MACE_KNOCKBACK).setSound(SoundsNF.SWING), bleeding(0.3F)));
+            new LongVerticalSwing(DamageType.STRIKING.asArray(), HurtSphere.MACE, 1, CombatUtil.STUN_MEDIUM, new int[] {9, 6, 3, 8}, new Action.Properties().setChainFrom(MACE_BASIC_2).setChainTo(MACE_BASIC_2).setChainState(2).setKnockback(MACE_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.SWING), bleeding(0.3F)));
     public static final RegistryObject<LongVerticalSwingCharged> MACE_ALTERNATE_1 = ACTIONS.register("mace_alternate_1", () ->
-            new LongVerticalSwingCharged(DamageType.STRIKING.asArray(), HurtSphere.MACE, 1, CombatUtil.STUN_VERY_LONG, new int[] {28, 6, 4, 8}, new Action.Properties().setChargeState(0).setKnockback(MACE_KNOCKBACK).setSound(SoundsNF.SWING).setExtraSound(SoundsNF.SWING_CHARGED), bleeding(0.3F)));
+            new LongVerticalSwingCharged(DamageType.STRIKING.asArray(), HurtSphere.MACE, 1, CombatUtil.STUN_VERY_LONG, new int[] {28, 6, 4, 8}, new Action.Properties().setChargeState(0).setKnockback(MACE_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.SWING).setExtraSound(SoundsNF.SWING_CHARGED), bleeding(0.3F)));
     public static final RegistryObject<CrawlingSwing> MACE_CRAWLING = ACTIONS.register("mace_crawling", () ->
-            new CrawlingSwing(DamageType.STRIKING.asArray(), HurtSphere.MACE, 1, CombatUtil.STUN_SHORT, new int[] {9, 6, 3, 8}, new Action.Properties().setSprinting().setCrawling().setKnockback(MACE_KNOCKBACK).setSound(SoundsNF.SWING), bleeding(0.3F)));
+            new CrawlingSwing(DamageType.STRIKING.asArray(), HurtSphere.MACE, 1, CombatUtil.STUN_SHORT, new int[] {9, 6, 3, 8}, new Action.Properties().setSprinting().setCrawling().setKnockback(MACE_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.SWING), bleeding(0.3F)));
 
     public static final RegistryObject<LongVerticalSwing> CLUB_BASIC_1 = ACTIONS.register("club_basic_1", () ->
-            new LongVerticalSwing(DamageType.STRIKING.asArray(), HurtSphere.CLUB, 1, CombatUtil.STUN_MEDIUM, new int[] {9, 6, 3, 8}, new Action.Properties().setChainTo(ActionsNF.CLUB_BASIC_2).setChainState(2).setKnockback(CLUB_KNOCKBACK).setSound(SoundsNF.SWING)));
+            new LongVerticalSwing(DamageType.STRIKING.asArray(), HurtSphere.CLUB, 1, CombatUtil.STUN_MEDIUM, new int[] {9, 6, 3, 8}, new Action.Properties().setChainTo(ActionsNF.CLUB_BASIC_2).setChainState(2).setKnockback(CLUB_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.SWING)));
     public static final RegistryObject<LongVerticalSwing> CLUB_BASIC_2 = ACTIONS.register("club_basic_2", () ->
-            new LongVerticalSwing(DamageType.STRIKING.asArray(), HurtSphere.CLUB, 1, CombatUtil.STUN_MEDIUM, new int[] {9, 6, 3, 8}, new Action.Properties().setChainFrom(CLUB_BASIC_1).setChainTo(ActionsNF.CLUB_BASIC_3).setChainState(2).setKnockback(CLUB_KNOCKBACK).setSound(SoundsNF.SWING)));
+            new LongVerticalSwing(DamageType.STRIKING.asArray(), HurtSphere.CLUB, 1, CombatUtil.STUN_MEDIUM, new int[] {9, 6, 3, 8}, new Action.Properties().setChainFrom(CLUB_BASIC_1).setChainTo(ActionsNF.CLUB_BASIC_3).setChainState(2).setKnockback(CLUB_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.SWING)));
     public static final RegistryObject<LongVerticalSwing> CLUB_BASIC_3 = ACTIONS.register("club_basic_3", () ->
-            new LongVerticalSwing(DamageType.STRIKING.asArray(), HurtSphere.CLUB, 1, CombatUtil.STUN_MEDIUM, new int[] {9, 6, 3, 8}, new Action.Properties().setChainFrom(CLUB_BASIC_2).setChainTo(CLUB_BASIC_2).setChainState(2).setKnockback(CLUB_KNOCKBACK).setSound(SoundsNF.SWING)));
+            new LongVerticalSwing(DamageType.STRIKING.asArray(), HurtSphere.CLUB, 1, CombatUtil.STUN_MEDIUM, new int[] {9, 6, 3, 8}, new Action.Properties().setChainFrom(CLUB_BASIC_2).setChainTo(CLUB_BASIC_2).setChainState(2).setKnockback(CLUB_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.SWING)));
     public static final RegistryObject<LongVerticalSwingCharged> CLUB_ALTERNATE_1 = ACTIONS.register("club_alternate_1", () ->
-            new LongVerticalSwingCharged(DamageType.STRIKING.asArray(), HurtSphere.CLUB, 1, CombatUtil.STUN_VERY_LONG, new int[] {28, 6, 4, 8}, new Action.Properties().setChargeState(0).setKnockback(CLUB_KNOCKBACK).setSound(SoundsNF.SWING).setExtraSound(SoundsNF.SWING_CHARGED)));
+            new LongVerticalSwingCharged(DamageType.STRIKING.asArray(), HurtSphere.CLUB, 1, CombatUtil.STUN_VERY_LONG, new int[] {28, 6, 4, 8}, new Action.Properties().setChargeState(0).setKnockback(CLUB_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.SWING).setExtraSound(SoundsNF.SWING_CHARGED)));
     public static final RegistryObject<CrawlingSwing> CLUB_CRAWLING = ACTIONS.register("club_crawling", () ->
-            new CrawlingSwing(DamageType.STRIKING.asArray(), HurtSphere.CLUB, 1, CombatUtil.STUN_SHORT, new int[] {9, 6, 3, 8}, new Action.Properties().setSprinting().setCrawling().setKnockback(CLUB_KNOCKBACK).setSound(SoundsNF.SWING)));
+            new CrawlingSwing(DamageType.STRIKING.asArray(), HurtSphere.CLUB, 1, CombatUtil.STUN_SHORT, new int[] {9, 6, 3, 8}, new Action.Properties().setSprinting().setCrawling().setKnockback(CLUB_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.SWING)));
 
     public static final RegistryObject<Thrust> SPEAR_BASIC_1 = ACTIONS.register("spear_basic_1", () ->
-            new Thrust(DamageType.PIERCING.asArray(), HurtSphere.SPEAR, 1, CombatUtil.STUN_SHORT, new int[] {10, 5, 3, 9}, new Action.Properties().setChainTo(ActionsNF.SPEAR_BASIC_2).setChainState(2).setKnockback(SPEAR_KNOCKBACK).setSound(SoundsNF.LONG_BLADE_SWING)));
+            new Thrust(DamageType.PIERCING.asArray(), HurtSphere.SPEAR, 1, CombatUtil.STUN_SHORT, new int[] {10, 5, 3, 9}, new Action.Properties().setChainTo(ActionsNF.SPEAR_BASIC_2).setChainState(2).setKnockback(SPEAR_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.LONG_BLADE_SWING)));
     public static final RegistryObject<Thrust> SPEAR_BASIC_2 = ACTIONS.register("spear_basic_2", () ->
-            new Thrust(DamageType.PIERCING.asArray(), HurtSphere.SPEAR, 1, CombatUtil.STUN_SHORT, new int[] {10, 5, 3, 9}, new Action.Properties().setChainFrom(SPEAR_BASIC_1).setChainTo(ActionsNF.SPEAR_BASIC_3).setChainState(2).setKnockback(SPEAR_KNOCKBACK).setSound(SoundsNF.LONG_BLADE_SWING)));
+            new Thrust(DamageType.PIERCING.asArray(), HurtSphere.SPEAR, 1, CombatUtil.STUN_SHORT, new int[] {10, 5, 3, 9}, new Action.Properties().setChainFrom(SPEAR_BASIC_1).setChainTo(ActionsNF.SPEAR_BASIC_3).setChainState(2).setKnockback(SPEAR_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.LONG_BLADE_SWING)));
     public static final RegistryObject<Thrust> SPEAR_BASIC_3 = ACTIONS.register("spear_basic_3", () ->
-            new Thrust(DamageType.PIERCING.asArray(), HurtSphere.SPEAR, 1, CombatUtil.STUN_SHORT, new int[] {10, 5, 3, 9}, new Action.Properties().setChainFrom(SPEAR_BASIC_2).setChainTo(SPEAR_BASIC_2).setChainState(2).setKnockback(SPEAR_KNOCKBACK).setSound(SoundsNF.LONG_BLADE_SWING)));
+            new Thrust(DamageType.PIERCING.asArray(), HurtSphere.SPEAR, 1, CombatUtil.STUN_SHORT, new int[] {10, 5, 3, 9}, new Action.Properties().setChainFrom(SPEAR_BASIC_2).setChainTo(SPEAR_BASIC_2).setChainState(2).setKnockback(SPEAR_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.LONG_BLADE_SWING)));
     public static final RegistryObject<ThrustCharged> SPEAR_ALTERNATE_1 = ACTIONS.register("spear_alternate_1", () ->
-            new ThrustCharged(DamageType.PIERCING.asArray(), HurtSphere.SPEAR, 1, CombatUtil.STUN_LONG, new int[] {24, 5, 3, 9}, new Action.Properties().setChargeState(0).setKnockback(SPEAR_KNOCKBACK).setSound(SoundsNF.LONG_BLADE_SWING).setExtraSound(SoundsNF.LONG_BLADE_SWING_CHARGED)));
+            new ThrustCharged(DamageType.PIERCING.asArray(), HurtSphere.SPEAR, 1, CombatUtil.STUN_LONG, new int[] {24, 5, 3, 9}, new Action.Properties().setChargeState(0).setKnockback(SPEAR_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.LONG_BLADE_SWING).setExtraSound(SoundsNF.LONG_BLADE_SWING_CHARGED)));
     public static final RegistryObject<CrawlingThrust> SPEAR_CRAWLING = ACTIONS.register("spear_crawling", () ->
-            new CrawlingThrust(DamageType.PIERCING.asArray(), HurtSphere.SPEAR, 1, CombatUtil.STUN_SHORT, new int[] {10, 5, 3, 9}, new Action.Properties().setSprinting().setCrawling().setKnockback(SPEAR_KNOCKBACK).setSound(SoundsNF.LONG_BLADE_SWING)));
+            new CrawlingThrust(DamageType.PIERCING.asArray(), HurtSphere.SPEAR, 1, CombatUtil.STUN_SHORT, new int[] {10, 5, 3, 9}, new Action.Properties().setSprinting().setCrawling().setKnockback(SPEAR_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.LONG_BLADE_SWING)));
 
     public static final RegistryObject<SwingRight> DAGGER_BASIC_1 = ACTIONS.register("dagger_basic_1", () ->
-            new SwingRight(DamageType.SLASHING.asArray(), HurtSphere.DAGGER, 2, CombatUtil.STUN_SHORT, new int[] {6, 8, 3, 8}, new Action.Properties().setChainTo(ActionsNF.DAGGER_BASIC_2).setChainState(2).setSound(SoundsNF.SHORT_BLADE_SWING).setHarvestable(TagsNF.MINEABLE_WITH_DAGGER).setKnockback(DAGGER_KNOCKBACK)));
+            new SwingRight(DamageType.SLASHING.asArray(), HurtSphere.DAGGER, 2, CombatUtil.STUN_SHORT, new int[] {6, 8, 3, 8}, new Action.Properties().setChainTo(ActionsNF.DAGGER_BASIC_2).setChainState(2).setSound(SoundsNF.SHORT_BLADE_SWING).setHarvestable(TagsNF.MINEABLE_WITH_DAGGER).setKnockback(DAGGER_KNOCKBACK).setImpact(Impact.MEDIUM)));
     public static final RegistryObject<SwingLeft> DAGGER_BASIC_2 = ACTIONS.register("dagger_basic_2", () ->
-            new SwingLeft(DamageType.SLASHING.asArray(), HurtSphere.DAGGER, 2, CombatUtil.STUN_SHORT, new int[] {6, 8, 3, 7}, new Action.Properties().setChainFrom(DAGGER_BASIC_1).setChainTo(ActionsNF.DAGGER_BASIC_3).setChainState(2).setSound(SoundsNF.SHORT_BLADE_SWING).setHarvestable(TagsNF.MINEABLE_WITH_DAGGER).setKnockback(DAGGER_KNOCKBACK)));
+            new SwingLeft(DamageType.SLASHING.asArray(), HurtSphere.DAGGER, 2, CombatUtil.STUN_SHORT, new int[] {6, 8, 3, 7}, new Action.Properties().setChainFrom(DAGGER_BASIC_1).setChainTo(ActionsNF.DAGGER_BASIC_3).setChainState(2).setSound(SoundsNF.SHORT_BLADE_SWING).setHarvestable(TagsNF.MINEABLE_WITH_DAGGER).setKnockback(DAGGER_KNOCKBACK).setImpact(Impact.MEDIUM)));
     public static final RegistryObject<SwingRight> DAGGER_BASIC_3 = ACTIONS.register("dagger_basic_3_conditional", () ->
-            new SwingRight(DamageType.SLASHING.asArray(), HurtSphere.DAGGER, 2, CombatUtil.STUN_SHORT, new int[] {6, 8, 3, 8}, new Action.Properties().setChainTo(ActionsNF.DAGGER_BASIC_2).setChainFrom(DAGGER_BASIC_2).setChainState(2).setSound(SoundsNF.SHORT_BLADE_SWING).setHarvestable(TagsNF.MINEABLE_WITH_DAGGER).setKnockback(DAGGER_KNOCKBACK)));
+            new SwingRight(DamageType.SLASHING.asArray(), HurtSphere.DAGGER, 2, CombatUtil.STUN_SHORT, new int[] {6, 8, 3, 8}, new Action.Properties().setChainTo(ActionsNF.DAGGER_BASIC_2).setChainFrom(DAGGER_BASIC_2).setChainState(2).setSound(SoundsNF.SHORT_BLADE_SWING).setHarvestable(TagsNF.MINEABLE_WITH_DAGGER).setKnockback(DAGGER_KNOCKBACK).setImpact(Impact.MEDIUM)));
     public static final RegistryObject<StabCharged> DAGGER_ALTERNATE_1 = ACTIONS.register("dagger_alternate_1", () ->
-            new StabCharged(DamageType.PIERCING.asArray(), HurtSphere.DAGGER, 1, CombatUtil.STUN_LONG, new int[] {7, 13, 4, 4, 7}, new Action.Properties().setChargeState(1).setSound(SoundsNF.SHORT_BLADE_SWING).setExtraSound(SoundsNF.SHORT_BLADE_SWING_CHARGED).setKnockback(DAGGER_KNOCKBACK), bleeding(0.4F)));
+            new StabCharged(DamageType.PIERCING.asArray(), HurtSphere.DAGGER, 1, CombatUtil.STUN_LONG, new int[] {7, 13, 4, 4, 7}, new Action.Properties().setChargeState(1).setSound(SoundsNF.SHORT_BLADE_SWING).setExtraSound(SoundsNF.SHORT_BLADE_SWING_CHARGED).setKnockback(DAGGER_KNOCKBACK).setImpact(Impact.MEDIUM), bleeding(0.4F)));
     public static final RegistryObject<CrawlingSwing> DAGGER_CRAWLING = ACTIONS.register("dagger_crawling", () ->
-            new CrawlingSwing(DamageType.SLASHING.asArray(), HurtSphere.DAGGER, 1, CombatUtil.STUN_SHORT, new int[] {6, 5, 3, 7}, new Action.Properties().setSprinting().setCrawling().setSound(SoundsNF.SHORT_BLADE_SWING).setHarvestable(TagsNF.MINEABLE_WITH_DAGGER).setKnockback(DAGGER_KNOCKBACK)));
+            new CrawlingSwing(DamageType.SLASHING.asArray(), HurtSphere.DAGGER, 1, CombatUtil.STUN_SHORT, new int[] {6, 5, 3, 7}, new Action.Properties().setSprinting().setCrawling().setSound(SoundsNF.SHORT_BLADE_SWING).setHarvestable(TagsNF.MINEABLE_WITH_DAGGER).setKnockback(DAGGER_KNOCKBACK).setImpact(Impact.MEDIUM)));
     public static final RegistryObject<KnifeCarveAction> DAGGER_CARVE = ACTIONS.register("dagger_carve", () ->
             new KnifeCarveAction(new int[] {6, 43, 7}, new Action.Properties().setChargeState(1).setSound(SoundsNF.SWING).setExtraSound(SoundsNF.SWING_CHARGED)));
 
     public static final RegistryObject<Stab> CHISEL_BASIC_1 = ACTIONS.register("chisel_basic_1", () ->
-            new Stab(DamageType.PIERCING.asArray(), HurtSphere.CHISEL, 1, CombatUtil.STUN_SHORT, new int[] {9, 4, 4, 8}, new Action.Properties().setChainTo(ActionsNF.CHISEL_BASIC_2).setChainState(2).setSound(SoundsNF.SHORT_BLADE_SWING).setKnockback(CHISEL_KNOCKBACK)));
+            new Stab(DamageType.PIERCING.asArray(), HurtSphere.CHISEL, 1, CombatUtil.STUN_SHORT, new int[] {9, 4, 4, 8}, new Action.Properties().setChainTo(ActionsNF.CHISEL_BASIC_2).setChainState(2).setSound(SoundsNF.SHORT_BLADE_SWING).setKnockback(CHISEL_KNOCKBACK).setImpact(Impact.MEDIUM)));
     public static final RegistryObject<Stab> CHISEL_BASIC_2 = ACTIONS.register("chisel_basic_2", () ->
-            new Stab(DamageType.PIERCING.asArray(), HurtSphere.CHISEL, 1, CombatUtil.STUN_SHORT, new int[] {8, 4, 4, 7}, new Action.Properties().setChainFrom(CHISEL_BASIC_1).setChainTo(ActionsNF.CHISEL_BASIC_3).setChainState(2).setSound(SoundsNF.SHORT_BLADE_SWING).setKnockback(CHISEL_KNOCKBACK)));
+            new Stab(DamageType.PIERCING.asArray(), HurtSphere.CHISEL, 1, CombatUtil.STUN_SHORT, new int[] {8, 4, 4, 7}, new Action.Properties().setChainFrom(CHISEL_BASIC_1).setChainTo(ActionsNF.CHISEL_BASIC_3).setChainState(2).setSound(SoundsNF.SHORT_BLADE_SWING).setKnockback(CHISEL_KNOCKBACK).setImpact(Impact.MEDIUM)));
     public static final RegistryObject<Stab> CHISEL_BASIC_3 = ACTIONS.register("chisel_basic_3", () ->
-            new Stab(DamageType.PIERCING.asArray(), HurtSphere.CHISEL, 1, CombatUtil.STUN_SHORT, new int[] {8, 4, 4, 7}, new Action.Properties().setChainFrom(CHISEL_BASIC_2).setChainTo(ActionsNF.CHISEL_BASIC_2).setChainState(2).setSound(SoundsNF.SHORT_BLADE_SWING).setKnockback(CHISEL_KNOCKBACK)));
+            new Stab(DamageType.PIERCING.asArray(), HurtSphere.CHISEL, 1, CombatUtil.STUN_SHORT, new int[] {8, 4, 4, 7}, new Action.Properties().setChainFrom(CHISEL_BASIC_2).setChainTo(ActionsNF.CHISEL_BASIC_2).setChainState(2).setSound(SoundsNF.SHORT_BLADE_SWING).setKnockback(CHISEL_KNOCKBACK).setImpact(Impact.MEDIUM)));
     public static final RegistryObject<StabCharged> CHISEL_ALTERNATE_1 = ACTIONS.register("chisel_alternate_1", () ->
-            new StabCharged(DamageType.PIERCING.asArray(), HurtSphere.CHISEL, 1, CombatUtil.STUN_MEDIUM, new int[] {8, 13, 4, 4, 7}, new Action.Properties().setChargeState(1).setSound(SoundsNF.SHORT_BLADE_SWING).setExtraSound(SoundsNF.SHORT_BLADE_SWING_CHARGED).setKnockback(CHISEL_KNOCKBACK)));
+            new StabCharged(DamageType.PIERCING.asArray(), HurtSphere.CHISEL, 1, CombatUtil.STUN_MEDIUM, new int[] {8, 13, 4, 4, 7}, new Action.Properties().setChargeState(1).setSound(SoundsNF.SHORT_BLADE_SWING).setExtraSound(SoundsNF.SHORT_BLADE_SWING_CHARGED).setKnockback(CHISEL_KNOCKBACK).setImpact(Impact.MEDIUM)));
     public static final RegistryObject<CrawlingThrust> CHISEL_CRAWLING = ACTIONS.register("chisel_crawling", () ->
-            new CrawlingThrust(DamageType.PIERCING.asArray(), HurtSphere.CHISEL, 1, CombatUtil.STUN_SHORT, new int[] {8, 5, 3, 8}, new Action.Properties().setSprinting().setCrawling().setSound(SoundsNF.SHORT_BLADE_SWING).setKnockback(CHISEL_KNOCKBACK)));
+            new CrawlingThrust(DamageType.PIERCING.asArray(), HurtSphere.CHISEL, 1, CombatUtil.STUN_SHORT, new int[] {8, 5, 3, 8}, new Action.Properties().setSprinting().setCrawling().setSound(SoundsNF.SHORT_BLADE_SWING).setKnockback(CHISEL_KNOCKBACK).setImpact(Impact.MEDIUM)));
     public static final RegistryObject<ChiselCarveAction> CHISEL_CARVE = ACTIONS.register("chisel_carve", () ->
             new ChiselCarveAction(new int[] {8, 43, 9}, new Action.Properties().setChargeState(1).setSound(SoundsNF.SWING).setExtraSound(SoundsNF.SWING_CHARGED)));
 
     public static final RegistryObject<HammerStrike> HAMMER_BASIC_1 = ACTIONS.register("hammer_basic_1", () ->
-            new HammerStrike(DamageType.STRIKING.asArray(), HurtSphere.HAMMER, 1, CombatUtil.STUN_MEDIUM, new int[] {8, 6, 4, 7}, new Action.Properties().setChainTo(ActionsNF.HAMMER_BASIC_2).setChainState(2).setKnockback(HAMMER_KNOCKBACK).setSound(SoundsNF.SWING)));
+            new HammerStrike(DamageType.STRIKING.asArray(), HurtSphere.HAMMER, 1, CombatUtil.STUN_MEDIUM, new int[] {8, 6, 4, 7}, new Action.Properties().setChainTo(ActionsNF.HAMMER_BASIC_2).setChainState(2).setKnockback(HAMMER_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.SWING)));
     public static final RegistryObject<HammerStrike> HAMMER_BASIC_2 = ACTIONS.register("hammer_basic_2", () ->
-            new HammerStrike(DamageType.STRIKING.asArray(), HurtSphere.HAMMER, 1, CombatUtil.STUN_MEDIUM, new int[] {8, 6, 4, 7}, new Action.Properties().setChainFrom(HAMMER_BASIC_1).setChainTo(ActionsNF.HAMMER_BASIC_3).setChainState(2).setKnockback(HAMMER_KNOCKBACK).setSound(SoundsNF.SWING)));
+            new HammerStrike(DamageType.STRIKING.asArray(), HurtSphere.HAMMER, 1, CombatUtil.STUN_MEDIUM, new int[] {8, 6, 4, 7}, new Action.Properties().setChainFrom(HAMMER_BASIC_1).setChainTo(ActionsNF.HAMMER_BASIC_3).setChainState(2).setKnockback(HAMMER_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.SWING)));
     public static final RegistryObject<HammerStrike> HAMMER_BASIC_3 = ACTIONS.register("hammer_basic_3", () ->
-            new HammerStrike(DamageType.STRIKING.asArray(), HurtSphere.HAMMER, 1, CombatUtil.STUN_MEDIUM, new int[] {8, 6, 4, 7}, new Action.Properties().setChainFrom(HAMMER_BASIC_2).setChainTo(HAMMER_BASIC_2).setChainState(2).setKnockback(HAMMER_KNOCKBACK).setSound(SoundsNF.SWING)));
+            new HammerStrike(DamageType.STRIKING.asArray(), HurtSphere.HAMMER, 1, CombatUtil.STUN_MEDIUM, new int[] {8, 6, 4, 7}, new Action.Properties().setChainFrom(HAMMER_BASIC_2).setChainTo(HAMMER_BASIC_2).setChainState(2).setKnockback(HAMMER_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.SWING)));
     public static final RegistryObject<HammerTechnique> HAMMER_ALTERNATE_1 = ACTIONS.register("hammer_alternate_1", () ->
-            new HammerTechnique(AnvilAction.DRAW, AnvilAction.DRAW_LINE, DamageType.STRIKING.asArray(), HurtSphere.HAMMER, 1, CombatUtil.STUN_MEDIUM, new int[] {24, 5, 4, 9}, new Action.Properties().setChargeState(0).setKnockback(HAMMER_KNOCKBACK).setSound(SoundsNF.SWING).setExtraSound(SoundsNF.SWING_CHARGED)));
+            new HammerTechnique(AnvilAction.DRAW, AnvilAction.DRAW_LINE, DamageType.STRIKING.asArray(), HurtSphere.HAMMER, 1, CombatUtil.STUN_MEDIUM, new int[] {24, 5, 4, 9}, new Action.Properties().setChargeState(0).setKnockback(HAMMER_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.SWING).setExtraSound(SoundsNF.SWING_CHARGED)));
     public static final RegistryObject<CrawlingSwing> HAMMER_CRAWLING = ACTIONS.register("hammer_crawling", () ->
-            new CrawlingSwing(DamageType.STRIKING.asArray(), HurtSphere.HAMMER, 1, CombatUtil.STUN_MEDIUM, new int[] {8, 6, 4, 7}, new Action.Properties().setSprinting().setCrawling().setKnockback(HAMMER_KNOCKBACK).setSound(SoundsNF.SWING).setSound(SoundsNF.SWING)));
+            new CrawlingSwing(DamageType.STRIKING.asArray(), HurtSphere.HAMMER, 1, CombatUtil.STUN_MEDIUM, new int[] {8, 6, 4, 7}, new Action.Properties().setSprinting().setCrawling().setKnockback(HAMMER_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.SWING).setSound(SoundsNF.SWING)));
 
     public static final RegistryObject<WideSwingRight> AXE_BASIC_1 = ACTIONS.register("axe_basic_1", () ->
-            new WideSwingRight(STRIKING_SLASHING, HurtSphere.AXE, 2, CombatUtil.STUN_LONG, new int[] {7, 12, 2, 8}, new Action.Properties().setChainTo(ActionsNF.AXE_BASIC_2).setChainState(2).setKnockback(AXE_KNOCKBACK).setConditionalChainTo(ActionsNF.AXE_BASIC_2_CONDITIONAL).setConditionalChainFunction(HITSTOP).setSound(SoundsNF.HEAVY_BLADE_SWING).setHarvestable(BlockTags.MINEABLE_WITH_AXE)));
+            new WideSwingRight(STRIKING_SLASHING, HurtSphere.AXE, 2, CombatUtil.STUN_LONG, new int[] {7, 12, 2, 8}, new Action.Properties().setChainTo(ActionsNF.AXE_BASIC_2).setChainState(2).setKnockback(AXE_KNOCKBACK).setImpact(Impact.MEDIUM).setConditionalChainTo(ActionsNF.AXE_BASIC_2_CONDITIONAL).setConditionalChainFunction(HITSTOP).setSound(SoundsNF.HEAVY_BLADE_SWING).setHarvestable(BlockTags.MINEABLE_WITH_AXE)));
     public static final RegistryObject<WideSwingLeft> AXE_BASIC_2 = ACTIONS.register("axe_basic_2", () ->
-            new WideSwingLeft(STRIKING_SLASHING, HurtSphere.AXE, 2, CombatUtil.STUN_LONG, new int[] {7, 12, 2, 8}, new Action.Properties().setChainFrom(AXE_BASIC_1).setChainTo(ActionsNF.AXE_BASIC_3).setChainState(2).setKnockback(AXE_KNOCKBACK).setSound(SoundsNF.HEAVY_BLADE_SWING).setHarvestable(BlockTags.MINEABLE_WITH_AXE)));
+            new WideSwingLeft(STRIKING_SLASHING, HurtSphere.AXE, 2, CombatUtil.STUN_LONG, new int[] {7, 12, 2, 8}, new Action.Properties().setChainFrom(AXE_BASIC_1).setChainTo(ActionsNF.AXE_BASIC_3).setChainState(2).setKnockback(AXE_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.HEAVY_BLADE_SWING).setHarvestable(BlockTags.MINEABLE_WITH_AXE)));
     public static final RegistryObject<WideSwingRight> AXE_BASIC_2_CONDITIONAL = ACTIONS.register("axe_basic_2_conditional", () ->
-            new WideSwingRight(STRIKING_SLASHING, HurtSphere.AXE, 2, CombatUtil.STUN_LONG, new int[] {7, 12, 2, 8}, new Action.Properties().setChainFrom(AXE_BASIC_1).setChainTo(ActionsNF.AXE_BASIC_2).setChainState(2).setKnockback(AXE_KNOCKBACK).setConditionalChainTo(ActionsNF.AXE_BASIC_3_CONDITIONAL).setConditionalChainFunction(HITSTOP).setSound(SoundsNF.HEAVY_BLADE_SWING).setHarvestable(BlockTags.MINEABLE_WITH_AXE)));
+            new WideSwingRight(STRIKING_SLASHING, HurtSphere.AXE, 2, CombatUtil.STUN_LONG, new int[] {7, 12, 2, 8}, new Action.Properties().setChainFrom(AXE_BASIC_1).setChainTo(ActionsNF.AXE_BASIC_2).setChainState(2).setKnockback(AXE_KNOCKBACK).setImpact(Impact.MEDIUM).setConditionalChainTo(ActionsNF.AXE_BASIC_3_CONDITIONAL).setConditionalChainFunction(HITSTOP).setSound(SoundsNF.HEAVY_BLADE_SWING).setHarvestable(BlockTags.MINEABLE_WITH_AXE)));
     public static final RegistryObject<WideSwingRight> AXE_BASIC_3 = ACTIONS.register("axe_basic_3", () ->
-            new WideSwingRight(STRIKING_SLASHING, HurtSphere.AXE, 2, CombatUtil.STUN_LONG, new int[] {7, 12, 2, 8}, new Action.Properties().setChainFrom(AXE_BASIC_2).setChainTo(AXE_BASIC_2).setChainState(2).setKnockback(AXE_KNOCKBACK).setConditionalChainTo(ActionsNF.AXE_BASIC_2_CONDITIONAL).setConditionalChainFunction(HITSTOP).setSound(SoundsNF.HEAVY_BLADE_SWING).setHarvestable(BlockTags.MINEABLE_WITH_AXE)));
+            new WideSwingRight(STRIKING_SLASHING, HurtSphere.AXE, 2, CombatUtil.STUN_LONG, new int[] {7, 12, 2, 8}, new Action.Properties().setChainFrom(AXE_BASIC_2).setChainTo(AXE_BASIC_2).setChainState(2).setKnockback(AXE_KNOCKBACK).setImpact(Impact.MEDIUM).setConditionalChainTo(ActionsNF.AXE_BASIC_2_CONDITIONAL).setConditionalChainFunction(HITSTOP).setSound(SoundsNF.HEAVY_BLADE_SWING).setHarvestable(BlockTags.MINEABLE_WITH_AXE)));
     public static final RegistryObject<WideSwingRight> AXE_BASIC_3_CONDITIONAL = ACTIONS.register("axe_basic_3_conditional", () ->
-            new WideSwingRight(STRIKING_SLASHING, HurtSphere.AXE, 2, CombatUtil.STUN_LONG, new int[] {7, 12, 2, 8}, new Action.Properties().setChainFrom(AXE_BASIC_2_CONDITIONAL).setChainTo(AXE_BASIC_2).setChainState(2).setKnockback(AXE_KNOCKBACK).setConditionalChainTo(ActionsNF.AXE_BASIC_2_CONDITIONAL).setConditionalChainFunction(HITSTOP).setSound(SoundsNF.HEAVY_BLADE_SWING).setHarvestable(BlockTags.MINEABLE_WITH_AXE)));
+            new WideSwingRight(STRIKING_SLASHING, HurtSphere.AXE, 2, CombatUtil.STUN_LONG, new int[] {7, 12, 2, 8}, new Action.Properties().setChainFrom(AXE_BASIC_2_CONDITIONAL).setChainTo(AXE_BASIC_2).setChainState(2).setKnockback(AXE_KNOCKBACK).setImpact(Impact.MEDIUM).setConditionalChainTo(ActionsNF.AXE_BASIC_2_CONDITIONAL).setConditionalChainFunction(HITSTOP).setSound(SoundsNF.HEAVY_BLADE_SWING).setHarvestable(BlockTags.MINEABLE_WITH_AXE)));
     public static final RegistryObject<VerticalSwingCharged> AXE_ALTERNATE_1 = ACTIONS.register("axe_alternate_1", () ->
-            new VerticalSwingCharged(STRIKING_SLASHING, HurtSphere.AXE, 1, CombatUtil.STUN_VERY_LONG, new int[] {24, 6, 4, 7}, new Action.Properties().setChargeState(0).setKnockback(AXE_KNOCKBACK).setSound(SoundsNF.HEAVY_BLADE_SWING).setExtraSound(SoundsNF.HEAVY_BLADE_SWING_CHARGED).setHarvestable(BlockTags.MINEABLE_WITH_AXE)));
+            new VerticalSwingCharged(STRIKING_SLASHING, HurtSphere.AXE, 1, CombatUtil.STUN_VERY_LONG, new int[] {24, 6, 4, 7}, new Action.Properties().setChargeState(0).setKnockback(AXE_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.HEAVY_BLADE_SWING).setExtraSound(SoundsNF.HEAVY_BLADE_SWING_CHARGED).setHarvestable(BlockTags.MINEABLE_WITH_AXE)));
     public static final RegistryObject<CrawlingSwing> AXE_CRAWLING = ACTIONS.register("axe_crawling", () ->
-            new CrawlingSwing(STRIKING_SLASHING, HurtSphere.AXE, 2, CombatUtil.STUN_MEDIUM, new int[] {9, 6, 3, 7}, new Action.Properties().setSprinting().setCrawling().setKnockback(AXE_KNOCKBACK).setSound(SoundsNF.HEAVY_BLADE_SWING).setHarvestable(BlockTags.MINEABLE_WITH_AXE)));
+            new CrawlingSwing(STRIKING_SLASHING, HurtSphere.AXE, 2, CombatUtil.STUN_MEDIUM, new int[] {9, 6, 3, 7}, new Action.Properties().setSprinting().setCrawling().setKnockback(AXE_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.HEAVY_BLADE_SWING).setHarvestable(BlockTags.MINEABLE_WITH_AXE)));
     public static final RegistryObject<AxeCarveAction> AXE_CARVE = ACTIONS.register("axe_carve", () ->
             new AxeCarveAction(new int[] {7, 43, 8}, new Action.Properties().setChargeState(1).setSound(SoundsNF.SWING).setExtraSound(SoundsNF.SWING_CHARGED)));
 
     public static final RegistryObject<VerticalSwing> PICKAXE_BASIC_1 = ACTIONS.register("pickaxe_basic_1", () ->
-            new VerticalSwing(DamageType.STRIKING.asArray(), HurtSphere.PICKAXE, 1, CombatUtil.STUN_MEDIUM, new int[] {9, 6, 4, 7}, new Action.Properties().setSound(SoundsNF.SWING).setChainState(2).setKnockback(PICKAXE_KNOCKBACK).setChainTo(ActionsNF.PICKAXE_BASIC_2).setHarvestable(BlockTags.MINEABLE_WITH_PICKAXE)));
+            new VerticalSwing(DamageType.STRIKING.asArray(), HurtSphere.PICKAXE, 1, CombatUtil.STUN_MEDIUM, new int[] {9, 6, 4, 7}, new Action.Properties().setSound(SoundsNF.SWING).setChainState(2).setKnockback(PICKAXE_KNOCKBACK).setImpact(Impact.MEDIUM).setChainTo(ActionsNF.PICKAXE_BASIC_2).setHarvestable(BlockTags.MINEABLE_WITH_PICKAXE)));
     public static final RegistryObject<VerticalSwing> PICKAXE_BASIC_2 = ACTIONS.register("pickaxe_basic_2", () ->
-            new VerticalSwing(DamageType.STRIKING.asArray(), HurtSphere.PICKAXE, 1, CombatUtil.STUN_MEDIUM, new int[] {9, 6, 4, 7}, new Action.Properties().setSound(SoundsNF.SWING).setChainState(2).setKnockback(PICKAXE_KNOCKBACK).setChainTo(ActionsNF.PICKAXE_BASIC_3).setChainFrom(ActionsNF.PICKAXE_BASIC_1).setHarvestable(BlockTags.MINEABLE_WITH_PICKAXE)));
+            new VerticalSwing(DamageType.STRIKING.asArray(), HurtSphere.PICKAXE, 1, CombatUtil.STUN_MEDIUM, new int[] {9, 6, 4, 7}, new Action.Properties().setSound(SoundsNF.SWING).setChainState(2).setKnockback(PICKAXE_KNOCKBACK).setImpact(Impact.MEDIUM).setChainTo(ActionsNF.PICKAXE_BASIC_3).setChainFrom(ActionsNF.PICKAXE_BASIC_1).setHarvestable(BlockTags.MINEABLE_WITH_PICKAXE)));
     public static final RegistryObject<VerticalSwing> PICKAXE_BASIC_3 = ACTIONS.register("pickaxe_basic_3", () ->
-            new VerticalSwing(DamageType.STRIKING.asArray(), HurtSphere.PICKAXE, 1, CombatUtil.STUN_MEDIUM, new int[] {9, 6, 4, 7}, new Action.Properties().setSound(SoundsNF.SWING).setChainState(2).setKnockback(PICKAXE_KNOCKBACK).setChainTo(ActionsNF.PICKAXE_BASIC_2).setChainFrom(ActionsNF.PICKAXE_BASIC_2).setHarvestable(BlockTags.MINEABLE_WITH_PICKAXE)));
+            new VerticalSwing(DamageType.STRIKING.asArray(), HurtSphere.PICKAXE, 1, CombatUtil.STUN_MEDIUM, new int[] {9, 6, 4, 7}, new Action.Properties().setSound(SoundsNF.SWING).setChainState(2).setKnockback(PICKAXE_KNOCKBACK).setImpact(Impact.MEDIUM).setChainTo(ActionsNF.PICKAXE_BASIC_2).setChainFrom(ActionsNF.PICKAXE_BASIC_2).setHarvestable(BlockTags.MINEABLE_WITH_PICKAXE)));
     public static final RegistryObject<VerticalSwingCharged> PICKAXE_ALTERNATE_1 = ACTIONS.register("pickaxe_alternate_1", () ->
-            new VerticalSwingCharged(DamageType.STRIKING.asArray(), HurtSphere.PICKAXE, 1, CombatUtil.STUN_VERY_LONG, new int[] {24, 6, 4, 7}, new Action.Properties().setChargeState(0).setKnockback(PICKAXE_KNOCKBACK).setSound(SoundsNF.SWING).setExtraSound(SoundsNF.SWING_CHARGED).setHarvestable(BlockTags.MINEABLE_WITH_PICKAXE)));
+            new VerticalSwingCharged(DamageType.STRIKING.asArray(), HurtSphere.PICKAXE, 1, CombatUtil.STUN_VERY_LONG, new int[] {24, 6, 4, 7}, new Action.Properties().setChargeState(0).setKnockback(PICKAXE_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.SWING).setExtraSound(SoundsNF.SWING_CHARGED).setHarvestable(BlockTags.MINEABLE_WITH_PICKAXE)));
     public static final RegistryObject<CrawlingSwing> PICKAXE_CRAWLING = ACTIONS.register("pickaxe_crawling", () ->
-            new CrawlingSwing(DamageType.STRIKING.asArray(), HurtSphere.PICKAXE, 1, CombatUtil.STUN_MEDIUM, new int[] {9, 6, 4, 7}, new Action.Properties().setSprinting().setCrawling().setKnockback(PICKAXE_KNOCKBACK).setSound(SoundsNF.SWING).setHarvestable(BlockTags.MINEABLE_WITH_PICKAXE)));
+            new CrawlingSwing(DamageType.STRIKING.asArray(), HurtSphere.PICKAXE, 1, CombatUtil.STUN_MEDIUM, new int[] {9, 6, 4, 7}, new Action.Properties().setSprinting().setCrawling().setKnockback(PICKAXE_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.SWING).setHarvestable(BlockTags.MINEABLE_WITH_PICKAXE)));
 
     public static final RegistryObject<Dig> SHOVEL_BASIC_1 = ACTIONS.register("shovel_basic_1", () ->
             new Dig(new int[] {9, 4, 5, 3, 6}, new Action.Properties().setSound(SoundsNF.SWING).setChainState(3).setChainTo(ActionsNF.SHOVEL_BASIC_2).setHarvestable(BlockTags.MINEABLE_WITH_SHOVEL)));
@@ -218,26 +218,26 @@ public class ActionsNF {
             new CrawlingDig(new int[] {9, 4, 5, 3, 6}, new Action.Properties().setSprinting().setCrawling().setSound(SoundsNF.SWING).setHarvestable(BlockTags.MINEABLE_WITH_SHOVEL)));
 
     public static final RegistryObject<WideSwingRight> SICKLE_BASIC_1 = ACTIONS.register("sickle_basic_1", () ->
-            new WideSwingRight(PIERCING_SLASHING, HurtSphere.SICKLE, 2, CombatUtil.STUN_MEDIUM, new int[] {7, 11, 2, 9}, new Action.Properties().setSound(SoundsNF.BLADE_SWING).setChainState(2).setChainTo(ActionsNF.SICKLE_BASIC_2).setKnockback(SICKLE_KNOCKBACK).setHarvestable(TagsNF.MINEABLE_WITH_SICKLE), bleeding(0.35F)));
+            new WideSwingRight(PIERCING_SLASHING, HurtSphere.SICKLE, 2, CombatUtil.STUN_MEDIUM, new int[] {7, 11, 2, 9}, new Action.Properties().setSound(SoundsNF.BLADE_SWING).setChainState(2).setChainTo(ActionsNF.SICKLE_BASIC_2).setKnockback(SICKLE_KNOCKBACK).setImpact(Impact.MEDIUM).setHarvestable(TagsNF.MINEABLE_WITH_SICKLE), bleeding(0.35F)));
     public static final RegistryObject<WideSwingLeft> SICKLE_BASIC_2 = ACTIONS.register("sickle_basic_2", () ->
-            new WideSwingLeft(PIERCING_SLASHING, HurtSphere.SICKLE, 2, CombatUtil.STUN_MEDIUM, new int[] {7, 11, 2, 9}, new Action.Properties().setSound(SoundsNF.BLADE_SWING).setChainState(2).setChainTo(ActionsNF.SICKLE_BASIC_3).setChainFrom(ActionsNF.SICKLE_BASIC_1).setKnockback(SICKLE_KNOCKBACK).setHarvestable(TagsNF.MINEABLE_WITH_SICKLE), bleeding(0.35F)));
+            new WideSwingLeft(PIERCING_SLASHING, HurtSphere.SICKLE, 2, CombatUtil.STUN_MEDIUM, new int[] {7, 11, 2, 9}, new Action.Properties().setSound(SoundsNF.BLADE_SWING).setChainState(2).setChainTo(ActionsNF.SICKLE_BASIC_3).setChainFrom(ActionsNF.SICKLE_BASIC_1).setKnockback(SICKLE_KNOCKBACK).setImpact(Impact.MEDIUM).setHarvestable(TagsNF.MINEABLE_WITH_SICKLE), bleeding(0.35F)));
     public static final RegistryObject<WideSwingRight> SICKLE_BASIC_3 = ACTIONS.register("sickle_basic_3", () ->
-            new WideSwingRight(PIERCING_SLASHING, HurtSphere.SICKLE, 2, CombatUtil.STUN_MEDIUM, new int[] {7, 11, 2, 9}, new Action.Properties().setSound(SoundsNF.BLADE_SWING).setChainState(2).setChainTo(ActionsNF.SICKLE_BASIC_2).setChainFrom(ActionsNF.SICKLE_BASIC_2).setKnockback(SICKLE_KNOCKBACK).setHarvestable(TagsNF.MINEABLE_WITH_SICKLE), bleeding(0.35F)));
+            new WideSwingRight(PIERCING_SLASHING, HurtSphere.SICKLE, 2, CombatUtil.STUN_MEDIUM, new int[] {7, 11, 2, 9}, new Action.Properties().setSound(SoundsNF.BLADE_SWING).setChainState(2).setChainTo(ActionsNF.SICKLE_BASIC_2).setChainFrom(ActionsNF.SICKLE_BASIC_2).setKnockback(SICKLE_KNOCKBACK).setImpact(Impact.MEDIUM).setHarvestable(TagsNF.MINEABLE_WITH_SICKLE), bleeding(0.35F)));
     public static final RegistryObject<DiagonalSwingCharged> SICKLE_ALTERNATE_1 = ACTIONS.register("sickle_alternate_1", () ->
-            new DiagonalSwingCharged(DamageType.PIERCING.asArray(), HurtSphere.SICKLE, 2, CombatUtil.STUN_VERY_LONG, new int[] {24, 7, 4, 7}, new Action.Properties().setChargeState(0).setKnockback(SICKLE_KNOCKBACK).setSound(SoundsNF.BLADE_SWING).setExtraSound(SoundsNF.BLADE_SWING_CHARGED).setHarvestable(TagsNF.MINEABLE_WITH_SICKLE), bleeding(0.35F)));
+            new DiagonalSwingCharged(DamageType.PIERCING.asArray(), HurtSphere.SICKLE, 2, CombatUtil.STUN_VERY_LONG, new int[] {24, 7, 4, 7}, new Action.Properties().setChargeState(0).setKnockback(SICKLE_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.BLADE_SWING).setExtraSound(SoundsNF.BLADE_SWING_CHARGED).setHarvestable(TagsNF.MINEABLE_WITH_SICKLE), bleeding(0.35F)));
     public static final RegistryObject<CrawlingSwing> SICKLE_CRAWLING = ACTIONS.register("sickle_crawling", () ->
-            new CrawlingSwing(PIERCING_SLASHING, HurtSphere.SICKLE, 1, CombatUtil.STUN_MEDIUM, new int[] {10, 6, 4, 8}, new Action.Properties().setSprinting().setCrawling().setKnockback(SICKLE_KNOCKBACK).setSound(SoundsNF.BLADE_SWING).setHarvestable(TagsNF.MINEABLE_WITH_SICKLE), bleeding(0.35F)));
+            new CrawlingSwing(PIERCING_SLASHING, HurtSphere.SICKLE, 1, CombatUtil.STUN_MEDIUM, new int[] {10, 6, 4, 8}, new Action.Properties().setSprinting().setCrawling().setKnockback(SICKLE_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.BLADE_SWING).setHarvestable(TagsNF.MINEABLE_WITH_SICKLE), bleeding(0.35F)));
 
     public static final RegistryObject<VerticalSwing> ADZE_BASIC_1 = ACTIONS.register("adze_basic_1", () ->
-            new VerticalSwing(DamageType.SLASHING.asArray(), HurtSphere.ADZE, 1, CombatUtil.STUN_SHORT, new int[] {9, 6, 4, 7}, new Action.Properties().setSound(SoundsNF.SWING).setChainState(2).setChainTo(ActionsNF.ADZE_BASIC_2).setKnockback(ADZE_KNOCKBACK).setHarvestable(TagsNF.MINEABLE_WITH_ADZE)));
+            new VerticalSwing(DamageType.SLASHING.asArray(), HurtSphere.ADZE, 1, CombatUtil.STUN_SHORT, new int[] {9, 6, 4, 7}, new Action.Properties().setSound(SoundsNF.SWING).setChainState(2).setChainTo(ActionsNF.ADZE_BASIC_2).setKnockback(ADZE_KNOCKBACK).setImpact(Impact.MEDIUM).setHarvestable(TagsNF.MINEABLE_WITH_ADZE)));
     public static final RegistryObject<VerticalSwing> ADZE_BASIC_2 = ACTIONS.register("adze_basic_2", () ->
-            new VerticalSwing(DamageType.SLASHING.asArray(), HurtSphere.ADZE, 1, CombatUtil.STUN_SHORT, new int[] {9, 6, 4, 7}, new Action.Properties().setSound(SoundsNF.SWING).setChainState(2).setChainTo(ActionsNF.ADZE_BASIC_3).setChainFrom(ActionsNF.ADZE_BASIC_1).setKnockback(ADZE_KNOCKBACK).setHarvestable(TagsNF.MINEABLE_WITH_ADZE)));
+            new VerticalSwing(DamageType.SLASHING.asArray(), HurtSphere.ADZE, 1, CombatUtil.STUN_SHORT, new int[] {9, 6, 4, 7}, new Action.Properties().setSound(SoundsNF.SWING).setChainState(2).setChainTo(ActionsNF.ADZE_BASIC_3).setChainFrom(ActionsNF.ADZE_BASIC_1).setKnockback(ADZE_KNOCKBACK).setImpact(Impact.MEDIUM).setHarvestable(TagsNF.MINEABLE_WITH_ADZE)));
     public static final RegistryObject<VerticalSwing> ADZE_BASIC_3 = ACTIONS.register("adze_basic_3", () ->
-            new VerticalSwing(DamageType.SLASHING.asArray(), HurtSphere.ADZE, 1, CombatUtil.STUN_SHORT, new int[] {9, 6, 4, 7}, new Action.Properties().setSound(SoundsNF.SWING).setChainState(2).setChainTo(ActionsNF.ADZE_BASIC_2).setChainFrom(ActionsNF.ADZE_BASIC_2).setKnockback(ADZE_KNOCKBACK).setHarvestable(TagsNF.MINEABLE_WITH_ADZE)));
+            new VerticalSwing(DamageType.SLASHING.asArray(), HurtSphere.ADZE, 1, CombatUtil.STUN_SHORT, new int[] {9, 6, 4, 7}, new Action.Properties().setSound(SoundsNF.SWING).setChainState(2).setChainTo(ActionsNF.ADZE_BASIC_2).setChainFrom(ActionsNF.ADZE_BASIC_2).setKnockback(ADZE_KNOCKBACK).setImpact(Impact.MEDIUM).setHarvestable(TagsNF.MINEABLE_WITH_ADZE)));
     public static final RegistryObject<VerticalSwingCharged> ADZE_ALTERNATE_1 = ACTIONS.register("adze_alternate_1", () ->
-            new VerticalSwingCharged(DamageType.SLASHING.asArray(), HurtSphere.ADZE, 1, CombatUtil.STUN_LONG, new int[] {24, 6, 4, 7}, new Action.Properties().setChargeState(0).setKnockback(ADZE_KNOCKBACK).setSound(SoundsNF.SWING).setExtraSound(SoundsNF.SWING_CHARGED).setHarvestable(TagsNF.MINEABLE_WITH_ADZE)));
+            new VerticalSwingCharged(DamageType.SLASHING.asArray(), HurtSphere.ADZE, 1, CombatUtil.STUN_LONG, new int[] {24, 6, 4, 7}, new Action.Properties().setChargeState(0).setKnockback(ADZE_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.SWING).setExtraSound(SoundsNF.SWING_CHARGED).setHarvestable(TagsNF.MINEABLE_WITH_ADZE)));
     public static final RegistryObject<CrawlingSwing> ADZE_CRAWLING = ACTIONS.register("adze_crawling", () ->
-            new CrawlingSwing(DamageType.SLASHING.asArray(), HurtSphere.ADZE, 1, CombatUtil.STUN_SHORT, new int[] {9, 6, 4, 7}, new Action.Properties().setSprinting().setCrawling().setSound(SoundsNF.SWING).setKnockback(ADZE_KNOCKBACK).setHarvestable(TagsNF.MINEABLE_WITH_ADZE)));
+            new CrawlingSwing(DamageType.SLASHING.asArray(), HurtSphere.ADZE, 1, CombatUtil.STUN_SHORT, new int[] {9, 6, 4, 7}, new Action.Properties().setSprinting().setCrawling().setSound(SoundsNF.SWING).setKnockback(ADZE_KNOCKBACK).setImpact(Impact.MEDIUM).setHarvestable(TagsNF.MINEABLE_WITH_ADZE)));
     public static final RegistryObject<AdzeCarveAction> ADZE_CARVE = ACTIONS.register("adze_carve", () ->
             new AdzeCarveAction(new int[] {6, 43, 7}, new Action.Properties().setChargeState(1).setSound(SoundsNF.SWING).setExtraSound(SoundsNF.SWING_CHARGED)));
 
@@ -264,53 +264,53 @@ public class ActionsNF {
             new ChiselAndHammerCrawling(new int[] {9, 3, 3, 4, 9}, new Action.Properties().setSound(SoundsNF.HAMMER_FLINT_CHISEL_HIT).setSprinting().setCrawling().setHarvestable(BlockTags.MINEABLE_WITH_PICKAXE)));
 
     public static final RegistryObject<VerticalSwing> MAUL_BASIC_1 = ACTIONS.register("maul_basic_1", () ->
-            new VerticalSwing(STRIKING_SLASHING, HurtSphere.MAUL, 2, CombatUtil.STUN_VERY_LONG, new int[] {10, 6, 3, 10}, new Action.Properties().setChainTo(ActionsNF.MAUL_BASIC_2).setChainState(2).setKnockback(MAUL_KNOCKBACK).setSound(SoundsNF.HEAVY_BLADE_SWING).setHarvestable(TagsNF.MINEABLE_WITH_MAUL)));
+            new VerticalSwing(STRIKING_SLASHING, HurtSphere.MAUL, 2, CombatUtil.STUN_VERY_LONG, new int[] {10, 6, 3, 10}, new Action.Properties().setChainTo(ActionsNF.MAUL_BASIC_2).setChainState(2).setKnockback(MAUL_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.HEAVY_BLADE_SWING).setHarvestable(TagsNF.MINEABLE_WITH_MAUL)));
     public static final RegistryObject<VerticalSwing> MAUL_BASIC_2 = ACTIONS.register("maul_basic_2", () ->
-            new VerticalSwing(STRIKING_SLASHING, HurtSphere.MAUL, 2, CombatUtil.STUN_VERY_LONG, new int[] {10, 6, 3, 10}, new Action.Properties().setChainFrom(MAUL_BASIC_1).setChainTo(ActionsNF.MAUL_BASIC_3).setChainState(2).setKnockback(MAUL_KNOCKBACK).setSound(SoundsNF.HEAVY_BLADE_SWING).setHarvestable(TagsNF.MINEABLE_WITH_MAUL)));
+            new VerticalSwing(STRIKING_SLASHING, HurtSphere.MAUL, 2, CombatUtil.STUN_VERY_LONG, new int[] {10, 6, 3, 10}, new Action.Properties().setChainFrom(MAUL_BASIC_1).setChainTo(ActionsNF.MAUL_BASIC_3).setChainState(2).setKnockback(MAUL_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.HEAVY_BLADE_SWING).setHarvestable(TagsNF.MINEABLE_WITH_MAUL)));
     public static final RegistryObject<VerticalSwing> MAUL_BASIC_3 = ACTIONS.register("maul_basic_3", () ->
-            new VerticalSwing(STRIKING_SLASHING, HurtSphere.MAUL, 2, CombatUtil.STUN_VERY_LONG, new int[] {10, 6, 3, 10}, new Action.Properties().setChainFrom(MAUL_BASIC_2).setChainTo(MAUL_BASIC_2).setChainState(2).setKnockback(MAUL_KNOCKBACK).setSound(SoundsNF.HEAVY_BLADE_SWING).setHarvestable(TagsNF.MINEABLE_WITH_MAUL)));
+            new VerticalSwing(STRIKING_SLASHING, HurtSphere.MAUL, 2, CombatUtil.STUN_VERY_LONG, new int[] {10, 6, 3, 10}, new Action.Properties().setChainFrom(MAUL_BASIC_2).setChainTo(MAUL_BASIC_2).setChainState(2).setKnockback(MAUL_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.HEAVY_BLADE_SWING).setHarvestable(TagsNF.MINEABLE_WITH_MAUL)));
     public static final RegistryObject<VerticalSwingCharged> MAUL_ALTERNATE_1 = ACTIONS.register("maul_alternate_1", () ->
-            new VerticalSwingCharged(STRIKING_SLASHING, HurtSphere.MAUL, 2, CombatUtil.STUN_MAX, new int[] {32, 6, 4, 10}, new Action.Properties().setChargeState(0).setKnockback(MAUL_KNOCKBACK).setSound(SoundsNF.HEAVY_BLADE_SWING).setExtraSound(SoundsNF.HEAVY_BLADE_SWING_CHARGED).setHarvestable(TagsNF.MINEABLE_WITH_MAUL)));
+            new VerticalSwingCharged(STRIKING_SLASHING, HurtSphere.MAUL, 2, CombatUtil.STUN_MAX, new int[] {32, 6, 4, 10}, new Action.Properties().setChargeState(0).setKnockback(MAUL_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.HEAVY_BLADE_SWING).setExtraSound(SoundsNF.HEAVY_BLADE_SWING_CHARGED).setHarvestable(TagsNF.MINEABLE_WITH_MAUL)));
     public static final RegistryObject<CrawlingSwing> MAUL_CRAWLING = ACTIONS.register("maul_crawling", () ->
-            new CrawlingSwing(STRIKING_SLASHING, HurtSphere.MAUL, 2, CombatUtil.STUN_LONG, new int[] {10, 6, 3, 10}, new Action.Properties().setSprinting().setCrawling().setKnockback(MAUL_KNOCKBACK).setSound(SoundsNF.HEAVY_BLADE_SWING).setHarvestable(TagsNF.MINEABLE_WITH_MAUL)));
+            new CrawlingSwing(STRIKING_SLASHING, HurtSphere.MAUL, 2, CombatUtil.STUN_LONG, new int[] {10, 6, 3, 10}, new Action.Properties().setSprinting().setCrawling().setKnockback(MAUL_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.HEAVY_BLADE_SWING).setHarvestable(TagsNF.MINEABLE_WITH_MAUL)));
 
     //Techniques
     public static final RegistryObject<WeaponGuardAction> SWORD_GUARD = ACTIONS.register("sword_guard", () ->
             new WeaponGuardAction(new Action.Properties().setChargeState(0).setChainState(0).setChainTo(ActionsNF.SWORD_RIPOSTE).setSound(SoundsNF.WEAPON_BLOCK), 5, 5));
     public static final RegistryObject<Riposte> SWORD_RIPOSTE = ACTIONS.register("sword_riposte", () ->
-            new Riposte(DamageType.SLASHING.asArray(), HurtSphere.SWORD, 2, CombatUtil.STUN_LONG, new int[] {5, 6, 3, 6}, new Action.Properties().setChainFrom(SWORD_GUARD).setKnockback(SWORD_KNOCKBACK).setSound(SoundsNF.BLADE_SWING_CHARGED)));
+            new Riposte(DamageType.SLASHING.asArray(), HurtSphere.SWORD, 2, CombatUtil.STUN_LONG, new int[] {5, 6, 3, 6}, new Action.Properties().setChainFrom(SWORD_GUARD).setKnockback(SWORD_KNOCKBACK).setImpact(Impact.HIGH).setSound(SoundsNF.BLADE_SWING_CHARGED)));
     public static final RegistryObject<WeaponGuardAction> SABRE_GUARD = ACTIONS.register("sabre_guard", () ->
             new WeaponGuardAction(new Action.Properties().setChargeState(0).setChainState(0).setChainTo(ActionsNF.SABRE_RIPOSTE).setSound(SoundsNF.WEAPON_BLOCK), 5, 5));
     public static final RegistryObject<Riposte> SABRE_RIPOSTE = ACTIONS.register("sabre_riposte", () ->
-            new Riposte(DamageType.SLASHING.asArray(), HurtSphere.SABRE, 2, CombatUtil.STUN_LONG, new int[] {5, 6, 3, 6}, new Action.Properties().setChainFrom(SABRE_GUARD).setKnockback(SABRE_KNOCKBACK).setSound(SoundsNF.BLADE_SWING_CHARGED), bleeding(0.4F)));
+            new Riposte(DamageType.SLASHING.asArray(), HurtSphere.SABRE, 2, CombatUtil.STUN_LONG, new int[] {5, 6, 3, 6}, new Action.Properties().setChainFrom(SABRE_GUARD).setKnockback(SABRE_KNOCKBACK).setImpact(Impact.HIGH).setSound(SoundsNF.BLADE_SWING_CHARGED), bleeding(0.4F)));
     public static final RegistryObject<WeaponGuardAction> MACE_GUARD = ACTIONS.register("mace_guard", () ->
             new WeaponGuardAction(new Action.Properties().setChargeState(0).setChainState(0).setChainTo(ActionsNF.MACE_RIPOSTE).setSound(SoundsNF.WEAPON_BLOCK), 5, 5));
     public static final RegistryObject<Riposte> MACE_RIPOSTE = ACTIONS.register("mace_riposte", () ->
-            new Riposte(DamageType.STRIKING.asArray(), HurtSphere.MACE, 1, CombatUtil.STUN_VERY_LONG, new int[] {6, 6, 3, 7}, new Action.Properties().setChainFrom(MACE_GUARD).setKnockback(MACE_KNOCKBACK).setSound(SoundsNF.SWING_CHARGED), bleeding(0.3F)));
+            new Riposte(DamageType.STRIKING.asArray(), HurtSphere.MACE, 1, CombatUtil.STUN_VERY_LONG, new int[] {6, 6, 3, 7}, new Action.Properties().setChainFrom(MACE_GUARD).setKnockback(MACE_KNOCKBACK).setImpact(Impact.HIGH).setSound(SoundsNF.SWING_CHARGED), bleeding(0.3F)));
     public static final RegistryObject<WeaponGuardAction> SICKLE_GUARD = ACTIONS.register("sickle_guard", () ->
             new WeaponGuardAction(new Action.Properties().setChargeState(0).setChainState(0).setChainTo(ActionsNF.SICKLE_RIPOSTE).setSound(SoundsNF.WEAPON_BLOCK), 5, 5));
     public static final RegistryObject<Riposte> SICKLE_RIPOSTE = ACTIONS.register("sickle_riposte", () ->
-            new Riposte(PIERCING_SLASHING, HurtSphere.SICKLE, 2, CombatUtil.STUN_VERY_LONG, new int[] {6, 6, 3, 7}, new Action.Properties().setChainFrom(SICKLE_GUARD).setKnockback(SICKLE_KNOCKBACK).setSound(SoundsNF.BLADE_SWING_CHARGED), bleeding(0.35F)));
+            new Riposte(PIERCING_SLASHING, HurtSphere.SICKLE, 2, CombatUtil.STUN_VERY_LONG, new int[] {6, 6, 3, 7}, new Action.Properties().setChainFrom(SICKLE_GUARD).setKnockback(SICKLE_KNOCKBACK).setImpact(Impact.HIGH).setSound(SoundsNF.BLADE_SWING_CHARGED), bleeding(0.35F)));
 
     public static final RegistryObject<ThrowSpearTechnique> SPEAR_THROW = ACTIONS.register("spear_throw", () ->
-            new ThrowSpearTechnique(DamageType.PIERCING.asArray(), CombatUtil.STUN_MEDIUM, new int[] {8, 18, 5, 2, 6}, new Action.Properties().setChargeState(1).setKnockback(SPEAR_KNOCKBACK).setSound(SoundsNF.LONG_BLADE_SWING).setExtraSound(SoundsNF.LONG_BLADE_SWING_CHARGED),
+            new ThrowSpearTechnique(DamageType.PIERCING.asArray(), CombatUtil.STUN_MEDIUM, new int[] {8, 18, 5, 2, 6}, new Action.Properties().setChargeState(1).setKnockback(SPEAR_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.LONG_BLADE_SWING).setExtraSound(SoundsNF.LONG_BLADE_SWING_CHARGED),
                     2F, 0, false));
     public static final RegistryObject<ThrowDaggerTechnique> DAGGER_THROW = ACTIONS.register("dagger_throw", () ->
-            new ThrowDaggerTechnique(DamageType.PIERCING.asArray(), CombatUtil.STUN_SHORT, new int[] {8, 14, 5, 2, 5}, new Action.Properties().setChargeState(1).setKnockback(DAGGER_KNOCKBACK).setSound(SoundsNF.SHORT_BLADE_SWING).setExtraSound(SoundsNF.SHORT_BLADE_SWING_CHARGED),
+            new ThrowDaggerTechnique(DamageType.PIERCING.asArray(), CombatUtil.STUN_SHORT, new int[] {8, 14, 5, 2, 5}, new Action.Properties().setChargeState(1).setKnockback(DAGGER_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.SHORT_BLADE_SWING).setExtraSound(SoundsNF.SHORT_BLADE_SWING_CHARGED),
                     1.75F, 0, true));
     public static final RegistryObject<ThrowAxeTechnique> AXE_THROW = ACTIONS.register("axe_throw", () ->
-            new ThrowAxeTechnique(DamageType.SLASHING.asArray(), CombatUtil.STUN_MEDIUM, new int[] {28, 4, 2, 6}, new Action.Properties().setChargeState(0).setKnockback(AXE_KNOCKBACK).setSound(SoundsNF.HEAVY_BLADE_SWING).setExtraSound(SoundsNF.HEAVY_BLADE_SWING_CHARGED),
+            new ThrowAxeTechnique(DamageType.SLASHING.asArray(), CombatUtil.STUN_MEDIUM, new int[] {28, 4, 2, 6}, new Action.Properties().setChargeState(0).setKnockback(AXE_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.HEAVY_BLADE_SWING).setExtraSound(SoundsNF.HEAVY_BLADE_SWING_CHARGED),
                     1.6F, 80, true));
 
     public static final RegistryObject<HammerTechnique> HAMMER_UPSET = ACTIONS.register("hammer_upset", () ->
-            new HammerTechnique(AnvilAction.UPSET, AnvilAction.UPSET_LINE, DamageType.STRIKING.asArray(), HurtSphere.HAMMER, 2, CombatUtil.STUN_MEDIUM, new int[] {24, 5, 4, 9}, new Action.Properties().setChargeState(0).setSound(SoundsNF.SWING).setKnockback(HAMMER_KNOCKBACK).setExtraSound(SoundsNF.SWING_CHARGED)));
+            new HammerTechnique(AnvilAction.UPSET, AnvilAction.UPSET_LINE, DamageType.STRIKING.asArray(), HurtSphere.HAMMER, 2, CombatUtil.STUN_MEDIUM, new int[] {24, 5, 4, 9}, new Action.Properties().setChargeState(0).setSound(SoundsNF.SWING).setKnockback(HAMMER_KNOCKBACK).setImpact(Impact.MEDIUM).setExtraSound(SoundsNF.SWING_CHARGED)));
 
     //Items
     public static final RegistryObject<ShieldGuardAction> SHIELD_GUARD = ACTIONS.register("shield_guard", () ->
             new ShieldGuardAction(new Action.Properties().setChargeState(0).setChainState(0).setChainTo(ActionsNF.SHIELD_RIPOSTE).setSound(() -> SoundEvents.SHIELD_BLOCK), 5, 5));
     public static final RegistryObject<ShieldRiposte> SHIELD_RIPOSTE = ACTIONS.register("shield_riposte", () ->
             new ShieldRiposte(5F, DamageType.ABSOLUTE.asArray(), HurtSphere.SHIELD, 3, CombatUtil.STUN_VERY_LONG, new int[] {5, 4, 3, 6},
-                    new Action.Properties().setChainFrom(SHIELD_GUARD).setKnockback(0.8F).setSound(SoundsNF.SWING_CHARGED)));
+                    new Action.Properties().setChainFrom(SHIELD_GUARD).setKnockback(0.8F).setImpact(Impact.HIGH).setSound(SoundsNF.SWING_CHARGED)));
     public static final RegistryObject<SlingThrow> SLING_THROW = ACTIONS.register("sling_throw", () ->
             new SlingThrow(new Action.Properties().setChargeState(1).setSound(SoundsNF.SWING).setExtraSound(SoundsNF.SWING_CHARGED),
                     -0.25F, 3.1F, 8, 10 + 9 + 8 + 7, 4, 3, 7));
@@ -398,26 +398,26 @@ public class ActionsNF {
 
     public static final RegistryObject<HuskRightSwipe> HUSK_RIGHT_SWIPE_1 = ACTIONS.register("husk_right_swipe_1", () ->
             new HuskRightSwipe(8, DamageType.STRIKING.asArray(), HurtSphere.HUSK_ARM, 2, CombatUtil.STUN_SHORT, new int[] {7, 1, 6, 2, 7},
-                    new Action.Properties().setChainTo(ActionsNF.HUSK_RIGHT_SWIPE_2).setChainState(3).setKnockback(0.25F).setSound(SoundsNF.HUSK_SWING)));
+                    new Action.Properties().setChainTo(ActionsNF.HUSK_RIGHT_SWIPE_2).setChainState(3).setKnockback(0.25F).setImpact(Impact.MEDIUM).setSound(SoundsNF.HUSK_SWING)));
     public static final RegistryObject<HuskLeftSwipe> HUSK_RIGHT_SWIPE_2 = ACTIONS.register("husk_right_swipe_2", () ->
             new HuskLeftSwipe(8, DamageType.STRIKING.asArray(), HurtSphere.HUSK_ARM, 2, CombatUtil.STUN_SHORT, new int[] {6, 1, 6, 2, 7},
-                    new Action.Properties().setChainFrom(HUSK_RIGHT_SWIPE_1).setKnockback(0.25F).setSound(SoundsNF.HUSK_SWING)));
+                    new Action.Properties().setChainFrom(HUSK_RIGHT_SWIPE_1).setKnockback(0.25F).setImpact(Impact.MEDIUM).setSound(SoundsNF.HUSK_SWING)));
     public static final RegistryObject<HuskLeftSwipe> HUSK_LEFT_SWIPE_1 = ACTIONS.register("husk_left_swipe_1", () ->
             new HuskLeftSwipe(8, DamageType.STRIKING.asArray(), HurtSphere.HUSK_ARM, 2, CombatUtil.STUN_SHORT, new int[] {7, 1, 6, 2, 7},
-                    new Action.Properties().setChainTo(ActionsNF.HUSK_LEFT_SWIPE_2).setChainState(3).setKnockback(0.25F).setSound(SoundsNF.HUSK_SWING)));
+                    new Action.Properties().setChainTo(ActionsNF.HUSK_LEFT_SWIPE_2).setChainState(3).setKnockback(0.25F).setImpact(Impact.MEDIUM).setSound(SoundsNF.HUSK_SWING)));
     public static final RegistryObject<HuskRightSwipe> HUSK_LEFT_SWIPE_2 = ACTIONS.register("husk_left_swipe_2", () ->
             new HuskRightSwipe(8, DamageType.STRIKING.asArray(), HurtSphere.HUSK_ARM, 2, CombatUtil.STUN_SHORT, new int[] {6, 1, 6, 2, 7},
-                    new Action.Properties().setChainFrom(HUSK_LEFT_SWIPE_1).setKnockback(0.25F).setSound(SoundsNF.HUSK_SWING)));
+                    new Action.Properties().setChainFrom(HUSK_LEFT_SWIPE_1).setKnockback(0.25F).setImpact(Impact.MEDIUM).setSound(SoundsNF.HUSK_SWING)));
     public static final RegistryObject<HuskOverhead> HUSK_OVERHEAD = ACTIONS.register("husk_overhead", () ->
             new HuskOverhead(12, DamageType.STRIKING.asArray(), HurtSphere.HUSK_ARM, 2, CombatUtil.STUN_MEDIUM, new int[] {8, 2, 7, 8},
-                    new Action.Properties().setKnockback(0.4F).setSound(SoundsNF.HUSK_SWING)));
+                    new Action.Properties().setKnockback(0.4F).setImpact(Impact.HIGH).setSound(SoundsNF.HUSK_SWING)));
     public static final RegistryObject<HuskOverhead> HUSK_MINE = ACTIONS.register("husk_mine", () ->
             new HuskOverhead(12, DamageType.STRIKING.asArray(), HurtSphere.HUSK_ARM, 2, CombatUtil.STUN_MEDIUM, new int[] {8, 2, 7, 8},
-                    new Action.Properties().setKnockback(0.4F).setSound(SoundsNF.HUSK_SWING)));
+                    new Action.Properties().setKnockback(0.4F).setImpact(Impact.HIGH).setSound(SoundsNF.HUSK_SWING)));
 
     public static final RegistryObject<SkeletonThrust> SKELETON_THRUST = ACTIONS.register("skeleton_thrust", () ->
             new SkeletonThrust(6, DamageType.STRIKING.asArray(), HurtSphere.SKELETON_ARM, 1, CombatUtil.STUN_SHORT, new int[] {7, 5, 2, 7},
-                    new Action.Properties().setKnockback(0.15F).setSound(SoundsNF.SKELETON_THRUST)));
+                    new Action.Properties().setKnockback(0.15F).setImpact(Impact.MEDIUM).setSound(SoundsNF.SKELETON_THRUST)));
     public static final RegistryObject<SkeletonShoot> SKELETON_SHOOT = ACTIONS.register("skeleton_shoot", () ->
             new SkeletonShoot(new Action.Properties().setChargeState(2).setSound(SoundsNF.SKELETON_BOW_SHOOT), 9, 20, 40, 8));
 
@@ -432,22 +432,22 @@ public class ActionsNF {
 
     public static final RegistryObject<CockatriceBite> COCKATRICE_BITE = ACTIONS.register("cockatrice_bite", () ->
             new CockatriceBite(22F, DamageType.PIERCING.asArray(), HurtSphere.COCKATRICE_BITE, 1, CombatUtil.STUN_MEDIUM,
-                    new int[] {10, 6, 9}, new Action.Properties().setSound(SoundsNF.COCKATRICE_BITE)));
+                    new int[] {10, 6, 9}, new Action.Properties().setImpact(Impact.MEDIUM).setSound(SoundsNF.COCKATRICE_BITE)));
     public static final RegistryObject<CockatriceClaw> COCKATRICE_CLAW = ACTIONS.register("cockatrice_claw", () ->
             new CockatriceClaw(26F, DamageType.SLASHING.asArray(), HurtSphere.COCKATRICE_CLAW, 1, CombatUtil.STUN_LONG,
-                    new int[] {9, 4, 6}, new Action.Properties().setKnockback(0.3F)));
+                    new int[] {9, 4, 6}, new Action.Properties().setKnockback(0.3F).setImpact(Impact.MEDIUM)));
     public static final RegistryObject<CockatriceSpit> COCKATRICE_SPIT = ACTIONS.register("cockatrice_spit", () ->
             new CockatriceSpit(new Action.Properties().setSound(SoundsNF.COCKATRICE_SPIT), 14, 6, 9));
 
     public static final RegistryObject<SpiderBite> SPIDER_BITE_STRONG = ACTIONS.register("spider_bite_strong", () ->
             new SpiderBite(22F, DamageType.PIERCING.asArray(), HurtSphere.SPIDER_BITE, 1, CombatUtil.STUN_LONG,
-                    new int[] {9, 5, 8}, new Action.Properties().setSound(SoundsNF.SPIDER_BITE)));
+                    new int[] {9, 5, 8}, new Action.Properties().setImpact(Impact.MEDIUM).setSound(SoundsNF.SPIDER_BITE)));
     public static final RegistryObject<SpiderBite> SPIDER_BITE_PARALYZING = ACTIONS.register("spider_bite_paralyzing", () ->
             new SpiderBite(18F, DamageType.PIERCING.asArray(), HurtSphere.SPIDER_BITE, 1, CombatUtil.STUN_MEDIUM,
-                    new int[] {9, 5, 8}, new Action.Properties().setSound(SoundsNF.SPIDER_BITE), new AttackEffect(EffectsNF.PARALYSIS, 18 * 20, 0, 1)));
+                    new int[] {9, 5, 8}, new Action.Properties().setImpact(Impact.LOW).setSound(SoundsNF.SPIDER_BITE), new AttackEffect(EffectsNF.PARALYSIS, 18 * 20, 0, 1)));
     public static final RegistryObject<SpiderBite> SPIDER_BITE_POISONOUS = ACTIONS.register("spider_bite_poisonous", () ->
             new SpiderBite(18F, DamageType.PIERCING.asArray(), HurtSphere.SPIDER_BITE, 1, CombatUtil.STUN_MEDIUM,
-                    new int[] {9, 5, 8}, new Action.Properties().setSound(SoundsNF.SPIDER_BITE), new AttackEffect(EffectsNF.POISON, 10 * 20, 0, 1)));
+                    new int[] {9, 5, 8}, new Action.Properties().setImpact(Impact.LOW).setSound(SoundsNF.SPIDER_BITE), new AttackEffect(EffectsNF.POISON, 10 * 20, 0, 1)));
 
     public static final RegistryObject<RockwormRetreat> ROCKWORM_RETREAT = ACTIONS.register("rockworm_retreat", () ->
             new RockwormRetreat(new Action.Properties(), 6));
@@ -455,7 +455,7 @@ public class ActionsNF {
             new RockwormEmerge(new Action.Properties(), 6));
     public static final RegistryObject<RockwormBite> ROCKWORM_BITE = ACTIONS.register("rockworm_bite", () ->
             new RockwormBite(35F, DamageType.PIERCING.asArray(), HurtSphere.ROCKWORM_BITE, 2, 6,
-                    new int[] {5, 7}, new Action.Properties().setKnockback(-1F).setSound(SoundsNF.SPIDER_BITE)));
+                    new int[] {5, 7}, new Action.Properties().setKnockback(-1F).setImpact(Impact.HIGH).setSound(SoundsNF.SPIDER_BITE)));
 
     public static void register() {
         ACTIONS.register(Nightfall.MOD_EVENT_BUS);

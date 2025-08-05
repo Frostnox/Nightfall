@@ -380,11 +380,9 @@ public class CommonEventHandler {
                     float durabilityPenalty = CombatUtil.getArmorDefenseDurabilityPenalty(item.getMaxDamage() - item.getDamageValue(), item.getMaxDamage());
                     boolean penalized = durabilityPenalty < 1F;
                     for(int i = 0; i < 6; i++) {
-                        float defense = armor.material.getDefense(armor.slot, DamageType.values()[i].asArray(), false) * durabilityPenalty;
-                        float absorption = armor.material.getAbsorption(armor.slot, DamageType.values()[i].asArray(), false);
-                        tooltip.add(getTooltipIndex(tooltip), new TextComponent(format.format(defense)).withStyle(penalized ? ChatFormatting.DARK_RED : ChatFormatting.DARK_GREEN)
-                                .append(new TextComponent("/" + format.format(absorption * 100) + "% ").withStyle(ChatFormatting.DARK_GREEN))
-                                .append(RenderUtil.getDamageTypeText(DamageType.values()[i]).append(" ").append(new TranslatableComponent("item.armor.negation"))
+                        float defense = armor.material.getDefense(armor.slot, DamageType.values()[i].asArray(), false);
+                        tooltip.add(getTooltipIndex(tooltip), new TextComponent(format.format(defense * 100) + "% ").withStyle(penalized ? ChatFormatting.DARK_RED : ChatFormatting.DARK_GREEN)
+                                .append(RenderUtil.getDamageTypeText(DamageType.values()[i]).append(" ").append(new TranslatableComponent("item.armor.defense"))
                                         .withStyle(ChatFormatting.BLUE)));
                     }
                 }
