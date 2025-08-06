@@ -1,6 +1,7 @@
 package frostnox.nightfall.item;
 
 import frostnox.nightfall.action.DamageType;
+import frostnox.nightfall.action.Poise;
 import frostnox.nightfall.block.IMetal;
 import frostnox.nightfall.block.Metal;
 import frostnox.nightfall.registry.RegistriesNF;
@@ -16,12 +17,12 @@ import java.util.Locale;
 import java.util.function.Supplier;
 
 public enum TieredArmorMaterial implements ITieredArmorMaterial {
-    LEATHER(0, null, null, 8, Weight.LIGHT, false, new float[]{0.02F, 0.02F, 0F, 0F, 0.02F, 0.02F},
-            10, SoundsNF.LIGHT_ARMOR_EQUIP, 0.1F, RenderUtil.COLOR_LEATHER),
-    PADDED(0, null, null, 8, Weight.LIGHT, false, new float[]{0.05F, 0.0F, 0.0F, 0F, 0F, 0F},
-            10, SoundsNF.LIGHT_ARMOR_EQUIP, 0.1F, RenderUtil.COLOR_LINEN),
-    RAGGED(0, null, Style.UNDEAD, 8, Weight.LIGHT, false, new float[]{0F, 0F, 0F, 0F, 0F, 0F},
-            10, SoundsNF.LIGHT_ARMOR_EQUIP, 0F, RenderUtil.COLOR_UNDEAD_CLOTH),
+    LEATHER(0, null, null, 8, Weight.LIGHT, false, new float[]{0.2F, 0.2F, 0.15F, 0.1F, 0.1F, 0.1F},
+            10, SoundsNF.LIGHT_ARMOR_EQUIP, 0.1F, RenderUtil.COLOR_LEATHER, Poise.NONE),
+    PADDED(0, null, null, 8, Weight.LIGHT, false, new float[]{0.25F, 0.2F, 0.1F, 0.05F, 0.1F, 0.1F},
+            10, SoundsNF.LIGHT_ARMOR_EQUIP, 0.1F, RenderUtil.COLOR_LINEN, Poise.NONE),
+    RAGGED(0, null, Style.UNDEAD, 8, Weight.LIGHT, false, new float[]{0.15F, 0.1F, 0.1F, 0F, 0.05F, 0.05F},
+            10, SoundsNF.LIGHT_ARMOR_EQUIP, 0F, RenderUtil.COLOR_UNDEAD_CLOTH, Poise.NONE),
     RUSTED(Metal.METEORITE, ArmorType.PLATE, Style.UNDEAD, 11, Weight.HEAVY,
             SoundsNF.PLATE_ARMOR_EQUIP, 0.25F, RenderUtil.COLOR_UNDEAD_CLOTH),
     COPPER_PLATE_SURVIVOR(Metal.COPPER, ArmorType.PLATE, Style.SURVIVOR, 11, Weight.HEAVY,
@@ -129,8 +130,9 @@ public enum TieredArmorMaterial implements ITieredArmorMaterial {
     private final float knockbackResistance;
     private final int defaultColor;
     private final boolean isMetal;
+    private final Poise poise;
 
-    TieredArmorMaterial(int tier, @Nullable ArmorType armorType, @Nullable IStyle style, int maxDamageFactor, Weight weight, boolean isMetal, float[] defense, int enchantability, Supplier<SoundEvent> soundEvent, float knockbackResistance, int defaultColor) {
+    TieredArmorMaterial(int tier, @Nullable ArmorType armorType, @Nullable IStyle style, int maxDamageFactor, Weight weight, boolean isMetal, float[] defense, int enchantability, Supplier<SoundEvent> soundEvent, float knockbackResistance, int defaultColor, Poise poise) {
         this.tier = tier;
         this.armorType = armorType;
         this.style = style;
@@ -144,6 +146,7 @@ public enum TieredArmorMaterial implements ITieredArmorMaterial {
         this.knockbackResistance = knockbackResistance;
         this.defaultColor = defaultColor;
         this.isMetal = isMetal;
+        this.poise = poise;
     }
 
     TieredArmorMaterial(IMetal metal, ArmorType armorType, IStyle style, int maxDamageFactor, Weight weight, Supplier<SoundEvent> soundEvent, float knockbackResistance, int defaultColor) {
@@ -163,6 +166,7 @@ public enum TieredArmorMaterial implements ITieredArmorMaterial {
         this.knockbackResistance = knockbackResistance;
         this.defaultColor = defaultColor;
         isMetal = true;
+        this.poise = armorType.poise;
     }
 
     public static ITieredArmorMaterial fromString(String name) {
@@ -251,5 +255,10 @@ public enum TieredArmorMaterial implements ITieredArmorMaterial {
     @Override
     public boolean isMetal() {
         return isMetal;
+    }
+
+    @Override
+    public Poise getPoise() {
+        return poise;
     }
 }

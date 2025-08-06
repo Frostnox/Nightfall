@@ -3,6 +3,7 @@ package frostnox.nightfall.util;
 import frostnox.nightfall.action.Action;
 import frostnox.nightfall.action.DamageType;
 import frostnox.nightfall.action.DamageTypeSource;
+import frostnox.nightfall.action.Poise;
 import frostnox.nightfall.capability.IActionTracker;
 import frostnox.nightfall.capability.IPlayerData;
 import frostnox.nightfall.entity.entity.ActionableEntity;
@@ -12,6 +13,7 @@ import frostnox.nightfall.registry.forge.AttributesNF;
 
 import frostnox.nightfall.util.animation.AnimationCalculator;
 import frostnox.nightfall.util.data.Vec3f;
+import frostnox.nightfall.util.data.Wrapper;
 import frostnox.nightfall.util.math.Easing;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
@@ -42,6 +44,7 @@ import java.util.stream.Collectors;
 
 public class CombatUtil {
     public static final UUID BLOCK_SLOW_ID = UUID.fromString("c59cdce7-9656-4f59-add3-09be735e32b3");
+    public static final UUID BLOCK_POISE_ID = UUID.fromString("3f84ae45-448a-488c-9815-8475a621cb47");
     public static final UUID STUN_SLOW_ID = UUID.fromString("06dbd56c-1fe0-4183-81a2-15fada3c0f8b");
     public static final UUID ACTION_SLOW_ID = UUID.fromString("cecd39e8-0308-4403-ac3c-faa9463acf9f");
     public static final UUID ACTION_SPEED_ID = UUID.fromString("f543633f-f272-4504-9940-a2fe3aee3698");
@@ -115,18 +118,22 @@ public class CombatUtil {
         entity.yBodyRot = calc.getTransformations().x();
     }
 
-    public static void addTransientMultiplier(LivingEntity entity, AttributeInstance attribute, float amount, UUID id, String name) {
+    public static void addTransientMultiplier(LivingEntity entity, AttributeInstance attribute, double amount, UUID id, String name) {
+        addTransientModifier(entity, attribute, amount, id, name, AttributeModifier.Operation.MULTIPLY_TOTAL);
+    }
+
+    public static void addTransientModifier(LivingEntity entity, AttributeInstance attribute, double amount, UUID id, String name, AttributeModifier.Operation op) {
         if(!entity.level.isClientSide()) {
             if(attribute != null) {
                 if(attribute.getModifier(id) != null) {
                     attribute.removeModifier(id);
                 }
-                attribute.addTransientModifier(new AttributeModifier(id, name, amount, AttributeModifier.Operation.MULTIPLY_TOTAL));
+                attribute.addTransientModifier(new AttributeModifier(id, name, amount, op));
             }
         }
     }
 
-    public static void removeTransientMultiplier(LivingEntity entity, AttributeInstance attribute, UUID id) {
+    public static void removeTransientModifier(LivingEntity entity, AttributeInstance attribute, UUID id) {
         if(!entity.level.isClientSide()) {
             if(attribute != null) {
                 if(attribute.getModifier(id) != null) {
@@ -146,7 +153,7 @@ public class CombatUtil {
     }
 
     public static float applyDamageReduction(float damage, float defense) {
-        return Math.max(0, damage - defense * (1F - defense));
+        return Math.max(0, damage * (1F - defense));
     }
 
     public static float getArmorDefenseDurabilityPenalty(float durability, float maxDurability) {
@@ -185,7 +192,7 @@ public class CombatUtil {
         return damage;
     }
 
-    public static float applyBodyDamageCalculations(LivingEntity hitEntity, DamageTypeSource source, float damage) {
+    public static float applyBodyDamageCalculations(LivingEntity hitEntity, DamageTypeSource source, float damage, Wrapper<Poise> poise) {
         //Armor
         if(!source.isDoT()) {
             if(hitEntity instanceof Player player) {
@@ -207,22 +214,27 @@ public class CombatUtil {
                     }
                     if(armorIndex == 3) damage *= 1.2F; //Damage multiplier for head
                     ItemStack stack = player.getInventory().armor.get(armorIndex);
-                    if(stack.getItem() instanceof TieredArmorItem armor && !source.isOnlyType(DamageType.ABSOLUTE)) {
-                        if(armor.material.isMetal()) source.tryArmorSoundConversion();
-                        damage = armor.material.getFinalDamage(armor.slot, source.types, stack.getMaxDamage() - stack.getDamageValue(), damage, false);
-                        int index = armorIndex;
-                        stack.hurtAndBreak((int)durabilityDmg, hitEntity, (p_214023_1_) -> {
-                            p_214023_1_.broadcastBreakEvent(EquipmentSlot.byTypeAndIndex(EquipmentSlot.Type.ARMOR, index));
-                        });
+                    if(stack.getItem() instanceof TieredArmorItem armor) {
+                        if(poise.val.ordinal() < armor.material.getPoise().ordinal()) poise.val = armor.material.getPoise();
+                        if(!source.isOnlyType(DamageType.ABSOLUTE)) {
+                            if(armor.material.isMetal()) source.tryArmorSoundConversion();
+                            damage = armor.material.getFinalDamage(armor.slot, source.types, stack.getMaxDamage() - stack.getDamageValue(), damage, false);
+                            int index = armorIndex;
+                            stack.hurtAndBreak((int)durabilityDmg, hitEntity, (p_214023_1_) -> {
+                                p_214023_1_.broadcastBreakEvent(EquipmentSlot.byTypeAndIndex(EquipmentSlot.Type.ARMOR, index));
+                            });
+                        }
                     }
                 }
                 //Take weighted averages of slots if source had no location
                 else if(!source.isOnlyType(DamageType.ABSOLUTE)) {
                     float durabilityDmg = Math.max(1, damage / 20F);
                     boolean isMetal = false;
+                    int totalPoise = 0;
                     for(int i = 0; i < player.getInventory().armor.size(); i++) {
                         ItemStack stack = player.getInventory().armor.get(i);
                         if(stack.getItem() instanceof TieredArmorItem armor) {
+                            totalPoise += armor.material.getPoise().ordinal();
                             if(!isMetal && armor.material.isMetal()) isMetal = true;
                             damage = armor.material.getFinalDamage(armor.slot, source.types, stack.getDamageValue(), damage, true);
                             int index = i;
@@ -231,11 +243,13 @@ public class CombatUtil {
                             );
                         }
                     }
+                    totalPoise /= 4;
+                    if(poise.val.ordinal() < totalPoise) poise.val = Poise.values()[totalPoise];
                     if(isMetal) source.tryArmorSoundConversion();
                 }
             }
             else if(hitEntity instanceof ActionableEntity entity) {
-                damage = entity.modifyIncomingDamage(source, damage);
+                damage = entity.modifyIncomingDamage(source, damage, poise);
             }
         }
         return damage;

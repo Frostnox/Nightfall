@@ -571,7 +571,7 @@ public class ItemsNF {
             ActionsNF.BANDAGE_USE, new Item.Properties().tab(CONSUMABLES_TAB).stacksTo(16)));
     public static final RegistryObject<ActionableItem> MEDICINAL_BANDAGE = ITEMS.register("medicinal_bandage", () -> new ActionableItem(
             ActionsNF.MEDICINAL_BANDAGE_USE, new Item.Properties().tab(CONSUMABLES_TAB).stacksTo(16)));
-    private static final float[] SHIELD_DEFENSES = new float[]{0.05F, 0.05F, 0.05F, 0F, 0F, 0F};
+    private static final float[] SHIELD_DEFENSES = new float[]{0.5F, 0.5F, 0.5F, 0.3F, 0.4F, 0.4F};
     public static final RegistryObject<ShieldItemNF> IRONWOOD_SHIELD = ITEMS.register("ironwood_shield", () -> new ShieldItemNF(SHIELD_DEFENSES,
             ActionsNF.SHIELD_GUARD, new Item.Properties().durability((int) (Tree.IRONWOOD.getHardness() * 150)).tab(ARMAMENTS_TAB)));
     public static final RegistryObject<DyedShieldItem> IRONWOOD_SHIELD_DYED = ITEMS.register("ironwood_shield_dyed", () -> new DyedShieldItem(SHIELD_DEFENSES,
@@ -598,9 +598,9 @@ public class ItemsNF {
                     register(material.getName() + "_arrowhead"));
 
     private static float[] getShieldDefenses(Metal metal) {
-        float[] defenses = SHIELD_DEFENSES.clone();
+        float[] defenses = new float[6];
         for(int i = 0; i < defenses.length; i++) {
-            defenses[i] += metal.getBaseDefenses().get(i) / 2F;
+            defenses[i] = 0.3F + metal.getBaseDefenses().get(i);
         }
         return defenses;
     }

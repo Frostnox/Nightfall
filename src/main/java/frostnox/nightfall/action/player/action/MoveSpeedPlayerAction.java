@@ -23,7 +23,7 @@ public abstract class MoveSpeedPlayerAction extends PlayerAction {
 
     @Override
     public void onEnd(LivingEntity user) {
-        CombatUtil.removeTransientMultiplier(user, user.getAttribute(Attributes.MOVEMENT_SPEED), CombatUtil.ACTION_SPEED_ID);
+        CombatUtil.removeTransientModifier(user, user.getAttribute(Attributes.MOVEMENT_SPEED), CombatUtil.ACTION_SPEED_ID);
     }
 
     @Override
@@ -38,7 +38,7 @@ public abstract class MoveSpeedPlayerAction extends PlayerAction {
                 user.setDeltaMovement(velocity.x * modifier, velocity.y, velocity.z * modifier);
             }
         }
-        else CombatUtil.removeTransientMultiplier(user, user.getAttribute(Attributes.MOVEMENT_SPEED), CombatUtil.ACTION_SPEED_ID);
+        else CombatUtil.removeTransientModifier(user, user.getAttribute(Attributes.MOVEMENT_SPEED), CombatUtil.ACTION_SPEED_ID);
         CombatUtil.alignBodyRotWithHead(user, ActionTracker.get(user));
     }
 }

@@ -1,6 +1,7 @@
 package frostnox.nightfall.item.item;
 
 import com.google.common.collect.ImmutableMultimap;
+import frostnox.nightfall.action.Poise;
 import frostnox.nightfall.item.ITieredArmorMaterial;
 import frostnox.nightfall.item.Style;
 import frostnox.nightfall.registry.forge.AttributesNF;

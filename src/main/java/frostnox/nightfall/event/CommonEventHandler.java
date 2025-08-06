@@ -381,7 +381,7 @@ public class CommonEventHandler {
                     boolean penalized = durabilityPenalty < 1F;
                     for(int i = 0; i < 6; i++) {
                         float defense = armor.material.getDefense(armor.slot, DamageType.values()[i].asArray(), false);
-                        tooltip.add(getTooltipIndex(tooltip), new TextComponent(format.format(defense * 100) + "% ").withStyle(penalized ? ChatFormatting.DARK_RED : ChatFormatting.DARK_GREEN)
+                        tooltip.add(getTooltipIndex(tooltip), new TextComponent(format.format(defense * 100 * durabilityPenalty) + "% ").withStyle(penalized ? ChatFormatting.DARK_RED : ChatFormatting.DARK_GREEN)
                                 .append(RenderUtil.getDamageTypeText(DamageType.values()[i]).append(" ").append(new TranslatableComponent("item.armor.defense"))
                                         .withStyle(ChatFormatting.BLUE)));
                     }
@@ -931,7 +931,7 @@ public class CommonEventHandler {
             CombatUtil.addTransientMultiplier(player, player.getAttribute(Attributes.MOVEMENT_SPEED), -0.5F, CombatUtil.STUN_SLOW_ID, "stun_slow");
         }
         else {
-            CombatUtil.removeTransientMultiplier(player, player.getAttribute(Attributes.MOVEMENT_SPEED), CombatUtil.STUN_SLOW_ID);
+            CombatUtil.removeTransientModifier(player, player.getAttribute(Attributes.MOVEMENT_SPEED), CombatUtil.STUN_SLOW_ID);
         }
         //Stops the body from turning to the side when dodging left/right unless it was already faced that way
         if(player.tickCount - capP.getLastDodgeTick() < 4) {

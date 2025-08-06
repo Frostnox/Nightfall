@@ -12,6 +12,7 @@ import frostnox.nightfall.client.ClientEngine;
 import frostnox.nightfall.item.IGuardingItem;
 import frostnox.nightfall.network.NetworkHandler;
 import frostnox.nightfall.network.message.GenericEntityToClient;
+import frostnox.nightfall.registry.forge.AttributesNF;
 import frostnox.nightfall.util.CombatUtil;
 import frostnox.nightfall.util.RenderUtil;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -24,6 +25,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -65,7 +67,8 @@ public abstract class GuardAction extends PlayerAction {
 
     @Override
     public void onEnd(LivingEntity user) {
-        CombatUtil.removeTransientMultiplier(user, user.getAttribute(Attributes.MOVEMENT_SPEED), CombatUtil.BLOCK_SLOW_ID);
+        CombatUtil.removeTransientModifier(user, user.getAttribute(Attributes.MOVEMENT_SPEED), CombatUtil.BLOCK_SLOW_ID);
+        CombatUtil.removeTransientModifier(user, user.getAttribute(AttributesNF.POISE.get()), CombatUtil.BLOCK_POISE_ID);
     }
 
     @Override
@@ -74,6 +77,7 @@ public abstract class GuardAction extends PlayerAction {
             if(isActive(user)) {
                 IPlayerData capP = PlayerData.get(player);
                 CombatUtil.addTransientMultiplier(user, user.getAttribute(Attributes.MOVEMENT_SPEED), user.tickCount - capP.getLastBlockTick() < 9 ? -0.6F : -0.2F, CombatUtil.BLOCK_SLOW_ID, "block_slow");
+                CombatUtil.addTransientModifier(user, user.getAttribute(AttributesNF.POISE.get()), 3, CombatUtil.BLOCK_POISE_ID, "block_poise", AttributeModifier.Operation.ADDITION);
                 if(user.level.isClientSide() && !user.isOnGround()) {
                     Vec3 velocity = user.getDeltaMovement();
                     float modifier = user.tickCount - capP.getLastBlockTick() < 9 ? 0.7F : 0.9F;
@@ -81,7 +85,10 @@ public abstract class GuardAction extends PlayerAction {
                     user.setDeltaMovement(velocity.x * modifier, velocity.y, velocity.z * modifier);
                 }
             }
-            else CombatUtil.removeTransientMultiplier(user, user.getAttribute(Attributes.MOVEMENT_SPEED), CombatUtil.BLOCK_SLOW_ID);
+            else {
+                CombatUtil.removeTransientModifier(user, user.getAttribute(Attributes.MOVEMENT_SPEED), CombatUtil.BLOCK_SLOW_ID);
+                CombatUtil.removeTransientModifier(user, user.getAttribute(AttributesNF.POISE.get()), CombatUtil.BLOCK_POISE_ID);
+            }
         }
         CombatUtil.alignBodyRotWithHead(user, ActionTracker.get(user));
     }
@@ -93,10 +100,7 @@ public abstract class GuardAction extends PlayerAction {
             if(user instanceof ServerPlayer player) {
                 IPlayerData capP = PlayerData.get(player);
                 if(capP.getStamina() <= 0F) return newDamage;
-                else {
-                    capP.addStamina(-source.getStunDuration() * 2F);
-                    //NetworkHandler.toClient(player, new StaminaChangedMessageToClient(capP.getStamina(), player.getId()));
-                }
+                else capP.addStamina(-source.getStunDuration() * 2F);
             }
             Vec3 attackVec = source.hasHitCoords() ? new Vec3(source.getHitCoords().x + attacker.getX(), source.getHitCoords().y + attacker.getY(), source.getHitCoords().z + attacker.getZ()) : attacker.getEyePosition();
             float hitAngle = CombatUtil.getRelativeHorizontalAngle(user.getEyePosition(), attackVec, user.getYHeadRot());

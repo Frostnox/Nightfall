@@ -29,6 +29,7 @@ import frostnox.nightfall.util.CombatUtil;
 import frostnox.nightfall.util.LevelUtil;
 import frostnox.nightfall.util.MathUtil;
 import frostnox.nightfall.util.animation.AnimationData;
+import frostnox.nightfall.util.data.Wrapper;
 import frostnox.nightfall.world.ToolActionsNF;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
@@ -181,7 +182,7 @@ public abstract class ActionableEntity extends PathfinderMob {
     /**
      * @return modified damage to receive
      */
-    public float modifyIncomingDamage(DamageTypeSource source, float damage) {
+    public float modifyIncomingDamage(DamageTypeSource source, float damage, Wrapper<Poise> poise) {
         //Pick body part based on y collision
         if(source.hasHitCoords()) {
             float durabilityDmg = Math.max(1, damage / 5F);
@@ -190,6 +191,7 @@ public abstract class ActionableEntity extends PathfinderMob {
 
             ItemStack stack = this.getItemBySlot(slot);
             if(stack.getItem() instanceof TieredArmorItem armor) {
+                if(poise.val.ordinal() < armor.material.getPoise().ordinal()) poise.val = armor.material.getPoise();
                 if(armor.material.isMetal()) source.tryArmorSoundConversion();
                 damage = armor.material.getFinalDamage(armor.slot, source.types, stack.getDamageValue(), damage, false);
                 int index = armor.slot.getIndex();
@@ -202,9 +204,11 @@ public abstract class ActionableEntity extends PathfinderMob {
         else {
             float durabilityDmg = Math.max(1, damage / 20F);
             boolean isMetal = false;
+            int totalPoise = 0;
             for(ItemStack stack : this.getArmorSlots()) {
                 if(stack.getItem() instanceof TieredArmorItem armor) {
-                    if (!isMetal && armor.material.isMetal()) isMetal = true;
+                    totalPoise += armor.material.getPoise().ordinal();
+                    if(!isMetal && armor.material.isMetal()) isMetal = true;
                     damage = armor.material.getFinalDamage(armor.slot, source.types, stack.getDamageValue(), damage, true);
                     int index = armor.slot.getIndex();
                     stack.hurtAndBreak((int)durabilityDmg, this, (p_214023_1_) -> {
@@ -212,6 +216,8 @@ public abstract class ActionableEntity extends PathfinderMob {
                     );
                 }
             }
+            totalPoise /= 4;
+            if(poise.val.ordinal() < totalPoise) poise.val = Poise.values()[totalPoise];
             if(isMetal) source.tryArmorSoundConversion();
         }
         return damage;
@@ -570,6 +576,8 @@ public abstract class ActionableEntity extends PathfinderMob {
         audioSensing.tick();
         noActionTime = 0; //This is mainly used for random walking goals
         if(noDespawnTicks > 0) noDespawnTicks--;
+        LivingEntity target = getTarget();
+        if(target != null && target.isRemoved()) setTarget(null);
     }
 
     @Override

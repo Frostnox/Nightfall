@@ -1,13 +1,11 @@
 package frostnox.nightfall.action.npc;
 
 import frostnox.nightfall.action.Action;
-import frostnox.nightfall.action.player.PlayerAction;
 import frostnox.nightfall.capability.ActionTracker;
 import frostnox.nightfall.capability.IActionTracker;
 import frostnox.nightfall.util.CombatUtil;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.phys.Vec3;
 
 public abstract class MoveSpeedAction extends Action {
     public final float speedMultiplier;
@@ -24,7 +22,7 @@ public abstract class MoveSpeedAction extends Action {
 
     @Override
     public void onEnd(LivingEntity user) {
-        CombatUtil.removeTransientMultiplier(user, user.getAttribute(Attributes.MOVEMENT_SPEED), CombatUtil.ACTION_SPEED_ID);
+        CombatUtil.removeTransientModifier(user, user.getAttribute(Attributes.MOVEMENT_SPEED), CombatUtil.ACTION_SPEED_ID);
     }
 
     @Override
@@ -33,7 +31,7 @@ public abstract class MoveSpeedAction extends Action {
         if(!capA.isStunned() && (isChargeable() ? capA.isCharging() : !capA.isInactive())) {
             CombatUtil.addTransientMultiplier(user, user.getAttribute(Attributes.MOVEMENT_SPEED), speedMultiplier, CombatUtil.ACTION_SPEED_ID, "action_speed");
         }
-        else CombatUtil.removeTransientMultiplier(user, user.getAttribute(Attributes.MOVEMENT_SPEED), CombatUtil.ACTION_SPEED_ID);
+        else CombatUtil.removeTransientModifier(user, user.getAttribute(Attributes.MOVEMENT_SPEED), CombatUtil.ACTION_SPEED_ID);
         CombatUtil.alignBodyRotWithHead(user, ActionTracker.get(user));
     }
 }

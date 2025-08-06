@@ -17,6 +17,7 @@ import frostnox.nightfall.registry.forge.EffectsNF;
 import frostnox.nightfall.util.CombatUtil;
 import frostnox.nightfall.util.data.Vec2f;
 import frostnox.nightfall.util.data.Vec3f;
+import frostnox.nightfall.util.data.Wrapper;
 import frostnox.nightfall.world.OrientedEntityHitResult;
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.level.ServerPlayer;
@@ -143,6 +144,7 @@ public class DamageEventHandler {
                 }
             }
         }
+        Wrapper<Poise> poise = new Wrapper<>(AttributesNF.getPoise(entity));
         //System.out.println("Damage: " + damageAmount);
         float oldDamageAmount = damageAmount;
         //New calculations
@@ -150,7 +152,7 @@ public class DamageEventHandler {
         //System.out.println("Effects: " + damageAmount);
         damageAmount = CombatUtil.applyAttributeDamageCalculations(entity, source, damageAmount);
         //System.out.println("Attributes: " + damageAmount);
-        damageAmount = CombatUtil.applyBodyDamageCalculations(entity, source, damageAmount);
+        damageAmount = CombatUtil.applyBodyDamageCalculations(entity, source, damageAmount, poise);
         //System.out.println("Body & Armor: " + damageAmount);
         damageAmount = CombatUtil.applyAccessoryDamageCalculations(entity ,source, damageAmount);
         //System.out.println("Accessories: " + damageAmount);
@@ -192,9 +194,10 @@ public class DamageEventHandler {
             if(stunDuration > 0 && (entity instanceof ActionableEntity || entity instanceof Player)) {
                 IActionTracker capA = ActionTracker.get(entity);
                 if(!capA.isStunned()) {
-                    Impact impact = source.getAttack().getImpact(ActionTracker.isPresent(source.getOwner()) ? ActionTracker.get(source.getOwner()) : null);
+                    Impact impact = source.getAttack().getImpact(source.getEntity() != null && ActionTracker.isPresent(source.getEntity()) ?
+                            ActionTracker.get(source.getEntity()) : null);
                     if(entity instanceof ActionableEntity actionable) impact = actionable.modifyIncomingImpact(source, impact);
-                    if(!impact.negatedBy(AttributesNF.getPoise(entity))) {
+                    if(!impact.negatedBy(poise.val)) {
                         capA.stunServer(Math.round(stunDuration * chargedModifier), false);
                     }
                 }

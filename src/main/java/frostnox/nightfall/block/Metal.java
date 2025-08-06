@@ -20,16 +20,16 @@ import java.util.Map;
 public enum Metal implements IMetal {
     TIN(0, 0, Category.NOBLE, 5F, 5F, MaterialColor.COLOR_LIGHT_GRAY, new Color(0xffadb6bc), SoundType.COPPER, Map.of()),
     COPPER(1, 1, Category.HARD, 10F, 10F, MaterialColor.COLOR_ORANGE, new Color(0xffcb623a), SoundType.COPPER, Map.of(),
-            FloatList.of(0.05F, 0.05F, 0.05F, 0F, 0F, -1F)),
+            FloatList.of(0.35F, 0.35F, 0.35F, 0.15F, 0.15F, -1F)),
     BRONZE(2, 1, Category.HARD, 12F, 12F, MaterialColor.TERRACOTTA_ORANGE, new Color(0xffc07d3d), SoundsNF.BRONZE_TYPE,
             Map.of(COPPER, new Vec2f(0.85F, 1F), TIN, new Vec2f(0.05F, 0.15F)),
-            FloatList.of(0.08F, 0.08F, 0.08F, 0.04F, 0.04F, 0.04F)),
+            FloatList.of(0.4F, 0.4F, 0.4F, 0.2F, 0.2F, 0.2F)),
     IRON(3, 3, Category.HARD, 14F, 14F, MaterialColor.COLOR_GRAY, new Color(0xff575554), SoundType.NETHERITE_BLOCK, Map.of(),
-            FloatList.of(0.1F, 0.1F, 0.1F, 0.06F, 0.06F, 0.06F)),
+            FloatList.of(0.45F, 0.45F, 0.45F, 0.25F, 0.25F, 0.25F)),
     STEEL(4, 3, Category.HARD, 18F, 18F, MaterialColor.METAL, new Color(0xff777c85), SoundType.NETHERITE_BLOCK, Map.of(),
-            FloatList.of(0.12F, 0.12F, 0.12F, 0.08F, 0.08F, 0.08F)),
+            FloatList.of(0.5F, 0.5F, 0.5F, 0.3F, 0.3F, 0.3F)),
     METEORITE(1, 2, Category.MYSTIC, 10F, 10F, MaterialColor.COLOR_PURPLE, new Color(0xff78519d), SoundsNF.METEORITE_TYPE, Map.of(),
-            FloatList.of(0.04F, 0.04F, 0.04F, 0.06F, 0.06F, 0.06F));
+            FloatList.of(0.25F, 0.25F, 0.25F, 0.35F, 0.35F, 0.35F));
 
     private final int tier, workTier;
     private final Category category;

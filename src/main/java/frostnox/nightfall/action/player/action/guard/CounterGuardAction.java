@@ -8,6 +8,7 @@ import frostnox.nightfall.item.item.MeleeWeaponItem;
 import frostnox.nightfall.network.NetworkHandler;
 import frostnox.nightfall.network.message.capability.ActionToServer;
 import frostnox.nightfall.registry.ActionsNF;
+import frostnox.nightfall.registry.forge.AttributesNF;
 import frostnox.nightfall.util.CombatUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -35,7 +36,8 @@ public abstract class CounterGuardAction extends GuardAction {
     public void onAttackInput(Player player) {
         IActionTracker capA = ActionTracker.get(player);
         if((capA.getState() == 0 && !ActionsNF.isEmpty(getChain(player).getId()) && MeleeWeaponItem.canExecuteAttack(player, false) && player.tickCount - PlayerData.get(player).getLastBlockTick() <= 8)) {
-            CombatUtil.removeTransientMultiplier(player, player.getAttribute(Attributes.MOVEMENT_SPEED), CombatUtil.BLOCK_SLOW_ID);
+            CombatUtil.removeTransientModifier(player, player.getAttribute(Attributes.MOVEMENT_SPEED), CombatUtil.BLOCK_SLOW_ID);
+            CombatUtil.removeTransientModifier(player, player.getAttribute(AttributesNF.POISE.get()), CombatUtil.BLOCK_POISE_ID);
             capA.startAction(getChain(player).getId());
             NetworkHandler.toServer(new ActionToServer(PlayerData.get(player).getActiveHand() == InteractionHand.MAIN_HAND, capA.getActionID()));
         }

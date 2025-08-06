@@ -44,6 +44,7 @@ public class TrackNearestTargetGoal<T extends LivingEntity> extends NearestAttac
     @Override
     public boolean canContinueToUse() {
         LivingEntity target = mob.getTarget();
+        if(targetMob != null && targetMob.isRemoved()) targetMob = null;
         if(target == null) target = targetMob;
         if(target == null) return false;
         else if(!mob.canAttack(target)) return false;

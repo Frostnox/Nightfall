@@ -1,6 +1,7 @@
 package frostnox.nightfall.item;
 
 import frostnox.nightfall.action.DamageType;
+import frostnox.nightfall.action.Poise;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraftforge.registries.ForgeRegistryEntry;
@@ -38,6 +39,8 @@ public interface ITieredArmorMaterial {
     int getDefaultColor();
 
     boolean isMetal();
+
+    Poise getPoise();
 
     /**
      * @return percentage weight of slot, sum of all slots should be 1
