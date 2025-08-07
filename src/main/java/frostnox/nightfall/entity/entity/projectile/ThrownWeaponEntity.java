@@ -144,7 +144,9 @@ public class ThrownWeaponEntity extends AbstractArrow {
         if(getPickupItem().getDamageValue() >= getPickupItem().getMaxDamage()) damageSource.setSound(() -> SoundEvents.ITEM_BREAK);
         else damageSource.setImpactSoundType(damageType[0].getImpactSoundType(), target);
         dealtDamage = true;
-        if(target.hurt(damageSource, Math.min(damage * (float) getDeltaMovement().length(), damage * 2)) && target instanceof LivingEntity livingTarget) doPostHurtEffects(livingTarget);
+        double speed = getDeltaMovement().length();
+        if(speed > 1D) damageSource.setImpact(damageSource.getAttack().getImpact(null).increase());
+        if(target.hurt(damageSource, Math.min(damage * (float) speed, damage * 2)) && target instanceof LivingEntity livingTarget) doPostHurtEffects(livingTarget);
         setDeltaMovement(getDeltaMovement().multiply(0.3D, 0.3D, 0.3D));
     }
 

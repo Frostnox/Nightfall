@@ -6,6 +6,7 @@ import frostnox.nightfall.Nightfall;
 import frostnox.nightfall.action.Action;
 import frostnox.nightfall.action.DamageType;
 import frostnox.nightfall.action.DamageTypeSource;
+import frostnox.nightfall.action.Poise;
 import frostnox.nightfall.block.IHoldable;
 import frostnox.nightfall.block.IMetal;
 import frostnox.nightfall.block.IMicroGrid;
@@ -346,6 +347,10 @@ public class CommonEventHandler {
             if(hasAnySlot) {
                 if(item.getItem() instanceof TieredArmorItem armor) {
                     if(armor.getAttributeModifiers(armor.slot, item).isEmpty()) tooltip.add(getTooltipIndex(tooltip), new TranslatableComponent("item.modifiers." + armor.slot.getName()).withStyle(ChatFormatting.GRAY));
+                    if(armor.material.getPoise() != Poise.NONE) {
+                        tooltip.add(new TranslatableComponent("poise." + armor.material.getPoise().getSerializedName()).withStyle(ChatFormatting.DARK_GREEN)
+                                .append(" ").append(new TranslatableComponent(AttributesNF.POISE.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)));
+                    }
                     //Special replacements for style effects
                     for(Map.Entry<Attribute, AttributeModifier> entry : item.getAttributeModifiers(armor.slot).entries()) {
                         if(!entry.getKey().equals(AttributesNF.BLEEDING_RESISTANCE.get()) && !entry.getKey().equals(AttributesNF.POISON_RESISTANCE.get()) &&

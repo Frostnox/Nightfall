@@ -1,6 +1,7 @@
 package frostnox.nightfall.action;
 
 import com.mojang.math.Vector3d;
+import frostnox.nightfall.capability.ActionTracker;
 import frostnox.nightfall.item.ImpactSoundType;
 import frostnox.nightfall.registry.forge.EffectsNF;
 import frostnox.nightfall.registry.forge.SoundsNF;
@@ -134,7 +135,8 @@ public class DamageTypeSource extends DamageSource {
 
     public Impact getImpact() {
         if(impact != null) return impact;
-        else return getAttack().getImpact(null);
+        else return getAttack().getImpact(getEntity() != null && ActionTracker.isPresent(getEntity()) ?
+                ActionTracker.get(getEntity()) : null);
     }
 
     @Override

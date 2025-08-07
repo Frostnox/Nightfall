@@ -161,24 +161,28 @@ public class DamageEventHandler {
             damageAmount = attack.onDamageDealtPost((LivingEntity) source.getOwner(), entity, damageAmount);
         }
         //Effects
+        Impact impact = source.getImpact();
+        if(entity instanceof ActionableEntity actionable) impact = actionable.modifyIncomingImpact(source, impact);
+        boolean impacted = !impact.negatedBy(poise.val);
         float reducedDamage = Math.min(2F, damageAmount / originalAmount);
         float chargedModifier = (source.getOwner() instanceof Player || source.getOwner() instanceof ActionableEntity) ? ActionTracker.get(source.getOwner()).getChargeAttackMultiplier() : 1F;
-        if(reducedDamage > 0.5F) {
+        if(reducedDamage > 0.1F) {
+            float chanceModifier = Math.min(1F, reducedDamage + 0.25F);
             if(source.getEffects() != null) {
                 for(AttackEffect attackEffect : source.getEffects()) {
-                    if(entity.level.getRandom().nextFloat() <= attackEffect.chance) {
+                    if(entity.level.getRandom().nextFloat() <= attackEffect.chance * chanceModifier) {
                         entity.addEffect(attackEffect.getEffect(), source.getEntity());
                     }
                 }
             }
             for(AttackEffect attackEffect : source.getAttack().getEffects(source.getEntity() instanceof LivingEntity livingEntity ? livingEntity : null)) {
-                if(entity.level.getRandom().nextFloat() <= attackEffect.chance) {
+                if(entity.level.getRandom().nextFloat() <= attackEffect.chance * chanceModifier) {
                     entity.addEffect(attackEffect.getEffect(), source.getEntity());
                 }
             }
         }
         //Knockback
-        float magnitude = Math.max(source.getAttack().getKnockback() / 2F, source.getAttack().getKnockback() * reducedDamage * chargedModifier);
+        float magnitude = Math.max(source.getAttack().getKnockback() / 2F, source.getAttack().getKnockback() * (impacted ? 1F : 0.5F) * chargedModifier);
         CombatUtil.knockbackEntity(entity, source.getKnockbackVec().scale(magnitude));
 
         damageAmount = Math.max(damageAmount, oldDamageAmount * 0.1F); //Limit damage reduction to 90%
@@ -191,16 +195,9 @@ public class DamageEventHandler {
         }
         int stunDuration = source.getStunDuration();
         if(damageAmount > 0) {
-            if(stunDuration > 0 && (entity instanceof ActionableEntity || entity instanceof Player)) {
+            if(impacted && stunDuration > 0 && (entity instanceof ActionableEntity || entity instanceof Player)) {
                 IActionTracker capA = ActionTracker.get(entity);
-                if(!capA.isStunned()) {
-                    Impact impact = source.getAttack().getImpact(source.getEntity() != null && ActionTracker.isPresent(source.getEntity()) ?
-                            ActionTracker.get(source.getEntity()) : null);
-                    if(entity instanceof ActionableEntity actionable) impact = actionable.modifyIncomingImpact(source, impact);
-                    if(!impact.negatedBy(poise.val)) {
-                        capA.stunServer(Math.round(stunDuration * chargedModifier), false);
-                    }
-                }
+                if(!capA.isStunned()) capA.stunServer(Math.round(stunDuration * chargedModifier), false);
             }
             if(healthDamage != 0) {
                 float health = entity.getHealth();

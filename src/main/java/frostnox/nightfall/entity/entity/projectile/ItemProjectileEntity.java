@@ -3,6 +3,7 @@ package frostnox.nightfall.entity.entity.projectile;
 import frostnox.nightfall.action.DamageType;
 import frostnox.nightfall.action.DamageTypeSource;
 import frostnox.nightfall.action.HitData;
+import frostnox.nightfall.action.Impact;
 import frostnox.nightfall.util.CombatUtil;
 import frostnox.nightfall.util.LevelUtil;
 import frostnox.nightfall.util.data.Vec3f;
@@ -89,8 +90,10 @@ public abstract class ItemProjectileEntity extends Projectile implements ItemSup
                             new Vec3f((float) knockbackVec.x, (float) knockbackVec.y, (float) knockbackVec.z).normalize().scale(knockback),
                             ((OrientedEntityHitResult) pResult).boxIndex));
             damageSource.setImpactSoundType(damageTypes[0].getImpactSoundType(), target);
-            damageSource.setStun(Math.round(Math.min(CombatUtil.STUN_MEDIUM * (float) getDeltaMovement().length() / 1.5F, CombatUtil.STUN_MEDIUM * 2)));
-            target.hurt(damageSource, Math.min(baseDamage * (float) getDeltaMovement().length() / 1.5F, baseDamage * 2));
+            double speed = getDeltaMovement().length();
+            damageSource.setImpact(speed > 2 ? Impact.HIGH : (speed > 1 ? Impact.MEDIUM : Impact.LOW));
+            damageSource.setStun(Math.round(Math.min(CombatUtil.STUN_MEDIUM * (float) speed / 1.5F, CombatUtil.STUN_MEDIUM * 2)));
+            target.hurt(damageSource, Math.min(baseDamage * (float) speed / 1.5F, baseDamage * 2));
         }
     }
 

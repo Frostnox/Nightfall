@@ -3,6 +3,7 @@ package frostnox.nightfall.data;
 import frostnox.nightfall.Nightfall;
 import frostnox.nightfall.action.DamageType;
 import frostnox.nightfall.action.DamageTypeSource;
+import frostnox.nightfall.action.Poise;
 import frostnox.nightfall.action.player.PlayerActionSet;
 import frostnox.nightfall.block.Metal;
 import frostnox.nightfall.block.TieredHeat;
@@ -301,6 +302,9 @@ public class LanguageProviderNF extends LanguageProvider {
         add("screen.finalize", "Finalize");
         for(DamageType type : DamageType.values()) {
             addComponent(RenderUtil.getDamageTypeText(type), WordUtils.capitalize(type.toString()));
+        }
+        for(Poise poise : Poise.values()) {
+            add("poise." + poise.getSerializedName(), WordUtils.capitalize(poise.getSerializedName()));
         }
         for(var attribute : AttributesNF.ATTRIBUTES.getEntries()) {
             if(attribute == AttributesNF.STAMINA_REDUCTION) add(attribute.get().getDescriptionId(), "Stamina Used");

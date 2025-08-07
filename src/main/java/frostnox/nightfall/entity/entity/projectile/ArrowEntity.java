@@ -3,6 +3,7 @@ package frostnox.nightfall.entity.entity.projectile;
 import frostnox.nightfall.action.DamageType;
 import frostnox.nightfall.action.DamageTypeSource;
 import frostnox.nightfall.action.HitData;
+import frostnox.nightfall.action.Impact;
 import frostnox.nightfall.item.IProjectileItem;
 import frostnox.nightfall.registry.forge.EntitiesNF;
 import frostnox.nightfall.registry.forge.ItemsNF;
@@ -80,8 +81,10 @@ public class ArrowEntity extends AbstractArrow {
                             new Vec3f((float) knockbackVec.x, (float) knockbackVec.y, (float) knockbackVec.z).normalize(),
                             ((OrientedEntityHitResult) pResult).boxIndex));
             damageSource.setImpactSoundType(damageType[0].getImpactSoundType(), target);
-            damageSource.setStun(Math.round(Math.min(CombatUtil.STUN_SHORT * (float) getDeltaMovement().length() / 1.5F, CombatUtil.STUN_SHORT * 2)));
-            if(target.hurt(damageSource, Math.min(damage * (float) getDeltaMovement().length() / 1.5F, damage * 2))) {
+            double speed = getDeltaMovement().length();
+            damageSource.setImpact(speed > 2 ? Impact.HIGH : (speed > 1 ? Impact.MEDIUM : Impact.LOW));
+            damageSource.setStun(Math.round(Math.min(CombatUtil.STUN_SHORT * (float) speed / 1.5F, CombatUtil.STUN_SHORT * 2)));
+            if(target.hurt(damageSource, Math.min(damage * (float) speed / 1.5F, damage * 2))) {
                 if(target instanceof LivingEntity livingTarget) {
                     doPostHurtEffects(livingTarget);
                     livingTarget.setArrowCount(livingTarget.getArrowCount() + 1);
