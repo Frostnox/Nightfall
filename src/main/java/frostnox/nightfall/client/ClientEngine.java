@@ -835,7 +835,7 @@ public class ClientEngine {
     }
 
     public void openAttributeSelectionScreen() {
-        if(!(mc.screen instanceof AttributeSelectionScreen)) mc.setScreen(new AttributeSelectionScreen());
+        if(!(mc.screen instanceof AttributeSelectionScreen) && mc.player != null && mc.player.isAlive()) mc.setScreen(new AttributeSelectionScreen());
     }
 
     public float getPartialTick() {
