@@ -34,7 +34,7 @@ public class RockwormNestBlockEntity extends GuardedNestBlockEntity {
         for(int i = 0; i < 5; i++) {
             pos = pos.above();
             BlockState block = level.getBlockState(pos);
-            if(block.is(TagsNF.STONE_TUNNELS) && block.getValue(RotatedPillarBlock.AXIS) != Direction.Axis.Y) continue;
+            if(block.is(TagsNF.STONE_TUNNELS) && block.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y) continue;
             else return pos;
         }
         return pos;

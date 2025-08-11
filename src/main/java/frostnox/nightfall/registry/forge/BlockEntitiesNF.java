@@ -101,7 +101,7 @@ public class BlockEntitiesNF {
                                 RockwormEntity rockworm = EntitiesNF.ROCKWORM.get().create(level.getLevel());
                                 rockworm.finalizeSpawn(level, level.getCurrentDifficultyAt(homePos), MobSpawnType.STRUCTURE, null, null);
                                 return rockworm;
-                            }, 9),
+                            }, 15),
                     BlocksNF.ANCHORING_RESIN.get()).build(null));
     public static final RegistryObject<BlockEntityType<TimeDataBlockEntity>> TIME_DATA = BLOCK_ENTITIES.register("time_data", () ->
             BlockEntityType.Builder.of(TimeDataBlockEntity::new, BlocksNF.WET_MUD_BRICKS.get(), BlocksNF.POTATOES.get(), BlocksNF.CARROTS.get(), BlocksNF.FLAX.get(),
