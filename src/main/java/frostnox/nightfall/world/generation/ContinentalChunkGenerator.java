@@ -66,6 +66,7 @@ public class ContinentalChunkGenerator extends ChunkGenerator {
             Codec.LONG.fieldOf("seed").stable().forGetter((gen) -> gen.seed)))
             .apply(instance, instance.stable(ContinentalChunkGenerator::new)));
     private static final BlockState AIR = Blocks.AIR.defaultBlockState();
+    private static final BlockState CAVE_AIR = Blocks.CAVE_AIR.defaultBlockState();
     private static final BlockState BEDROCK = BlocksNF.BEDROCK.get().defaultBlockState();
     private static final BlockState WATER = BlocksNF.WATER.get().defaultBlockState();
     private static final BlockState SEAWATER = BlocksNF.SEAWATER.get().defaultBlockState();
@@ -594,7 +595,7 @@ public class ContinentalChunkGenerator extends ChunkGenerator {
                             if(lastCavernBlock.val == 0) pillarGapCount.val++; //Was originally air
                             if(pillarGapCount.val < pillarGaps.val) {
                                 lastCavernBlock.val = 1; //Replace stone with air
-                                return worldY > LAVA_LEVEL ? AIR : LAVA;
+                                return worldY > LAVA_LEVEL ? CAVE_AIR : LAVA;
                             }
                         }
                         lastCavernBlock.val = 2; //Stone
@@ -603,7 +604,7 @@ public class ContinentalChunkGenerator extends ChunkGenerator {
                     else {
                         if(lastCavernBlock.val == 2) pillarGapCount.val++; //Was stone
                         lastCavernBlock.val = 0; //Air
-                        return worldY > LAVA_LEVEL ? AIR : LAVA;
+                        return worldY > LAVA_LEVEL ? CAVE_AIR : LAVA;
                     }
                 }
                 pillarGaps.val = -1; //Reset pillar variables if past cavern
@@ -626,7 +627,7 @@ public class ContinentalChunkGenerator extends ChunkGenerator {
                 wasAboveTunneled.val = true;
                 if(worldY > LAVA_LEVEL) {
                     if(worldY + 1 == lastSurfaceAirHeight.val) lastSurfaceAirHeight.val = worldY;
-                    return AIR;
+                    return CAVE_AIR;
                 }
                 else return LAVA;
             }

@@ -5,6 +5,7 @@ import frostnox.nightfall.block.block.StoneBlock;
 import frostnox.nightfall.registry.forge.BlocksNF;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
@@ -19,7 +20,7 @@ public class CaveRocksFeature extends Feature<NoneFeatureConfiguration> {
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
         BlockPos pos = context.origin();
         WorldGenLevel level = context.level();
-        if(level.getBlockState(pos).isAir()) {
+        if(level.getBlockState(pos).getBlock() == Blocks.CAVE_AIR) {
             if(level.getBlockState(pos.below()).getBlock() instanceof StoneBlock stone) {
                 ClusterBlock block = BlocksNF.ROCK_CLUSTERS.get(stone.type).get();
                 int count;

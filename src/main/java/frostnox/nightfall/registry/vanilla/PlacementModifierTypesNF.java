@@ -14,6 +14,7 @@ public class PlacementModifierTypesNF {
     public static PlacementModifierType<NearSpawnFilter> NEAR_SPAWN_FILTER;
     public static PlacementModifierType<SurfaceHeightFilter> SURFACE_HEIGHT_FILTER;
     public static PlacementModifierType<RectangleClimateFilter> RECTANGLE_CLIMATE_FILTER;
+    public static PlacementModifierType<BelowBlockPlacement> BELOW_BLOCK_PLACEMENT;
     public static PlacementModifierType<ForestationCountPlacement> FORESTATION_COUNT_PLACEMENT;
     public static PlacementModifierType<ExposureCountPlacement> EXPOSURE_COUNT_PLACEMENT;
     public static PlacementModifierType<AdjacentScanPlacement> ADJACENT_SCAN_PLACEMENT;
@@ -25,6 +26,7 @@ public class PlacementModifierTypesNF {
         NEAR_SPAWN_FILTER = register("near_spawn_filter", NearSpawnFilter.CODEC);
         SURFACE_HEIGHT_FILTER = register("surface_height_filter", SurfaceHeightFilter.CODEC);
         RECTANGLE_CLIMATE_FILTER = register("rectangle_climate_filter", RectangleClimateFilter.CODEC);
+        BELOW_BLOCK_PLACEMENT = register("below_block_filter", BelowBlockPlacement.CODEC);
         FORESTATION_COUNT_PLACEMENT = register("forestation_count_placement", ForestationCountPlacement.CODEC);
         EXPOSURE_COUNT_PLACEMENT = register("exposure_count_placement", ExposureCountPlacement.CODEC);
         ADJACENT_SCAN_PLACEMENT = register("adjacent_scan_placement", AdjacentScanPlacement.CODEC);

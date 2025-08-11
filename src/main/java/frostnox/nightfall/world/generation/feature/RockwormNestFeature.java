@@ -8,6 +8,7 @@ import frostnox.nightfall.registry.forge.EntitiesNF;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
@@ -24,7 +25,7 @@ public class RockwormNestFeature extends Feature<NoneFeatureConfiguration> {
         WorldGenLevel level = context.level();
         var chunk = level.getChunk(origin);
         BlockPos.MutableBlockPos pos = origin.mutable();
-        if(chunk.getBlockState(pos.setY(pos.getY() + 1)).isAir() && chunk.getBlockState(pos.setY(pos.getY() + 1)).isAir()) {
+        if(chunk.getBlockState(pos.setY(pos.getY() + 1)).getBlock() == Blocks.CAVE_AIR && chunk.getBlockState(pos.setY(pos.getY() + 1)).getBlock() == Blocks.CAVE_AIR) {
             pos.setY(origin.getY() + 1);
             int depth = context.random().nextBoolean() ? 4 : 5;
             for(int i = 0; i < depth; i++) {

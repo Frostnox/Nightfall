@@ -4,13 +4,14 @@ import frostnox.nightfall.Nightfall;
 import frostnox.nightfall.block.Stone;
 import frostnox.nightfall.block.block.crop.CropBlockNF;
 import frostnox.nightfall.data.TagsNF;
-import frostnox.nightfall.world.generation.ContinentalChunkGenerator;
 import frostnox.nightfall.world.generation.feature.*;
 import frostnox.nightfall.world.generation.placement.*;
 import net.minecraft.core.Holder;
+import net.minecraft.core.Vec3i;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
@@ -33,6 +34,7 @@ import static frostnox.nightfall.world.generation.ContinentalChunkGenerator.SEA_
  * Features are instead registered directly using the registry event.
  */
 public class FeaturesNF {
+    private static final BlockPredicate CAVE_AIR_PREDICATE = BlockPredicate.matchesBlock(Blocks.CAVE_AIR, Vec3i.ZERO);
     //Flora
     public static final RandomTreeFeature TREE_FEATURE = new RandomTreeFeature(name("tree"));
     public static final Holder<ConfiguredFeature<NoneFeatureConfiguration, ?>> TREE_CONFIG = register("tree", TREE_FEATURE, FeatureConfiguration.NONE);
@@ -165,7 +167,7 @@ public class FeaturesNF {
             HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(16), VerticalAnchor.belowTop(16)), InSquarePlacement.spread(), BiomeFilter.biome());
     public static final RockwormNestFeature ROCKWORM_NEST_FEATURE = new RockwormNestFeature(name("rockworm_nest"));
     public static final Holder<ConfiguredFeature<NoneFeatureConfiguration, ?>> ROCKWORM_NEST_CONFIG = register("rockworm_nest", ROCKWORM_NEST_FEATURE, FeatureConfiguration.NONE);
-    public static final Holder<PlacedFeature> ROCKWORM_NEST = register("rockworm_nest", ROCKWORM_NEST_CONFIG, CountPlacement.of(22),
+    public static final Holder<PlacedFeature> ROCKWORM_NEST = register("rockworm_nest", ROCKWORM_NEST_CONFIG, CountPlacement.of(32),
             HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(16), VerticalAnchor.belowTop(16)), InSquarePlacement.spread(), BiomeFilter.biome());
     //Special
     public static final MeteoriteFeature METEORITE_FEATURE = new MeteoriteFeature(name("meteorite"));
@@ -181,8 +183,8 @@ public class FeaturesNF {
     public static final Holder<PlacedFeature> SPIDER_NEST_SURFACE = register("spider_nest_surface", SPIDER_NEST_CONFIG, CountPlacement.of(1), InSquarePlacement.spread(),
             PlacementUtils.HEIGHTMAP_WORLD_SURFACE, NearSpawnFilter.with(50F), ChanceFilter.with(0.0025F), SurfaceHeightFilter.with(421, 475),
             RectangleClimateFilter.with(0F, 1F, 0.29F, 1F), BiomeFilter.biome());
-    public static final Holder<PlacedFeature> SPIDER_NEST_CAVES = register("spider_nest_caves", SPIDER_NEST_CONFIG, CountPlacement.of(18), InSquarePlacement.spread(),
-            HeightRangePlacement.uniform(VerticalAnchor.absolute(30), VerticalAnchor.absolute(412)), BiomeFilter.biome());
+    public static final Holder<PlacedFeature> SPIDER_NEST_CAVES = register("spider_nest_caves", SPIDER_NEST_CONFIG, CountPlacement.of(36), InSquarePlacement.spread(),
+            HeightRangePlacement.uniform(VerticalAnchor.absolute(30), VerticalAnchor.belowTop(16)), BiomeFilter.biome(), BlockPredicateFilter.forPredicate(CAVE_AIR_PREDICATE));
 
     public static void registerEvent(RegistryEvent.Register<Feature<?>> event) {
         event.getRegistry().registerAll(TREE_FEATURE, LONE_TREE_FEATURE, ROCKS_FEATURE, SINGLE_BLOCK_FEATURE, BOULDER_FEATURE, ORE_VEIN_FEATURE,
