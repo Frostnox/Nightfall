@@ -155,7 +155,7 @@ public class CockatriceEntity extends HungryMonsterEntity implements IOrientedHi
 
     @Override
     public boolean canAttack(LivingEntity target) {
-        return target.canBeSeenAsEnemy() && (target instanceof Player || target.getType().is(TagsNF.COCKATRICE_PREY));
+        return target.canBeSeenAsEnemy() && !(target instanceof CockatriceEntity);
     }
 
     @Override

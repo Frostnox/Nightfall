@@ -450,12 +450,12 @@ public class ActionsNF {
                     new int[] {9, 5, 8}, new Action.Properties().setImpact(Impact.LOW).setSound(SoundsNF.SPIDER_BITE), new AttackEffect(EffectsNF.POISON, 10 * 20, 0, 1)));
 
     public static final RegistryObject<RockwormRetreat> ROCKWORM_RETREAT = ACTIONS.register("rockworm_retreat", () ->
-            new RockwormRetreat(new Action.Properties(), 6));
+            new RockwormRetreat(new Action.Properties().setSound(SoundsNF.ROCKWORM_BURROW), 6));
     public static final RegistryObject<RockwormEmerge> ROCKWORM_EMERGE = ACTIONS.register("rockworm_emerge", () ->
-            new RockwormEmerge(new Action.Properties(), 6));
+            new RockwormEmerge(new Action.Properties().setSound(SoundsNF.ROCKWORM_EMERGE), 6));
     public static final RegistryObject<RockwormBite> ROCKWORM_BITE = ACTIONS.register("rockworm_bite", () ->
             new RockwormBite(35F, DamageType.PIERCING.asArray(), HurtSphere.ROCKWORM_BITE, 2, 6,
-                    new int[] {5, 7}, new Action.Properties().setKnockback(-1F).setImpact(Impact.HIGH).setSound(SoundsNF.SPIDER_BITE)));
+                    new int[] {5, 7}, new Action.Properties().setKnockback(-1F).setImpact(Impact.HIGH).setSound(SoundsNF.ROCKWORM_BITE)));
 
     public static void register() {
         ACTIONS.register(Nightfall.MOD_EVENT_BUS);

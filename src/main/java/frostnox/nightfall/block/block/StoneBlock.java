@@ -1,5 +1,6 @@
 package frostnox.nightfall.block.block;
 
+import frostnox.nightfall.block.IStone;
 import frostnox.nightfall.block.block.anvil.TieredAnvilBlock;
 import frostnox.nightfall.world.ToolActionsNF;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -11,10 +12,12 @@ import net.minecraftforge.registries.RegistryObject;
 import javax.annotation.Nullable;
 
 public class StoneBlock extends BlockNF {
+    public final IStone type;
     public final @Nullable RegistryObject<? extends TieredAnvilBlock> anvilBlock;
 
-    public StoneBlock(@Nullable RegistryObject<? extends TieredAnvilBlock> anvilBlock, Properties pProperties) {
+    public StoneBlock(IStone type, @Nullable RegistryObject<? extends TieredAnvilBlock> anvilBlock, Properties pProperties) {
         super(pProperties);
+        this.type = type;
         this.anvilBlock = anvilBlock;
     }
 

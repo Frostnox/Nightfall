@@ -380,7 +380,15 @@
   },
   "entity.rockworm.bite": {
     "subtitle": "nightfall.entity.rockworm.bite",
-    "sounds": ["nightfall:entity/rockworm/bite_0", "nightfall:entity/rockworm/bite_1", "nightfall:entity/rockworm/bite_2"]
+    "sounds": ["nightfall:entity/rockworm/bite_0", "nightfall:entity/rockworm/bite_1"]
+  },
+  "entity.rockworm.emerge": {
+    "subtitle": "nightfall.entity.rockworm.emerge",
+    "sounds": ["nightfall:entity/rockworm/emerge_0", "nightfall:entity/rockworm/emerge_1"]
+  },
+  "entity.rockworm.burrow": {
+    "subtitle": "nightfall.entity.rockworm.burrow",
+    "sounds": ["nightfall:entity/rockworm/burrow_0", "nightfall:entity/rockworm/burrow_1"]
   },
   "entity.jellyfish.death": {
     "subtitle": "nightfall.entity.jellyfish.death",

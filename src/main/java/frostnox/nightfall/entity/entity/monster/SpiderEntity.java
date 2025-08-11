@@ -191,7 +191,7 @@ public class SpiderEntity extends HungryMonsterEntity implements IChaser, IHomeE
 
     @Override
     public boolean canAttack(LivingEntity target) {
-        return target.canBeSeenAsEnemy() && (target instanceof Player || target.getType().is(TagsNF.SPIDER_PREY) || target.getType().is(TagsNF.SPIDER_PREDATOR));
+        return target.canBeSeenAsEnemy() && !(target instanceof SpiderEntity);
     }
 
     @Override

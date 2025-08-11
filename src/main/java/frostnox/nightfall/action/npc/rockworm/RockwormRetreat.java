@@ -36,9 +36,14 @@ public class RockwormRetreat extends Action {
     public void onTick(LivingEntity user) {
         if(user instanceof RockwormEntity rockworm) {
             IActionTracker capA = ActionTracker.get(user);
-            if(capA.getFrame() == capA.getDuration()) {
-                if(!user.level.isClientSide) rockworm.enterNest(false);
-                else if(rockworm.enterNest(true)) rockworm.discard();
+            if(!capA.isStunned()) {
+                if(capA.getFrame() == capA.getDuration()) {
+                    if(!user.level.isClientSide) rockworm.enterNest(false);
+                    else if(rockworm.enterNest(true)) rockworm.discard();
+                }
+                if(!user.level.isClientSide && capA.getFrame() == 1) {
+                    rockworm.playSound(getSound().get(), 1, 0.97F + rockworm.getRandom().nextFloat() * 0.06F);
+                }
             }
         }
     }

@@ -297,6 +297,8 @@ public class ItemsNF {
             () -> new ForgeSpawnEggItem(EntitiesNF.COCKATRICE, 0x526c1f, 0xc25217, utility()));
     public static final RegistryObject<SpawnEggItem> SPIDER_SPAWN_EGG = register(EntitiesNF.SPIDER.getId().getPath() + "_spawn_egg",
             () -> new ForgeSpawnEggItem(EntitiesNF.SPIDER, 0x95150d, 0x2c2622, utility()));
+    public static final RegistryObject<SpawnEggItem> ROCKWORM_SPAWN_EGG = register(EntitiesNF.ROCKWORM.getId().getPath() + "_spawn_egg",
+            () -> new ForgeSpawnEggItem(EntitiesNF.ROCKWORM, 0xcbc2b7, 0x4f5963, utility()));
 //    public static final RegistryObject<SpawnEggItem> PIT_DEVIL_SPAWN_EGG = register(EntitiesNF.PIT_DEVIL.getId().getPath() + "_spawn_egg",
 //            () -> new ForgeSpawnEggItem(EntitiesNF.PIT_DEVIL, 0x95150d, 0x2c2622, utility()));
 //    public static final RegistryObject<SpawnEggItem> SLIME_SPAWN_EGG = register(EntitiesNF.SLIME.getId().getPath() + "_spawn_egg",

@@ -205,7 +205,7 @@ public class BlocksNF {
             .speedFactor(0.8F).jumpFactor(0.9F).sound(SoundType.SWEET_BERRY_BUSH)));
     //Stone
     public static final Map<Stone, RegistryObject<StoneBlock>> STONE_BLOCKS = DataUtil.mapEnum(Stone.class, stone ->
-            register(stone.getName(), () -> new StoneBlock(BlocksNF.ANVILS_STONE.get(stone),
+            register(stone.getName(), () -> new StoneBlock(stone, BlocksNF.ANVILS_STONE.get(stone),
                     BlockBehaviour.Properties.of(Material.STONE, stone.getBaseColor()).requiresCorrectToolForDrops()
                     .strength(stone.getStrength(), stone.getExplosionResistance()).sound(stone.getSound()))));
     private static final VoxelShape ROCK_SHAPE_12 = Block.box(3.0D, 0.0D, 3.0D, 13.0D, 2.0D, 13.0D);

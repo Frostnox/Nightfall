@@ -39,9 +39,12 @@ public class RockwormEmerge extends Action {
     public void onTick(LivingEntity user) {
         if(!user.level.isClientSide && user instanceof RockwormEntity rockworm) {
             IActionTracker capA = ActionTracker.get(user);
-            if(capA.getFrame() == capA.getDuration() / 2) {
-                BlockPos pos = rockworm.blockPosition().above();
-                if(rockworm.canMineBlock(pos)) rockworm.mineBlock(rockworm.level, pos);
+            if(!capA.isStunned()) {
+                if(capA.getFrame() == capA.getDuration() / 2) {
+                    BlockPos pos = rockworm.blockPosition().above();
+                    if(rockworm.canMineBlock(pos)) rockworm.mineBlock(rockworm.level, pos);
+                }
+                if(capA.getFrame() == 1) rockworm.playSound(getSound().get(), 1, 0.97F + rockworm.getRandom().nextFloat() * 0.06F);
             }
         }
     }
