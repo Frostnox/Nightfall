@@ -601,6 +601,7 @@ public class Nightfall {
             engine.register(ParticleTypesNF.BLOOD_RED.get(), FadingParticle.RedProvider::new);
             engine.register(ParticleTypesNF.BLOOD_DARK_RED.get(), FadingParticle.DarkRedProvider::new);
             engine.register(ParticleTypesNF.BLOOD_PALE_BLUE.get(), FadingParticle.PaleBlueProvider::new);
+            engine.register(ParticleTypesNF.BLOOD_GREEN.get(), FadingParticle.GreenProvider::new);
             engine.register(ParticleTypesNF.FRAGMENT_BONE.get(), FragmentParticle.BoneProvider::new);
             engine.register(ParticleTypesNF.FRAGMENT_CREEPER.get(), FragmentParticle.CreeperProvider::new);
             engine.register(ParticleTypesNF.COCKATRICE_SPIT.get(), FadingParticle.CockatriceSpitProvider::new);

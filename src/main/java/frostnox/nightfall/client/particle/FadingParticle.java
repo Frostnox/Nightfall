@@ -84,6 +84,22 @@ public class FadingParticle extends ConstantCollidingParticle {
         }
     }
 
+    public static class GreenProvider implements ParticleProvider<SimpleParticleType> {
+        private final SpriteSet sprite;
+
+        public GreenProvider(SpriteSet sprite) {
+            this.sprite = sprite;
+        }
+
+        @Nullable
+        @Override
+        public Particle createParticle(SimpleParticleType typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+            FadingParticle particle = new FadingParticle(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, 160, sprite);
+            particle.setColor(0.350F, 0.493F, 0.271F);
+            return particle;
+        }
+    }
+
     public static class CockatriceSpitProvider implements ParticleProvider<SimpleParticleType> {
         private final SpriteSet sprite;
 
