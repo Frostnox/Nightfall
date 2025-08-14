@@ -5,6 +5,7 @@ import frostnox.nightfall.data.recipe.BowlCrushingRecipe;
 import frostnox.nightfall.data.recipe.CauldronRecipe;
 import frostnox.nightfall.data.recipe.HeldToolRecipe;
 import frostnox.nightfall.data.recipe.builder.*;
+import frostnox.nightfall.encyclopedia.Entry;
 import frostnox.nightfall.item.*;
 import frostnox.nightfall.registry.EntriesNF;
 import frostnox.nightfall.registry.KnowledgeNF;
@@ -82,7 +83,7 @@ public class RecipeProviderNF extends RecipeProvider {
             BuildingRecipeBuilder.base(brick, 3, ItemsNF.STONE_BRICK_STAIRS.get(type).get()).order(1).save(consumer);
             BuildingRecipeBuilder.base(brick, 2, ItemsNF.STONE_BRICK_SLABS.get(type).get()).order(2).save(consumer);
             BuildingRecipeBuilder.base(brick, 2, ItemsNF.STONE_BRICK_SIDINGS.get(type).get()).order(3).save(consumer);
-            HeldToolRecipe.saveHeldTool(Ingredient.of(rock), Ingredient.of(TagsNF.CHISEL_METAL), brick, 1, null, consumer);
+            HeldToolRecipe.saveHeldTool(Ingredient.of(rock), Ingredient.of(TagsNF.CHISEL_METAL), brick, 1, entryKnowledge(EntriesNF.TOOLS), consumer);
         }
         for(Tree type : Tree.values()) {
             Item plank = ItemsNF.PLANKS.get(type).get();
@@ -157,24 +158,25 @@ public class RecipeProviderNF extends RecipeProvider {
         MixtureRecipeBuilder.base(ItemsNF.MEAT_STEW.get())
                 .addIngredient(ItemsNF.WATER.get(), 1, 1)
                 .addIngredient(TagsNF.MEAT, 3, Float.MAX_VALUE)
-                .unitsPerOutput(4).cookTime(CauldronRecipe.COOK_TIME).requirement(knowledge(ItemsNF.MEAT_STEW)).saveCauldron(consumer);
+                .unitsPerOutput(4).cookTime(CauldronRecipe.COOK_TIME).requirement(itemKnowledge(ItemsNF.MEAT_STEW)).saveCauldron(consumer);
         MixtureRecipeBuilder.base(ItemsNF.VEGETABLE_STEW.get())
                 .addIngredient(ItemsNF.WATER.get(), 1, 1)
                 .addIngredient(TagsNF.MEAT, 0, 1)
                 .addIngredient(TagsNF.VEGETABLE, 2, Float.MAX_VALUE)
-                .unitsPerOutput(4).cookTime(CauldronRecipe.COOK_TIME).requirement(knowledge(ItemsNF.VEGETABLE_STEW)).saveCauldron(consumer);
+                .unitsPerOutput(4).cookTime(CauldronRecipe.COOK_TIME).requirement(itemKnowledge(ItemsNF.VEGETABLE_STEW)).saveCauldron(consumer);
         MixtureRecipeBuilder.base(ItemsNF.HEARTY_STEW.get())
                 .addIngredient(ItemsNF.WATER.get(), 1, 1)
                 .addIngredient(TagsNF.MEAT, 2, Float.MAX_VALUE)
                 .addIngredient(TagsNF.VEGETABLE, 1, Float.MAX_VALUE)
-                .unitsPerOutput(4).cookTime(CauldronRecipe.COOK_TIME).requirement(knowledge(ItemsNF.HEARTY_STEW)).saveCauldron(consumer);
+                .unitsPerOutput(4).cookTime(CauldronRecipe.COOK_TIME).requirement(itemKnowledge(ItemsNF.HEARTY_STEW)).saveCauldron(consumer);
 
         BowlCrushingRecipe.saveBowl(Ingredient.of(ItemsNF.YARROW.get()), Ingredient.of(TagsNF.CHISEL), ItemsNF.YARROW_POWDER.get(), 1, EntriesNF.WOODCARVING.getId(), consumer);
-        BowlCrushingRecipe.saveBowl(Ingredient.of(TagsNF.CRUSHABLE_TO_LIME), Ingredient.of(TagsNF.CHISEL), ItemsNF.LIME.get(), 1, EntriesNF.WOODCARVING.getId(), consumer);
+        BowlCrushingRecipe.saveBowl(Ingredient.of(TagsNF.CRUSHABLE_TO_LIME), Ingredient.of(TagsNF.CHISEL_OR_HAMMER), ItemsNF.LIME.get(), 1, EntriesNF.WOODCARVING.getId(), consumer);
+        BowlCrushingRecipe.saveBowl(Ingredient.of(TagsNF.CRUSHABLE_TO_BONE_SHARD), Ingredient.of(TagsNF.HAMMER), ItemsNF.BONE_SHARD.get(), 2, EntriesNF.WOODCARVING.getId(), consumer);
 
         HeldToolRecipe.saveHeldTool(Ingredient.of(ItemTags.LOGS), Ingredient.of(TagsNF.ADZE), ItemsNF.WOODEN_BOWL.get(), 1, EntriesNF.WOODCARVING.getId(), consumer);
         HeldToolRecipe.saveHeldTool(Ingredient.of(ItemTags.LOGS), Ingredient.of(TagsNF.AXE), ItemsNF.WOODEN_CLUB.get(), 1, EntriesNF.WOODCARVING.getId(), consumer);
-        HeldToolRecipe.saveHeldTool(Ingredient.of(ItemsNF.COCONUT.get()), Ingredient.of(TagsNF.DAGGER), ItemsNF.COCONUT_HALF.get(), 2, null, consumer);
+        HeldToolRecipe.saveHeldTool(Ingredient.of(ItemsNF.COCONUT.get()), Ingredient.of(TagsNF.DAGGER), ItemsNF.COCONUT_HALF.get(), 2, entryKnowledge(EntriesNF.TOOLS), consumer);
 
         CraftingRecipeBuilder.base(ItemsNF.FLINT_ADZE.get(), EntriesNF.TOOLS).define('F', ItemsNF.FLINT.get()).define('X', ItemsNF.PLANT_FIBERS.get()).define('S', ItemsNF.STICK.get()).pattern(" X").pattern("FS").save(consumer);
         CraftingRecipeBuilder.base(ItemsNF.FLINT_AXE.get(), EntriesNF.TOOLS).define('F', ItemsNF.FLINT.get()).define('X', ItemsNF.PLANT_FIBERS.get()).define('S', ItemsNF.STICK.get()).pattern("FX").pattern(" S").save(consumer);
@@ -307,8 +309,8 @@ public class RecipeProviderNF extends RecipeProvider {
                 SingleRecipeBuilder.base(FluidsNF.METAL.get(metal).get(), 100).input(item.get()).cookTime(20 * 20).saveCrucible(consumer);
             }
         }
-        SingleRecipeBuilder.base(ItemsNF.GLASS.get(), 1).input(TagsNF.SAND_ITEM).cookTime(20 * 3).saveCrucible(consumer);
-        SingleRecipeBuilder.base(ItemsNF.SALT.get(), 1).input(ItemsNF.SEAWATER.get()).cookTime(CauldronRecipe.COOK_TIME).saveCrucible(consumer);
+        SingleRecipeBuilder.base(ItemsNF.GLASS.get(), 1).input(TagsNF.SAND_ITEM).cookTime(20 * 3).requirement(entryKnowledge(EntriesNF.CASTING)).saveCrucible(consumer);
+        SingleRecipeBuilder.base(ItemsNF.SALT.get(), 1).input(ItemsNF.SEAWATER.get()).cookTime(CauldronRecipe.COOK_TIME).requirement(entryKnowledge(EntriesNF.CASTING)).saveCrucible(consumer);
 
         BarrelRecipeBuilder.base(ItemsNF.RAWHIDE.get(), 1).input(TagsNF.ANIMAL_HIDE_SMALL).input(ItemsNF.LIME.get()).input(ItemsNF.WATER.get())
                 .soakTime(DAY_LENGTH / 2).requirement(EntriesNF.TANNING.getId()).save(consumer);
@@ -398,12 +400,16 @@ public class RecipeProviderNF extends RecipeProvider {
                     .addIngredient(plate).addStartShape(MicroGridShape.PLATE).addFinishShape(MicroGridShape.SCALES).requirement(EntriesNF.SCALE_ARMOR).save(consumer);
         }
         TieredAnvilRecipeBuilder.base(ItemsNF.INGOTS.get(Metal.IRON).get(), Metal.IRON.getWorkTier()).addIngredient(ItemsNF.IRON_BLOOM.get()).slagChance(0.7F).randRange(4, 10)
-                .addStartShape(MicroGridShape.CHUNK).addFinishShape(MicroGridShape.INGOT).requirement(knowledge(ItemsNF.IRON_BLOOM)).save(consumer);
+                .addStartShape(MicroGridShape.CHUNK).addFinishShape(MicroGridShape.INGOT).requirement(itemKnowledge(ItemsNF.IRON_BLOOM)).save(consumer);
     }
 
     private record AnvilEntry(Ingredient item, MicroGridShape shape, int randMin, int randMax) {}
 
-    private static ResourceLocation knowledge(RegistryObject<? extends Item> item) {
+    private static ResourceLocation itemKnowledge(RegistryObject<? extends Item> item) {
         return KnowledgeNF.ITEMS.get(item).getId();
+    }
+
+    private static ResourceLocation entryKnowledge(RegistryObject<Entry> entry) {
+        return KnowledgeNF.get(entry).getId();
     }
 }

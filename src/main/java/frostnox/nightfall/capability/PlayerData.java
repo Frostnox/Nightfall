@@ -6,6 +6,7 @@ import frostnox.nightfall.block.IHoldable;
 import frostnox.nightfall.data.TagsNF;
 import frostnox.nightfall.encyclopedia.Entry;
 import frostnox.nightfall.encyclopedia.EntryStage;
+import frostnox.nightfall.encyclopedia.knowledge.Knowledge;
 import frostnox.nightfall.entity.PlayerAttribute;
 import frostnox.nightfall.registry.RegistriesNF;
 import frostnox.nightfall.world.inventory.AccessoryInventory;
@@ -712,7 +713,13 @@ public class PlayerData implements IPlayerData {
         else {
             EntryStage nextStage = getStage(id).advance();
             entryStages.put(id, nextStage);
-            if(!player.level.isClientSide()) NetworkHandler.toClient((ServerPlayer) player, new EncyclopediaEntryToClient(id, nextStage, player.getId()));
+            if(!player.level.isClientSide()) {
+                NetworkHandler.toClient((ServerPlayer) player, new EncyclopediaEntryToClient(id, nextStage, player.getId()));
+                if(nextStage == EntryStage.COMPLETED) {
+                    Knowledge knowledge = RegistriesNF.getKnowledge().getValue(ResourceLocation.fromNamespaceAndPath(id.getNamespace(), id.getPath() + "_entry"));
+                    if(knowledge != null) addKnowledge(knowledge.getRegistryName());
+                }
+            }
             refreshEncyclopedia();
         }
     }

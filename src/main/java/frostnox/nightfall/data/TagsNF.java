@@ -156,10 +156,13 @@ public class TagsNF {
     public static final TagKey<Item> SPEAR = itemTag("spear");
     public static final TagKey<Item> SABRE = itemTag("sabre");
     public static final TagKey<Item> MACE = itemTag("mace");
+    public static final TagKey<Item> WOODEN_BOW = itemTag("wooden_bow");
     public static final TagKey<Item> BOW = itemTag("bow");
+    public static final TagKey<Item> UNDYED_METAL_SHIELD = itemTag("undyed_metal_shield");
     public static final TagKey<Item> SHIELD = itemTag("shield");
     public static final TagKey<Item> TOOL = itemTag("tool");
     public static final TagKey<Item> ARMAMENT = itemTag("armament"); //Tools and weapons
+    public static final TagKey<Item> CHISEL_OR_HAMMER = itemTag("chisel_or_hammer");
     public static final TagKey<Item> SABRE_OR_HEAD = itemTag("sabre_or_head");
     public static final TagKey<Item> SICKLE_OR_HEAD = itemTag("sickle_or_head");
     public static final TagKey<Item> SLING_AMMO = itemTag("sling_ammo");
@@ -212,6 +215,7 @@ public class TagsNF {
     public static final TagKey<Item> RAWHIDE_MEDIUM = itemTag("rawhide_medium");
     public static final TagKey<Item> RAWHIDE_LARGE = itemTag("rawhide_large");
     public static final TagKey<Item> CRUSHABLE_TO_LIME = itemTag("crushable_to_lime");
+    public static final TagKey<Item> CRUSHABLE_TO_BONE_SHARD = itemTag("crushable_to_bone_shard");
     public static final TagKey<Item> FLETCHING = itemTag("fletching");
     public static final TagKey<Item> COOKED_MEAT = itemTag("cooked_meat");
     public static final TagKey<Item> CURED_MEAT = itemTag("cured_meat");

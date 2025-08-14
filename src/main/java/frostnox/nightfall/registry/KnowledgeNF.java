@@ -4,6 +4,7 @@ import frostnox.nightfall.Nightfall;
 import frostnox.nightfall.block.Metal;
 import frostnox.nightfall.block.Tree;
 import frostnox.nightfall.data.TagsNF;
+import frostnox.nightfall.encyclopedia.Entry;
 import frostnox.nightfall.encyclopedia.knowledge.ItemKnowledge;
 import frostnox.nightfall.encyclopedia.knowledge.ItemTagKnowledge;
 import frostnox.nightfall.encyclopedia.knowledge.Knowledge;
@@ -25,6 +26,10 @@ public class KnowledgeNF {
     public static final ResourceLocation UNKNOWN_KNOWLEDGE_TEXTURE = ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "gui/icon/unknown_knowledge");
 
     public static final DeferredRegister<Knowledge> KNOWLEDGE = DeferredRegister.create(RegistriesNF.KNOWLEDGE_KEY, Nightfall.MODID);
+
+    //Knowledge versions of entries, can use these to have entries be treated purely as knowledge (will be added automatically upon completion if using same naming scheme)
+    public static final Map<RegistryObject<Entry>, RegistryObject<Knowledge>> ENTRIES = DataUtil.map(EntriesNF.ENTRIES.getEntries(),
+            (entry) -> KNOWLEDGE.register(entry.getId().getPath() + "_entry", Knowledge::new));
 
     public static final Map<RegistryObject<Item>, RegistryObject<ItemKnowledge>> ITEMS = DataUtil.map(ItemsNF.ITEMS.getEntries(),
             (item) -> KNOWLEDGE.register(item.getId().getPath() + "_item", () -> new ItemKnowledge(item.get())));
@@ -49,6 +54,10 @@ public class KnowledgeNF {
 
     public static Knowledge get(ResourceLocation id) {
         return RegistriesNF.getKnowledge().getValue(id);
+    }
+
+    public static RegistryObject<Knowledge> get(RegistryObject<Entry> entry) {
+        return ENTRIES.get(entry);
     }
 
     public static boolean contains(ResourceLocation id) {

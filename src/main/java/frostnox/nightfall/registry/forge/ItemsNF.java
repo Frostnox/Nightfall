@@ -182,6 +182,7 @@ public class ItemsNF {
     public static final RegistryObject<Item> ROCKY_SCALE = ITEMS.register("rocky_scale", () -> new Item(ingredient()));
     public static final RegistryObject<Item> RAW_JELLYFISH = ITEMS.register("raw_jellyfish", () -> new Item(ingredient().stacksTo(4)));
     public static final RegistryObject<Item> RAW_PALE_FLESH = ITEMS.register("raw_pale_flesh", () -> new Item(ingredient().stacksTo(4)));
+    public static final RegistryObject<Item> PIT_DEVIL_TOOTH = ITEMS.register("pit_devil_tooth", () -> new Item(ingredient()));
     //Food
     public static final RegistryObject<Item> POTATO = ITEMS.register("potato", () -> new Item(new Item.Properties().food(
             food(2, 0F)).tab(FOOD_TAB).stacksTo(4)));
@@ -299,8 +300,8 @@ public class ItemsNF {
             () -> new ForgeSpawnEggItem(EntitiesNF.SPIDER, 0x95150d, 0x2c2622, utility()));
     public static final RegistryObject<SpawnEggItem> ROCKWORM_SPAWN_EGG = register(EntitiesNF.ROCKWORM.getId().getPath() + "_spawn_egg",
             () -> new ForgeSpawnEggItem(EntitiesNF.ROCKWORM, 0xcbc2b7, 0x4f5963, utility()));
-//    public static final RegistryObject<SpawnEggItem> PIT_DEVIL_SPAWN_EGG = register(EntitiesNF.PIT_DEVIL.getId().getPath() + "_spawn_egg",
-//            () -> new ForgeSpawnEggItem(EntitiesNF.PIT_DEVIL, 0x95150d, 0x2c2622, utility()));
+    public static final RegistryObject<SpawnEggItem> PIT_DEVIL_SPAWN_EGG = register(EntitiesNF.PIT_DEVIL.getId().getPath() + "_spawn_egg",
+            () -> new ForgeSpawnEggItem(EntitiesNF.PIT_DEVIL, 0x523936, 0x58626c, utility()));
 //    public static final RegistryObject<SpawnEggItem> SLIME_SPAWN_EGG = register(EntitiesNF.SLIME.getId().getPath() + "_spawn_egg",
 //            () -> new ForgeSpawnEggItem(EntitiesNF.SLIME, 0x95150d, 0x2c2622, utility()));
 //    public static final RegistryObject<SpawnEggItem> SCORPION_SPAWN_EGG = register(EntitiesNF.SCORPION.getId().getPath() + "_spawn_egg",
