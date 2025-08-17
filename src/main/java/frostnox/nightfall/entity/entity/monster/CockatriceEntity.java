@@ -9,10 +9,7 @@ import frostnox.nightfall.data.TagsNF;
 import frostnox.nightfall.entity.EntityPart;
 import frostnox.nightfall.entity.IChaser;
 import frostnox.nightfall.entity.IOrientedHitBoxes;
-import frostnox.nightfall.entity.ai.goals.ReducedWanderLandGoal;
-import frostnox.nightfall.entity.ai.goals.StepUpFleeDamageGoal;
-import frostnox.nightfall.entity.ai.goals.StepUpFleeEntityGoal;
-import frostnox.nightfall.entity.ai.goals.StepUpRushAttackGoal;
+import frostnox.nightfall.entity.ai.goals.*;
 import frostnox.nightfall.entity.ai.goals.target.TrackNearestTargetGoal;
 import frostnox.nightfall.network.NetworkHandler;
 import frostnox.nightfall.network.message.GenericEntityToClient;
@@ -123,13 +120,7 @@ public class CockatriceEntity extends HungryMonsterEntity implements IOrientedHi
         });
         goalSelector.addGoal(4, new StepUpFleeDamageGoal(this, 1.7D));
         goalSelector.addGoal(6, new ReducedWanderLandGoal(this, 0.75D, 6));
-        goalSelector.addGoal(8, new RandomLookAroundGoal(this) {
-            @Override
-            public boolean canUse() {
-                if(tickCount % 10 == 0) return super.canUse();
-                else return false;
-            }
-        });
+        goalSelector.addGoal(8, new RandomLookGoal(this, 0.02F / 8));
         targetSelector.addGoal(1, new HurtByTargetGoal(this));
         targetSelector.addGoal(2, new TrackNearestTargetGoal<>(this, LivingEntity.class, true, (entity) -> {
             if(entity.isDeadOrDying()) return false;

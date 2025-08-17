@@ -369,6 +369,10 @@ public abstract class ActionableEntity extends PathfinderMob {
         else return 35F;
     }
 
+    public boolean shouldFleeFrom(LivingEntity target) {
+        return getHealth() / getMaxHealth() < 0.25F;
+    }
+
     public AudioSensing getAudioSensing() {
         return audioSensing;
     }
@@ -580,6 +584,13 @@ public abstract class ActionableEntity extends PathfinderMob {
         if(target != null && target.isRemoved()) setTarget(null);
     }
 
+    protected void simulateTime(long timePassed) {
+        if(noDespawnTicks > 0) {
+            noDespawnTicks = (int) Math.max(0, noDespawnTicks - timePassed - 1);
+            if(noDespawnTicks == 0) discard();
+        }
+    }
+
     @Override
     public void tick() {
         if(!level.isClientSide) {
@@ -589,13 +600,8 @@ public abstract class ActionableEntity extends PathfinderMob {
                 else reducedAI = nearPlayer.distanceToSqr(this) > getReducedAIThresholdSqr();
             }
             long timePassed = level.getGameTime() - lastTickedGameTime;
+            if(timePassed > 1) simulateTime(timePassed);
             lastTickedGameTime = level.getGameTime();
-            if(timePassed > 1) {
-                if(noDespawnTicks > 0) {
-                    noDespawnTicks = (int) Math.max(0, noDespawnTicks - timePassed - 1);
-                    if(noDespawnTicks == 0) discard();
-                }
-            }
         }
         float yRot = yBodyRot;
         super.tick();

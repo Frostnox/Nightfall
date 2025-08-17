@@ -135,13 +135,7 @@ public class SpiderEntity extends HungryMonsterEntity implements IChaser, IHomeE
         goalSelector.addGoal(6, new ForageItemGoal(this, 1.3D, 15, 2));
         goalSelector.addGoal(7, new ForageBlockGoal(this, 1.3D, 15, 2));
         goalSelector.addGoal(8, new WanderLandNestGoal(this, 0.9D));
-        goalSelector.addGoal(9, new RandomLookAroundGoal(this) {
-            @Override
-            public boolean canUse() {
-                if(tickCount % 6 == 0) return super.canUse();
-                else return false;
-            }
-        });
+        goalSelector.addGoal(9, new RandomLookGoal(this, 0.02F / 6));
         targetSelector.addGoal(1, new HurtByTargetGoal(this));
         targetSelector.addGoal(2, new TrackNearestTargetGoal<>(this, LivingEntity.class, true, (entity) -> {
             if(entity.isDeadOrDying()) return false;

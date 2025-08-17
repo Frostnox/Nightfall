@@ -20,7 +20,7 @@ public class ScarabEntity extends MonsterEntity {
                 .add(Attributes.ATTACK_DAMAGE, 1)
                 .add(Attributes.ATTACK_KNOCKBACK, 1)
                 .add(Attributes.ATTACK_SPEED, 1)
-                .add(Attributes.FOLLOW_RANGE, 32)
+                .add(Attributes.FOLLOW_RANGE, 30)
                 .add(AttributesNF.HEARING_RANGE.get(), 15)
                 .add(AttributesNF.STRIKING_DEFENSE.get(), 0.2)
                 .add(AttributesNF.SLASHING_DEFENSE.get(), -0.2)

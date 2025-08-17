@@ -4,6 +4,7 @@ import com.mojang.math.Vector3d;
 import frostnox.nightfall.action.DamageTypeSource;
 import frostnox.nightfall.entity.ai.goals.FleeDamageGoal;
 import frostnox.nightfall.entity.ai.goals.PursueTargetGoal;
+import frostnox.nightfall.entity.ai.goals.RandomLookGoal;
 import frostnox.nightfall.entity.ai.goals.WanderLandGoal;
 import frostnox.nightfall.entity.ai.goals.target.TrackNearestTargetGoal;
 import frostnox.nightfall.entity.ai.pathfinding.FlankingLandEntityNavigator;
@@ -53,7 +54,7 @@ public class CreeperEntity extends MonsterEntity {
                 .add(Attributes.ATTACK_DAMAGE, 1)
                 .add(Attributes.ATTACK_KNOCKBACK, 1)
                 .add(Attributes.ATTACK_SPEED, 1)
-                .add(Attributes.FOLLOW_RANGE, 32)
+                .add(Attributes.FOLLOW_RANGE, 30)
                 .add(AttributesNF.HEARING_RANGE.get(), 15)
                 .add(AttributesNF.STRIKING_DEFENSE.get(), 0.2)
                 .add(AttributesNF.SLASHING_DEFENSE.get(), -0.2)
@@ -107,7 +108,7 @@ public class CreeperEntity extends MonsterEntity {
         goalSelector.addGoal(3, new PursueTargetGoal(this, 1F));
         goalSelector.addGoal(4, new WanderLandGoal(this, 0.8D));
         goalSelector.addGoal(5, new FleeDamageGoal(this, 1D));
-        goalSelector.addGoal(6, new RandomLookAroundGoal(this));
+        goalSelector.addGoal(6, new RandomLookGoal(this, 0.02F / 4));
         targetSelector.addGoal(1, new HurtByTargetGoal(this));
         targetSelector.addGoal(2, new TrackNearestTargetGoal<>(this, Player.class, true));
     }

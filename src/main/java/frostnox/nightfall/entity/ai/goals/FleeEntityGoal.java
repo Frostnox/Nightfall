@@ -1,8 +1,7 @@
 package frostnox.nightfall.entity.ai.goals;
 
-import frostnox.nightfall.data.TagsNF;
-import frostnox.nightfall.entity.entity.ActionableEntity;
 import frostnox.nightfall.entity.ai.pathfinding.ReversePath;
+import frostnox.nightfall.entity.entity.ActionableEntity;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
@@ -10,7 +9,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;

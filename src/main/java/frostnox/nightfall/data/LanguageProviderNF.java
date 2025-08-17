@@ -407,6 +407,11 @@ public class LanguageProviderNF extends LanguageProvider {
         addSound(SoundsNF.ROCKWORM_BITE, "Rockworm bites");
         addSound(SoundsNF.ROCKWORM_EMERGE, "Rockworm emerges");
         addSound(SoundsNF.ROCKWORM_BURROW, "Rockworm burrows");
+        addSound(SoundsNF.PIT_DEVIL_DEATH, "Pit Devil dies");
+        addSound(SoundsNF.PIT_DEVIL_HURT, "Pit Devil shrieks");
+        addSound(SoundsNF.PIT_DEVIL_BITE, "Pit Devil chomps");
+        addSound(SoundsNF.PIT_DEVIL_HOWL, "Something howls");
+        addSound(SoundsNF.PIT_DEVIL_GROWL, "Pit Devil growls");
         addSound(SoundsNF.JELLYFISH_DEATH, "Jellyfish ruptures");
         addSound(SoundsNF.JELLYFISH_HURT, "Jellyfish squishes");
         addSound(SoundsNF.JELLYFISH_STING, "Jellyfish stings");

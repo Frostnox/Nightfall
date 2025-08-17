@@ -390,6 +390,26 @@
     "subtitle": "nightfall.entity.rockworm.burrow",
     "sounds": ["nightfall:entity/rockworm/burrow_0", "nightfall:entity/rockworm/burrow_1"]
   },
+  "entity.pit_devil.death": {
+    "subtitle": "nightfall.entity.pit_devil.death",
+    "sounds": ["nightfall:entity/pit_devil/death"]
+  },
+  "entity.pit_devil.hurt": {
+    "subtitle": "nightfall.entity.pit_devil.hurt",
+    "sounds": ["nightfall:entity/pit_devil/hurt_0", "nightfall:entity/pit_devil/hurt_1"]
+  },
+  "entity.pit_devil.bite": {
+    "subtitle": "nightfall.entity.pit_devil.bite",
+    "sounds": ["nightfall:entity/pit_devil/bite_0", "nightfall:entity/pit_devil/bite_1", "nightfall:entity/pit_devil/bite_2"]
+  },
+  "entity.pit_devil.howl": {
+    "subtitle": "nightfall.entity.pit_devil.howl",
+    "sounds": ["nightfall:entity/pit_devil/howl"]
+  },
+  "entity.pit_devil.growl": {
+    "subtitle": "nightfall.entity.pit_devil.growl",
+    "sounds": ["nightfall:entity/pit_devil/growl_0", "nightfall:entity/pit_devil/growl_1"]
+  },
   "entity.jellyfish.death": {
     "subtitle": "nightfall.entity.jellyfish.death",
     "sounds": ["mob/slime/small1", "mob/slime/small2", "mob/slime/small3", "mob/slime/small4", "mob/slime/small5"]

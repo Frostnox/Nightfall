@@ -111,7 +111,7 @@ public interface IOrientedHitBoxes {
                 }
                 box.rotation.mul(r);
                 //Can't really know when to apply pitch transform as actions are free to blend between model's default pose and their own animation
-                if(part == EntityPart.HEAD && (capA.isInactive() || capA.isStunned() || capA.getState() == 0)) {
+                if(part == EntityPart.HEAD && (capA.isInactive() || capA.isStunned())) {
                     box.rotation.mul(Vector3f.XP.rotationDegrees(entity.getViewXRot(partial)));
                 }
             }

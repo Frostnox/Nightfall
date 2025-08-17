@@ -28,6 +28,10 @@ public class PursueTargetGoal extends Goal {
         setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
     }
 
+    protected boolean canPursue() {
+        return true;
+    }
+
     @Override
     public boolean canUse() {
         long time = mob.level.getGameTime();
@@ -93,17 +97,19 @@ public class PursueTargetGoal extends Goal {
             mob.getLookControl().setLookAt(target, mob.getMaxYRotPerTick(), mob.getMaxXRotPerTick());
             double distSqr = mob.distanceToSqr(target.getX(), target.getY(), target.getZ());
             recalcTicks = Math.max(recalcTicks - 1, 0);
-            if((recalcTicks == 0 || mob.refreshPath || mob.getNavigator().isDone()) && (pathedTargetX == 0.0D && pathedTargetY == 0.0D && pathedTargetZ == 0.0D || target.distanceToSqr(pathedTargetX, pathedTargetY, pathedTargetZ) >= 1.0D || mob.getRandom().nextFloat() < 0.05F)) {
-                pathedTargetX = target.getX();
-                pathedTargetY = target.getY();
-                pathedTargetZ = target.getZ();
+            if(canPursue()) {
+                if((recalcTicks == 0 || mob.refreshPath || mob.getNavigator().isDone()) && (pathedTargetX == 0.0D && pathedTargetY == 0.0D && pathedTargetZ == 0.0D || target.distanceToSqr(pathedTargetX, pathedTargetY, pathedTargetZ) >= 1.0D || mob.getRandom().nextFloat() < 0.05F)) {
+                    pathedTargetX = target.getX();
+                    pathedTargetY = target.getY();
+                    pathedTargetZ = target.getZ();
 
-                recalcTicks = 2;
-                if(distSqr > 1024.0) recalcTicks += 12;
-                else if(distSqr > 256.0) recalcTicks += 8;
-                else if(distSqr > 25.0) recalcTicks += 4;
-                if(!mob.getNavigator().moveTo(target, speedModifier)) recalcTicks += 4;
-                if(mob.refreshPath) mob.refreshPath = false;
+                    recalcTicks = 2;
+                    if(distSqr > 1024.0) recalcTicks += 12;
+                    else if(distSqr > 256.0) recalcTicks += 8;
+                    else if(distSqr > 25.0) recalcTicks += 4;
+                    if(!mob.getNavigator().moveTo(target, speedModifier)) recalcTicks += 4;
+                    if(mob.refreshPath) mob.refreshPath = false;
+                }
             }
         }
         else if(mob.lastTargetPos != null) {
@@ -117,11 +123,12 @@ public class PursueTargetGoal extends Goal {
                     pursueTime = 0;
                 }
             }
-            else {
+            else if(canPursue()) {
                 mob.getNavigator().moveTo(mob.lastTargetPos.getX(), mob.lastTargetPos.getY(), mob.lastTargetPos.getZ(), speedModifier);
                 pursueTime = 0;
             }
         }
+        if(!canPursue()) mob.getNavigator().stop();
         lastLastPos = mob.lastTargetPos;
     }
 }

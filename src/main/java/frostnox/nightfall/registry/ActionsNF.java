@@ -13,6 +13,8 @@ import frostnox.nightfall.action.npc.dreg.DregResurrect;
 import frostnox.nightfall.action.npc.husk.HuskLeftSwipe;
 import frostnox.nightfall.action.npc.husk.HuskOverhead;
 import frostnox.nightfall.action.npc.husk.HuskRightSwipe;
+import frostnox.nightfall.action.npc.pit_devil.PitDevilBite;
+import frostnox.nightfall.action.npc.pit_devil.PitDevilGrowl;
 import frostnox.nightfall.action.npc.rockworm.RockwormBite;
 import frostnox.nightfall.action.npc.rockworm.RockwormEmerge;
 import frostnox.nightfall.action.npc.rockworm.RockwormRetreat;
@@ -62,6 +64,7 @@ public class ActionsNF {
 
     protected final static DamageType[] STRIKING_SLASHING = new DamageType[] {DamageType.STRIKING, DamageType.SLASHING};
     protected final static DamageType[] PIERCING_SLASHING = new DamageType[] {DamageType.PIERCING, DamageType.SLASHING};
+    protected final static DamageType[] PIERCING_STRIKING = new DamageType[] {DamageType.PIERCING, DamageType.STRIKING};
     protected final static float SWORD_KNOCKBACK = 0.1F;
     protected final static float SABRE_KNOCKBACK = 0.1F;
     protected final static float MACE_KNOCKBACK = 0.3F;
@@ -456,6 +459,12 @@ public class ActionsNF {
     public static final RegistryObject<RockwormBite> ROCKWORM_BITE = ACTIONS.register("rockworm_bite", () ->
             new RockwormBite(35F, DamageType.PIERCING.asArray(), HurtSphere.ROCKWORM_BITE, 2, 6,
                     new int[] {5, 7}, new Action.Properties().setKnockback(-1F).setImpact(Impact.HIGH).setSound(SoundsNF.ROCKWORM_BITE)));
+
+    public static final RegistryObject<PitDevilGrowl> PIT_DEVIL_GROWL = ACTIONS.register("pit_devil_growl", () ->
+            new PitDevilGrowl(new Action.Properties().setChargeState(1).setSound(SoundsNF.PIT_DEVIL_GROWL), 4, 1, 4));
+    public static final RegistryObject<PitDevilBite> PIT_DEVIL_BITE = ACTIONS.register("pit_devil_bite", () ->
+            new PitDevilBite(35F, PIERCING_STRIKING, HurtSphere.PIT_DEVIL_BITE, 2, CombatUtil.STUN_MEDIUM,
+                    new int[] {9, 6, 8}, new Action.Properties().setImpact(Impact.MEDIUM).setSound(SoundsNF.PIT_DEVIL_BITE), bleeding(0.5F)));
 
     public static void register() {
         ACTIONS.register(Nightfall.MOD_EVENT_BUS);
