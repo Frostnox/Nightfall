@@ -7,6 +7,7 @@ import frostnox.nightfall.registry.forge.BlockEntitiesNF;
 import frostnox.nightfall.util.LevelUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -24,6 +25,7 @@ import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.HitResult;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
@@ -94,6 +96,7 @@ public class WallSignBlockNF extends WallSignBlock implements IWaterloggedBlock 
 
     @Override
     public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player) {
-        return LevelUtil.pickCloneItem(state.getBlock(), player);
+        return LevelUtil.pickCloneItem(ForgeRegistries.BLOCKS.getValue(ResourceLocation.fromNamespaceAndPath(getRegistryName().getNamespace(),
+                getRegistryName().getPath().replace("wall", "standing"))), player);
     }
 }

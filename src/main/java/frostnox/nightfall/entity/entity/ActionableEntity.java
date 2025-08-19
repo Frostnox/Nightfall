@@ -140,6 +140,10 @@ public abstract class ActionableEntity extends PathfinderMob {
         return getItemBySlot(EquipmentSlot.MAINHAND).getDestroySpeed(block);
     }
 
+    public float getNaturalRegen() {
+        return 20F / (20 * 60 * 5);
+    }
+
     public boolean mineBlock(Level level, BlockPos pos) {
         LevelChunk chunk = level.getChunkAt(pos);
         IGlobalChunkData chunkData = GlobalChunkData.get(chunk);
@@ -458,6 +462,14 @@ public abstract class ActionableEntity extends PathfinderMob {
     }
 
     @Override
+    protected float tickHeadTurn(float pYRot, float pAnimStep) {
+        float oldYBodyRot = yBodyRot;
+        float step = super.tickHeadTurn(pYRot, pAnimStep);
+        if(isAlive() && !getActionTracker().isInactive()) yBodyRot = oldYBodyRot;
+        return step;
+    }
+
+    @Override
     public boolean updateFluidHeightAndDoFluidPushing(TagKey<Fluid> pFluidTag, double pMotionScale) {
         //Reduce influence of flowing water
         return super.updateFluidHeightAndDoFluidPushing(pFluidTag, pFluidTag == FluidTags.LAVA ? pMotionScale : pMotionScale * 0.2D);
@@ -589,6 +601,9 @@ public abstract class ActionableEntity extends PathfinderMob {
             noDespawnTicks = (int) Math.max(0, noDespawnTicks - timePassed - 1);
             if(noDespawnTicks == 0) discard();
         }
+        if(!isRemoved()) {
+            heal(getNaturalRegen() * timePassed);
+        }
     }
 
     @Override
@@ -618,6 +633,7 @@ public abstract class ActionableEntity extends PathfinderMob {
             GameEventListenerRegistrar listener = getGameEventListenerRegistrar();
             if(listener != null) listener.onListenerMove(level);
         }
+        if(getHealth() < getMaxHealth()) heal(getNaturalRegen());
         capA.tick();
         if(capA.isInactive()) capA.startAction(ActionsNF.EMPTY.getId());
         if(capA.isStunned()) stopUsingItem();

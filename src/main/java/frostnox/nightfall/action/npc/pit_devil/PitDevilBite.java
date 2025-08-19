@@ -114,7 +114,7 @@ public class PitDevilBite extends NPCAttack {
         if(!user.level.isClientSide && user instanceof Mob mob) {
             IActionTracker capA = ActionTracker.get(user);
             if(capA.getState() == 0 && capA.getFrame() == capA.getDuration() - 1) {
-                CombatUtil.addMovementTowardsTarget(0.6, 1, mob);
+                CombatUtil.addMovementTowardsTarget(0.75, 1, mob);
             }
         }
     }

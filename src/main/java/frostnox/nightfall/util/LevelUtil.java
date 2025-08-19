@@ -74,6 +74,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
@@ -647,7 +648,8 @@ public class LevelUtil {
     public static Set<Item> getAllLootItems(ResourceLocation tableLoc, ServerLevel level) {
         LootTable table = level.getServer().getLootTables().get(tableLoc);
         Set<Item> items = new ObjectArraySet<>();
-        for(LootPool pool : table.pools) {
+        //Forced to use reflection here because the pools field of this class breaks upon downloading sources because...? No one knows and I don't care anymore
+        for(LootPool pool : ((List<LootPool>) ObfuscationReflectionHelper.getPrivateValue(LootTable.class, table, "f_79109_"))) {
             for(LootPoolEntryContainer entry : pool.entries) {
                 if(entry instanceof LootItem lootItem) {
                     items.add(lootItem.item);

@@ -88,6 +88,7 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.PlayerFlyableFallEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.List;
@@ -771,6 +772,8 @@ public class ClientEventHandler {
                     if(pickItem.getItem() == heldItem.getItem()) {
                         List<BuildingRecipe> recipes = buildingItem.getRecipes(player.level, player);
                         Block block = state.getBlock();
+                        if(block instanceof WallSignBlockNF) block = ForgeRegistries.BLOCKS.getValue(ResourceLocation.fromNamespaceAndPath(block.getRegistryName().getNamespace(),
+                                block.getRegistryName().getPath().replace("wall", "standing")));
                         for(int i = 0; i < recipes.size(); i++) {
                             BuildingRecipe recipe = recipes.get(i);
                             if(recipe.output instanceof BlockItem blockItem && blockItem.getBlock() == block) {

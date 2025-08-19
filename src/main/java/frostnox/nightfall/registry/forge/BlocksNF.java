@@ -76,7 +76,9 @@ public class BlocksNF {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Nightfall.MODID);
 
     public static final Material SOLID_DECORATION = new Material(MaterialColor.NONE, false, true, true, false, false, false, PushReaction.NORMAL);
+    public static final Material SOLID_NO_COLLISION_DECORATION = new Material(MaterialColor.NONE, false, true, false, false, false, false, PushReaction.NORMAL);
     public static final Material SOLID_FLAMMABLE_DECORATION = new Material(MaterialColor.NONE, false, true, true, false, true, false, PushReaction.NORMAL);
+    public static final Material SOLID_FLAMMABLE_NO_COLLISION_DECORATION = new Material(MaterialColor.NONE, false, true, false, false, true, false, PushReaction.NORMAL);
     public static final Material FLAMMABLE_DECORATION = new Material(MaterialColor.NONE, false, false, false, false, true, false, PushReaction.NORMAL);
     public static final Material REPLACEABLE_DECORATION = new Material(MaterialColor.NONE, false, false, false, false, false, true, PushReaction.DESTROY);
     public static final IBlockRenderProperties NO_BREAK_PARTICLES = new IBlockRenderProperties() {
@@ -403,13 +405,13 @@ public class BlocksNF {
                 }
             }));
     public static final Map<Tree, RegistryObject<StandingSignBlockNF>> PLANK_STANDING_SIGNS = DataUtil.mapEnum(Tree.class, tree ->
-            register(tree.getName() + "_standing_sign", () -> new StandingSignBlockNF(BlockBehaviour.Properties.of(Material.WOOD, tree.getBaseColor())
+            register(tree.getName() + "_standing_sign", () -> new StandingSignBlockNF(BlockBehaviour.Properties.of(SOLID_FLAMMABLE_NO_COLLISION_DECORATION, tree.getBaseColor())
                     .noCollission().strength(1.5F).sound(SoundType.WOOD), tree)));
     public static final Map<Tree, RegistryObject<WallSignBlockNF>> PLANK_WALL_SIGNS = DataUtil.mapEnum(Tree.class, tree ->
-            register(tree.getName() + "_wall_sign", () -> new WallSignBlockNF(BlockBehaviour.Properties.of(Material.WOOD, tree.getBaseColor())
+            register(tree.getName() + "_wall_sign", () -> new WallSignBlockNF(BlockBehaviour.Properties.of(SOLID_FLAMMABLE_NO_COLLISION_DECORATION, tree.getBaseColor())
                     .noCollission().strength(1.5F).sound(SoundType.WOOD), tree)));
     public static final Map<Tree, RegistryObject<ItemFrameBlock>> WOODEN_ITEM_FRAMES = DataUtil.mapEnum(Tree.class, tree ->
-            register(tree.getName() + "_item_frame", () -> new ItemFrameBlock(BlockBehaviour.Properties.of(SOLID_FLAMMABLE_DECORATION).noCollission()
+            register(tree.getName() + "_item_frame", () -> new ItemFrameBlock(BlockBehaviour.Properties.of(SOLID_FLAMMABLE_NO_COLLISION_DECORATION).noCollission()
                     .strength(tree.getStrength() * 0.5F, tree.getExplosionResistance() * 0.5F).sound(SoundType.WOOD)) {
                 @Override
                 public int getFireSpreadSpeed(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
