@@ -8,10 +8,10 @@ import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class SurfaceSpawnGroup extends SimpleSpawnGroup {
+public class LandSpawnGroup extends SimpleSpawnGroup {
     protected final TagKey<Block> spawnBlocks;
 
-    public SurfaceSpawnGroup(int weight, boolean friendly, EntityType<?> type, int yMin, int yMax, int lightMin, int lightMax, int sizeMin, int sizeMax, float tempMin, float tempMax, float humidityMin, float humidityMax, TagKey<Block> spawnBlocks) {
+    public LandSpawnGroup(int weight, boolean friendly, EntityType<?> type, int yMin, int yMax, int lightMin, int lightMax, int sizeMin, int sizeMax, float tempMin, float tempMax, float humidityMin, float humidityMax, TagKey<Block> spawnBlocks) {
         super(weight, friendly, type, yMin, yMax, lightMin, lightMax, sizeMin, sizeMax, tempMin, tempMax, humidityMin, humidityMax);
         this.spawnBlocks = spawnBlocks;
     }

@@ -40,8 +40,8 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -132,8 +132,8 @@ public class SpiderEntity extends HungryMonsterEntity implements IChaser, IHomeE
             }
         });
         goalSelector.addGoal(5, new FleeDamageGoal(this, 1.1D));
-        goalSelector.addGoal(6, new ForageItemGoal(this, 1.3D, 15, 2));
-        goalSelector.addGoal(7, new ForageBlockGoal(this, 1.3D, 15, 2));
+        goalSelector.addGoal(6, new EatEntityGoal(this, 1D, 15, 2));
+        goalSelector.addGoal(7, new EatBlockGoal(this, 1D, 15, 2));
         goalSelector.addGoal(8, new WanderLandNestGoal(this, 0.9D));
         goalSelector.addGoal(9, new RandomLookGoal(this, 0.02F / 6));
         targetSelector.addGoal(1, new HurtByTargetGoal(this));
@@ -383,26 +383,10 @@ public class SpiderEntity extends HungryMonsterEntity implements IChaser, IHomeE
     }
 
     @Override
-    public boolean canEat(ItemStack item) {
-        return item.is(TagsNF.SPIDER_FOOD_ITEM);
-    }
-
-    @Override
-    public void doEatParticlesClient(ItemStack item) {
-        if(getEatSound() != null) {
-            level.playLocalSound(getX(), getEyeY(), getZ(), getEatSound(), SoundSource.NEUTRAL, 0.5F + 0.5F * (float)random.nextInt(2),
-                    (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F, false);
-        }
-        for(int i = 0; i < 4; i++) {
-            Vec3 speed = new Vec3(((double)random.nextFloat() - 0.5D) * 0.1D, Math.random() * 0.1D + 0.1D, ((double)random.nextFloat() - 0.5D) * 0.1D);
-            speed = speed.xRot(-getXRot() * ((float)Math.PI / 180F));
-            speed = speed.yRot(-getYRot() * ((float)Math.PI / 180F));
-            Vec3 pos = new Vec3(((double)random.nextFloat() - 0.5D) * 0.8D, (double)(-random.nextFloat()) * 0.6D - 0.3D,
-                    0.25D + ((double)random.nextFloat() - 0.5D) * 0.4D);
-            pos = pos.yRot(-yBodyRot * ((float)Math.PI / 180F));
-            pos = pos.add(getX(), getEyeY(), getZ());
-            level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, item), pos.x, pos.y, pos.z, speed.x, speed.y + 0.05D, speed.z);
-        }
+    public boolean canEat(Entity entity) {
+        if(entity instanceof ItemEntity itemEntity) return itemEntity.getItem().is(TagsNF.SPIDER_FOOD_ITEM);
+        else if(entity instanceof LivingEntity livingEntity) return livingEntity.deathTime > 20 && !(entity instanceof SpiderEntity) && entity.getType().is(TagsNF.EDIBLE_CORPSE);
+        else return false;
     }
 
     @Override

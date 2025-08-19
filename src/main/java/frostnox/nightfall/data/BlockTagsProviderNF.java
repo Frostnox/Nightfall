@@ -259,6 +259,7 @@ public class BlockTagsProviderNF extends BlockTagsProvider {
         tag(TagsNF.DEER_FOOD_BLOCK).add(BlocksNF.BERRY_BUSH.get());
         tag(TagsNF.COCKATRICE_FOOD_BLOCK);
         tag(TagsNF.SPIDER_FOOD_BLOCK);
+        tag(TagsNF.PIT_DEVIL_FOOD_BLOCK);
         tag(TagsNF.COCKATRICE_SPAWN_BLOCK).addTag(TagsNF.NATURAL_SOIL);
         tag(TagsNF.DEER_SPAWN_BLOCK).addTag(TagsNF.NATURAL_SOIL);
         tag(TagsNF.RABBIT_SPAWN_BLOCK).addTag(TagsNF.TILLABLE_SOIL);

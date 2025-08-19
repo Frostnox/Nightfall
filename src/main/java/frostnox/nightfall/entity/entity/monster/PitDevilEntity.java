@@ -5,6 +5,7 @@ import com.mojang.math.Vector3f;
 import frostnox.nightfall.action.DamageTypeSource;
 import frostnox.nightfall.action.Impact;
 import frostnox.nightfall.action.Poise;
+import frostnox.nightfall.block.IFoodBlock;
 import frostnox.nightfall.capability.ActionTracker;
 import frostnox.nightfall.data.TagsNF;
 import frostnox.nightfall.entity.EntityPart;
@@ -16,6 +17,8 @@ import frostnox.nightfall.registry.forge.AttributesNF;
 import frostnox.nightfall.registry.forge.SoundsNF;
 import frostnox.nightfall.util.animation.AnimationData;
 import frostnox.nightfall.util.math.OBB;
+import frostnox.nightfall.world.ContinentalWorldType;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -30,21 +33,23 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
 import javax.annotation.Nullable;
 import java.util.EnumMap;
 
-public class PitDevilEntity extends MonsterEntity implements IOrientedHitBoxes {
+public class PitDevilEntity extends HungryMonsterEntity implements IOrientedHitBoxes {
     public static final int GROWL_DURATION = 12 * 20;
     private static final EntityPart[] OBB_PARTS = new EntityPart[]{EntityPart.BODY, EntityPart.NECK, EntityPart.HEAD};
     protected static final EntityDataAccessor<Boolean> SPECIAL = SynchedEntityData.defineId(CockatriceEntity.class, EntityDataSerializers.BOOLEAN);
     public int growlTicks;
 
-    public PitDevilEntity(EntityType<? extends MonsterEntity> type, Level worldIn) {
+    public PitDevilEntity(EntityType<? extends HungryMonsterEntity> type, Level worldIn) {
         super(type, worldIn);
     }
 
@@ -68,7 +73,7 @@ public class PitDevilEntity extends MonsterEntity implements IOrientedHitBoxes {
 
     public static EnumMap<EntityPart, AnimationData> getHeadAnimMap() {
         EnumMap<EntityPart, AnimationData> map = new EnumMap<>(EntityPart.class);
-        map.put(EntityPart.BODY, new AnimationData(new Vector3f(0F/16F, -2F/16F, 5.5F/16F)));
+        map.put(EntityPart.BODY, new AnimationData(new Vector3f(0F/16F, -2F/16F, -5.5F/16F)));
         map.put(EntityPart.NECK, new AnimationData(new Vector3f(0F/16F, 0F/16F, 0F/16F)));
         map.put(EntityPart.HEAD, new AnimationData(new Vector3f(0F/16F, 0F/16F, 0F/16F)));
         return map;
@@ -82,14 +87,10 @@ public class PitDevilEntity extends MonsterEntity implements IOrientedHitBoxes {
     protected void registerGoals() {
         goalSelector.addGoal(1, new FloatGoal(this));
         goalSelector.addGoal(2, new LandFleeTargetGoal(this, 1.35D, 1.45D));
-        goalSelector.addGoal(4, new LandFleeEntityGoal<>(this, LivingEntity.class, 1.35D, 1.45D, (entity) -> {
-            if(entity.isDeadOrDying()) return false;
-            else return entity.getType().is(TagsNF.PIT_DEVIL_PREDATOR);
-        }));
         goalSelector.addGoal(3, new RushAttackGoal(this, 1.35D) {
             @Override
             protected boolean canPursue() {
-                return ActionTracker.isPresent(mob) && !getActionTracker().getActionID().equals(ActionsNF.PIT_DEVIL_GROWL.getId());
+                return ActionTracker.isPresent(mob) && (getActionTracker().getState() == 2 || !getActionTracker().getActionID().equals(ActionsNF.PIT_DEVIL_GROWL.getId()));
             }
 
             @Override
@@ -98,9 +99,15 @@ public class PitDevilEntity extends MonsterEntity implements IOrientedHitBoxes {
                 if(mob.isAlive()) mob.getActionTracker().releaseCharge();
             }
         });
+        goalSelector.addGoal(4, new LandFleeEntityGoal<>(this, LivingEntity.class, 1.35D, 1.45D, (entity) -> {
+            if(entity.isDeadOrDying()) return false;
+            else return entity.getType().is(TagsNF.PIT_DEVIL_PREDATOR);
+        }));
         goalSelector.addGoal(5, new FleeDamageGoal(this, 1.35D));
-        goalSelector.addGoal(6, new WanderLandGoal(this, 0.8D));
-        goalSelector.addGoal(8, new RandomLookGoal(this, 0.01F));
+        goalSelector.addGoal(6, new EatEntityGoal(this, 1D, 15, 2));
+        goalSelector.addGoal(7, new EatBlockGoal(this, 1D, 15, 2));
+        goalSelector.addGoal(8, new WanderLandGoal(this, 0.8D));
+        goalSelector.addGoal(9, new RandomLookGoal(this, 0.02F / 2));
         targetSelector.addGoal(1, new HurtByTargetGoal(this));
         targetSelector.addGoal(2, new TrackNearestTargetGoal<>(this, LivingEntity.class, true, (entity) -> {
             if(entity.isDeadOrDying()) return false;
@@ -123,7 +130,6 @@ public class PitDevilEntity extends MonsterEntity implements IOrientedHitBoxes {
     public void tick() {
         super.tick();
         if(!isRemoved() && getActionTracker().isInactive() && getTarget() == null && growlTicks > 0) growlTicks--;
-        if(getActionTracker().isInactive()) startAction(ActionsNF.PIT_DEVIL_BITE.getId());
     }
 
     @Override
@@ -199,6 +205,11 @@ public class PitDevilEntity extends MonsterEntity implements IOrientedHitBoxes {
     }
 
     @Override
+    protected void playStepSound(BlockPos pos, BlockState pBlock) {
+        playSound(SoundsNF.PIT_DEVIL_STEP.get(), 0.2F, 0.75F);
+    }
+
+    @Override
     public EquipmentSlot getHitSlot(Vector3d hitPos, int boxIndex) {
         if(boxIndex == 0) return hitPos.y > 13F/16F ? EquipmentSlot.LEGS : EquipmentSlot.HEAD;
         else return hitPos.y > 8F/16F ? EquipmentSlot.CHEST : EquipmentSlot.LEGS;
@@ -224,13 +235,13 @@ public class PitDevilEntity extends MonsterEntity implements IOrientedHitBoxes {
 
     @Override
     public Vector3f getOBBTranslation() {
-        return new Vector3f(0F/16F, 9F/16F, 10.5F/16F);
+        return new Vector3f(0F/16F, 9F/16F, 0F/16F);
     }
 
     @Override
     public EnumMap<EntityPart, AnimationData> getDefaultAnimMap() {
         EnumMap<EntityPart, AnimationData> map = getGenericAnimMap();
-        map.put(EntityPart.BODY, new AnimationData(new Vector3f(0F/16F, -2F/16F, 5.5F/16F)));
+        map.put(EntityPart.BODY, new AnimationData(new Vector3f(0F/16F, -2F/16F, -5.5F/16F)));
         map.put(EntityPart.NECK, new AnimationData(new Vector3f(0F/16F, 0F/16F, 0F/16F)));
         map.put(EntityPart.HEAD, new AnimationData(new Vector3f(0F/16F, 0F/16F, 0F/16F)));
         return map;
@@ -252,5 +263,31 @@ public class PitDevilEntity extends MonsterEntity implements IOrientedHitBoxes {
     public AABB getEnclosingAABB() {
         AABB bb = getBoundingBox();
         return new AABB(bb.minX - 0.75, bb.minY, bb.minZ - 0.75, bb.maxX + 0.75, bb.maxY + 0.5, bb.maxZ + 0.75);
+    }
+
+    @Override
+    protected int getMaxSatiety() {
+        return (int) (ContinentalWorldType.DAY_LENGTH / 2);
+    }
+
+    @Override
+    public boolean canEat(BlockState state) {
+        if(state.is(TagsNF.PIT_DEVIL_FOOD_BLOCK)) {
+            if(state.getBlock() instanceof IFoodBlock foodBlock) return foodBlock.isEatable(state);
+            else return true;
+        }
+        else return false;
+    }
+
+    @Override
+    public boolean canEat(Entity entity) {
+        if(entity instanceof ItemEntity itemEntity) return itemEntity.getItem().is(TagsNF.PIT_DEVIL_FOOD_ITEM);
+        else if(entity instanceof LivingEntity livingEntity) return livingEntity.deathTime > 20 && entity.getType().is(TagsNF.EDIBLE_CORPSE);
+        else return false;
+    }
+
+    @Override
+    public SoundEvent getEatSound() {
+        return SoundsNF.PIT_DEVIL_EAT.get();
     }
 }

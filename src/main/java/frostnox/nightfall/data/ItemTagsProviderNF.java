@@ -242,6 +242,8 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
         tag(TagsNF.FLETCHING).add(ItemsNF.COCKATRICE_FEATHER.get());
         tag(TagsNF.COOKED_MEAT).add(ItemsNF.COOKED_GAME.get(), ItemsNF.COOKED_POULTRY.get(), ItemsNF.COOKED_VENISON.get(), ItemsNF.COOKED_PALE_FLESH.get());
         tag(TagsNF.CURED_MEAT).add(ItemsNF.CURED_GAME.get(), ItemsNF.CURED_POULTRY.get(), ItemsNF.CURED_VENISON.get(), ItemsNF.CURED_PALE_FLESH.get());
+        tag(TagsNF.ANIMAL_EDIBLE_MEAT).addTag(TagsNF.MEAT);
+        tag(TagsNF.ANIMAL_EDIBLE_MEAT).add(ItemsNF.RAW_JELLYFISH.get(), ItemsNF.RAW_PALE_FLESH.get());
         tag(TagsNF.CURABLE_FOOD).add(ItemsNF.RAW_GAME.get(), ItemsNF.RAW_VENISON.get(), ItemsNF.RAW_POULTRY.get(), ItemsNF.RAW_JELLYFISH.get(), ItemsNF.RAW_PALE_FLESH.get());
         tag(TagsNF.COOKED_VEGETABLE).add(ItemsNF.ROASTED_CARROT.get(), ItemsNF.ROASTED_POTATO.get());
         tag(ItemTags.ARROWS).add(ItemsNF.FLINT_ARROW.get(), ItemsNF.BONE_ARROW.get(), ItemsNF.RUSTED_ARROW.get());
@@ -258,8 +260,9 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
         tag(TagsNF.RABBIT_FOOD_ITEM).addTag(TagsNF.FRUIT);
         tag(TagsNF.DEER_FOOD_ITEM).add(ItemsNF.CARROT.get(), ItemsNF.POTATO.get());
         tag(TagsNF.DEER_FOOD_ITEM).addTag(TagsNF.FRUIT);
-        tag(TagsNF.COCKATRICE_FOOD_ITEM).addTag(TagsNF.MEAT);
-        tag(TagsNF.SPIDER_FOOD_ITEM).addTag(TagsNF.MEAT);
+        tag(TagsNF.COCKATRICE_FOOD_ITEM).addTag(TagsNF.ANIMAL_EDIBLE_MEAT);
+        tag(TagsNF.SPIDER_FOOD_ITEM).addTag(TagsNF.ANIMAL_EDIBLE_MEAT);
+        tag(TagsNF.PIT_DEVIL_FOOD_ITEM).addTag(TagsNF.ANIMAL_EDIBLE_MEAT);
 
         copy(TagsNF.HEAT_RESISTANT_1, TagsNF.HEAT_RESISTANT_ITEM_1);
         copy(TagsNF.HEAT_RESISTANT_2, TagsNF.HEAT_RESISTANT_ITEM_2);

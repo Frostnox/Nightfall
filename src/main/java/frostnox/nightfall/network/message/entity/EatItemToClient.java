@@ -65,6 +65,6 @@ public class EatItemToClient {
             Nightfall.LOGGER.warn("Invalid entity in " + EatItemToClient.class.getSimpleName());
             return;
         }
-        hungerEntity.doEatParticlesClient(msg.item);
+        hungerEntity.doEatClient(msg.item);
     }
 }

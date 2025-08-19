@@ -112,9 +112,11 @@ public class SoundsNF {
     public static final RegistryObject<SoundEvent> ROCKWORM_BURROW = generic("entity.rockworm.burrow");
     public static final RegistryObject<SoundEvent> PIT_DEVIL_DEATH = generic("entity.pit_devil.death");
     public static final RegistryObject<SoundEvent> PIT_DEVIL_HURT = generic("entity.pit_devil.hurt");
+    public static final RegistryObject<SoundEvent> PIT_DEVIL_STEP = generic("entity.pit_devil.step");
     public static final RegistryObject<SoundEvent> PIT_DEVIL_BITE = generic("entity.pit_devil.bite");
     public static final RegistryObject<SoundEvent> PIT_DEVIL_HOWL = generic("entity.pit_devil.howl");
     public static final RegistryObject<SoundEvent> PIT_DEVIL_GROWL = generic("entity.pit_devil.growl");
+    public static final RegistryObject<SoundEvent> PIT_DEVIL_EAT = generic("entity.pit_devil.eat");
     public static final RegistryObject<SoundEvent> JELLYFISH_DEATH = generic("entity.jellyfish.death");
     public static final RegistryObject<SoundEvent> JELLYFISH_HURT = generic("entity.jellyfish.hurt");
     public static final RegistryObject<SoundEvent> JELLYFISH_STING = generic("entity.jellyfish.sting");

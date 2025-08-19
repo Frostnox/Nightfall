@@ -26,6 +26,7 @@ import frostnox.nightfall.world.inventory.AccessorySlot;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import it.unimi.dsi.fastutil.objects.ObjectArraySet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -61,17 +62,25 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
+import net.minecraft.world.level.storage.loot.entries.LootTableReference;
+import net.minecraft.world.level.storage.loot.entries.TagEntry;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
 import java.awt.*;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import java.util.function.Predicate;
 
@@ -633,5 +642,26 @@ public class LevelUtil {
             player.level.playSound(null, player.getX(), player.getY() + 0.5, player.getZ(),
                     SoundEvents.ITEM_PICKUP, SoundSource.PLAYERS, 0.2F, ((player.getRandom().nextFloat() - player.getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F);
         }
+    }
+
+    public static Set<Item> getAllLootItems(ResourceLocation tableLoc, ServerLevel level) {
+        LootTable table = level.getServer().getLootTables().get(tableLoc);
+        Set<Item> items = new ObjectArraySet<>();
+        for(LootPool pool : table.pools) {
+            for(LootPoolEntryContainer entry : pool.entries) {
+                if(entry instanceof LootItem lootItem) {
+                    items.add(lootItem.item);
+                }
+                else if(entry instanceof TagEntry tagEntry) {
+                    for(Item item : ForgeRegistries.ITEMS.tags().getTag(tagEntry.tag)) {
+                        items.add(item);
+                    }
+                }
+                else if (entry instanceof LootTableReference ref) {
+                    items.addAll(getAllLootItems(ref.name, level));
+                }
+            }
+        }
+        return items;
     }
 }

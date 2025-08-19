@@ -96,7 +96,7 @@ public class PitDevilBite extends NPCAttack {
 
     @Override
     public Vector3f getTranslation(LivingEntity user) {
-        return new Vector3f(0F/16F, 12F/16F, 4F/16F);
+        return new Vector3f(0F/16F, 11F/16F, 5F/16F);
     }
 
     @Override

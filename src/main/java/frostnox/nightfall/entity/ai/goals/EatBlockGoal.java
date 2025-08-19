@@ -6,14 +6,14 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.ai.goal.MoveToBlockGoal;
 import net.minecraft.world.level.LevelReader;
 
-public class ForageBlockGoal extends MoveToBlockGoal {
+public class EatBlockGoal extends MoveToBlockGoal {
     private final IHungerEntity hungerEntity;
 
-    public ForageBlockGoal(IHungerEntity hungerEntity, double pSpeedModifier, int pSearchRange) {
+    public EatBlockGoal(IHungerEntity hungerEntity, double pSpeedModifier, int pSearchRange) {
         this(hungerEntity, pSpeedModifier, pSearchRange, 1);
     }
 
-    public ForageBlockGoal(IHungerEntity hungerEntity, double pSpeedModifier, int pSearchRange, int pVerticalSearchRange) {
+    public EatBlockGoal(IHungerEntity hungerEntity, double pSpeedModifier, int pSearchRange, int pVerticalSearchRange) {
         super(hungerEntity.getEntity(), pSpeedModifier, pSearchRange, pVerticalSearchRange);
         this.hungerEntity = hungerEntity;
     }

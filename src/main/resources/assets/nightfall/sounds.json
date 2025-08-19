@@ -267,7 +267,7 @@
     "sounds": ["nightfall:entity/deer/hurt_0", "nightfall:entity/deer/hurt_1", "nightfall:entity/deer/hurt_2"]
   },
   "entity.deer.step": {
-    "subtitle": "nightfall.entity.deer.step",
+    "subtitle": "subtitles.block.generic.footsteps",
     "sounds": ["mob/llama/step1", "mob/llama/step2", "mob/llama/step3", "mob/llama/step4", "mob/llama/step5"]
   },
   "entity.dreg.ambient": {
@@ -283,7 +283,7 @@
     "sounds": ["nightfall:entity/dreg/hurt_0", "nightfall:entity/dreg/hurt_1", "nightfall:entity/dreg/hurt_2"]
   },
   "entity.dreg.step": {
-    "subtitle": "nightfall.entity.dreg.step",
+    "subtitle": "subtitles.block.generic.footsteps",
     "sounds": ["nightfall:entity/dreg/step_0", "nightfall:entity/dreg/step_1", "nightfall:entity/dreg/step_2", "nightfall:entity/dreg/step_3", "nightfall:entity/dreg/step_4", "nightfall:entity/dreg/step_5"]
   },
   "entity.dreg.resurrect": {
@@ -303,7 +303,7 @@
     "sounds": ["nightfall:entity/husk/hurt_0", "nightfall:entity/husk/hurt_1", "nightfall:entity/husk/hurt_2"]
   },
   "entity.husk.step": {
-    "subtitle": "nightfall.entity.husk.step",
+    "subtitle": "subtitles.block.generic.footsteps",
     "sounds": ["nightfall:entity/husk/step_0", "nightfall:entity/husk/step_1", "nightfall:entity/husk/step_2", "nightfall:entity/husk/step_3", "nightfall:entity/husk/step_4", "nightfall:entity/husk/step_5"]
   },
   "entity.husk.swing": {
@@ -323,7 +323,7 @@
     "sounds": ["nightfall:entity/skeleton/hurt_0", "nightfall:entity/skeleton/hurt_1", "nightfall:entity/skeleton/hurt_2"]
   },
   "entity.skeleton.step": {
-    "subtitle": "nightfall.entity.skeleton.step",
+    "subtitle": "subtitles.block.generic.footsteps",
     "sounds": ["nightfall:entity/skeleton/step_0", "nightfall:entity/skeleton/step_1", "nightfall:entity/skeleton/step_2", "nightfall:entity/skeleton/step_3", "nightfall:entity/skeleton/step_4", "nightfall:entity/skeleton/step_5"]
   },
   "entity.skeleton.thrust": {
@@ -351,7 +351,7 @@
     "sounds": ["nightfall:entity/cockatrice/hurt_0", "nightfall:entity/cockatrice/hurt_1", "nightfall:entity/cockatrice/hurt_2"]
   },
   "entity.cockatrice.step": {
-    "subtitle": "nightfall.entity.cockatrice.step",
+    "subtitle": "subtitles.block.generic.footsteps",
     "sounds": ["nightfall:entity/cockatrice/step_0", "nightfall:entity/cockatrice/step_1", "nightfall:entity/cockatrice/step_2", "nightfall:entity/cockatrice/step_3", "nightfall:entity/cockatrice/step_4", "nightfall:entity/cockatrice/step_5"]
   },
   "entity.cockatrice.flap": {
@@ -402,6 +402,10 @@
     "subtitle": "nightfall.entity.pit_devil.bite",
     "sounds": ["nightfall:entity/pit_devil/bite_0", "nightfall:entity/pit_devil/bite_1", "nightfall:entity/pit_devil/bite_2"]
   },
+  "entity.pit_devil.step": {
+    "subtitle": "subtitles.block.generic.footsteps",
+    "sounds": ["mob/wolf/step1", "mob/wolf/step2", "mob/wolf/step3", "mob/wolf/step4", "mob/wolf/step5"]
+  },
   "entity.pit_devil.howl": {
     "subtitle": "nightfall.entity.pit_devil.howl",
     "sounds": ["nightfall:entity/pit_devil/howl"]
@@ -409,6 +413,10 @@
   "entity.pit_devil.growl": {
     "subtitle": "nightfall.entity.pit_devil.growl",
     "sounds": ["nightfall:entity/pit_devil/growl_0", "nightfall:entity/pit_devil/growl_1"]
+  },
+  "entity.pit_devil.eat": {
+    "subtitle": "nightfall.entity.pit_devil.eat",
+    "sounds": ["nightfall:entity/pit_devil/eat"]
   },
   "entity.jellyfish.death": {
     "subtitle": "nightfall.entity.jellyfish.death",

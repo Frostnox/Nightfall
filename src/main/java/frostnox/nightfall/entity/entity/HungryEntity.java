@@ -1,18 +1,21 @@
 package frostnox.nightfall.entity.entity;
 
+import frostnox.nightfall.action.DamageTypeSource;
 import frostnox.nightfall.block.IFoodBlock;
+import frostnox.nightfall.data.TagsNF;
 import frostnox.nightfall.entity.IHungerEntity;
 import frostnox.nightfall.network.NetworkHandler;
 import frostnox.nightfall.network.message.entity.EatItemToClient;
+import frostnox.nightfall.registry.forge.ItemsNF;
 import frostnox.nightfall.util.LevelUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -88,11 +91,33 @@ public abstract class HungryEntity extends ActionableEntity implements IHungerEn
     }
 
     @Override
-    public void eatItem(ItemEntity itemEntity) {
-        ItemStack item = itemEntity.getItem();
-        if(canEat(item)) {
-            if(!level.isClientSide) NetworkHandler.toAllTracking(this, new EatItemToClient(item.copy(), getId()));
-            item.setCount(item.getCount() - 1);
+    public void eatEntity(Entity entity) {
+        if(!level.isClientSide) {
+            if(canEat(entity)) {
+                if(entity instanceof ItemEntity itemEntity) {
+                    ItemStack item = itemEntity.getItem();
+                    NetworkHandler.toAllTracking(this, new EatItemToClient(item.copy(), getId()));
+                    item.setCount(item.getCount() - 1);
+                }
+                else {
+                    if(entity instanceof ActionableEntity actionable) {
+                        actionable.forceDropAllDeathLoot(actionable.getLastDamageSource() == null ? DamageTypeSource.GENERIC : actionable.getLastDamageSource());
+                    }
+                    if(entity instanceof LivingEntity livingEntity) {
+                        level.broadcastEntityEvent(entity, (byte) 60);
+                        ItemStack foodDrop = ItemStack.EMPTY;
+                        for(Item item : LevelUtil.getAllLootItems(livingEntity.getLootTable(), (ServerLevel) level)) {
+                            if(item.builtInRegistryHolder().is(TagsNF.ANIMAL_EDIBLE_MEAT)) {
+                                foodDrop = new ItemStack(item);
+                                break;
+                            }
+                        }
+                        NetworkHandler.toAllTracking(this, new EatItemToClient(foodDrop, getId()));
+                    }
+                    entity.remove(RemovalReason.KILLED);
+                }
+                satiety = getMaxSatiety();
+            }
         }
     }
 }

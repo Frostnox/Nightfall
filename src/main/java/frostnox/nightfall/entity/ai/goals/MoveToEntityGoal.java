@@ -2,8 +2,8 @@ package frostnox.nightfall.entity.ai.goals;
 
 import frostnox.nightfall.entity.ai.pathfinding.ReversePath;
 import frostnox.nightfall.entity.entity.ActionableEntity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.item.ItemEntity;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
@@ -11,36 +11,36 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.function.Predicate;
 
-public abstract class MoveToItemGoal extends Goal {
+public abstract class MoveToEntityGoal extends Goal {
     protected final ActionableEntity mob;
-    protected final Predicate<ItemEntity> itemPredicate;
+    protected final Predicate<Entity> entityPredicate;
     protected final double speedModifier, minDistSqr;
     protected final int horizontalRange, verticalRange, tickDelay;
     protected int nextStartTick;
-    protected @Nullable ItemEntity target;
+    protected @Nullable Entity target;
     protected @Nullable ReversePath path;
 
-    public MoveToItemGoal(ActionableEntity pMob, double pSpeedModifier, int horizontalRange, int verticalRange, Predicate<ItemEntity> itemPredicate) {
-        this(pMob, pSpeedModifier, horizontalRange, verticalRange, itemPredicate, 1, 200);
+    public MoveToEntityGoal(ActionableEntity pMob, double pSpeedModifier, int horizontalRange, int verticalRange, Predicate<Entity> entityPredicate) {
+        this(pMob, pSpeedModifier, horizontalRange, verticalRange, entityPredicate, 1, 200);
     }
 
-    public MoveToItemGoal(ActionableEntity pMob, double pSpeedModifier, int horizontalRange, int verticalRange, Predicate<ItemEntity> itemPredicate, double minDist, int tickDelay) {
+    public MoveToEntityGoal(ActionableEntity pMob, double pSpeedModifier, int horizontalRange, int verticalRange, Predicate<Entity> entityPredicate, double minDist, int tickDelay) {
         this.mob = pMob;
         this.speedModifier = pSpeedModifier;
         this.horizontalRange = horizontalRange;
         this.verticalRange = verticalRange;
-        this.itemPredicate = itemPredicate;
+        this.entityPredicate = entityPredicate;
         this.minDistSqr = minDist * minDist;
         this.tickDelay = tickDelay;
         setFlags(EnumSet.of(Goal.Flag.MOVE));
     }
 
-    protected abstract void onReachItem();
+    protected abstract void onReachEntity();
 
-    protected @Nullable ItemEntity findNearestItem() {
-        List<ItemEntity> items = mob.level.getEntitiesOfClass(ItemEntity.class, mob.getBoundingBox().inflate(horizontalRange, verticalRange, horizontalRange), itemPredicate);
-        if(items.isEmpty()) return null;
-        return Collections.min(items, (item1, item2) -> Double.compare(item1.distanceToSqr(mob), item2.distanceToSqr(mob)));
+    protected @Nullable Entity findNearestEntity() {
+        List<Entity> entities = mob.level.getEntities(mob, mob.getBoundingBox().inflate(horizontalRange, verticalRange, horizontalRange), entityPredicate);
+        if(entities.isEmpty()) return null;
+        return Collections.min(entities, (entity1, entity2) -> Double.compare(entity1.distanceToSqr(mob), entity2.distanceToSqr(mob)));
     }
 
     @Override
@@ -51,12 +51,12 @@ public abstract class MoveToItemGoal extends Goal {
         }
         else {
             nextStartTick = reducedTickDelay(tickDelay + mob.getRandom().nextInt(tickDelay));
-            ItemEntity nearestItem = findNearestItem();
-            if(nearestItem == null) return false;
-            ReversePath path = mob.getNavigator().findPath(nearestItem, 0);
+            Entity nearestEntity = findNearestEntity();
+            if(nearestEntity == null) return false;
+            ReversePath path = mob.getNavigator().findPath(nearestEntity, 0);
             if(path != null && path.reachesGoal()) {
                 this.path = path;
-                target = nearestItem;
+                target = nearestEntity;
                 return true;
             }
             else return false;
@@ -86,6 +86,6 @@ public abstract class MoveToItemGoal extends Goal {
                 mob.getNavigator().moveTo(path, speedModifier);
             }
         }
-        else onReachItem();
+        else onReachEntity();
     }
 }

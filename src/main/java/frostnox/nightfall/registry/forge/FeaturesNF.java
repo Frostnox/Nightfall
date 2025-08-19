@@ -183,7 +183,7 @@ public class FeaturesNF {
     public static final Holder<PlacedFeature> SPIDER_NEST_SURFACE = register("spider_nest_surface", SPIDER_NEST_CONFIG, CountPlacement.of(1), InSquarePlacement.spread(),
             PlacementUtils.HEIGHTMAP_WORLD_SURFACE, NearSpawnFilter.with(50F), ChanceFilter.with(0.0025F), SurfaceHeightFilter.with(421, 475),
             RectangleClimateFilter.with(0F, 1F, 0.29F, 1F), BiomeFilter.biome());
-    public static final Holder<PlacedFeature> SPIDER_NEST_CAVES = register("spider_nest_caves", SPIDER_NEST_CONFIG, CountPlacement.of(36), InSquarePlacement.spread(),
+    public static final Holder<PlacedFeature> SPIDER_NEST_CAVES = register("spider_nest_caves", SPIDER_NEST_CONFIG, CountPlacement.of(34), InSquarePlacement.spread(),
             HeightRangePlacement.uniform(VerticalAnchor.absolute(30), VerticalAnchor.belowTop(16)), BiomeFilter.biome(), BlockPredicateFilter.forPredicate(CAVE_AIR_PREDICATE));
 
     public static void registerEvent(RegistryEvent.Register<Feature<?>> event) {

@@ -1,10 +1,9 @@
 package frostnox.nightfall.entity.ai.goals;
 
-import frostnox.nightfall.entity.entity.ActionableEntity;
 import frostnox.nightfall.entity.ai.pathfinding.ReversePath;
+import frostnox.nightfall.entity.entity.ActionableEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.player.Player;
 
@@ -95,9 +94,9 @@ public class PursueTargetGoal extends Goal {
         LivingEntity target = mob.getTarget();
         if(target != null) {
             mob.getLookControl().setLookAt(target, mob.getMaxYRotPerTick(), mob.getMaxXRotPerTick());
-            double distSqr = mob.distanceToSqr(target.getX(), target.getY(), target.getZ());
             recalcTicks = Math.max(recalcTicks - 1, 0);
             if(canPursue()) {
+                double distSqr = mob.distanceToSqr(target.getX(), target.getY(), target.getZ());
                 if((recalcTicks == 0 || mob.refreshPath || mob.getNavigator().isDone()) && (pathedTargetX == 0.0D && pathedTargetY == 0.0D && pathedTargetZ == 0.0D || target.distanceToSqr(pathedTargetX, pathedTargetY, pathedTargetZ) >= 1.0D || mob.getRandom().nextFloat() < 0.05F)) {
                     pathedTargetX = target.getX();
                     pathedTargetY = target.getY();

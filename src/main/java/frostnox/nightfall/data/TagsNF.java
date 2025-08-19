@@ -95,6 +95,7 @@ public class TagsNF {
     public static final TagKey<Block> COCKATRICE_FOOD_BLOCK = blockTag("cockatrice_food_block");
     public static final TagKey<Block> COCKATRICE_SPAWN_BLOCK = blockTag("cockatrice_spawn_block");
     public static final TagKey<Block> SPIDER_FOOD_BLOCK = blockTag("spider_food_block");
+    public static final TagKey<Block> PIT_DEVIL_FOOD_BLOCK = blockTag("pit_devil_food_block");
     public static final TagKey<Block> DEER_SPAWN_BLOCK = blockTag("deer_spawn_block");
     public static final TagKey<Block> RABBIT_SPAWN_BLOCK = blockTag("rabbit_spawn_block");
     public static final TagKey<Block> CREEPER_SPAWN_BLOCK = blockTag("creeper_spawn_block");
@@ -119,6 +120,7 @@ public class TagsNF {
     public static final TagKey<EntityType<?>> PIT_DEVIL_PREDATOR = entityTag("pit_devil_predator");
     public static final TagKey<EntityType<?>> PIT_DEVIL_PREY = entityTag("pit_devil_prey");
     public static final TagKey<EntityType<?>> JELLYFISH_IMMUNE = entityTag("jellyfish_immune");
+    public static final TagKey<EntityType<?>> EDIBLE_CORPSE = entityTag("edible_corpse");
 
     public static final TagKey<Fluid> FRESHWATER = fluidTag("freshwater");
     public static final TagKey<Fluid> SEAWATER = fluidTag("seawater");
@@ -221,6 +223,7 @@ public class TagsNF {
     public static final TagKey<Item> FLETCHING = itemTag("fletching");
     public static final TagKey<Item> COOKED_MEAT = itemTag("cooked_meat");
     public static final TagKey<Item> CURED_MEAT = itemTag("cured_meat");
+    public static final TagKey<Item> ANIMAL_EDIBLE_MEAT = itemTag("animal_edible_meat");
     public static final TagKey<Item> CURABLE_FOOD = itemTag("curable_food");
     public static final TagKey<Item> COOKED_VEGETABLE = itemTag("cooked_vegetable");
     public static final TagKey<Item> ARMOR_STAND = itemTag("armor_stand");
@@ -281,6 +284,7 @@ public class TagsNF {
     public static final TagKey<Item> DEER_FOOD_ITEM = itemTag("deer_food_item");
     public static final TagKey<Item> COCKATRICE_FOOD_ITEM = itemTag("cockatrice_food_item");
     public static final TagKey<Item> SPIDER_FOOD_ITEM = itemTag("spider_food_item");
+    public static final TagKey<Item> PIT_DEVIL_FOOD_ITEM = itemTag("pit_devil_food_item");
     //Block tag copies
     public static final TagKey<Item> HEAT_RESISTANT_ITEM_1 = itemTag(HEAT_RESISTANT_1);
     public static final TagKey<Item> HEAT_RESISTANT_ITEM_2 = itemTag(HEAT_RESISTANT_2);

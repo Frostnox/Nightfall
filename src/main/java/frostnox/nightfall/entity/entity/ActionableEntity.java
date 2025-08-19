@@ -418,7 +418,7 @@ public abstract class ActionableEntity extends PathfinderMob {
         return getBaseJumpPower() * getBlockJumpFactor();
     }
 
-    protected void forceDropAllDeathLoot(DamageSource damageSource) {
+    public void forceDropAllDeathLoot(DamageSource damageSource) {
         super.dropAllDeathLoot(damageSource);
     }
 

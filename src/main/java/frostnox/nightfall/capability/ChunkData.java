@@ -396,7 +396,7 @@ public class ChunkData implements IChunkData {
                             (pos) -> pos);
                 }
                 //Random (completely random)
-                if(level.random.nextFloat() < spawnChance) {
+                for(int i = 0; i < 10; i++) {
                     tryEntitySpawn(spawnFriendlies, spawnEnemies, LevelUtil::getRandomPos, TagsNF.RANDOM_GROUPS,
                             (pos) -> pos);
                 }

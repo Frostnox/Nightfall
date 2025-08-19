@@ -25,10 +25,12 @@ public class EntityTypeTagsProviderNF extends EntityTypeTagsProvider {
                 EntitiesNF.SCORPION.get(), EntitiesNF.TROLL.get(), EntitiesNF.OLMUR.get());
         tag(TagsNF.COCKATRICE_PREDATOR).add(EntitiesNF.ROCKWORM.get(), EntitiesNF.TROLL.get(), EntitiesNF.OLMUR.get());
         tag(TagsNF.COCKATRICE_PREY).add(EntitiesNF.RABBIT.get(), EntitiesNF.DEER.get(), EntitiesNF.SPIDER.get());
-        tag(TagsNF.SPIDER_PREDATOR).add(EntitiesNF.ROCKWORM.get());
+        tag(TagsNF.SPIDER_PREDATOR).add(EntitiesNF.ROCKWORM.get(), EntitiesNF.PIT_DEVIL.get());
         tag(TagsNF.SPIDER_PREY).add(EntitiesNF.RABBIT.get());
         tag(TagsNF.PIT_DEVIL_PREDATOR).add(EntitiesNF.ROCKWORM.get(), EntitiesNF.TROLL.get(), EntitiesNF.OLMUR.get());
         tag(TagsNF.PIT_DEVIL_PREY).add(EntitiesNF.RABBIT.get());
         tag(TagsNF.JELLYFISH_IMMUNE).add(EntitiesNF.JELLYFISH.get());
+        tag(TagsNF.EDIBLE_CORPSE).add(EntitiesNF.RABBIT.get(), EntitiesNF.SPIDER.get(), EntitiesNF.DEER.get(),
+                EntitiesNF.COCKATRICE.get(), EntitiesNF.ROCKWORM.get(), EntitiesNF.PIT_DEVIL.get());
     }
 }
