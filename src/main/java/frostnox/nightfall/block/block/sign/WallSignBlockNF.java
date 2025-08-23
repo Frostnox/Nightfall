@@ -66,7 +66,7 @@ public class WallSignBlockNF extends WallSignBlock implements IWaterloggedBlock 
     @Override
     public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
         tickLiquid(state, currentPos, level);
-        return state;
+        return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
     }
 
     @Override
