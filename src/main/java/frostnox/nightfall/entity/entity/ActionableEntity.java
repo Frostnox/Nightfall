@@ -377,6 +377,10 @@ public abstract class ActionableEntity extends PathfinderMob {
         return getHealth() / getMaxHealth() < 0.25F;
     }
 
+    protected void onKillRemoval() {
+        level.broadcastEntityEvent(this, (byte)60);
+    }
+
     public AudioSensing getAudioSensing() {
         return audioSensing;
     }
@@ -401,7 +405,7 @@ public abstract class ActionableEntity extends PathfinderMob {
                 if(level.isClientSide) return true;
                 DamageSource damageSource = getLastDamageSource();
                 forceDropAllDeathLoot(damageSource == null ? DamageTypeSource.GENERIC : damageSource);
-                level.broadcastEntityEvent(this, (byte)60);
+                onKillRemoval();
                 remove(RemovalReason.KILLED);
                 return true;
             }
@@ -695,7 +699,7 @@ public abstract class ActionableEntity extends PathfinderMob {
     protected void tickDeath() {
         deathTime++;
         if(deathTime == (dropLootFromSkinning() ? 6000 : 20) && !level.isClientSide()) {
-            level.broadcastEntityEvent(this, (byte)60);
+            onKillRemoval();
             remove(Entity.RemovalReason.KILLED);
         }
     }

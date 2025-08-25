@@ -150,6 +150,13 @@ public class AnimationUtil {
         return Math.min(1, Mth.lerp(partial, !capP.getHeldContents().isEmpty() ? Math.max(0, capP.getHoldTicks() - 1) : Math.min(3, capP.getHoldTicks() + 1), capP.getHoldTicks()) / 3F);
     }
 
+    public static float getStunProgress(int stunFrame, int stunDuration, float partial) {
+        if(stunFrame == stunDuration) return 0;
+        int halfDuration = stunDuration / 2;
+        if(stunFrame < halfDuration) return (stunFrame + partial) / halfDuration;
+        else return 1F - ((stunFrame - halfDuration + partial) / halfDuration);
+    }
+
     public static float interpolate(float prevProgress, float currentProgress, float partialTicks) {
         if(prevProgress < 0) prevProgress = 0;
         return (prevProgress) + ((currentProgress - prevProgress) * partialTicks);

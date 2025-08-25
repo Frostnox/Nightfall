@@ -61,11 +61,6 @@ public class JellyfishOuterModel extends AnimatedModel<JellyfishEntity> implemen
     }
 
     @Override
-    protected List<AnimatedModelPart> getNoStunParts() {
-        return List.of();
-    }
-
-    @Override
     public ModelPart getHead() {
         return bell;
     }

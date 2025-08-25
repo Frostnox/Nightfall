@@ -7,7 +7,6 @@ import frostnox.nightfall.util.AnimationUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.world.entity.LivingEntity;
@@ -18,6 +17,10 @@ public class TranslucentBodyLayer<T extends LivingEntity, M extends AnimatedMode
     public TranslucentBodyLayer(RenderLayerParent<T, M> renderer, M model) {
         super(renderer);
         this.model = model;
+    }
+
+    protected float getAlpha(T entity) {
+        return 1.0F;
     }
 
     @Override
@@ -31,7 +34,7 @@ public class TranslucentBodyLayer<T extends LivingEntity, M extends AnimatedMode
             getParentModel().copyPropertiesTo(model);
             model.prepareMobModel(entity, pLimbSwing, pLimbSwingAmount, pPartialTick);
             model.setupAnim(entity, pLimbSwing, pLimbSwingAmount, pAgeInTicks, pNetHeadYaw, pHeadPitch);
-            model.renderToBuffer(pPoseStack, buffer, pPackedLight, AnimationUtil.getOverlayCoords(entity, 0), 1.0F, 1.0F, 1.0F, 1.0F);
+            model.renderToBuffer(pPoseStack, buffer, pPackedLight, AnimationUtil.getOverlayCoords(entity, 0), 1.0F, 1.0F, 1.0F, getAlpha(entity));
         }
     }
 }

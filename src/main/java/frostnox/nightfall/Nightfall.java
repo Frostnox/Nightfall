@@ -362,7 +362,9 @@ public class Nightfall {
         event.put(EntitiesNF.SPIDER.get(), SpiderEntity.getAttributeMap().build());
         event.put(EntitiesNF.ROCKWORM.get(), RockwormEntity.getAttributeMap().build());
         event.put(EntitiesNF.PIT_DEVIL.get(), PitDevilEntity.getAttributeMap().build());
-        event.put(EntitiesNF.SLIME.get(), SlimeEntity.getAttributeMap().build());
+        event.put(EntitiesNF.ECTOPLASM_LARGE.get(), EctoplasmEntity.getLargeAttributeMap().build());
+        event.put(EntitiesNF.ECTOPLASM_MEDIUM.get(), EctoplasmEntity.getMediumAttributeMap().build());
+        event.put(EntitiesNF.ECTOPLASM_SMALL.get(), EctoplasmEntity.getSmallAttributeMap().build());
         event.put(EntitiesNF.SCORPION.get(), ScorpionEntity.getAttributeMap().build());
         event.put(EntitiesNF.SCARAB.get(), ScarabEntity.getAttributeMap().build());
         event.put(EntitiesNF.TROLL.get(), TrollEntity.getAttributeMap().build());
@@ -518,7 +520,9 @@ public class Nightfall {
             event.registerEntityRenderer(EntitiesNF.SPIDER.get(), SpiderRenderer::new);
             event.registerEntityRenderer(EntitiesNF.ROCKWORM.get(), RockwormRenderer::new);
             event.registerEntityRenderer(EntitiesNF.PIT_DEVIL.get(), PitDevilRenderer::new);
-            event.registerEntityRenderer(EntitiesNF.SLIME.get(), SlimeRenderer::new);
+            event.registerEntityRenderer(EntitiesNF.ECTOPLASM_LARGE.get(), EctoplasmRenderer::new);
+            event.registerEntityRenderer(EntitiesNF.ECTOPLASM_MEDIUM.get(), EctoplasmRenderer::new);
+            event.registerEntityRenderer(EntitiesNF.ECTOPLASM_SMALL.get(), EctoplasmRenderer::new);
             event.registerEntityRenderer(EntitiesNF.SCORPION.get(), ScorpionRenderer::new);
             event.registerEntityRenderer(EntitiesNF.SCARAB.get(), ScarabRenderer::new);
             event.registerEntityRenderer(EntitiesNF.TROLL.get(), TrollRenderer::new);

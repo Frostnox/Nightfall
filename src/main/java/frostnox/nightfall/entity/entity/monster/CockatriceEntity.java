@@ -98,7 +98,7 @@ public class CockatriceEntity extends HungryMonsterEntity implements IOrientedHi
 
     @Override
     protected void registerGoals() {
-        goalSelector.addGoal(1, new FloatGoal(this));
+        goalSelector.addGoal(1, new FloatAtHeightGoal(this, 0.8D));
         goalSelector.addGoal(2, new StepUpFleeEntityGoal<>(this, LivingEntity.class, 1.6D, 1.8D, (entity) -> {
             if(entity.isDeadOrDying()) return false;
             else return entity.getType().is(TagsNF.COCKATRICE_PREDATOR);

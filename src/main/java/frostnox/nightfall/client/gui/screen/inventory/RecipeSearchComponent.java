@@ -142,7 +142,7 @@ public class RecipeSearchComponent extends ScreenGuiComponent {
     }
 
     public boolean isRecipeSelected() {
-        return selectedIndex != Integer.MIN_VALUE;
+        return recipeViewer.isVisible();
     }
 
     @Override

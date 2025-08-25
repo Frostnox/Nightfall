@@ -127,7 +127,9 @@ public abstract class AnimatedModel<T extends Entity> extends EntityModel<T> {
         }
     }
 
-    protected abstract List<AnimatedModelPart> getNoStunParts();
+    protected List<AnimatedModelPart> getNoStunParts() {
+        return List.of();
+    }
 
     protected void applyMatrixRotation(Vector3f rotations, PoseStack matrix) {
         matrix.mulPose(Vector3f.XP.rotationDegrees(rotations.x()));

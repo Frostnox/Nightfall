@@ -608,7 +608,7 @@ public class LevelUtil {
 
     public static void warpClientPlayer(Player player, boolean playToSelf) {
         if(playToSelf || ClientEngine.get().getPlayer() != player) {
-            player.level.playLocalSound(player.getX(), player.getY(), player.getZ(), SoundsNF.PLAYER_WARP.get(), SoundSource.PLAYERS, 1F, 1F, false);
+            player.level.playLocalSound(player.getX(), player.getY(), player.getZ(), SoundsNF.ENTITY_WARP.get(), SoundSource.PLAYERS, 1F, 1F, false);
         }
         float height = player.isAlive() ? player.getBbHeight() : 0.25F;
         for(int i = 0; i < 10 + player.getRandom().nextInt(6); i++) {
@@ -619,7 +619,7 @@ public class LevelUtil {
 
     public static void warpServerPlayer(Player player, boolean playToSelf) {
         if(player.level instanceof ServerLevel level) {
-            player.level.playSound(playToSelf ? null : player, player.getX(), player.getY(), player.getZ(), SoundsNF.PLAYER_WARP.get(), SoundSource.PLAYERS, 1F, 1F);
+            player.level.playSound(playToSelf ? null : player, player.getX(), player.getY(), player.getZ(), SoundsNF.ENTITY_WARP.get(), SoundSource.PLAYERS, 1F, 1F);
             float height = player.isAlive() ? player.getBbHeight() : 0.25F;
             level.sendParticles(ParticleTypesNF.ESSENCE.get(), player.getX(), player.getY(), player.getZ(), 10 + player.getRandom().nextInt(6),
                     player.getBbWidth() * 0.5, height * 0.5, player.getBbWidth() * 0.5, 0);

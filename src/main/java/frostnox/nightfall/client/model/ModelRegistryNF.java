@@ -43,7 +43,7 @@ public class ModelRegistryNF {
     public static ModelLayerLocation SPIDER;
     public static ModelLayerLocation ROCKWORM;
     public static ModelLayerLocation PIT_DEVIL;
-    public static ModelLayerLocation SLIME;
+    public static ModelLayerLocation ECTOPLASM_LARGE_INNER, ECTOPLASM_LARGE_OUTER;
     public static ModelLayerLocation SCORPION;
     public static ModelLayerLocation SCARAB;
     public static ModelLayerLocation TROLL;
@@ -87,7 +87,8 @@ public class ModelRegistryNF {
         SPIDER = register("spider", SpiderModel.createBodyLayer());
         ROCKWORM = register("rockworm", RockwormModel.createBodyLayer());
         PIT_DEVIL = register("pit_devil", PitDevilModel.createBodyLayer());
-        SLIME = register("slime", SlimeModel.createBodyLayer());
+        ECTOPLASM_LARGE_INNER = register("ectoplasm_large_inner", EctoplasmInnerModel.createLargeLayer());
+        ECTOPLASM_LARGE_OUTER = register("ectoplasm_large_outer", EctoplasmOuterModel.createLargeLayer());
         SCORPION = register("scorpion", ScorpionModel.createBodyLayer());
         SCARAB = register("scarab", ScarabModel.createBodyLayer());
         TROLL = register("troll", TrollModel.createBodyLayer());

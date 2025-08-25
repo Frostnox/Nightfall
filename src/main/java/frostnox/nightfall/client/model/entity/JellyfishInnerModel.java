@@ -68,9 +68,4 @@ public class JellyfishInnerModel extends AnimatedModel<JellyfishEntity> {
     public void animateStun(int frame, int duration, int dir, float mag, JellyfishEntity user, AnimationCalculator mCalc, Vector3f mVec, float partialTicks) {
 
     }
-
-    @Override
-    protected List<AnimatedModelPart> getNoStunParts() {
-        return List.of();
-    }
 }
