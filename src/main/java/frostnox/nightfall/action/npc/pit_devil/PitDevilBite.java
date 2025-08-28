@@ -36,7 +36,7 @@ public class PitDevilBite extends NPCAttack {
 
     @Override
     public double getMaxDistToStart(LivingEntity user) {
-        return 2.2;
+        return 1.75;
     }
 
     @Override

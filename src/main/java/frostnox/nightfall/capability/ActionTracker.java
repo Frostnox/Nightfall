@@ -536,11 +536,11 @@ public class ActionTracker implements IActionTracker {
                 spheres[i].yPos += player.getEyeHeight();
             }
         }
-        else if(user instanceof ActionableEntity) {
+        else if(user instanceof ActionableEntity actionable) {
             AnimationCalculator mCalc = new AnimationCalculator();
             AnimationData layer = new AnimationData();
             Mat4f localMatrix = new Mat4f();
-            userMatrix = new Mat4f(new Quat(user.yBodyRot, Vector3f.YP, true));
+            userMatrix = new Mat4f(new Quat(actionable.getAttackYRot(1), Vector3f.YP, true));
             int frame = getFrame();
             int duration = getDuration();
             EnumMap<EntityPart, AnimationData> transforms = attack.getAnimationData(user, this);

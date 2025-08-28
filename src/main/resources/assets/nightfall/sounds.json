@@ -418,6 +418,26 @@
     "subtitle": "nightfall.entity.pit_devil.eat",
     "sounds": ["nightfall:entity/pit_devil/eat"]
   },
+  "entity.ectoplasm.death": {
+    "subtitle": "nightfall.entity.ectoplasm.death",
+    "sounds": ["mob/slime/big1", "mob/slime/big2", "mob/slime/big3", "mob/slime/big4"]
+  },
+  "entity.ectoplasm.hurt": {
+    "subtitle": "nightfall.entity.ectoplasm.hurt",
+    "sounds": ["mob/slime/big1", "mob/slime/big2", "mob/slime/big3", "mob/slime/big4"]
+  },
+  "entity.ectoplasm.death_small": {
+    "subtitle": "nightfall.entity.ectoplasm.death_small",
+    "sounds": ["mob/slime/small1", "mob/slime/small2", "mob/slime/small3", "mob/slime/small4", "mob/slime/small5"]
+  },
+  "entity.ectoplasm.hurt_small": {
+    "subtitle": "nightfall.entity.ectoplasm.hurt_small",
+    "sounds": ["mob/slime/small1", "mob/slime/small2", "mob/slime/small3", "mob/slime/small4", "mob/slime/small5"]
+  },
+  "entity.ectoplasm.attack": {
+    "subtitle": "nightfall.entity.ectoplasm.attack",
+    "sounds": ["mob/slime/attack1", "mob/slime/attack2"]
+  },
   "entity.jellyfish.death": {
     "subtitle": "nightfall.entity.jellyfish.death",
     "sounds": ["mob/slime/small1", "mob/slime/small2", "mob/slime/small3", "mob/slime/small4", "mob/slime/small5"]
@@ -445,6 +465,10 @@
   "entity.undead_warp": {
     "subtitle": "nightfall.entity.undead_warp",
     "sounds": ["nightfall:entity/undead_warp_0", "nightfall:entity/undead_warp_1", "nightfall:entity/undead_warp_2"]
+  },
+  "entity.essence_explode": {
+    "subtitle": "nightfall.entity.essence_explode",
+    "sounds": ["nightfall:entity/essence_explode"]
   },
   "environment.log_fall": {
     "subtitle": "nightfall.environment.log_fall",

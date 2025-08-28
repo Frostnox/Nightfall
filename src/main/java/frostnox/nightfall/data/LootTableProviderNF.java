@@ -657,9 +657,13 @@ public class LootTableProviderNF extends LootTableProvider {
             add(EntitiesNF.PIT_DEVIL.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.RAW_GAME.get(), 2, 3)))
                     .withPool(pool(entry(ItemsNF.ROCKY_SCALE.get(), 2, 3, List.of(PerceptionCountFunction.with(1, 0.5F, 0.05F)))))
                     .withPool(pool(entry(ItemsNF.PIT_DEVIL_TOOTH.get(), 1, 1, List.of(PerceptionCountFunction.with(1, 0.5F, 0.05F))))));
-            add(EntitiesNF.ECTOPLASM_LARGE.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.SILK.get(), 1, 2))));
-            add(EntitiesNF.ECTOPLASM_MEDIUM.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.SILK.get(), 1, 2))));
-            add(EntitiesNF.ECTOPLASM_SMALL.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.SILK.get(), 1, 2))));
+            add(EntitiesNF.ECTOPLASM_LARGE.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.BONE_SHARD.get(), 2, 3)))
+                    .withPool(pool(entry(ItemsNF.BONE.get(), 0, 1)))
+                    .withPool(pool(entry(ItemsNF.ECTOPLASM.get(), 1, 1, List.of(PerceptionCountFunction.with(1, 0.5F, 0.05F))))));
+            add(EntitiesNF.ECTOPLASM_MEDIUM.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.BONE_SHARD.get(), 1, 2)))
+                    .withPool(pool(entry(ItemsNF.ECTOPLASM.get(), 1, 1, List.of(PerceptionCheckFunction.with(0.4F, 0.04F))))));
+            add(EntitiesNF.ECTOPLASM_SMALL.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.BONE_SHARD.get(), 0, 1)))
+                    .withPool(pool(entry(ItemsNF.ECTOPLASM.get(), 1, 1, List.of(PerceptionCheckFunction.with(0.3F, 0.03F))))));
             add(EntitiesNF.SCORPION.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.SILK.get(), 1, 2))));
             add(EntitiesNF.SCARAB.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.SILK.get(), 1, 2))));
             add(EntitiesNF.TROLL.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.SILK.get(), 1, 2))));

@@ -27,7 +27,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -123,7 +122,7 @@ public class HuskEntity extends UndeadEntity {
             }
             else if(id.equals(ActionsNF.HUSK_RIGHT_SWIPE_1.getId()) || id.equals(ActionsNF.HUSK_LEFT_SWIPE_1.getId())) {
                 double reach = ActionsNF.get(id).getChain(this).get().getMaxDistToStart(this);
-                double distSqr = this.getEyePosition().distanceToSqr(this.getTarget().getEyePosition());
+                double distSqr = CombatUtil.getShortestDistanceSqr(this, getTarget());
                 if(distSqr <= reach * reach && capA.getState() == 2) queueAction();
                 else if(capA.getFrame() == 1 && capA.getState() == 1) {
                     CombatUtil.addFacingMovement(0.3, this);
@@ -158,7 +157,7 @@ public class HuskEntity extends UndeadEntity {
 
     @Override
     public ResourceLocation pickActionEnemy(double distanceSqr, Entity target) {
-        if(random.nextDouble() < Math.min(0.85, 0.15 + distanceSqr / (3.5 * 3.5))) return ActionsNF.HUSK_OVERHEAD.getId();
+        if(random.nextDouble() < Math.min(0.85, 0.15 + distanceSqr / (2.5 * 2.5))) return ActionsNF.HUSK_OVERHEAD.getId();
         else {
             boolean mainItem = !getMainHandItem().isEmpty(), offItem = !getOffhandItem().isEmpty();
             float mainWeight;

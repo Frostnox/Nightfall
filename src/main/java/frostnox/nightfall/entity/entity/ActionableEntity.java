@@ -53,10 +53,7 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.level.GameRules;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -329,6 +326,7 @@ public abstract class ActionableEntity extends PathfinderMob {
     @Nullable
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
         spawnDataIn = super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+        setLeftHanded(false);
         lastTickedGameTime = worldIn.getLevelData().getGameTime();
         entityData.set(RANDOM, worldIn.getRandom().nextInt() & Integer.MAX_VALUE);
         if(noDespawnTicks == -1 && reason != MobSpawnType.NATURAL && reason != MobSpawnType.CHUNK_GENERATION && reason != MobSpawnType.STRUCTURE
@@ -377,7 +375,7 @@ public abstract class ActionableEntity extends PathfinderMob {
         return getHealth() / getMaxHealth() < 0.25F;
     }
 
-    protected void onKillRemoval() {
+    public void onKillRemoval() {
         level.broadcastEntityEvent(this, (byte)60);
     }
 
@@ -413,6 +411,10 @@ public abstract class ActionableEntity extends PathfinderMob {
         return false;
     }
 
+    public float getAttackYRot(float partial) {
+        return Mth.lerp(partial, yBodyRotO, yBodyRot);
+    }
+
     public double getReducedAIThresholdSqr() {
         return 150 * 150;
     }
@@ -433,6 +435,11 @@ public abstract class ActionableEntity extends PathfinderMob {
     @Override
     protected void dropAllDeathLoot(DamageSource pDamageSource) {
         if(!dropLootFromSkinning()) super.dropAllDeathLoot(pDamageSource);
+    }
+
+    @Override
+    public boolean checkSpawnObstruction(LevelReader pLevel) {
+        return !pLevel.containsAnyLiquid(this.getBoundingBox()) && pLevel.noCollision(this);
     }
 
     @Override
@@ -469,7 +476,10 @@ public abstract class ActionableEntity extends PathfinderMob {
     protected float tickHeadTurn(float pYRot, float pAnimStep) {
         float oldYBodyRot = yBodyRot;
         float step = super.tickHeadTurn(pYRot, pAnimStep);
-        if(isAlive() && !getActionTracker().isInactive()) yBodyRot = oldYBodyRot;
+        if(isAlive() && !getActionTracker().isInactive()) {
+            yBodyRot = oldYBodyRot;
+            yBodyRotO = oldYBodyRot;
+        }
         return step;
     }
 

@@ -1,5 +1,6 @@
 package frostnox.nightfall.util;
 
+import com.mojang.math.Vector3d;
 import frostnox.nightfall.action.Action;
 import frostnox.nightfall.action.DamageType;
 import frostnox.nightfall.action.DamageTypeSource;
@@ -19,6 +20,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.CombatRules;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -33,8 +35,10 @@ import net.minecraft.world.entity.projectile.ShulkerBullet;
 import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
@@ -90,6 +94,51 @@ public class CombatUtil {
         double xMove = -magnitude * sin;
         double zMove = magnitude * cos;
         entity.setDeltaMovement(vec.x() + xMove, vec.y(), vec.z() + zMove);
+    }
+
+    /**
+     * @return shortest distance from attacker's eye position (modeled as circle) to target's bounding box
+     */
+    public static double getShortestDistanceSqr(Entity attacker, Entity target) {
+        AABB box = target.getBoundingBox();
+        double x = attacker.getX(), y = attacker.getEyeY(), z = attacker.getZ();
+        float radius = attacker.getBbWidth() / 2, radiusSqr = radius * radius;
+        double bestX = Mth.clamp(x, box.minX, box.maxX), bestZ = Mth.clamp(z, box.minZ, box.maxZ);
+        double dX = x - bestX, dZ = z - bestZ;
+        double xzDistSqr = dX * dX + dZ * dZ;
+        double xzDistAdjusted = xzDistSqr <= radiusSqr ? 0 : (Math.sqrt(xzDistSqr) - radius);
+        double yDist;
+        if(y < box.minY) yDist = box.minY - y;
+        else if(y > box.maxY) yDist = y - box.maxY;
+        else yDist = 0.0;
+        return xzDistAdjusted * xzDistAdjusted + yDist * yDist;
+    }
+
+    public static void damageAllInRadius(Entity source, Vec3 center, double radius, float damage, float knockback, float blockedDamageMultiplier, DamageSource damageSource) {
+        boolean notExplosion = !damageSource.isExplosion();
+        for(Entity entity : source.level.getEntities(source, new AABB(center.x - radius, center.y - radius, center.z - radius,
+                center.x + radius, center.y + radius, center.z + radius))) {
+            if(notExplosion|| !entity.ignoreExplosion()) {
+                Vector3d hitPoint = MathUtil.getShortestPointFromPointToBox(center.x, center.y, center.z, entity.getBoundingBox());
+                double dX = hitPoint.x - center.x;
+                double dY = hitPoint.y - center.y;
+                double dZ = hitPoint.z - center.z;
+                double dist = Math.sqrt(dX * dX + dY * dY + dZ * dZ);
+                if(dist <= radius) {
+                    dX /= dist;
+                    dY /= dist;
+                    dZ /= dist;
+                    float modifier = Easing.outCubic.apply((float) (1.0D - dist / radius));
+                    float adjustedDamage = damage * modifier;
+                    if(source.level.clip(new ClipContext(center, new Vec3(hitPoint.x, hitPoint.y, hitPoint.z), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, null)).getType() == HitResult.Type.BLOCK) {
+                        adjustedDamage *= blockedDamageMultiplier;
+                    }
+                    entity.hurt(damageSource, adjustedDamage);
+                    float adjustedKnockback = knockback * modifier;
+                    entity.push(dX * adjustedKnockback, dY * adjustedKnockback, dZ * adjustedKnockback);
+                }
+            }
+        }
     }
 
     public static void alignBodyRotWithHead(LivingEntity entity, IActionTracker capA) {

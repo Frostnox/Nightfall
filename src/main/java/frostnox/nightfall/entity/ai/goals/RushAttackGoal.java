@@ -33,16 +33,16 @@ public class RushAttackGoal extends PursueTargetGoal {
         LivingEntity target = this.mob.getTarget();
         if(target != null && ActionTracker.isPresent(mob)) {
             IActionTracker capA = mob.getActionTracker();
-            double dist = mob.getEyePosition().distanceToSqr(target.getEyePosition());
+            double distSqr = CombatUtil.getShortestDistanceSqr(mob, target);
             //Re-choose attack every 3 seconds
             if(heldAttackTicks >= 60 || capA.isStunned()) {
-                attackID = mob.pickActionEnemy(dist, target);
+                attackID = mob.pickActionEnemy(distSqr, target);
                 heldAttackTicks = 0;
             }
             heldAttackTicks++;
             double reach = ActionsNF.get(attackID).getMaxDistToStart(mob);
             float lookAngle = CombatUtil.getRelativeHorizontalAngle(mob.getEyePosition(), target.getEyePosition(), mob.getYHeadRot());
-            if(dist <= reach * reach && mob.isInterruptible() && lookAngle >= -20F && lookAngle <= 20F && mob.hasAnyLineOfSight(target)) {
+            if(distSqr <= reach * reach && mob.isInterruptible() && lookAngle >= -20F && lookAngle <= 20F && mob.hasAnyLineOfSight(target)) {
                 heldAttackTicks = 1000;
                 mob.startAction(attackID);
             }

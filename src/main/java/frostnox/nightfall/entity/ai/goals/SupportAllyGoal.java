@@ -66,17 +66,17 @@ public class SupportAllyGoal extends Goal {
     public void tick() {
         LivingEntity ally = this.mob.getAlly();
         if(ally != null) {
-            double dist = mob.getEyePosition().distanceToSqr(ally.getEyePosition());
+            double distSqr = CombatUtil.getShortestDistanceSqr(mob, ally);
             this.mob.getLookControl().setLookAt(ally, 9.0F, 9.0F);
             this.ticksUntilNextPathRecalculation = Math.max(this.ticksUntilNextPathRecalculation - 1, 0);
-            if(this.ticksUntilNextPathRecalculation <= 0 && (this.pathedTargetX == 0.0D && this.pathedTargetY == 0.0D && this.pathedTargetZ == 0.0D || ally.distanceToSqr(this.pathedTargetX, this.pathedTargetY, this.pathedTargetZ) >= 1.0D || this.mob.getRandom().nextFloat() < 0.05F)) {
+            if(this.ticksUntilNextPathRecalculation == 0 && (this.pathedTargetX == 0.0D && this.pathedTargetY == 0.0D && this.pathedTargetZ == 0.0D || ally.distanceToSqr(this.pathedTargetX, this.pathedTargetY, this.pathedTargetZ) >= 1.0D || this.mob.getRandom().nextFloat() < 0.05F)) {
                 this.pathedTargetX = ally.getX();
                 this.pathedTargetY = ally.getY();
                 this.pathedTargetZ = ally.getZ();
                 this.ticksUntilNextPathRecalculation = 4 + this.mob.getRandom().nextInt(7);
-                if (dist > 1024.0D) {
+                if (distSqr > 1024.0D) {
                     this.ticksUntilNextPathRecalculation += 10;
-                } else if (dist > 256.0D) {
+                } else if (distSqr > 256.0D) {
                     this.ticksUntilNextPathRecalculation += 5;
                 }
                 if (!this.mob.getNavigation().moveTo(ally, this.speedModifier)) {
@@ -84,10 +84,10 @@ public class SupportAllyGoal extends Goal {
                 }
                 this.ticksUntilNextPathRecalculation = this.adjustedTickDelay(this.ticksUntilNextPathRecalculation);
             }
-            ResourceLocation actionID = mob.pickActionAlly(dist, ally);
+            ResourceLocation actionID = mob.pickActionAlly(distSqr, ally);
             double reach = ActionsNF.get(actionID).getMaxDistToStart(mob);
             float lookAngle = CombatUtil.getRelativeHorizontalAngle(mob.getEyePosition(), ally.getEyePosition(), mob.getYHeadRot());
-            if(dist <= reach * reach && mob.isInterruptible() && lookAngle >= -20F && lookAngle <= 20F) {
+            if(distSqr <= reach * reach && mob.isInterruptible() && lookAngle >= -20F && lookAngle <= 20F) {
                 mob.startAction(actionID);
             }
         }

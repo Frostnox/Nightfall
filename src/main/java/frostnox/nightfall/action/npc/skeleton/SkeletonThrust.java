@@ -36,7 +36,7 @@ public class SkeletonThrust extends NPCAttack {
 
     @Override
     public double getMaxDistToStart(LivingEntity user) {
-        return 3;
+        return 2.5;
     }
 
     @Override

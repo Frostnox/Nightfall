@@ -2,6 +2,7 @@ package frostnox.nightfall.entity.entity.monster;
 
 import com.mojang.math.Vector3d;
 import frostnox.nightfall.action.DamageTypeSource;
+import frostnox.nightfall.action.Impact;
 import frostnox.nightfall.entity.ai.goals.FleeDamageGoal;
 import frostnox.nightfall.entity.ai.goals.PursueTargetGoal;
 import frostnox.nightfall.entity.ai.goals.RandomLookGoal;
@@ -10,6 +11,7 @@ import frostnox.nightfall.entity.ai.goals.target.TrackNearestTargetGoal;
 import frostnox.nightfall.entity.ai.pathfinding.FlankingLandEntityNavigator;
 import frostnox.nightfall.registry.forge.AttributesNF;
 import frostnox.nightfall.registry.forge.ParticleTypesNF;
+import frostnox.nightfall.util.CombatUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -132,7 +134,7 @@ public class CreeperEntity extends MonsterEntity {
                     Explosion.BlockInteraction interaction = net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(level, this)
                             ? Explosion.BlockInteraction.DESTROY : Explosion.BlockInteraction.NONE;
                     dead = true;
-                    level.explode(this, DamageTypeSource.createExplosionSource(this), null, getX(), getY(), getZ(),
+                    level.explode(this, DamageTypeSource.createExplosionSource(this).setImpact(Impact.MAXIMUM).setStun(CombatUtil.STUN_VERY_LONG), null, getX(), getY(), getZ(),
                             EXPLOSION_RADIUS, false, interaction);
                     discard();
                 }

@@ -520,9 +520,12 @@ public class Nightfall {
             event.registerEntityRenderer(EntitiesNF.SPIDER.get(), SpiderRenderer::new);
             event.registerEntityRenderer(EntitiesNF.ROCKWORM.get(), RockwormRenderer::new);
             event.registerEntityRenderer(EntitiesNF.PIT_DEVIL.get(), PitDevilRenderer::new);
-            event.registerEntityRenderer(EntitiesNF.ECTOPLASM_LARGE.get(), EctoplasmRenderer::new);
-            event.registerEntityRenderer(EntitiesNF.ECTOPLASM_MEDIUM.get(), EctoplasmRenderer::new);
-            event.registerEntityRenderer(EntitiesNF.ECTOPLASM_SMALL.get(), EctoplasmRenderer::new);
+            event.registerEntityRenderer(EntitiesNF.ECTOPLASM_LARGE.get(), (context) -> new EctoplasmRenderer(context, 0.75F,
+                    ModelRegistryNF.ECTOPLASM_LARGE_INNER, ModelRegistryNF.ECTOPLASM_LARGE_OUTER_INNER, ModelRegistryNF.ECTOPLASM_LARGE_OUTER));
+            event.registerEntityRenderer(EntitiesNF.ECTOPLASM_MEDIUM.get(), (context) -> new EctoplasmRenderer(context, 0.5F,
+                    ModelRegistryNF.ECTOPLASM_MEDIUM_INNER, ModelRegistryNF.ECTOPLASM_MEDIUM_OUTER_INNER, ModelRegistryNF.ECTOPLASM_MEDIUM_OUTER));
+            event.registerEntityRenderer(EntitiesNF.ECTOPLASM_SMALL.get(), (context) -> new EctoplasmRenderer(context, 0.2F,
+                    ModelRegistryNF.ECTOPLASM_SMALL_INNER, ModelRegistryNF.ECTOPLASM_SMALL_OUTER_INNER, ModelRegistryNF.ECTOPLASM_SMALL_OUTER));
             event.registerEntityRenderer(EntitiesNF.SCORPION.get(), ScorpionRenderer::new);
             event.registerEntityRenderer(EntitiesNF.SCARAB.get(), ScarabRenderer::new);
             event.registerEntityRenderer(EntitiesNF.TROLL.get(), TrollRenderer::new);
@@ -606,6 +609,7 @@ public class Nightfall {
             engine.register(ParticleTypesNF.BLOOD_DARK_RED.get(), FadingParticle.DarkRedProvider::new);
             engine.register(ParticleTypesNF.BLOOD_PALE_BLUE.get(), FadingParticle.PaleBlueProvider::new);
             engine.register(ParticleTypesNF.BLOOD_GREEN.get(), FadingParticle.GreenProvider::new);
+            engine.register(ParticleTypesNF.ECTOPLASM.get(), FadingGlowingParticle.EctoplasmProvider::new);
             engine.register(ParticleTypesNF.FRAGMENT_BONE.get(), FragmentParticle.BoneProvider::new);
             engine.register(ParticleTypesNF.FRAGMENT_CREEPER.get(), FragmentParticle.CreeperProvider::new);
             engine.register(ParticleTypesNF.COCKATRICE_SPIT.get(), FadingParticle.CockatriceSpitProvider::new);

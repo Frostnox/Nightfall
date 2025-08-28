@@ -767,7 +767,7 @@ public class CommonEventHandler {
                 //Record hand items
                 if(!capP.getLastMainItem().sameItemStackIgnoreDurability(player.getMainHandItem())) capP.setLastMainItem();
                 if(!capP.getLastOffItem().sameItemStackIgnoreDurability(player.getOffhandItem())) capP.setLastOffItem();
-                player.causeFoodExhaustion(0.00125F); //1.5 exhaustion per min
+                if(!player.getAbilities().invulnerable) player.causeFoodExhaustion(0.00125F); //1.5 exhaustion per min
             }
             //Force out of charge state if player weapon is missing
             if(capA.isCharging() && !(player.getItemInHand(capP.getActiveHand()).getItem() instanceof IActionableItem)) capA.queue();

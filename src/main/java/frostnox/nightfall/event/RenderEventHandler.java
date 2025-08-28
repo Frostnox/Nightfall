@@ -505,13 +505,12 @@ public class RenderEventHandler {
         else if(event.getEntity() instanceof ActionableEntity entity) {
             LivingEntity user = event.getEntity();
             IActionTracker capA = entity.getActionTracker();
-            if(entity.isAlive() && capA.isDamaging()) {
+            if(entity.isAlive() && capA.isDamaging() && capA.getAction() instanceof Attack attack) {
                 float partialTicks = ClientEngine.get().getPartialTick();
                 PoseStack stack = event.getPoseStack();
-                Attack attack = (Attack) capA.getAction();
                 com.mojang.math.Matrix4f matrix = event.getPoseStack().last().pose();
                 stack.pushPose();
-                Mat4f userMatrix = new Mat4f(new Quat(Mth.lerp(partialTicks, user.yBodyRotO, user.yBodyRot), Vector3f.YP, true));
+                Mat4f userMatrix = new Mat4f(new Quat(entity.getAttackYRot(partialTicks), Vector3f.YP, true));
                 EnumMap<EntityPart, AnimationData> transforms = attack.getAnimationData(user, capA);
                 AnimationCalculator mCalc = new AnimationCalculator(capA.getDuration(), capA.getFrame(), partialTicks, Easing.inOutSine);
                 attack.transformModel(capA.getState(), capA.getFrame(), capA.getDuration(), capA.getAction().getChargeProgress(capA.getCharge(), capA.getChargePartial()), attack.getPitch(user, partialTicks), user, transforms, mCalc);

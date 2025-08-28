@@ -37,7 +37,7 @@ public class CockatriceBite extends NPCAttack {
 
     @Override
     public double getMaxDistToStart(LivingEntity user) {
-        return 2.25;
+        return 2;
     }
 
     @Override

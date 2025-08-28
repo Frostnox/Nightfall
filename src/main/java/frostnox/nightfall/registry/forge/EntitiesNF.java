@@ -41,12 +41,12 @@ public class EntitiesNF {
             .sized(7F/16F, 29F/16F).clientTrackingRange(10).setShouldReceiveVelocityUpdates(false).build("rockworm"));
     public static final RegistryObject<EntityType<PitDevilEntity>> PIT_DEVIL = ENTITIES.register("pit_devil", () -> EntityType.Builder.of(PitDevilEntity::new, MobCategory.MONSTER)
             .sized(12F/16F, 13F/16F).clientTrackingRange(10).setShouldReceiveVelocityUpdates(false).build("pit_devil"));
-    public static final RegistryObject<EntityType<EctoplasmEntity>> ECTOPLASM_LARGE = ENTITIES.register("ectoplasm_large", () -> EntityType.Builder.of(EctoplasmEntity::createLarge, MobCategory.MONSTER)
-            .sized(30F/16F, 30F/16F).clientTrackingRange(10).setShouldReceiveVelocityUpdates(false).build("ectoplasm_large"));
-    public static final RegistryObject<EntityType<EctoplasmEntity>> ECTOPLASM_MEDIUM = ENTITIES.register("ectoplasm_medium", () -> EntityType.Builder.of(EctoplasmEntity::createMedium, MobCategory.MONSTER)
-            .sized(30F/16F, 30F/16F).clientTrackingRange(10).setShouldReceiveVelocityUpdates(false).build("ectoplasm_medium"));
-    public static final RegistryObject<EntityType<EctoplasmEntity>> ECTOPLASM_SMALL = ENTITIES.register("ectoplasm_small", () -> EntityType.Builder.of(EctoplasmEntity::createSmall, MobCategory.MONSTER)
-            .sized(30F/16F, 30F/16F).clientTrackingRange(10).setShouldReceiveVelocityUpdates(false).build("ectoplasm_small"));
+    public static final RegistryObject<EntityType<EctoplasmEntity>> ECTOPLASM_LARGE = ENTITIES.register("large_ectoplasm", () -> EntityType.Builder.of(EctoplasmEntity::createLarge, MobCategory.MONSTER)
+            .sized(30F/16F, 30F/16F).clientTrackingRange(10).setShouldReceiveVelocityUpdates(false).build("large_ectoplasm"));
+    public static final RegistryObject<EntityType<EctoplasmEntity>> ECTOPLASM_MEDIUM = ENTITIES.register("ectoplasm", () -> EntityType.Builder.of(EctoplasmEntity::createMedium, MobCategory.MONSTER)
+            .sized(20F/16F, 20F/16F).clientTrackingRange(10).setShouldReceiveVelocityUpdates(false).build("ectoplasm"));
+    public static final RegistryObject<EntityType<EctoplasmEntity>> ECTOPLASM_SMALL = ENTITIES.register("small_ectoplasm", () -> EntityType.Builder.of(EctoplasmEntity::createSmall, MobCategory.MONSTER)
+            .sized(10F/16F, 10F/16F).clientTrackingRange(10).setShouldReceiveVelocityUpdates(false).build("small_ectoplasm"));
     public static final RegistryObject<EntityType<ScorpionEntity>> SCORPION = ENTITIES.register("scorpion", () -> EntityType.Builder.of(ScorpionEntity::new, MobCategory.MONSTER)
             .sized(6F/16F, 10F/16F).clientTrackingRange(10).setShouldReceiveVelocityUpdates(false).build("scorpion"));
     public static final RegistryObject<EntityType<ScarabEntity>> SCARAB = ENTITIES.register("scarab", () -> EntityType.Builder.of(ScarabEntity::new, MobCategory.MONSTER)

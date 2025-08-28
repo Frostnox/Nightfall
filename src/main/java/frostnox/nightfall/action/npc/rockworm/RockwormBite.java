@@ -32,7 +32,7 @@ public class RockwormBite extends NPCAttack {
 
     @Override
     public double getMaxDistToStart(LivingEntity user) {
-        return 3;
+        return 2.7;
     }
 
     @Override

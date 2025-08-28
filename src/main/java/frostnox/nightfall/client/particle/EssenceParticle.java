@@ -32,7 +32,7 @@ public class EssenceParticle extends TextureSheetParticle {
     }
 
     @Override
-    public int getLightColor(float p_106065_) {
+    public int getLightColor(float partial) {
         return 240;
     }
 

@@ -35,7 +35,7 @@ public class SpiderBite extends NPCAttack {
 
     @Override
     public double getMaxDistToStart(LivingEntity user) {
-        return 2.5;
+        return 2;
     }
 
     @Override

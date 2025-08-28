@@ -408,6 +408,11 @@ public class LanguageProviderNF extends LanguageProvider {
         addSound(SoundsNF.PIT_DEVIL_HOWL, "Something howls");
         addSound(SoundsNF.PIT_DEVIL_GROWL, "Pit Devil growls");
         addSound(SoundsNF.PIT_DEVIL_EAT, "Pit Devil devours");
+        addSound(SoundsNF.ECTOPLASM_DEATH, "Ectoplasm ruptures");
+        addSound(SoundsNF.ECTOPLASM_HURT, "Ectoplasm squishes");
+        addSound(SoundsNF.ECTOPLASM_DEATH_SMALL, "Small Ectoplasm ruptures");
+        addSound(SoundsNF.ECTOPLASM_HURT_SMALL, "Small Ectoplasm squishes");
+        addSound(SoundsNF.ECTOPLASM_ATTACK, "Ectoplasm attacks");
         addSound(SoundsNF.JELLYFISH_DEATH, "Jellyfish ruptures");
         addSound(SoundsNF.JELLYFISH_HURT, "Jellyfish squishes");
         addSound(SoundsNF.JELLYFISH_STING, "Jellyfish stings");
@@ -415,6 +420,7 @@ public class LanguageProviderNF extends LanguageProvider {
         addSound(SoundsNF.PROJECTILE_ROCK_IMPACT, "Rock collides");
         addSound(SoundsNF.ENTITY_WARP, "Something warps");
         addSound(SoundsNF.UNDEAD_WARP, "Undead warps");
+        addSound(SoundsNF.ESSENCE_EXPLODE, "Something warps explosively");
         addSound(SoundsNF.LOG_FALL, "Log falls");
         addSound(SoundsNF.BIG_TREE_FALL, "Big tree falls");
         addSound(SoundsNF.SMALL_TREE_FALL, "Small tree falls");

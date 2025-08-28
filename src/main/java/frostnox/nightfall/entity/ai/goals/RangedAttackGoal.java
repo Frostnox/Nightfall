@@ -91,7 +91,7 @@ public class RangedAttackGoal extends Goal {
     public void tick() {
         LivingEntity target = mob.getTarget();
         if(target != null && ActionTracker.isPresent(mob)) {
-            double distSqr = mob.distanceToSqr(target.getX(), target.getY(), target.getZ());
+            double distSqr = CombatUtil.getShortestDistanceSqr(mob, target);
             boolean canSee = mob.getSensing().hasLineOfSight(target);
             boolean hasSeen = seeTime > 0;
             if(canSee != hasSeen) seeTime = 0;
@@ -121,16 +121,15 @@ public class RangedAttackGoal extends Goal {
 
             IActionTracker capA = mob.getActionTracker();
             if(capA.isInactive()) cooldownTicks++;
-            double dist = mob.getEyePosition().distanceToSqr(target.getEyePosition());
             //Re-choose attack every 3 seconds
             if(heldAttackTicks >= 60 || capA.isStunned()) {
-                attackID = mob.pickActionEnemy(dist, target);
+                attackID = mob.pickActionEnemy(distSqr, target);
                 heldAttackTicks = 0;
             }
             heldAttackTicks++;
             double reach = ActionsNF.get(attackID).getMaxDistToStart(mob);
             float lookAngle = CombatUtil.getRelativeHorizontalAngle(mob.getEyePosition(), target.getEyePosition(), mob.getYHeadRot());
-            if(cooldownTicks >= cooldownTime && dist <= reach * reach && mob.isInterruptible() && lookAngle >= -25F && lookAngle <= 25F && canSee) {
+            if(cooldownTicks >= cooldownTime && distSqr <= reach * reach && mob.isInterruptible() && lookAngle >= -25F && lookAngle <= 25F && canSee) {
                 heldAttackTicks = 1000;
                 cooldownTime = 8 + mob.getRandom().nextInt() % 5;
                 cooldownTicks = 0;

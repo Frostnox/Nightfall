@@ -61,15 +61,18 @@ public class ActionableMoveControl extends MoveControl {
             if(dY > mob.getStepHeight() && Math.abs(lookAngle - mob.getYRot()) < 20F) {
                 double bestDistSqr = Double.POSITIVE_INFINITY;
                 AABB entityBox = entity.getBoundingBox();
-                for(AABB box : node.floorShape) {
-                    double x1 = Math.max(0, entityBox.minX - box.maxX);
-                    double z1 = Math.max(0, entityBox.minZ - box.maxZ);
-                    double x2 = Math.max(0, box.minX - entityBox.maxX);
-                    double z2 = Math.max(0, box.minZ - entityBox.maxZ);
-                    double distSqr = x1 * x1 + z1 * z1 + x2 * x2 + z2 * z2;
-                    if(distSqr < bestDistSqr) bestDistSqr = distSqr;
+                if(entity.getBbWidth() < 1) {
+                    for(AABB box : node.floorShape) {
+                        double x1 = Math.max(0, entityBox.minX - box.maxX);
+                        double z1 = Math.max(0, entityBox.minZ - box.maxZ);
+                        double x2 = Math.max(0, box.minX - entityBox.maxX);
+                        double z2 = Math.max(0, box.minZ - entityBox.maxZ);
+                        double distSqr = x1 * x1 + z1 * z1 + x2 * x2 + z2 * z2;
+                        if(distSqr < bestDistSqr) bestDistSqr = distSqr;
+                    }
                 }
-                if(bestDistSqr <= mob.getSpeed() * mob.getSpeed() || !inShape.isEmpty() && mob.getY() < inShape.max(Direction.Axis.Y) + pos.getY()
+                else bestDistSqr = dX * dX + dZ * dZ - ((entity.getBbWidth() - 1) * (entity.getBbWidth() - 1) / 2);
+                if(bestDistSqr < mob.getSpeed() * mob.getSpeed() || !inShape.isEmpty() && mob.getY() < inShape.max(Direction.Axis.Y) + pos.getY()
                         && !inState.is(BlockTags.DOORS) && !inState.collisionExtendsVertically(mob.level, pos, mob)
                         && Shapes.joinIsNotEmpty(inShape, Shapes.create(entityBox), BooleanOp.AND)
                         && (!node.mineable || !inState.getMaterial().blocksMotion())) {

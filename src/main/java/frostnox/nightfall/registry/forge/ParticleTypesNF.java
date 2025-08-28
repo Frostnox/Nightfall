@@ -37,6 +37,7 @@ public class ParticleTypesNF {
     public static final RegistryObject<SimpleParticleType> BLOOD_DARK_RED = PARTICLES.register("blood_dark_red", () -> new SimpleParticleType(false));
     public static final RegistryObject<SimpleParticleType> BLOOD_PALE_BLUE = PARTICLES.register("blood_pale_blue", () -> new SimpleParticleType(false));
     public static final RegistryObject<SimpleParticleType> BLOOD_GREEN = PARTICLES.register("blood_green", () -> new SimpleParticleType(false));
+    public static final RegistryObject<SimpleParticleType> ECTOPLASM = PARTICLES.register("ectoplasm", () -> new SimpleParticleType(false));
     public static final RegistryObject<SimpleParticleType> FRAGMENT_BONE = PARTICLES.register("fragment_bone", () -> new SimpleParticleType(false));
     public static final RegistryObject<SimpleParticleType> FRAGMENT_CREEPER = PARTICLES.register("fragment_creeper", () -> new SimpleParticleType(false));
     public static final RegistryObject<SimpleParticleType> COCKATRICE_SPIT = PARTICLES.register("cockatrice_spit", () -> new SimpleParticleType(false));

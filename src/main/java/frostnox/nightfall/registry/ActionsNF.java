@@ -10,6 +10,9 @@ import frostnox.nightfall.action.npc.dreg.DregBuff;
 import frostnox.nightfall.action.npc.dreg.DregBuild;
 import frostnox.nightfall.action.npc.dreg.DregCower;
 import frostnox.nightfall.action.npc.dreg.DregResurrect;
+import frostnox.nightfall.action.npc.ectoplasm.EctoplasmClubLarge;
+import frostnox.nightfall.action.npc.ectoplasm.EctoplasmClubMedium;
+import frostnox.nightfall.action.npc.ectoplasm.EctoplasmExplode;
 import frostnox.nightfall.action.npc.husk.HuskLeftSwipe;
 import frostnox.nightfall.action.npc.husk.HuskOverhead;
 import frostnox.nightfall.action.npc.husk.HuskRightSwipe;
@@ -400,22 +403,22 @@ public class ActionsNF {
             new DeerGraze(new Action.Properties().setChargeState(1), 8, 1, 10));
 
     public static final RegistryObject<HuskRightSwipe> HUSK_RIGHT_SWIPE_1 = ACTIONS.register("husk_right_swipe_1", () ->
-            new HuskRightSwipe(8, DamageType.STRIKING.asArray(), HurtSphere.HUSK_ARM, 2, CombatUtil.STUN_SHORT, new int[] {7, 1, 6, 2, 7},
+            new HuskRightSwipe(10, DamageType.STRIKING.asArray(), HurtSphere.HUSK_ARM, 2, CombatUtil.STUN_SHORT, new int[] {7, 1, 6, 2, 7},
                     new Action.Properties().setChainTo(ActionsNF.HUSK_RIGHT_SWIPE_2).setChainState(3).setKnockback(0.25F).setImpact(Impact.MEDIUM).setSound(SoundsNF.HUSK_SWING)));
     public static final RegistryObject<HuskLeftSwipe> HUSK_RIGHT_SWIPE_2 = ACTIONS.register("husk_right_swipe_2", () ->
-            new HuskLeftSwipe(8, DamageType.STRIKING.asArray(), HurtSphere.HUSK_ARM, 2, CombatUtil.STUN_SHORT, new int[] {6, 1, 6, 2, 7},
+            new HuskLeftSwipe(10, DamageType.STRIKING.asArray(), HurtSphere.HUSK_ARM, 2, CombatUtil.STUN_SHORT, new int[] {6, 1, 6, 2, 7},
                     new Action.Properties().setChainFrom(HUSK_RIGHT_SWIPE_1).setKnockback(0.25F).setImpact(Impact.MEDIUM).setSound(SoundsNF.HUSK_SWING)));
     public static final RegistryObject<HuskLeftSwipe> HUSK_LEFT_SWIPE_1 = ACTIONS.register("husk_left_swipe_1", () ->
-            new HuskLeftSwipe(8, DamageType.STRIKING.asArray(), HurtSphere.HUSK_ARM, 2, CombatUtil.STUN_SHORT, new int[] {7, 1, 6, 2, 7},
+            new HuskLeftSwipe(10, DamageType.STRIKING.asArray(), HurtSphere.HUSK_ARM, 2, CombatUtil.STUN_SHORT, new int[] {7, 1, 6, 2, 7},
                     new Action.Properties().setChainTo(ActionsNF.HUSK_LEFT_SWIPE_2).setChainState(3).setKnockback(0.25F).setImpact(Impact.MEDIUM).setSound(SoundsNF.HUSK_SWING)));
     public static final RegistryObject<HuskRightSwipe> HUSK_LEFT_SWIPE_2 = ACTIONS.register("husk_left_swipe_2", () ->
-            new HuskRightSwipe(8, DamageType.STRIKING.asArray(), HurtSphere.HUSK_ARM, 2, CombatUtil.STUN_SHORT, new int[] {6, 1, 6, 2, 7},
+            new HuskRightSwipe(10, DamageType.STRIKING.asArray(), HurtSphere.HUSK_ARM, 2, CombatUtil.STUN_SHORT, new int[] {6, 1, 6, 2, 7},
                     new Action.Properties().setChainFrom(HUSK_LEFT_SWIPE_1).setKnockback(0.25F).setImpact(Impact.MEDIUM).setSound(SoundsNF.HUSK_SWING)));
     public static final RegistryObject<HuskOverhead> HUSK_OVERHEAD = ACTIONS.register("husk_overhead", () ->
-            new HuskOverhead(12, DamageType.STRIKING.asArray(), HurtSphere.HUSK_ARM, 2, CombatUtil.STUN_MEDIUM, new int[] {8, 2, 7, 8},
+            new HuskOverhead(15, DamageType.STRIKING.asArray(), HurtSphere.HUSK_ARM, 2, CombatUtil.STUN_MEDIUM, new int[] {8, 2, 7, 8},
                     new Action.Properties().setKnockback(0.4F).setImpact(Impact.HIGH).setSound(SoundsNF.HUSK_SWING)));
     public static final RegistryObject<HuskOverhead> HUSK_MINE = ACTIONS.register("husk_mine", () ->
-            new HuskOverhead(12, DamageType.STRIKING.asArray(), HurtSphere.HUSK_ARM, 2, CombatUtil.STUN_MEDIUM, new int[] {8, 2, 7, 8},
+            new HuskOverhead(15, DamageType.STRIKING.asArray(), HurtSphere.HUSK_ARM, 2, CombatUtil.STUN_MEDIUM, new int[] {8, 2, 7, 8},
                     new Action.Properties().setKnockback(0.4F).setImpact(Impact.HIGH).setSound(SoundsNF.HUSK_SWING)));
 
     public static final RegistryObject<SkeletonThrust> SKELETON_THRUST = ACTIONS.register("skeleton_thrust", () ->
@@ -465,6 +468,19 @@ public class ActionsNF {
     public static final RegistryObject<PitDevilBite> PIT_DEVIL_BITE = ACTIONS.register("pit_devil_bite", () ->
             new PitDevilBite(35F, PIERCING_STRIKING, HurtSphere.PIT_DEVIL_BITE, 2, CombatUtil.STUN_MEDIUM,
                     new int[] {9, 6, 8}, new Action.Properties().setImpact(Impact.MEDIUM).setSound(SoundsNF.PIT_DEVIL_BITE), bleeding(0.5F)));
+
+    public static final RegistryObject<EctoplasmClubLarge> ECTOPLASM_CLUB_LARGE = ACTIONS.register("ectoplasm_club_large", () ->
+            new EctoplasmClubLarge(40F, DamageType.STRIKING.asArray(), HurtSphere.ECTOPLASM_CLUB, 2, CombatUtil.STUN_LONG,
+                    new int[] {16, 7, 16}, new Action.Properties().setImpact(Impact.HIGH).setSound(SoundsNF.ECTOPLASM_ATTACK)));
+    public static final RegistryObject<EctoplasmClubMedium> ECTOPLASM_CLUB_MEDIUM = ACTIONS.register("ectoplasm_club_medium", () ->
+            new EctoplasmClubMedium(25F, DamageType.STRIKING.asArray(), HurtSphere.ECTOPLASM_CLUB, 1, CombatUtil.STUN_MEDIUM,
+                    new int[] {14, 7, 14}, new Action.Properties().setImpact(Impact.MEDIUM).setSound(SoundsNF.ECTOPLASM_ATTACK)));
+    public static final RegistryObject<EctoplasmExplode> ECTOPLASM_EXPLODE_LARGE = ACTIONS.register("ectoplasm_explode_large", () ->
+            new EctoplasmExplode(new Action.Properties().setImpact(Impact.MAXIMUM).setSound(SoundsNF.ESSENCE_EXPLODE),
+                    50D/16D, 250F / (1.5F * 5F), 1.1F, CombatUtil.STUN_VERY_LONG, 22, 2));
+    public static final RegistryObject<EctoplasmExplode> ECTOPLASM_EXPLODE_MEDIUM = ACTIONS.register("ectoplasm_explode_medium", () ->
+            new EctoplasmExplode(new Action.Properties().setImpact(Impact.HIGH).setSound(SoundsNF.ESSENCE_EXPLODE),
+                    35D/16D, 150F / (1.5F * 5F), 0.8F, CombatUtil.STUN_LONG, 20, 2));
 
     public static void register() {
         ACTIONS.register(Nightfall.MOD_EVENT_BUS);

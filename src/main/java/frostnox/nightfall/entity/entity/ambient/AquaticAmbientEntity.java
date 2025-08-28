@@ -24,7 +24,7 @@ public abstract class AquaticAmbientEntity extends AmbientEntity {
 
     @Override
     public boolean checkSpawnObstruction(LevelReader pLevel) {
-        return pLevel.isUnobstructed(this);
+        return pLevel.noCollision(this);
     }
 
     @Override

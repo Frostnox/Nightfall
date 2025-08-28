@@ -43,7 +43,9 @@ public class ModelRegistryNF {
     public static ModelLayerLocation SPIDER;
     public static ModelLayerLocation ROCKWORM;
     public static ModelLayerLocation PIT_DEVIL;
-    public static ModelLayerLocation ECTOPLASM_LARGE_INNER, ECTOPLASM_LARGE_OUTER;
+    public static ModelLayerLocation ECTOPLASM_LARGE_INNER, ECTOPLASM_LARGE_OUTER, ECTOPLASM_LARGE_OUTER_INNER;
+    public static ModelLayerLocation ECTOPLASM_MEDIUM_INNER, ECTOPLASM_MEDIUM_OUTER, ECTOPLASM_MEDIUM_OUTER_INNER;
+    public static ModelLayerLocation ECTOPLASM_SMALL_INNER, ECTOPLASM_SMALL_OUTER, ECTOPLASM_SMALL_OUTER_INNER;
     public static ModelLayerLocation SCORPION;
     public static ModelLayerLocation SCARAB;
     public static ModelLayerLocation TROLL;
@@ -89,6 +91,13 @@ public class ModelRegistryNF {
         PIT_DEVIL = register("pit_devil", PitDevilModel.createBodyLayer());
         ECTOPLASM_LARGE_INNER = register("ectoplasm_large_inner", EctoplasmInnerModel.createLargeLayer());
         ECTOPLASM_LARGE_OUTER = register("ectoplasm_large_outer", EctoplasmOuterModel.createLargeLayer());
+        ECTOPLASM_LARGE_OUTER_INNER = register("ectoplasm_large_outer_inner", EctoplasmOuterModel.createLargeInnerLayer());
+        ECTOPLASM_MEDIUM_INNER = register("ectoplasm_medium_inner", EctoplasmInnerModel.createMediumLayer());
+        ECTOPLASM_MEDIUM_OUTER = register("ectoplasm_medium_outer", EctoplasmOuterModel.createMediumLayer());
+        ECTOPLASM_MEDIUM_OUTER_INNER = register("ectoplasm_medium_outer_inner", EctoplasmOuterModel.createMediumInnerLayer());
+        ECTOPLASM_SMALL_INNER = register("ectoplasm_small_inner", EctoplasmInnerModel.createSmallLayer());
+        ECTOPLASM_SMALL_OUTER = register("ectoplasm_small_outer", EctoplasmOuterModel.createSmallLayer());
+        ECTOPLASM_SMALL_OUTER_INNER = register("ectoplasm_small_outer_inner", EctoplasmOuterModel.createSmallInnerLayer());
         SCORPION = register("scorpion", ScorpionModel.createBodyLayer());
         SCARAB = register("scarab", ScarabModel.createBodyLayer());
         TROLL = register("troll", TrollModel.createBodyLayer());

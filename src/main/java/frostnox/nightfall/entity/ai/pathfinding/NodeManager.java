@@ -50,8 +50,8 @@ public abstract class NodeManager {
         this.entityWidthSqr = entity.getBbWidth() * entity.getBbWidth();
         this.entityWidthDiagonalSqr = entityWidthSqr + entityWidthSqr;
         this.entityStepHeight = entity.getStepHeight();
-        this.scanWidth = Mth.floor(entity.getBbWidth() + 1F);
-        this.scanHeight = Mth.floor(entityHeight + 1F);
+        this.scanWidth = Mth.floor(entity.getBbWidth() + 0.999F);
+        this.scanHeight = Mth.floor(entityHeight + 0.999F);
         this.maxFallDistance = entity.getMaxFallDistance();
         this.canMine = entity.canMineAnything();
         this.canBuild = entity.canBuild();

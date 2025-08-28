@@ -35,7 +35,7 @@ public class HuskRightSwipe extends NPCAttack {
 
     @Override
     public double getMaxDistToStart(LivingEntity user) {
-        return ActionsNF.isEmpty(chainsFrom().getId()) ? 2.1 : 3.0;
+        return ActionsNF.isEmpty(chainsFrom().getId()) ? 1.5 : 2;
     }
 
     @Override

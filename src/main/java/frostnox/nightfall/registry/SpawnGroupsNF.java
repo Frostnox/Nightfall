@@ -33,8 +33,14 @@ public class SpawnGroupsNF {
             1, false, EntitiesNF.PIT_DEVIL.get(), SEA_LEVEL, Integer.MAX_VALUE, 0, 15, 1, 1,
             0.7F, 0.9F, 0.35F, 0.65F, TagsNF.NATURAL_TERRAIN));
     public static final RegistryObject<SpawnGroup> PIT_DEVIL_CAVES = GROUPS.register("pit_devil_caves", () -> new LandBiomeSpawnGroup(
-            2, false, EntitiesNF.PIT_DEVIL.get(), 320, Integer.MAX_VALUE, 0, 0, 1, 1,
+            5, false, EntitiesNF.PIT_DEVIL.get(), 300, Integer.MAX_VALUE, 0, 0, 1, 1,
             BiomesNF.TUNNELS, TagsNF.NATURAL_TERRAIN));
+    public static final RegistryObject<SpawnGroup> ECTOPLASM_LARGE = GROUPS.register("ectoplasm_large", () -> new LandBiomeTagSpawnGroup(
+            2, false, EntitiesNF.ECTOPLASM_LARGE.get(), Integer.MIN_VALUE, Integer.MAX_VALUE, 0, 0, 1, 1,
+            TagsNF.CAVE, TagsNF.NATURAL_TERRAIN));
+    public static final RegistryObject<SpawnGroup> ECTOPLASM_MEDIUM = GROUPS.register("ectoplasm_medium", () -> new LandBiomeTagSpawnGroup(
+            1, false, EntitiesNF.ECTOPLASM_MEDIUM.get(), Integer.MIN_VALUE, Integer.MAX_VALUE, 0, 0, 1, 1,
+            TagsNF.CAVE, TagsNF.NATURAL_TERRAIN));
 
     public static void register() {
         GROUPS.register(Nightfall.MOD_EVENT_BUS);

@@ -117,6 +117,11 @@ public class SoundsNF {
     public static final RegistryObject<SoundEvent> PIT_DEVIL_HOWL = generic("entity.pit_devil.howl");
     public static final RegistryObject<SoundEvent> PIT_DEVIL_GROWL = generic("entity.pit_devil.growl");
     public static final RegistryObject<SoundEvent> PIT_DEVIL_EAT = generic("entity.pit_devil.eat");
+    public static final RegistryObject<SoundEvent> ECTOPLASM_DEATH = generic("entity.ectoplasm.death");
+    public static final RegistryObject<SoundEvent> ECTOPLASM_HURT = generic("entity.ectoplasm.hurt");
+    public static final RegistryObject<SoundEvent> ECTOPLASM_DEATH_SMALL = generic("entity.ectoplasm.death_small");
+    public static final RegistryObject<SoundEvent> ECTOPLASM_HURT_SMALL = generic("entity.ectoplasm.hurt_small");
+    public static final RegistryObject<SoundEvent> ECTOPLASM_ATTACK = generic("entity.ectoplasm.attack");
     public static final RegistryObject<SoundEvent> JELLYFISH_DEATH = generic("entity.jellyfish.death");
     public static final RegistryObject<SoundEvent> JELLYFISH_HURT = generic("entity.jellyfish.hurt");
     public static final RegistryObject<SoundEvent> JELLYFISH_STING = generic("entity.jellyfish.sting");
@@ -124,6 +129,7 @@ public class SoundsNF {
     public static final RegistryObject<SoundEvent> PROJECTILE_ROCK_IMPACT = generic("entity.projectile.rock_impact");
     public static final RegistryObject<SoundEvent> ENTITY_WARP = generic("entity.warp");
     public static final RegistryObject<SoundEvent> UNDEAD_WARP = generic("entity.undead_warp");
+    public static final RegistryObject<SoundEvent> ESSENCE_EXPLODE = generic("entity.essence_explode");
     public static final RegistryObject<SoundEvent> LOG_FALL = generic("environment.log_fall");
     public static final RegistryObject<SoundEvent> BIG_TREE_FALL = generic("environment.big_tree_fall");
     public static final RegistryObject<SoundEvent> SMALL_TREE_FALL = generic("environment.small_tree_fall");

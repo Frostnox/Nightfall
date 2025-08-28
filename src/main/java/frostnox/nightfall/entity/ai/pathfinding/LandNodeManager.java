@@ -55,11 +55,10 @@ public class LandNodeManager extends NodeManager {
         EnumSet<NodeType> typeSet = EnumSet.noneOf(NodeType.class);
         BlockPos.MutableBlockPos tempPos = new BlockPos.MutableBlockPos();
         tempPos.setY(y - 1);
-        //Not sure if this should be 0 instead of -size
-        for(int xI = 0; xI < scanWidth; xI++) {
+        for(int xI = -(scanWidth - 1); xI < scanWidth; xI++) {
             int xC = x + xI;
             tempPos.setX(xC);
-            for(int zI = 0; zI < scanWidth; zI++) {
+            for(int zI = -(scanWidth - 1); zI < scanWidth; zI++) {
                 int zC = z + zI;
                 tempPos.setZ(zC);
                 BlockState lastState = level.getBlockState(tempPos);

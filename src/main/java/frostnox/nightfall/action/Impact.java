@@ -20,7 +20,7 @@ public enum Impact implements StringRepresentable {
 
     public Impact decrease() {
         if(ordinal() == 0) return NONE;
-        else return values()[ordinal() + 1];
+        else return values()[ordinal() - 1];
     }
 
     public boolean negatedBy(Poise poise) {

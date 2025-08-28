@@ -33,7 +33,7 @@ public class HuskOverhead extends NPCAttack {
 
     @Override
     public double getMaxDistToStart(LivingEntity user) {
-        return 2.1;
+        return 1.75;
     }
 
     @Override
