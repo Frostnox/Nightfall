@@ -484,6 +484,7 @@ public class LanguageProviderNF extends LanguageProvider {
         addAttack("swipe", "%1$s was torn apart by %2$s");
         addAttack("maul", "%1$s was mauled by %2$s");
         addAttack("sting", "%1$s was stung by %2$s");
+        addAttack("stomp", "%1$s was stomped by %2$s");
 
         addItemClues(EntriesNF.TOOLS, "A hard, brittle rock", "A wooden handle", "A binding");
         addItemClues(EntriesNF.SLING, "Twisted fibers", "A round projectile");

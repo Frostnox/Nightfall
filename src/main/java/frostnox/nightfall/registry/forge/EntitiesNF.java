@@ -49,8 +49,8 @@ public class EntitiesNF {
             .sized(10F/16F, 10F/16F).clientTrackingRange(10).setShouldReceiveVelocityUpdates(false).build("small_ectoplasm"));
     public static final RegistryObject<EntityType<ScorpionEntity>> SCORPION = ENTITIES.register("scorpion", () -> EntityType.Builder.of(ScorpionEntity::new, MobCategory.MONSTER)
             .sized(6F/16F, 10F/16F).clientTrackingRange(10).setShouldReceiveVelocityUpdates(false).build("scorpion"));
-    public static final RegistryObject<EntityType<ScarabEntity>> SCARAB = ENTITIES.register("scarab", () -> EntityType.Builder.of(ScarabEntity::new, MobCategory.MONSTER)
-            .sized(6F/16F, 10F/16F).clientTrackingRange(10).setShouldReceiveVelocityUpdates(false).build("scarab"));
+    public static final RegistryObject<EntityType<SkaraSwarmEntity>> SKARA_SWARM = ENTITIES.register("skara_swarm", () -> EntityType.Builder.of(SkaraSwarmEntity::new, MobCategory.MONSTER)
+            .sized(15F/16F, 1F/16F).clientTrackingRange(10).setShouldReceiveVelocityUpdates(false).build("skara_swarm"));
     public static final RegistryObject<EntityType<TrollEntity>> TROLL = ENTITIES.register("troll", () -> EntityType.Builder.of(TrollEntity::new, MobCategory.MONSTER)
             .sized(6F/16F, 10F/16F).clientTrackingRange(10).setShouldReceiveVelocityUpdates(false).build("troll"));
     public static final RegistryObject<EntityType<OlmurEntity>> OLMUR = ENTITIES.register("olmur", () -> EntityType.Builder.of(OlmurEntity::new, MobCategory.MONSTER)

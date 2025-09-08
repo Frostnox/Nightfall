@@ -119,6 +119,7 @@ public class TagsNF {
     public static final TagKey<EntityType<?>> SPIDER_PREY = entityTag("spider_prey");
     public static final TagKey<EntityType<?>> PIT_DEVIL_PREDATOR = entityTag("pit_devil_predator");
     public static final TagKey<EntityType<?>> PIT_DEVIL_PREY = entityTag("pit_devil_prey");
+    public static final TagKey<EntityType<?>> SKARA_SWARM_PREY = entityTag("skara_swarm_prey");
     public static final TagKey<EntityType<?>> JELLYFISH_IMMUNE = entityTag("jellyfish_immune");
     public static final TagKey<EntityType<?>> EDIBLE_CORPSE = entityTag("edible_corpse");
 

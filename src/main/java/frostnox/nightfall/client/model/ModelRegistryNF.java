@@ -47,7 +47,6 @@ public class ModelRegistryNF {
     public static ModelLayerLocation ECTOPLASM_MEDIUM_INNER, ECTOPLASM_MEDIUM_OUTER, ECTOPLASM_MEDIUM_OUTER_INNER;
     public static ModelLayerLocation ECTOPLASM_SMALL_INNER, ECTOPLASM_SMALL_OUTER, ECTOPLASM_SMALL_OUTER_INNER;
     public static ModelLayerLocation SCORPION;
-    public static ModelLayerLocation SCARAB;
     public static ModelLayerLocation TROLL;
     public static ModelLayerLocation OLMUR;
     public static ModelLayerLocation JELLYFISH_INNER, JELLYFISH_OUTER;
@@ -99,7 +98,6 @@ public class ModelRegistryNF {
         ECTOPLASM_SMALL_OUTER = register("ectoplasm_small_outer", EctoplasmOuterModel.createSmallLayer());
         ECTOPLASM_SMALL_OUTER_INNER = register("ectoplasm_small_outer_inner", EctoplasmOuterModel.createSmallInnerLayer());
         SCORPION = register("scorpion", ScorpionModel.createBodyLayer());
-        SCARAB = register("scarab", ScarabModel.createBodyLayer());
         TROLL = register("troll", TrollModel.createBodyLayer());
         OLMUR = register("olmur", OlmurModel.createBodyLayer());
         JELLYFISH_INNER = register("jellyfish_inner", JellyfishInnerModel.createInnerLayer());

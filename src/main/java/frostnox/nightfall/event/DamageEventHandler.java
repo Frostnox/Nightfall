@@ -108,6 +108,9 @@ public class DamageEventHandler {
                 event.setCanceled(true);
             }
         }
+        else if(event.getEntityLiving() instanceof ActionableEntity entity) {
+            if(entity.isImmuneTo(source, damageAmount)) event.setCanceled(true);
+        }
     }
 
     @SubscribeEvent

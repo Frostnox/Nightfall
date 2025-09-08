@@ -185,6 +185,7 @@ public class ItemsNF {
     public static final RegistryObject<Item> PIT_DEVIL_TOOTH = ITEMS.register("pit_devil_tooth", () -> new Item(ingredient()));
     public static final RegistryObject<Item> BONE = ITEMS.register("bone", () -> new Item(ingredient()));
     public static final RegistryObject<Item> ECTOPLASM = ITEMS.register("ectoplasm", () -> new Item(ingredient()));
+    public static final RegistryObject<Item> SKARA_SHELLS = ITEMS.register("skara_shells", () -> new Item(ingredient()));
     //Food
     public static final RegistryObject<Item> POTATO = ITEMS.register("potato", () -> new Item(new Item.Properties().food(
             food(2, 0F)).tab(FOOD_TAB).stacksTo(4)));
@@ -308,8 +309,8 @@ public class ItemsNF {
             () -> new ForgeSpawnEggItem(EntitiesNF.ECTOPLASM_LARGE, 0xe7e0c6, 0xb9b9cd, utility()));
 //    public static final RegistryObject<SpawnEggItem> SCORPION_SPAWN_EGG = register(EntitiesNF.SCORPION.getId().getPath() + "_spawn_egg",
 //            () -> new ForgeSpawnEggItem(EntitiesNF.SCORPION, 0x95150d, 0x2c2622, utility()));
-//    public static final RegistryObject<SpawnEggItem> SCARAB_SPAWN_EGG = register(EntitiesNF.SCARAB.getId().getPath() + "_spawn_egg",
-//            () -> new ForgeSpawnEggItem(EntitiesNF.SCARAB, 0x95150d, 0x2c2622, utility()));
+    public static final RegistryObject<SpawnEggItem> SKARA_SWARM_SPAWN_EGG = register(EntitiesNF.SKARA_SWARM.getId().getPath() + "_spawn_egg",
+            () -> new ForgeSpawnEggItem(EntitiesNF.SKARA_SWARM, 0x9b5218, 0x1b2e4a, utility()));
 //    public static final RegistryObject<SpawnEggItem> TROLL_SPAWN_EGG = register(EntitiesNF.TROLL.getId().getPath() + "_spawn_egg",
 //            () -> new ForgeSpawnEggItem(EntitiesNF.TROLL, 0x95150d, 0x2c2622, utility()));
 //    public static final RegistryObject<SpawnEggItem> OLMUR_SPAWN_EGG = register(EntitiesNF.OLMUR.getId().getPath() + "_spawn_egg",

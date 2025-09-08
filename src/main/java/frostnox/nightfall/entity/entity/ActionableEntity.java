@@ -175,6 +175,10 @@ public abstract class ActionableEntity extends PathfinderMob {
         return impact;
     }
 
+    public boolean isImmuneTo(DamageTypeSource source, float damage) {
+        return false;
+    }
+
     protected float modifyIncomingDamageBySlot(EquipmentSlot slot, float damage) {
         if(slot == EquipmentSlot.HEAD) return damage * 1.2F;
         else return damage;

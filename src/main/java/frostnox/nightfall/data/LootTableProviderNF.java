@@ -665,7 +665,8 @@ public class LootTableProviderNF extends LootTableProvider {
             add(EntitiesNF.ECTOPLASM_SMALL.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.BONE_SHARD.get(), 0, 1)))
                     .withPool(pool(entry(ItemsNF.ECTOPLASM.get(), 1, 1, List.of(PerceptionCheckFunction.with(0.3F, 0.03F))))));
             add(EntitiesNF.SCORPION.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.SILK.get(), 1, 2))));
-            add(EntitiesNF.SCARAB.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.SILK.get(), 1, 2))));
+            add(EntitiesNF.SKARA_SWARM.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.SKARA_SHELLS.get(), 1, 1,
+                    List.of(PerceptionCountFunction.with(1, 0.5F, 0.05F))))));
             add(EntitiesNF.TROLL.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.SILK.get(), 1, 2))));
             add(EntitiesNF.OLMUR.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.SILK.get(), 1, 2))));
             add(EntitiesNF.JELLYFISH.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.RAW_JELLYFISH.get(), 1, 1))));

@@ -51,6 +51,7 @@ public class ParticleTypesNF {
     public static final RegistryObject<SimpleParticleType> RAIN_SPLASH = PARTICLES.register("rain_splash", () -> new SimpleParticleType(false));
     public static final RegistryObject<SimpleParticleType> SNOW = PARTICLES.register("snow", () -> new SimpleParticleType(true));
     public static final RegistryObject<SimpleParticleType> FADING_CLOUD = PARTICLES.register("fading_cloud", () -> new SimpleParticleType(true));
+    public static final RegistryObject<SimpleParticleType> SKARA = PARTICLES.register("skara", () -> new SimpleParticleType(true));
 
     public static void register() {
         PARTICLES.register(Nightfall.MOD_EVENT_BUS);

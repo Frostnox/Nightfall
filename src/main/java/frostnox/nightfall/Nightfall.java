@@ -366,7 +366,7 @@ public class Nightfall {
         event.put(EntitiesNF.ECTOPLASM_MEDIUM.get(), EctoplasmEntity.getMediumAttributeMap().build());
         event.put(EntitiesNF.ECTOPLASM_SMALL.get(), EctoplasmEntity.getSmallAttributeMap().build());
         event.put(EntitiesNF.SCORPION.get(), ScorpionEntity.getAttributeMap().build());
-        event.put(EntitiesNF.SCARAB.get(), ScarabEntity.getAttributeMap().build());
+        event.put(EntitiesNF.SKARA_SWARM.get(), SkaraSwarmEntity.getAttributeMap().build());
         event.put(EntitiesNF.TROLL.get(), TrollEntity.getAttributeMap().build());
         event.put(EntitiesNF.OLMUR.get(), OlmurEntity.getAttributeMap().build());
         event.put(EntitiesNF.JELLYFISH.get(), JellyfishEntity.getAttributeMap().build());
@@ -527,7 +527,7 @@ public class Nightfall {
             event.registerEntityRenderer(EntitiesNF.ECTOPLASM_SMALL.get(), (context) -> new EctoplasmRenderer(context, 0.2F,
                     ModelRegistryNF.ECTOPLASM_SMALL_INNER, ModelRegistryNF.ECTOPLASM_SMALL_OUTER_INNER, ModelRegistryNF.ECTOPLASM_SMALL_OUTER));
             event.registerEntityRenderer(EntitiesNF.SCORPION.get(), ScorpionRenderer::new);
-            event.registerEntityRenderer(EntitiesNF.SCARAB.get(), ScarabRenderer::new);
+            event.registerEntityRenderer(EntitiesNF.SKARA_SWARM.get(), NameTagRenderer::new);
             event.registerEntityRenderer(EntitiesNF.TROLL.get(), TrollRenderer::new);
             event.registerEntityRenderer(EntitiesNF.OLMUR.get(), OlmurRenderer::new);
             event.registerEntityRenderer(EntitiesNF.JELLYFISH.get(), JellyfishRenderer::new);
@@ -623,6 +623,7 @@ public class Nightfall {
             engine.register(ParticleTypesNF.RAIN_SPLASH.get(), ColoredWaterDropParticle.Provider::new);
             engine.register(ParticleTypesNF.SNOW.get(), SnowParticle.Provider::new);
             engine.register(ParticleTypesNF.FADING_CLOUD.get(), FadingCloudParticle.Provider::new);
+            engine.register(ParticleTypesNF.SKARA.get(), SkaraParticle.Provider::new);
         }
 
         public static class WaterFallProvider implements ParticleProvider<SimpleParticleType> {
