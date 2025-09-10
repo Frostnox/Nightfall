@@ -18,6 +18,7 @@ import frostnox.nightfall.block.block.fuel.BurningFuelBlockEntity;
 import frostnox.nightfall.block.block.crucible.CrucibleBlockEntity;
 import frostnox.nightfall.block.block.mold.ItemMoldBlockEntity;
 import frostnox.nightfall.block.block.nest.RockwormNestBlockEntity;
+import frostnox.nightfall.block.block.nest.SkaraNestBlockEntity;
 import frostnox.nightfall.block.block.pot.PotBlockEntity;
 import frostnox.nightfall.block.block.rack.RackBlockEntity;
 import frostnox.nightfall.block.block.shelf.ShelfBlockEntity;
@@ -29,6 +30,7 @@ import frostnox.nightfall.capability.IChunkData;
 import frostnox.nightfall.capability.LevelData;
 import frostnox.nightfall.entity.entity.animal.RabbitEntity;
 import frostnox.nightfall.entity.entity.monster.RockwormEntity;
+import frostnox.nightfall.entity.entity.monster.SkaraSwarmEntity;
 import frostnox.nightfall.entity.entity.monster.SpiderEntity;
 import frostnox.nightfall.world.ContinentalWorldType;
 import net.minecraft.world.entity.MobSpawnType;
@@ -103,6 +105,14 @@ public class BlockEntitiesNF {
                                 return rockworm;
                             }, 15),
                     BlocksNF.ANCHORING_RESIN.get()).build(null));
+    public static final RegistryObject<BlockEntityType<SkaraNestBlockEntity>> SKARA_NEST = BLOCK_ENTITIES.register("skara_nest", () ->
+            BlockEntityType.Builder.of((pos, state) -> new SkaraNestBlockEntity(BlockEntitiesNF.SKARA_NEST.get(), pos, state, 1, (int) ContinentalWorldType.DAY_LENGTH * 1,
+                            (level, homePos) -> {
+                                SkaraSwarmEntity skara = EntitiesNF.SKARA_SWARM.get().create(level.getLevel());
+                                skara.finalizeSpawn(level, level.getCurrentDifficultyAt(homePos), MobSpawnType.STRUCTURE, null, null);
+                                return skara;
+                            }, 15),
+                    BlocksNF.SKARA_ROCK_CLUSTERS.values().stream().map(RegistryObject::get).toArray(Block[]::new)).build(null));
     public static final RegistryObject<BlockEntityType<TimeDataBlockEntity>> TIME_DATA = BLOCK_ENTITIES.register("time_data", () ->
             BlockEntityType.Builder.of(TimeDataBlockEntity::new, BlocksNF.WET_MUD_BRICKS.get(), BlocksNF.POTATOES.get(), BlocksNF.CARROTS.get(), BlocksNF.FLAX.get(),
                     BlocksNF.YARROW.get(), BlocksNF.BERRY_BUSH.get()).build(null));

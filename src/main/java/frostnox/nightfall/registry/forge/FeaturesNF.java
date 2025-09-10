@@ -169,6 +169,10 @@ public class FeaturesNF {
     public static final Holder<ConfiguredFeature<NoneFeatureConfiguration, ?>> ROCKWORM_NEST_CONFIG = register("rockworm_nest", ROCKWORM_NEST_FEATURE, FeatureConfiguration.NONE);
     public static final Holder<PlacedFeature> ROCKWORM_NEST = register("rockworm_nest", ROCKWORM_NEST_CONFIG, CountPlacement.of(32),
             HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(16), VerticalAnchor.belowTop(16)), InSquarePlacement.spread(), BiomeFilter.biome());
+    public static final SkaraNestFeature SKARA_NEST_FEATURE = new SkaraNestFeature(name("skara_nest"));
+    public static final Holder<ConfiguredFeature<NoneFeatureConfiguration, ?>> SKARA_NEST_CONFIG = register("skara_nest", SKARA_NEST_FEATURE, FeatureConfiguration.NONE);
+    public static final Holder<PlacedFeature> SKARA_NEST = register("skara_nest", SKARA_NEST_CONFIG, CountPlacement.of(256),
+            HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(16), VerticalAnchor.belowTop(16)), InSquarePlacement.spread(), BiomeFilter.biome());
     //Special
     public static final MeteoriteFeature METEORITE_FEATURE = new MeteoriteFeature(name("meteorite"));
     public static final Holder<ConfiguredFeature<NoneFeatureConfiguration, ?>> METEORITE_CONFIG = register("meteorite", METEORITE_FEATURE, FeatureConfiguration.NONE);
@@ -188,7 +192,7 @@ public class FeaturesNF {
 
     public static void registerEvent(RegistryEvent.Register<Feature<?>> event) {
         event.getRegistry().registerAll(TREE_FEATURE, LONE_TREE_FEATURE, ROCKS_FEATURE, SINGLE_BLOCK_FEATURE, BOULDER_FEATURE, ORE_VEIN_FEATURE,
-                CAVE_ROCKS_FEATURE, ROCKWORM_NEST_FEATURE,
+                CAVE_ROCKS_FEATURE, ROCKWORM_NEST_FEATURE, SKARA_NEST_FEATURE,
                 METEORITE_FEATURE, RABBIT_BURROW_FEATURE, SPIDER_NEST_FEATURE);
     }
 

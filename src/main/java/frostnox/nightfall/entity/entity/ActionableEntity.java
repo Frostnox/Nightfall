@@ -375,6 +375,10 @@ public abstract class ActionableEntity extends PathfinderMob {
         else return 35F;
     }
 
+    public float getNavigatorWaypointDist() {
+        return getBbWidth() / 2F;
+    }
+
     public boolean shouldFleeFrom(LivingEntity target) {
         return getHealth() / getMaxHealth() < 0.25F;
     }

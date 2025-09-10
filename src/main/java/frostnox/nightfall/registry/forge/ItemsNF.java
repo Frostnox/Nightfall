@@ -670,6 +670,8 @@ public class ItemsNF {
     public static final RegistryObject<BlockItemNF> ANCHORING_RESIN_BLOCK = register(BlocksNF.ANCHORING_RESIN, NATURAL_TAB);
     public static final Map<Stone, RegistryObject<BlockItemNF>> STONE_TUNNELS = DataUtil.mapEnum(Stone.class, stone -> !BlocksNF.STONE_TUNNELS.containsKey(stone), stone ->
             register(BlocksNF.STONE_TUNNELS.get(stone), NATURAL_TAB));
+    public static final Map<Stone, RegistryObject<BlockItemNF>> SKARA_ROCK_CLUSTERS = DataUtil.mapEnum(Stone.class, stone -> !BlocksNF.SKARA_ROCK_CLUSTERS.containsKey(stone), stone ->
+            register(BlocksNF.SKARA_ROCK_CLUSTERS.get(stone), NATURAL_TAB));
 
     public static void register() {
         ITEMS.register(Nightfall.MOD_EVENT_BUS);

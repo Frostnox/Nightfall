@@ -32,8 +32,7 @@ public class SkaraParticle extends ConstantCollidingParticle {
 
     protected SkaraParticle(ClientLevel worldIn, double x, double y, double z, double rotation, double isMoving, double ownerId, SpriteSet sprite) {
         super(worldIn, x, y, z, 0, 0, 0);
-        Entity entity = worldIn.getEntity((int) ownerId);
-        owner = (entity instanceof LivingEntity livingEntity) ? livingEntity : null;
+        owner = ownerId > 0 && (worldIn.getEntity((int) ownerId) instanceof LivingEntity livingEntity) ? livingEntity : null;
         lifetime = 22 + random.nextInt(8);
         friction = 1;
         xd = 0;
@@ -53,6 +52,7 @@ public class SkaraParticle extends ConstantCollidingParticle {
         else baseRoll = random.nextFloat() * MathUtil.PI * 2;
         roll = baseRoll + Mth.sin(rollOffset) * MathUtil.PI / 3;
         oRoll = roll;
+        if(owner != null) onGround = owner.isOnGround();
     }
 
     @Override
@@ -94,12 +94,17 @@ public class SkaraParticle extends ConstantCollidingParticle {
     @Override
     public void render(VertexConsumer buffer, Camera camera, float pPartialTicks) {
         Vec3 camPos = camera.getPosition();
-        float x = (float)(Mth.lerp(pPartialTicks, xo, this.x) - camPos.x());
-        float y = (float)(Mth.lerp(pPartialTicks, yo, this.y) - camPos.y());
-        float z = (float)(Mth.lerp(pPartialTicks, zo, this.z) - camPos.z());
-        Quaternion rotation = new Quaternion(Vector3f.XP.rotationDegrees(90));
-        float f3 = Mth.lerp(pPartialTicks, oRoll, roll);
-        rotation.mul(Vector3f.ZP.rotation(f3));
+        float dX = (float)(Mth.lerp(pPartialTicks, xo, this.x) - camPos.x());
+        float dY = (float)(Mth.lerp(pPartialTicks, yo, this.y) - camPos.y());
+        float dZ = (float)(Mth.lerp(pPartialTicks, zo, this.z) - camPos.z());
+        Quaternion rotation;
+        if(onGround) rotation = new Quaternion(Vector3f.XP.rotationDegrees(90));
+        else {
+            rotation = new Quaternion(camera.rotation());
+            rotation.mul(Vector3f.XP.rotationDegrees(-camera.getXRot()));
+            rotation.mul(Vector3f.YP.rotation(MathUtil.toRadians(camera.getYRot()) + (float) Math.atan2(dX, dZ)));
+        }
+        rotation.mul(Vector3f.ZP.rotation(Mth.lerp(pPartialTicks, oRoll, roll)));
 
         Vector3f[] positions = new Vector3f[]{new Vector3f(-1.0F, -1.0F, 0.0F), new Vector3f(-1.0F, 1.0F, 0.0F), new Vector3f(1.0F, 1.0F, 0.0F), new Vector3f(1.0F, -1.0F, 0.0F)};
         float size = getQuadSize(pPartialTicks);
@@ -108,7 +113,7 @@ public class SkaraParticle extends ConstantCollidingParticle {
             Vector3f vector3f = positions[i];
             vector3f.transform(rotation);
             vector3f.mul(size);
-            vector3f.add(x, y, z);
+            vector3f.add(dX, dY, dZ);
         }
 
         float u0 = getU0();

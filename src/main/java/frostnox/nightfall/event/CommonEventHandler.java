@@ -452,7 +452,8 @@ public class CommonEventHandler {
                 if(bleeding) duration = (int) Math.round(duration * (1 - entity.getAttributeValue(AttributesNF.BLEEDING_RESISTANCE.get())));
                 else duration = (int) Math.round(duration * (1 - entity.getAttributeValue(AttributesNF.POISON_RESISTANCE.get())));
                 if(event.getOldPotionEffect() != null) {
-                    effect.update(new MobEffectInstance(effect.getEffect(), event.getOldPotionEffect().getDuration() + duration,
+                    duration += event.getOldPotionEffect().getDuration();
+                    effect.update(new MobEffectInstance(effect.getEffect(), duration,
                             effect.getAmplifier(), effect.isAmbient(), effect.isVisible(), effect.showIcon(), null));
                 }
                 else effect.update(new MobEffectInstance(effect.getEffect(), duration, effect.getAmplifier(), effect.isAmbient(),
@@ -507,33 +508,44 @@ public class CommonEventHandler {
     @SubscribeEvent
     public static void onLivingUpdateEvent(LivingEvent.LivingUpdateEvent event) {
         LivingEntity entity = event.getEntityLiving();
-        if(entity.isAlive() && (entity instanceof Player || entity instanceof ActionableEntity)) {
-            IActionTracker capA = ActionTracker.get(entity);
-            if(entity.level.isClientSide()) {
-                //Effect particles
-                /*if(entity.hasEffect(EffectsNF.MOON_BLESSING.get())) {
-                    entity.level.addParticle(ParticleTypesNF.ESSENCE_MOON.get(), entity.getRandomX(0.5D), entity.getRandomY(), entity.getRandomZ(0.5D), (entity.getRandom().nextDouble() - 0.5D) * 2.0D, -entity.getRandom().nextDouble(), (entity.getRandom().nextDouble() - 0.5D) * 2.0D);
-                }*/
-                if(capA.getBleedDuration() > 0) {
-                    ParticleOptions particle;
-                    if(entity instanceof ActionableEntity actEntity) particle = actEntity.getHurtParticle();
-                    else particle = ParticleTypesNF.BLOOD_RED.get();
-                    if(particle != null) {
-                        int mod = 15;
-                        int duration = capA.getBleedDuration();
-                        if(duration > 90 * 20) mod = 4;
-                        else if(duration > 60 * 20) mod = 8;
-                        else if(duration > 30 * 20) mod = 12;
-                        if(entity.tickCount % mod == 0) {
-                            entity.level.addParticle(particle, entity.getRandomX(0.5D), entity.getRandomY(), entity.getRandomZ(0.5D), 0, -8, 0);
+        if(entity.isAlive()) {
+            if(ActionTracker.isPresent(entity)) {
+                IActionTracker capA = ActionTracker.get(entity);
+                if(entity.level.isClientSide()) {
+                    //Effect particles
+                    /*if(entity.hasEffect(EffectsNF.MOON_BLESSING.get())) {
+                        entity.level.addParticle(ParticleTypesNF.ESSENCE_MOON.get(), entity.getRandomX(0.5D), entity.getRandomY(), entity.getRandomZ(0.5D), (entity.getRandom().nextDouble() - 0.5D) * 2.0D, -entity.getRandom().nextDouble(), (entity.getRandom().nextDouble() - 0.5D) * 2.0D);
+                    }*/
+                    if(capA.getBleedDuration() > 0) {
+                        ParticleOptions particle;
+                        if(entity instanceof ActionableEntity actEntity) particle = actEntity.getHurtParticle();
+                        else particle = ParticleTypesNF.BLOOD_RED.get();
+                        if(particle != null) {
+                            int mod = 15;
+                            int duration = capA.getBleedDuration();
+                            if(duration > 90 * 20) mod = 4;
+                            else if(duration > 60 * 20) mod = 8;
+                            else if(duration > 30 * 20) mod = 12;
+                            if(entity.tickCount % mod == 0) {
+                                entity.level.addParticle(particle, entity.getRandomX(0.5D), entity.getRandomY(), entity.getRandomZ(0.5D), 0, -8, 0);
+                            }
                         }
                     }
-                }
-                if(capA.getPoisonDuration() > 0) {
-                    if(entity.tickCount % 18 == 0) {
-                        entity.level.addParticle(ParticleTypesNF.POISON.get(), entity.getRandomX(0.5D), entity.getRandomY(), entity.getRandomZ(0.5D), (entity.getRandom().nextDouble() - 0.5D) * 2.0D, -entity.getRandom().nextDouble(), (entity.getRandom().nextDouble() - 0.5D) * 2.0D);
+                    if(capA.getPoisonDuration() > 0) {
+                        if(entity.tickCount % 18 == 0) {
+                            entity.level.addParticle(ParticleTypesNF.POISON.get(), entity.getRandomX(0.5D), entity.getRandomY(), entity.getRandomZ(0.5D), (entity.getRandom().nextDouble() - 0.5D) * 2.0D, -entity.getRandom().nextDouble(), (entity.getRandom().nextDouble() - 0.5D) * 2.0D);
+                        }
+                    }
+                    if(entity.hasEffect(EffectsNF.INFESTED.get())) {
+                        entity.level.addParticle(ParticleTypesNF.SKARA.get(), entity.getRandomX(0.5D), entity.getRandomY(), entity.getRandomZ(0.5D),
+                                entity.getRandom().nextFloat() * MathUtil.PI * 2, 0, 0);
                     }
                 }
+            }
+        }
+        if(!entity.level.isClientSide) {
+            if(entity.hasEffect(EffectsNF.INFESTED.get()) && (entity.isOnFire() || entity.isEyeInFluid(FluidTags.WATER))) {
+                entity.removeEffect(EffectsNF.INFESTED.get());
             }
         }
         if(entity.isOnGround() && entity.isSteppingCarefully()) { //Call stepOn function whenever an entity is on a block instead of only when not sneaking

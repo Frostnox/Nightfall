@@ -31,6 +31,10 @@ public class PursueTargetGoal extends Goal {
         return true;
     }
 
+    protected int getAccuracy() {
+        return 1;
+    }
+
     @Override
     public boolean canUse() {
         long time = mob.level.getGameTime();
@@ -97,7 +101,8 @@ public class PursueTargetGoal extends Goal {
             recalcTicks = Math.max(recalcTicks - 1, 0);
             if(canPursue()) {
                 double distSqr = mob.distanceToSqr(target.getX(), target.getY(), target.getZ());
-                if((recalcTicks == 0 || mob.refreshPath || mob.getNavigator().isDone()) && (pathedTargetX == 0.0D && pathedTargetY == 0.0D && pathedTargetZ == 0.0D || target.distanceToSqr(pathedTargetX, pathedTargetY, pathedTargetZ) >= 1.0D || mob.getRandom().nextFloat() < 0.05F)) {
+                int accuracy = getAccuracy();
+                if((recalcTicks == 0 || mob.refreshPath || mob.getNavigator().isDone()) && (pathedTargetX == 0.0D && pathedTargetY == 0.0D && pathedTargetZ == 0.0D || target.distanceToSqr(pathedTargetX, pathedTargetY, pathedTargetZ) >= accuracy * accuracy || mob.getRandom().nextFloat() < 0.05F)) {
                     pathedTargetX = target.getX();
                     pathedTargetY = target.getY();
                     pathedTargetZ = target.getZ();
@@ -106,7 +111,7 @@ public class PursueTargetGoal extends Goal {
                     if(distSqr > 1024.0) recalcTicks += 12;
                     else if(distSqr > 256.0) recalcTicks += 8;
                     else if(distSqr > 25.0) recalcTicks += 4;
-                    if(!mob.getNavigator().moveTo(target, speedModifier)) recalcTicks += 4;
+                    if(!mob.getNavigator().moveTo(target, speedModifier, accuracy)) recalcTicks += 4;
                     if(mob.refreshPath) mob.refreshPath = false;
                 }
             }
@@ -123,7 +128,7 @@ public class PursueTargetGoal extends Goal {
                 }
             }
             else if(canPursue()) {
-                mob.getNavigator().moveTo(mob.lastTargetPos.getX(), mob.lastTargetPos.getY(), mob.lastTargetPos.getZ(), speedModifier);
+                mob.getNavigator().moveTo(mob.lastTargetPos.getX(), mob.lastTargetPos.getY(), mob.lastTargetPos.getZ(), speedModifier, getAccuracy());
                 pursueTime = 0;
             }
         }

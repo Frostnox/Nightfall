@@ -106,6 +106,17 @@ public class EffectsNF {
             .addAttributeModifier(Attributes.MOVEMENT_SPEED, "5e59ad86-9311-4fbd-8e70-db765be34d30", -0.2D, AttributeModifier.Operation.MULTIPLY_TOTAL)
             .addAttributeModifier(ForgeMod.SWIM_SPEED.get(), "728607eb-2232-457d-a9ac-f61d42fa91f3", -0.2D, AttributeModifier.Operation.MULTIPLY_TOTAL)
             .addAttributeModifier(AttributesNF.ENDURANCE.get(), "47a84663-d865-4df0-8672-01608ce5d124", -2D, AttributeModifier.Operation.ADDITION));
+    public static final RegistryObject<MobEffect> INFESTED = EFFECTS.register("infested", () -> new MobEffect(MobEffectCategory.HARMFUL, 0) {
+        @Override
+        public void applyEffectTick(LivingEntity entity, int amplifier) {
+            entity.addEffect(new MobEffectInstance(BLEEDING.get(), 20 * 10));
+        }
+
+        @Override
+        public boolean isDurationEffectTick(int duration, int amplifier) {
+            return duration % 20 == 0;
+        }
+    });
 
     public static void register() {
         EFFECTS.register(Nightfall.MOD_EVENT_BUS);

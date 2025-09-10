@@ -794,6 +794,13 @@ public class BlockStateProviderNF extends BlockStateProvider {
         }
     }
 
+    public void skaraNestBlock(Block block, ResourceLocation texture, String prefix) {
+        ModelFile model = models().withExistingParent(name(block), resource(prefix + "_cluster_4"))
+                .texture("0", texture).texture("particle", texture);
+        getVariantBuilder(block).partialState().addModels(ConfiguredModel.builder().modelFile(model).nextModel()
+                .modelFile(model).rotationY(90).nextModel().modelFile(model).rotationY(180).nextModel().modelFile(model).rotationY(270).build());
+    }
+
     public void pileBlock(PileBlock block, ResourceLocation texture, String baseModelPath) {
         for(int i = 1; i <= 8; i++) {
             ModelFile model = models().withExistingParent(name(block) + "_" + i, resource(baseModelPath + "_" + i))
@@ -1119,6 +1126,7 @@ public class BlockStateProviderNF extends BlockStateProvider {
         cubeTopBlock(BlocksNF.ANCHORING_RESIN.get());
         for(var type : BlocksNF.STONE_TUNNELS.keySet()) axisBlock(BlocksNF.STONE_TUNNELS.get(type).get(),
                 resource(BlocksNF.STONE_BLOCKS.get(type).get()), resource(BlocksNF.STONE_TUNNELS.get(type).get()));
+        for(var type : BlocksNF.SKARA_ROCK_CLUSTERS.keySet()) skaraNestBlock(BlocksNF.SKARA_ROCK_CLUSTERS.get(type).get(), blockTexture(BlocksNF.STONE_BLOCKS.get(type).get()), "rock");
 
         //Note that generated models used in generation of others will still need to be manually created before
         for(RegistryObject<? extends Block> block : BlocksNF.BLOCKS.getEntries()) {

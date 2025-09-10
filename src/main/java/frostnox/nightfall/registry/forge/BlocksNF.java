@@ -27,6 +27,7 @@ import frostnox.nightfall.block.block.fuel.HorizontalFuelBlock;
 import frostnox.nightfall.block.block.liquid.LavaLiquidBlock;
 import frostnox.nightfall.block.block.liquid.SizedLiquidBlock;
 import frostnox.nightfall.block.block.mold.ItemMoldBlock;
+import frostnox.nightfall.block.block.nest.SkaraNestBlock;
 import frostnox.nightfall.block.block.nest.SpiderNestBlock;
 import frostnox.nightfall.block.block.pot.PotBlock;
 import frostnox.nightfall.block.block.rack.RackBlock;
@@ -730,6 +731,9 @@ public class BlocksNF {
     public static final Map<Stone, RegistryObject<RotatedPillarBlock>> STONE_TUNNELS = DataUtil.mapEnum(Stone.class,
             stone -> stone == Stone.PUMICE || stone == Stone.MOONSTONE, stone -> register(stone.getName() + "_tunnel",
                     () -> new RotatedPillarBlock(BlockBehaviour.Properties.copy(STONE_BLOCKS.get(stone).get()))));
+    public static final Map<Stone, RegistryObject<SkaraNestBlock>> SKARA_ROCK_CLUSTERS = DataUtil.mapEnum(Stone.class, stone -> stone == Stone.PUMICE || stone == Stone.MOONSTONE,
+            stone -> register(stone.getName() + "_skara_rocks", () -> new SkaraNestBlock(BlockBehaviour.Properties.of(Material.DECORATION)
+                    .noCollission().strength(1F).sound(SoundType.STONE))));
 
     public static void register() {
         BLOCKS.register(Nightfall.MOD_EVENT_BUS);

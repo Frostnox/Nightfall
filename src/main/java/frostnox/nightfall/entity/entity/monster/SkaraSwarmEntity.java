@@ -4,11 +4,10 @@ import com.mojang.math.Vector3d;
 import frostnox.nightfall.action.DamageType;
 import frostnox.nightfall.action.DamageTypeSource;
 import frostnox.nightfall.action.Poise;
+import frostnox.nightfall.capability.ActionTracker;
 import frostnox.nightfall.data.TagsNF;
-import frostnox.nightfall.entity.ai.goals.FleeDamageGoal;
-import frostnox.nightfall.entity.ai.goals.MoveToNestGoal;
-import frostnox.nightfall.entity.ai.goals.TouchAttackGoal;
-import frostnox.nightfall.entity.ai.goals.WanderLandGoal;
+import frostnox.nightfall.entity.IHomeEntity;
+import frostnox.nightfall.entity.ai.goals.*;
 import frostnox.nightfall.entity.ai.goals.target.TrackNearestTargetGoal;
 import frostnox.nightfall.registry.forge.AttributesNF;
 import frostnox.nightfall.registry.forge.EffectsNF;
@@ -17,6 +16,8 @@ import frostnox.nightfall.util.MathUtil;
 import frostnox.nightfall.util.data.Wrapper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -30,7 +31,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class SkaraSwarmEntity extends MonsterEntity {
+import javax.annotation.Nullable;
+
+public class SkaraSwarmEntity extends MonsterEntity implements IHomeEntity {
+    protected BlockPos homePos = null;
+
     public SkaraSwarmEntity(EntityType<? extends MonsterEntity> type, Level worldIn) {
         super(type, worldIn);
     }
@@ -52,12 +57,31 @@ public class SkaraSwarmEntity extends MonsterEntity {
     @Override
     protected void registerGoals() {
         goalSelector.addGoal(1, new FloatGoal(this));
-        goalSelector.addGoal(2, new TouchAttackGoal(this, 1));
-        goalSelector.addGoal(3, new MoveToNestGoal(this, 1D, 0.1D));
-        goalSelector.addGoal(4, new FleeDamageGoal(this, 1));
-        goalSelector.addGoal(5, new WanderLandGoal(this, 0.8));
-        targetSelector.addGoal(1, new TrackNearestTargetGoal<>(this, LivingEntity.class, true, (entity) -> {
+        goalSelector.addGoal(2, new PursueTargetGoal(this, 1) {
+            @Override
+            public void tick() {
+                super.tick();
+                LivingEntity target = this.mob.getTarget();
+                if(target != null && ActionTracker.isPresent(mob) && mob.getBoundingBox().intersects(target.getBoundingBox())) {
+                    target.addEffect(new MobEffectInstance(EffectsNF.INFESTED.get(), 20 * 30), mob);
+                    mob.setTarget(null);
+                }
+            }
+
+            @Override
+            protected int getAccuracy() {
+                return 0;
+            }
+        });
+        goalSelector.addGoal(3, new MoveToNestGoal(this, 1D, 1D));
+        goalSelector.addGoal(4, new FleeEntityGoal<>(this, LivingEntity.class, 0.8D, 1D, (entity) -> {
             if(entity.isDeadOrDying()) return false;
+            else return entity.hasEffect(EffectsNF.INFESTED.get()) || !entity.getType().is(TagsNF.SKARA_SWARM_PREY);
+        }));
+        goalSelector.addGoal(5, new FleeDamageGoal(this, 1));
+        goalSelector.addGoal(6, new WanderLandGoal(this, 0.8));
+        targetSelector.addGoal(1, new TrackNearestTargetGoal<>(this, LivingEntity.class, true, (entity) -> {
+            if(entity.isDeadOrDying() || entity.hasEffect(EffectsNF.INFESTED.get())) return false;
             else if(entity instanceof Player player) return !player.isCreative() && !player.isSpectator();
             else return entity.getType().is(TagsNF.SKARA_SWARM_PREY);
         }));
@@ -73,6 +97,23 @@ public class SkaraSwarmEntity extends MonsterEntity {
                         MathUtil.toRadians(getYRot()), (xo != getX() || zo != getZ()) ? 1 : 0, getId());
             }
         }
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        if(homePos != null) tag.put("homePos", NbtUtils.writeBlockPos(homePos));
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        if(tag.contains("homePos")) homePos = NbtUtils.readBlockPos(tag.getCompound("homePos"));
+    }
+
+    @Override
+    public float getNavigatorWaypointDist() {
+        return 4F/16F;
     }
 
     @Override
@@ -136,7 +177,11 @@ public class SkaraSwarmEntity extends MonsterEntity {
 
     @Override
     public boolean isImmuneTo(DamageTypeSource source, float damage) {
-        return source.isType(DamageType.PIERCING) || source.isType(DamageType.SLASHING);
+        if(source.isExplosion() || source.isFromBlock()) return false;
+        else if(source.getEntity() instanceof Player || source.getEntity() instanceof UndeadEntity) {
+            return source.isType(DamageType.STRIKING) || source.isType(DamageType.PIERCING) || source.isType(DamageType.SLASHING);
+        }
+        else return false;
     }
 
     @Override
@@ -144,6 +189,16 @@ public class SkaraSwarmEntity extends MonsterEntity {
         //Different from defense as this will reduce all damage from a multi-type source
         if(source.isType(DamageType.STRIKING) || source.isType(DamageType.SLASHING) || source.isType(DamageType.PIERCING)) return damage / 4;
         else return damage;
+    }
+
+    @Override
+    public @Nullable BlockPos getHomePos() {
+        return homePos;
+    }
+
+    @Override
+    public void setHomePos(@Nullable BlockPos pos) {
+        homePos = pos;
     }
 
     @Override

@@ -332,6 +332,7 @@ public class LootTableProviderNF extends LootTableProvider {
             dropOthers(BlocksNF.SPIDER_WEB.get(), entry(ItemsNF.SILK.get(), -1, 1));
             dropOthers(BlocksNF.SPIDER_NEST.get(), entry(ItemsNF.SILK.get(), 10, 12));
             dropOtherPerception(BlocksNF.ANCHORING_RESIN.get(), ItemsNF.ANCHORING_RESIN.get(), 3, 1, 0.5F, 0.1F, 1);
+            for(Stone type : BlocksNF.SKARA_ROCK_CLUSTERS.keySet()) dropStone(BlocksNF.SKARA_ROCK_CLUSTERS.get(type).get(), type, 4);
 
             for(var block : getKnownBlocks()) {
                 if(!addedBlocks.contains(block)) dropSelf(block);

@@ -104,7 +104,7 @@ public abstract class EntityNavigator extends PathNavigation {
     }
 
     protected void updatePath() {
-        maxDistanceToWaypoint = mob.getBbWidth() / 2F * (float) speedModifier;
+        maxDistanceToWaypoint = entity.getNavigatorWaypointDist() * (float) speedModifier;
         Node node = activePath.getCurrentNode();
         if(Math.abs(lastActiveX - mob.getX()) < 0.001 && Math.abs(lastActiveZ - mob.getZ()) < 0.001) {
             stuckTicks++;
@@ -141,12 +141,20 @@ public abstract class EntityNavigator extends PathNavigation {
 
     @Override
     public boolean moveTo(double x, double pY, double z, double pSpeed) {
-        return moveTo(findPath(x, pY, z, 1), pSpeed);
+        return moveTo(x, pY, z, pSpeed, 1);
     }
 
     @Override
     public boolean moveTo(Entity pEntity, double pSpeed) {
-        ReversePath path = findPath(pEntity, 1);
+        return moveTo(pEntity, pSpeed, 1);
+    }
+
+    public boolean moveTo(double x, double pY, double z, double pSpeed, int accuracy) {
+        return moveTo(findPath(x, pY, z, accuracy), pSpeed);
+    }
+
+    public boolean moveTo(Entity pEntity, double pSpeed, int accuracy) {
+        ReversePath path = findPath(pEntity, accuracy);
         return path != null && moveTo(path, pSpeed);
     }
 

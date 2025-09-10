@@ -157,6 +157,7 @@ public class BlockTagsProviderNF extends BlockTagsProvider {
                 BlocksNF.AZURITE.get(), BlocksNF.HEMATITE.get(), BlocksNF.SMELTED_AZURITE.get(), BlocksNF.SMELTED_HEMATITE.get(),
                 BlocksNF.ANCHORING_RESIN.get());
         for(var block : BlocksNF.ROCK_CLUSTERS.values()) tag(BlockTags.MINEABLE_WITH_PICKAXE).add(block.get());
+        for(var block : BlocksNF.SKARA_ROCK_CLUSTERS.values()) tag(BlockTags.MINEABLE_WITH_PICKAXE).add(block.get());
         for(var block : BlocksNF.ANVILS_STONE.values()) tag(BlockTags.MINEABLE_WITH_PICKAXE).add(block.get());
 
         tag(BlockTags.MINEABLE_WITH_AXE).addTags(BlockTags.LOGS, BlockTags.WOODEN_STAIRS, BlockTags.WOODEN_SLABS, TagsNF.WOODEN_SIDINGS,
@@ -187,6 +188,7 @@ public class BlockTagsProviderNF extends BlockTagsProvider {
         tag(TagsNF.SALT_MELTS).addTag(BlockTags.SNOW);
 
         for(var block : BlocksNF.ROCK_CLUSTERS.values()) tag(TagsNF.FALLING_DESTROYABLE).add(block.get());
+        for(var block : BlocksNF.SKARA_ROCK_CLUSTERS.values()) tag(TagsNF.FALLING_DESTROYABLE).add(block.get());
         tag(TagsNF.FALLING_DESTROYABLE).add(BlocksNF.TORCH.get(), BlocksNF.TORCH_UNLIT.get(), BlocksNF.WALL_TORCH.get(), BlocksNF.WALL_TORCH_UNLIT.get(),
                 BlocksNF.ROPE.get(), BlocksNF.CRUCIBLE.get(), BlocksNF.UNFIRED_CRUCIBLE.get(), BlocksNF.CAULDRON.get(), BlocksNF.UNFIRED_CAULDRON.get(),
                 BlocksNF.POT.get(), BlocksNF.UNFIRED_POT.get(), BlocksNF.INGOT_MOLD.get(), BlocksNF.ARROWHEAD_MOLD.get(), BlocksNF.UNFIRED_INGOT_MOLD.get(),

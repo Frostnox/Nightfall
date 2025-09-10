@@ -44,13 +44,13 @@ public class GuardedNestBlockEntity extends NestBlockEntity {
         return eventListener;
     }
 
-    protected boolean isEventInRange(float range, BlockPos pos) {
+    protected boolean shouldEventTriggerNest(float range, BlockPos pos, GameEvent event, Entity entity) {
         return pos.distSqr(worldPosition) <= range * range;
     }
 
     protected boolean handleGameEvent(Level level, GameEvent event, @Nullable Entity entity, BlockPos pos) {
         if(!hasAnyEntities() || !(entity instanceof LivingEntity livingEntity) || entity instanceof FakePlayer || (entity instanceof Player player && player.isCreative())) return false;
-        if(isEventInRange(GameEventsNF.getEventRange(event, entity), pos)) {
+        if(shouldEventTriggerNest(GameEventsNF.getEventRange(event, entity), pos, event, entity)) {
             if(dummy == null) dummy = respawnFunc.apply((ServerLevel) level, pos);
             if(dummy.canTargetFromSound(livingEntity)) {
                 if(removeEntityToSafePos(null) != null) {

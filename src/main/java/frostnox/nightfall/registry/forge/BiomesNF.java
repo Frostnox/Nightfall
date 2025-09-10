@@ -140,7 +140,7 @@ public class BiomesNF {
                 .addFeature(GenerationStep.Decoration.RAW_GENERATION, FeaturesNF.METEORITE)
                 .addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, FeaturesNF.SPIDER_NEST_CAVES)
                 .addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, FeaturesNF.ROCKWORM_NEST)
-                .addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, FeaturesNF.CAVE_ROCKS);
+                .addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, FeaturesNF.SKARA_NEST);
     }
 
     public static BiomeGenerationSettings.Builder landFeatureBuilder() {

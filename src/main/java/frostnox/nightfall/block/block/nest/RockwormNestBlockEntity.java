@@ -79,7 +79,7 @@ public class RockwormNestBlockEntity extends GuardedNestBlockEntity {
     }
 
     @Override
-    protected boolean isEventInRange(float range, BlockPos pos) {
+    protected boolean shouldEventTriggerNest(float range, BlockPos pos, GameEvent event, Entity entity) {
         double blockDistSqr = getEmergePos().above().distSqr(pos);
         return blockDistSqr <= range * range &&  blockDistSqr < 3.1 * 3.1;
     }
