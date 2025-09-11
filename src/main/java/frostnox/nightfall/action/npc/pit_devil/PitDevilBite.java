@@ -58,7 +58,7 @@ public class PitDevilBite extends NPCAttack {
                 head.tCalc.add(0, 0F, 1F);
             }
             case 1 -> {
-                body.rCalc.add(-20, 0, 0, Easing.outQuart);
+                body.rCalc.add(pitch / 2, 0, 0, Easing.outQuart);
                 body.tCalc.add(0, -1, -1, Easing.outQuart);
                 neck.rCalc.add(10, 0, 0, Easing.outQuart);
                 head.rCalc.freeze();
@@ -74,6 +74,8 @@ public class PitDevilBite extends NPCAttack {
             AnimationData tail = data.get(EntityPart.TAIL);
             AnimationData legLeft = data.get(EntityPart.LEG_LEFT);
             AnimationData legRight = data.get(EntityPart.LEG_RIGHT);
+            AnimationData hindLegLeft = data.get(EntityPart.LEG_2_LEFT);
+            AnimationData hindLegRight = data.get(EntityPart.LEG_2_RIGHT);
             switch(state) {
                 case 0 -> {
                     tail.rCalc.extend(20, 0, 0);
@@ -84,11 +86,17 @@ public class PitDevilBite extends NPCAttack {
                     tail.rCalc.extend(-5, 0, 0, Easing.outQuart);
                     legLeft.tCalc.add(0, 0, -1.5F, Easing.outQuart);
                     legRight.tCalc.add(0, 0, -1.5F, Easing.outQuart);
+                    if(pitch > 0) {
+                        hindLegLeft.tCalc.add(0, -pitch/25, 0, Easing.outQuart);
+                        hindLegRight.tCalc.add(0, -pitch/25, 0, Easing.outQuart);
+                    }
                 }
                 case 2 -> {
                     tail.toDefaultRotation();
                     legLeft.toDefaultTranslation();
                     legRight.toDefaultTranslation();
+                    hindLegLeft.toDefaultTranslation();
+                    hindLegRight.toDefaultTranslation();
                 }
             }
         }

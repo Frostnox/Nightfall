@@ -108,6 +108,9 @@ Original file at https://freesound.org/people/bevibeldesign/sounds/366093/
 Modified version of "Pipe Bomb" by modusmogulus
 Original file at https://freesound.org/people/modusmogulus/sounds/737321/
 
+Modified version of "Fast Crawling Bu" by dasrealized
+Original file at https://freesound.org/people/dasrealized/sounds/266014/
+
 --------------------------------------------------------------
 
 Modified version of "Brutal Impalement 2" by SilverIllusionist
@@ -240,4 +243,4 @@ Original file at https://freesound.org/people/leonseptavaux/sounds/384568/
 
 --------------------------------------------------------------
 
-Sound effects provided by Pond5
+Other sound effects provided by Pond5

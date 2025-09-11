@@ -71,6 +71,7 @@ import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.sounds.Music;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.Entity;
@@ -1010,6 +1011,10 @@ public class ClientEngine {
             mc.levelRenderer.destructionProgress.put(pos.asLong(), new SingleSortedSet<>(data));
         }
         else mc.levelRenderer.destructionProgress.remove(pos.asLong());
+    }
+
+    public void playEntitySound(Entity pEntity, SoundEvent pEvent, SoundSource pCategory, float pVolume, float pPitch) {
+        pEntity.level.playSound(mc.player, pEntity, pEvent, pCategory, pVolume, pPitch);
     }
 
     /**

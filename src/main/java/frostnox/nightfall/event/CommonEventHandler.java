@@ -37,10 +37,7 @@ import frostnox.nightfall.registry.ActionsNF;
 import frostnox.nightfall.registry.EntriesNF;
 import frostnox.nightfall.registry.KnowledgeNF;
 import frostnox.nightfall.registry.RegistriesNF;
-import frostnox.nightfall.registry.forge.AttributesNF;
-import frostnox.nightfall.registry.forge.EffectsNF;
-import frostnox.nightfall.registry.forge.ItemsNF;
-import frostnox.nightfall.registry.forge.ParticleTypesNF;
+import frostnox.nightfall.registry.forge.*;
 import frostnox.nightfall.registry.vanilla.GameEventsNF;
 import frostnox.nightfall.util.*;
 import frostnox.nightfall.world.ILightSource;
@@ -63,6 +60,7 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -484,12 +482,13 @@ public class CommonEventHandler {
 
     @SubscribeEvent
     public static void onPotionRemoveEvent(PotionEvent.PotionRemoveEvent event) {
-        MobEffectInstance effect = event.getPotionEffect();
-        if(effect.getEffect() == EffectsNF.BLEEDING.get() || effect.getEffect() == EffectsNF.POISON.get()) {
+        MobEffectInstance instance = event.getPotionEffect();
+        MobEffect effect = instance.getEffect();
+        if(effect == EffectsNF.BLEEDING.get() || effect == EffectsNF.POISON.get()) {
             LivingEntity entity = event.getEntityLiving();
             if(entity.isAlive() && (entity instanceof Player || entity instanceof ActionableEntity)) {
                 IActionTracker capA = ActionTracker.get(entity);
-                if(effect.getEffect() == EffectsNF.BLEEDING.get()) {
+                if(effect == EffectsNF.BLEEDING.get()) {
                     capA.setBleedDuration(0);
                     if(!entity.level.isClientSide) {
                         NetworkHandler.toAllTrackingAndSelf(entity, new StatusToClient(0, entity.getId(), StatusToClient.Status.BLEEDING));
@@ -502,6 +501,10 @@ public class CommonEventHandler {
                     }
                 }
             }
+        }
+        else if(effect == EffectsNF.INFESTED.get()) {
+            LivingEntity entity = event.getEntityLiving();
+            entity.level.playSound(null, entity, SoundsNF.SKARA_SWARM_HURT.get(), SoundSource.HOSTILE, 1F, 0.9F + entity.level.random.nextFloat() * 0.2F);
         }
     }
 
@@ -536,7 +539,8 @@ public class CommonEventHandler {
                             entity.level.addParticle(ParticleTypesNF.POISON.get(), entity.getRandomX(0.5D), entity.getRandomY(), entity.getRandomZ(0.5D), (entity.getRandom().nextDouble() - 0.5D) * 2.0D, -entity.getRandom().nextDouble(), (entity.getRandom().nextDouble() - 0.5D) * 2.0D);
                         }
                     }
-                    if(entity.hasEffect(EffectsNF.INFESTED.get())) {
+                    MobEffectInstance infested = entity.getEffect(EffectsNF.INFESTED.get());
+                    if(infested != null && infested.getDuration() > 0) { //Client won't remove effect after it expires so duration check is necessary
                         entity.level.addParticle(ParticleTypesNF.SKARA.get(), entity.getRandomX(0.5D), entity.getRandomY(), entity.getRandomZ(0.5D),
                                 entity.getRandom().nextFloat() * MathUtil.PI * 2, 0, 0);
                     }

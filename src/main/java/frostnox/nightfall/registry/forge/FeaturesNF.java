@@ -171,7 +171,7 @@ public class FeaturesNF {
             HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(16), VerticalAnchor.belowTop(16)), InSquarePlacement.spread(), BiomeFilter.biome());
     public static final SkaraNestFeature SKARA_NEST_FEATURE = new SkaraNestFeature(name("skara_nest"));
     public static final Holder<ConfiguredFeature<NoneFeatureConfiguration, ?>> SKARA_NEST_CONFIG = register("skara_nest", SKARA_NEST_FEATURE, FeatureConfiguration.NONE);
-    public static final Holder<PlacedFeature> SKARA_NEST = register("skara_nest", SKARA_NEST_CONFIG, CountPlacement.of(256),
+    public static final Holder<PlacedFeature> SKARA_NEST = register("skara_nest", SKARA_NEST_CONFIG, CountPlacement.of(64),
             HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(16), VerticalAnchor.belowTop(16)), InSquarePlacement.spread(), BiomeFilter.biome());
     //Special
     public static final MeteoriteFeature METEORITE_FEATURE = new MeteoriteFeature(name("meteorite"));

@@ -5,6 +5,7 @@ import frostnox.nightfall.action.DamageType;
 import frostnox.nightfall.action.DamageTypeSource;
 import frostnox.nightfall.action.Poise;
 import frostnox.nightfall.capability.ActionTracker;
+import frostnox.nightfall.client.ClientEngine;
 import frostnox.nightfall.data.TagsNF;
 import frostnox.nightfall.entity.IHomeEntity;
 import frostnox.nightfall.entity.ai.goals.*;
@@ -12,12 +13,18 @@ import frostnox.nightfall.entity.ai.goals.target.TrackNearestTargetGoal;
 import frostnox.nightfall.registry.forge.AttributesNF;
 import frostnox.nightfall.registry.forge.EffectsNF;
 import frostnox.nightfall.registry.forge.ParticleTypesNF;
+import frostnox.nightfall.registry.forge.SoundsNF;
 import frostnox.nightfall.util.MathUtil;
 import frostnox.nightfall.util.data.Wrapper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
+import net.minecraft.network.protocol.game.ClientboundUpdateMobEffectPacket;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -62,10 +69,21 @@ public class SkaraSwarmEntity extends MonsterEntity implements IHomeEntity {
             public void tick() {
                 super.tick();
                 LivingEntity target = this.mob.getTarget();
-                if(target != null && ActionTracker.isPresent(mob) && mob.getBoundingBox().intersects(target.getBoundingBox())) {
-                    target.addEffect(new MobEffectInstance(EffectsNF.INFESTED.get(), 20 * 30), mob);
+                if(target != null && ActionTracker.isPresent(mob) && mob.getBoundingBox().intersects(target.getBoundingBox()) && !target.hasEffect(EffectsNF.INFESTED.get())) {
+                    target.hurt(DamageTypeSource.createEntitySource(mob, DamageType.ABSOLUTE), 0); //Hurt so target can retaliate
+                    MobEffectInstance effect = new MobEffectInstance(EffectsNF.INFESTED.get(), 20 * 15);
+                    target.addEffect(effect, mob);
+                    ((ServerLevel) target.level).getChunkSource().broadcast(target, new ClientboundUpdateMobEffectPacket(target.getId(), effect));
                     mob.setTarget(null);
+                    mob.lastTargetPos = null;
+                    mob.setAggressive(false);
                 }
+            }
+
+            @Override
+            public boolean canContinueToUse() {
+                if(super.canContinueToUse()) return mob.getTarget() != null && !mob.getTarget().hasEffect(EffectsNF.INFESTED.get());
+                else return false;
             }
 
             @Override
@@ -95,6 +113,9 @@ public class SkaraSwarmEntity extends MonsterEntity implements IHomeEntity {
             if(chance == 1 || random.nextFloat() < chance) {
                 level.addParticle(ParticleTypesNF.SKARA.get(), getX() + (random.nextFloat() - 0.5F), getY(), getZ() + (random.nextFloat() - 0.5F),
                         MathUtil.toRadians(getYRot()), (xo != getX() || zo != getZ()) ? 1 : 0, getId());
+            }
+            if((getSynchedRandom() + tickCount) % 37 == 0) {
+                ClientEngine.get().playEntitySound(this, SoundsNF.SKARA_SWARM_AMBIENT.get(), SoundSource.HOSTILE, 0.35F, 0.95F + random.nextFloat() * 0.1F);
             }
         }
     }
@@ -154,6 +175,11 @@ public class SkaraSwarmEntity extends MonsterEntity implements IHomeEntity {
     }
 
     @Override
+    public boolean canTargetFromSound(LivingEntity target) {
+        return !target.hasEffect(EffectsNF.INFESTED.get()) && (target.getType().is(TagsNF.SKARA_SWARM_PREY) || target instanceof Player);
+    }
+
+    @Override
     public boolean canBeAffected(MobEffectInstance pEffectInstance) {
         MobEffect effect = pEffectInstance.getEffect();
         if(effect == EffectsNF.BLEEDING.get() || effect == EffectsNF.POISON.get()) return false;
@@ -163,6 +189,16 @@ public class SkaraSwarmEntity extends MonsterEntity implements IHomeEntity {
     @Override
     protected void playStepSound(BlockPos pos, BlockState pBlock) {
 
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource pDamageSource) {
+        return SoundsNF.SKARA_SWARM_HURT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return SoundsNF.SKARA_SWARM_DEATH.get();
     }
 
     @Override

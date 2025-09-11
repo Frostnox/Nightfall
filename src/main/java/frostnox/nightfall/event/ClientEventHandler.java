@@ -31,7 +31,9 @@ import frostnox.nightfall.network.message.entity.DodgeToServer;
 import frostnox.nightfall.network.message.entity.HitTargetToServer;
 import frostnox.nightfall.network.message.world.DigBlockToServer;
 import frostnox.nightfall.registry.forge.AttributesNF;
+import frostnox.nightfall.registry.forge.EffectsNF;
 import frostnox.nightfall.registry.forge.ParticleTypesNF;
+import frostnox.nightfall.registry.forge.SoundsNF;
 import frostnox.nightfall.util.AnimationUtil;
 import frostnox.nightfall.util.LevelUtil;
 import frostnox.nightfall.util.MathUtil;
@@ -378,6 +380,11 @@ public class ClientEventHandler {
                 disabledSprint = false;
             }
             ClientEngine.get().tickEnd();
+
+            MobEffectInstance infested = mc.player.getEffect(EffectsNF.INFESTED.get());
+            if(infested != null && infested.getDuration() % 37 == 3) { //3 to sync with start of duration
+                ClientEngine.get().playEntitySound(mc.player, SoundsNF.SKARA_SWARM_AMBIENT.get(), SoundSource.PLAYERS, 1F, 0.95F + level.random.nextFloat() * 0.1F);
+            }
             
             if(mc.player.tickCount - capP.getLastDodgeTick() == 1) {
                 doPlayerDodge(mc.player);

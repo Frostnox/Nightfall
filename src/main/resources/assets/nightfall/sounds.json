@@ -438,6 +438,18 @@
     "subtitle": "nightfall.entity.ectoplasm.attack",
     "sounds": ["mob/slime/attack1", "mob/slime/attack2"]
   },
+  "entity.skara_swarm.ambient": {
+    "subtitle": "nightfall.entity.skara_swarm.ambient",
+    "sounds": ["nightfall:entity/skara_swarm/ambient_0", "nightfall:entity/skara_swarm/ambient_1"]
+  },
+  "entity.skara_swarm.death": {
+    "subtitle": "nightfall.entity.skara_swarm.death",
+    "sounds": ["nightfall:entity/skara_swarm/hurt_0", "nightfall:entity/skara_swarm/hurt_1", "nightfall:entity/skara_swarm/hurt_2"]
+  },
+  "entity.skara_swarm.hurt": {
+    "subtitle": "nightfall.entity.skara_swarm.hurt",
+    "sounds": ["nightfall:entity/skara_swarm/hurt_0", "nightfall:entity/skara_swarm/hurt_1", "nightfall:entity/skara_swarm/hurt_2"]
+  },
   "entity.jellyfish.death": {
     "subtitle": "nightfall.entity.jellyfish.death",
     "sounds": ["mob/slime/small1", "mob/slime/small2", "mob/slime/small3", "mob/slime/small4", "mob/slime/small5"]

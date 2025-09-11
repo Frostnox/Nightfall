@@ -122,6 +122,9 @@ public class SoundsNF {
     public static final RegistryObject<SoundEvent> ECTOPLASM_DEATH_SMALL = generic("entity.ectoplasm.death_small");
     public static final RegistryObject<SoundEvent> ECTOPLASM_HURT_SMALL = generic("entity.ectoplasm.hurt_small");
     public static final RegistryObject<SoundEvent> ECTOPLASM_ATTACK = generic("entity.ectoplasm.attack");
+    public static final RegistryObject<SoundEvent> SKARA_SWARM_AMBIENT = generic("entity.skara_swarm.ambient");
+    public static final RegistryObject<SoundEvent> SKARA_SWARM_DEATH = generic("entity.skara_swarm.death");
+    public static final RegistryObject<SoundEvent> SKARA_SWARM_HURT = generic("entity.skara_swarm.hurt");
     public static final RegistryObject<SoundEvent> JELLYFISH_DEATH = generic("entity.jellyfish.death");
     public static final RegistryObject<SoundEvent> JELLYFISH_HURT = generic("entity.jellyfish.hurt");
     public static final RegistryObject<SoundEvent> JELLYFISH_STING = generic("entity.jellyfish.sting");

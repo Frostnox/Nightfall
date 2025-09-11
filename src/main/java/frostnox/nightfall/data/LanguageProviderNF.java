@@ -413,6 +413,9 @@ public class LanguageProviderNF extends LanguageProvider {
         addSound(SoundsNF.ECTOPLASM_DEATH_SMALL, "Small Ectoplasm ruptures");
         addSound(SoundsNF.ECTOPLASM_HURT_SMALL, "Small Ectoplasm squishes");
         addSound(SoundsNF.ECTOPLASM_ATTACK, "Ectoplasm attacks");
+        addSound(SoundsNF.SKARA_SWARM_AMBIENT, "Skara Swarm crawls");
+        addSound(SoundsNF.SKARA_SWARM_DEATH, "Skara Swarm dies");
+        addSound(SoundsNF.SKARA_SWARM_HURT, "Skara Swarm hisses");
         addSound(SoundsNF.JELLYFISH_DEATH, "Jellyfish ruptures");
         addSound(SoundsNF.JELLYFISH_HURT, "Jellyfish squishes");
         addSound(SoundsNF.JELLYFISH_STING, "Jellyfish stings");

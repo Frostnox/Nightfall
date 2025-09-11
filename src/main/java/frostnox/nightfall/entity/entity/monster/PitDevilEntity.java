@@ -86,8 +86,12 @@ public class PitDevilEntity extends HungryMonsterEntity implements IOrientedHitB
     @Override
     protected void registerGoals() {
         goalSelector.addGoal(1, new FloatGoal(this));
-        goalSelector.addGoal(2, new LandFleeTargetGoal(this, 1.35D, 1.45D));
-        goalSelector.addGoal(3, new RushAttackGoal(this, 1.35D) {
+        goalSelector.addGoal(2, new LandFleeEntityGoal<>(this, LivingEntity.class, 1.35D, 1.45D, (entity) -> {
+            if(entity.isDeadOrDying()) return false;
+            else return entity.getType().is(TagsNF.PIT_DEVIL_PREDATOR);
+        }));
+        goalSelector.addGoal(3, new LandFleeTargetGoal(this, 1.35D, 1.45D));
+        goalSelector.addGoal(4, new RushAttackGoal(this, 1.35D) {
             @Override
             protected boolean canPursue() {
                 return ActionTracker.isPresent(mob) && (getActionTracker().getState() == 2 || !getActionTracker().getActionID().equals(ActionsNF.PIT_DEVIL_GROWL.getId()));
@@ -99,10 +103,6 @@ public class PitDevilEntity extends HungryMonsterEntity implements IOrientedHitB
                 if(mob.isAlive()) mob.getActionTracker().releaseCharge();
             }
         });
-        goalSelector.addGoal(4, new LandFleeEntityGoal<>(this, LivingEntity.class, 1.35D, 1.45D, (entity) -> {
-            if(entity.isDeadOrDying()) return false;
-            else return entity.getType().is(TagsNF.PIT_DEVIL_PREDATOR);
-        }));
         goalSelector.addGoal(5, new FleeDamageGoal(this, 1.35D));
         goalSelector.addGoal(6, new EatEntityGoal(this, 1D, 15, 2));
         goalSelector.addGoal(7, new EatBlockGoal(this, 1D, 15, 2));
@@ -175,6 +175,11 @@ public class PitDevilEntity extends HungryMonsterEntity implements IOrientedHitB
     @Override
     public boolean canAttack(LivingEntity target) {
         return target.canBeSeenAsEnemy() && !(target instanceof PitDevilEntity);
+    }
+
+    @Override
+    public boolean canTargetFromSound(LivingEntity target) {
+        return target.getType().is(TagsNF.PIT_DEVIL_PREY) || target instanceof Player;
     }
 
     @Override
