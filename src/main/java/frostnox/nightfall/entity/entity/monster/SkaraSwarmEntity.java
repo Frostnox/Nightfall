@@ -40,16 +40,16 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nullable;
 
-public class SkaraSwarmEntity extends MonsterEntity implements IHomeEntity {
+public class SkaraSwarmEntity extends HungryMonsterEntity implements IHomeEntity {
     protected BlockPos homePos = null;
 
-    public SkaraSwarmEntity(EntityType<? extends MonsterEntity> type, Level worldIn) {
+    public SkaraSwarmEntity(EntityType<? extends HungryMonsterEntity> type, Level worldIn) {
         super(type, worldIn);
     }
 
     public static AttributeSupplier.Builder getAttributeMap() {
         return createAttributes().add(Attributes.MAX_HEALTH, 20D)
-                .add(Attributes.MOVEMENT_SPEED, 0.2675F)
+                .add(Attributes.MOVEMENT_SPEED, 0.285F)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0D)
                 .add(Attributes.ATTACK_DAMAGE, 1)
                 .add(Attributes.ATTACK_KNOCKBACK, 1)
@@ -97,7 +97,8 @@ public class SkaraSwarmEntity extends MonsterEntity implements IHomeEntity {
             else return entity.hasEffect(EffectsNF.INFESTED.get()) || !entity.getType().is(TagsNF.SKARA_SWARM_PREY);
         }));
         goalSelector.addGoal(5, new FleeDamageGoal(this, 1));
-        goalSelector.addGoal(6, new WanderLandGoal(this, 0.8));
+        goalSelector.addGoal(6, new EatEntityGoal(this, 1D, 10, 2));
+        goalSelector.addGoal(7, new WanderLandGoal(this, 0.8));
         targetSelector.addGoal(1, new TrackNearestTargetGoal<>(this, LivingEntity.class, true, (entity) -> {
             if(entity.isDeadOrDying() || entity.hasEffect(EffectsNF.INFESTED.get())) return false;
             else if(entity instanceof Player player) return !player.isCreative() && !player.isSpectator();
@@ -118,6 +119,11 @@ public class SkaraSwarmEntity extends MonsterEntity implements IHomeEntity {
                 ClientEngine.get().playEntitySound(this, SoundsNF.SKARA_SWARM_AMBIENT.get(), SoundSource.HOSTILE, 0.35F, 0.95F + random.nextFloat() * 0.1F);
             }
         }
+    }
+
+    @Override
+    protected int getMaxSatiety() {
+        return 20 * 3;
     }
 
     @Override
@@ -240,5 +246,21 @@ public class SkaraSwarmEntity extends MonsterEntity implements IHomeEntity {
     @Override
     public EquipmentSlot getHitSlot(Vector3d hitPos, int boxIndex) {
         return EquipmentSlot.CHEST;
+    }
+
+    @Override
+    public boolean canEat(BlockState state) {
+        return false;
+    }
+
+    @Override
+    public boolean canEat(Entity entity) {
+        if(entity instanceof LivingEntity livingEntity) return livingEntity.deathTime > 20 && entity.getType().is(TagsNF.EDIBLE_CORPSE);
+        else return false;
+    }
+
+    @Override
+    public SoundEvent getEatSound() {
+        return null;
     }
 }
