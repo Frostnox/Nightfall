@@ -256,10 +256,12 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
         tag(TagsNF.HERB);
         tag(TagsNF.FOOD_INGREDIENT).addTags(TagsNF.MEAT, TagsNF.VEGETABLE, TagsNF.FRUIT, TagsNF.GRAIN, TagsNF.HERB);
 
-        tag(TagsNF.RABBIT_FOOD_ITEM).add(ItemsNF.CARROT.get());
+        tag(TagsNF.RABBIT_FOOD_ITEM).add(ItemsNF.CARROT.get(), ItemsNF.ROASTED_CARROT.get());
         tag(TagsNF.RABBIT_FOOD_ITEM).addTag(TagsNF.FRUIT);
-        tag(TagsNF.DEER_FOOD_ITEM).add(ItemsNF.CARROT.get(), ItemsNF.POTATO.get());
+        tag(TagsNF.DEER_FOOD_ITEM).add(ItemsNF.CARROT.get(), ItemsNF.POTATO.get(), ItemsNF.ROASTED_CARROT.get(), ItemsNF.ROASTED_POTATO.get());
         tag(TagsNF.DEER_FOOD_ITEM).addTag(TagsNF.FRUIT);
+        tag(TagsNF.DRAKEFOWL_FOOD_ITEM).add(ItemsNF.ROASTED_CARROT.get(), ItemsNF.ROASTED_POTATO.get());
+        tag(TagsNF.DRAKEFOWL_FOOD_ITEM).addTags(TagsNF.GRAIN, TagsNF.FRUIT, TagsNF.ANIMAL_EDIBLE_MEAT);
         tag(TagsNF.COCKATRICE_FOOD_ITEM).addTag(TagsNF.ANIMAL_EDIBLE_MEAT);
         tag(TagsNF.SPIDER_FOOD_ITEM).addTag(TagsNF.ANIMAL_EDIBLE_MEAT);
         tag(TagsNF.PIT_DEVIL_FOOD_ITEM).addTag(TagsNF.ANIMAL_EDIBLE_MEAT);

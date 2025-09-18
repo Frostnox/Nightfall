@@ -1,19 +1,21 @@
 package frostnox.nightfall.block.block;
 
+import frostnox.nightfall.item.item.RopeBlockItem;
+import frostnox.nightfall.registry.forge.ItemsNF;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.decoration.LeashFenceKnotEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.LeadItem;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
@@ -51,8 +53,21 @@ public class FenceBlockNF extends CrossCollisionBlockNF {
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         if(level.isClientSide) {
             ItemStack itemstack = pPlayer.getItemInHand(pHand);
-            return itemstack.is(Items.LEAD) ? InteractionResult.SUCCESS : InteractionResult.PASS;
+            return itemstack.is(ItemsNF.ROPE.get()) ? InteractionResult.SUCCESS : InteractionResult.PASS;
         }
-        else return LeadItem.bindPlayerMobs(pPlayer, level, pos);
+        else return RopeBlockItem.bindPlayerMobs(pPlayer, level, pos);
+    }
+
+    @Override
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState pNewState, boolean pIsMoving) {
+        super.onRemove(state, level, pos, pNewState, pIsMoving);
+        if(!pNewState.is(this)) {
+            for(LeashFenceKnotEntity knot : level.getEntitiesOfClass(LeashFenceKnotEntity.class, new AABB(pos))) {
+                if(!knot.isRemoved() && !knot.survives()) {
+                    knot.discard();
+                    knot.dropItem(null);
+                }
+            }
+        }
     }
 }

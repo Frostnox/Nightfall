@@ -470,6 +470,14 @@
     "subtitle": "nightfall.entity.projectile.rock_impact",
     "sounds": ["step/stone1", "step/stone2", "step/stone3", "step/stone4", "step/stone5", "step/stone6"]
   },
+  "entity.rope_knot.place": {
+    "subtitle": "nightfall.entity.rope_knot.place",
+    "sounds": ["entity/leashknot/place1", "entity/leashknot/place2", "entity/leashknot/place3"]
+  },
+  "entity.rope_knot.break": {
+    "subtitle": "nightfall.entity.rope_knot.break",
+    "sounds": ["entity/leashknot/break1", "entity/leashknot/break2", "entity/leashknot/break3"]
+  },
   "entity.warp": {
     "subtitle": "nightfall.entity.warp",
     "sounds": ["nightfall:entity/warp"]

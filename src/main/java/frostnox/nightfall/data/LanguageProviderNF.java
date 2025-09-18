@@ -421,6 +421,8 @@ public class LanguageProviderNF extends LanguageProvider {
         addSound(SoundsNF.JELLYFISH_STING, "Jellyfish stings");
         addSound(SoundsNF.PROJECTILE_POISON_IMPACT, "Poison corrodes");
         addSound(SoundsNF.PROJECTILE_ROCK_IMPACT, "Rock collides");
+        addSound(SoundsNF.ROPE_KNOT_PLACE, "Rope knot tightens");
+        addSound(SoundsNF.ROPE_KNOT_BREAK, "Rope knot breaks");
         addSound(SoundsNF.ENTITY_WARP, "Something warps");
         addSound(SoundsNF.UNDEAD_WARP, "Undead warps");
         addSound(SoundsNF.ESSENCE_EXPLODE, "Something warps explosively");

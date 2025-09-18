@@ -130,6 +130,8 @@ public class SoundsNF {
     public static final RegistryObject<SoundEvent> JELLYFISH_STING = generic("entity.jellyfish.sting");
     public static final RegistryObject<SoundEvent> PROJECTILE_POISON_IMPACT = generic("entity.projectile.poison_impact");
     public static final RegistryObject<SoundEvent> PROJECTILE_ROCK_IMPACT = generic("entity.projectile.rock_impact");
+    public static final RegistryObject<SoundEvent> ROPE_KNOT_PLACE = generic("entity.rope_knot.place");
+    public static final RegistryObject<SoundEvent> ROPE_KNOT_BREAK = generic("entity.rope_knot.break");
     public static final RegistryObject<SoundEvent> ENTITY_WARP = generic("entity.warp");
     public static final RegistryObject<SoundEvent> UNDEAD_WARP = generic("entity.undead_warp");
     public static final RegistryObject<SoundEvent> ESSENCE_EXPLODE = generic("entity.essence_explode");

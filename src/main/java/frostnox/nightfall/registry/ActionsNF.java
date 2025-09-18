@@ -6,6 +6,9 @@ import frostnox.nightfall.action.npc.cockatrice.CockatriceBite;
 import frostnox.nightfall.action.npc.cockatrice.CockatriceClaw;
 import frostnox.nightfall.action.npc.cockatrice.CockatriceSpit;
 import frostnox.nightfall.action.npc.deer.DeerGraze;
+import frostnox.nightfall.action.npc.drakefowl.DrakefowlClaw;
+import frostnox.nightfall.action.npc.drakefowl.DrakefowlCollapse;
+import frostnox.nightfall.action.npc.drakefowl.DrakefowlSpit;
 import frostnox.nightfall.action.npc.dreg.DregBuff;
 import frostnox.nightfall.action.npc.dreg.DregBuild;
 import frostnox.nightfall.action.npc.dreg.DregCower;
@@ -401,6 +404,14 @@ public class ActionsNF {
     //NPCs
     public static final RegistryObject<DeerGraze> DEER_GRAZE = ACTIONS.register("deer_graze", () ->
             new DeerGraze(new Action.Properties().setChargeState(1), 8, 1, 10));
+
+    public static final RegistryObject<DrakefowlCollapse> DRAKEFOWL_COLLAPSE = ACTIONS.register("drakefowl_collapse", () ->
+            new DrakefowlCollapse(new Action.Properties().setChargeState(1), 9, 1, 12));
+    public static final RegistryObject<DrakefowlClaw> DRAKEFOWL_CLAW = ACTIONS.register("drakefowl_claw", () ->
+            new DrakefowlClaw(26F, DamageType.SLASHING.asArray(), HurtSphere.DRAKEFOWL_CLAW, 1, CombatUtil.STUN_LONG,
+                    new int[] {9, 4, 6}, new Action.Properties().setKnockback(0.3F).setImpact(Impact.MEDIUM)));
+    public static final RegistryObject<DrakefowlSpit> DRAKEFOWL_SPIT = ACTIONS.register("drakefowl_spit", () ->
+            new DrakefowlSpit(new Action.Properties().setSound(SoundsNF.COCKATRICE_SPIT), 14, 6, 9));
 
     public static final RegistryObject<HuskRightSwipe> HUSK_RIGHT_SWIPE_1 = ACTIONS.register("husk_right_swipe_1", () ->
             new HuskRightSwipe(10, DamageType.STRIKING.asArray(), HurtSphere.HUSK_ARM, 2, CombatUtil.STUN_SHORT, new int[] {7, 1, 6, 2, 7},

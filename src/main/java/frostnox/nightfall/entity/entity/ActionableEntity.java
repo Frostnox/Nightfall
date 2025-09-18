@@ -2,6 +2,7 @@ package frostnox.nightfall.entity.entity;
 
 import com.mojang.math.Vector3d;
 import com.mojang.math.Vector3f;
+import frostnox.nightfall.Nightfall;
 import frostnox.nightfall.action.*;
 import frostnox.nightfall.block.IAdjustableNodeType;
 import frostnox.nightfall.capability.GlobalChunkData;
@@ -23,6 +24,7 @@ import frostnox.nightfall.network.NetworkHandler;
 import frostnox.nightfall.network.message.capability.ActionToClient;
 import frostnox.nightfall.registry.forge.AttributesNF;
 
+import frostnox.nightfall.registry.forge.ItemsNF;
 import frostnox.nightfall.registry.forge.ParticleTypesNF;
 import frostnox.nightfall.registry.vanilla.GameEventsNF;
 import frostnox.nightfall.util.CombatUtil;
@@ -34,6 +36,8 @@ import frostnox.nightfall.world.ToolActionsNF;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
+import net.minecraft.network.protocol.game.ClientboundSetEntityLinkPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -50,9 +54,12 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.decoration.LeashFenceKnotEntity;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.SoundType;
@@ -72,6 +79,7 @@ import net.minecraftforge.common.util.FakePlayerFactory;
 import javax.annotation.Nullable;
 import java.util.EnumMap;
 import java.util.List;
+import java.util.UUID;
 
 public abstract class ActionableEntity extends PathfinderMob {
     protected static final EntityDataAccessor<Integer> RANDOM = SynchedEntityData.defineId(ActionableEntity.class, EntityDataSerializers.INT);
@@ -138,7 +146,7 @@ public abstract class ActionableEntity extends PathfinderMob {
     }
 
     public float getNaturalRegen() {
-        return 20F / (20 * 60 * 5);
+        return 20F / (20 * 60 * 10);
     }
 
     public boolean mineBlock(Level level, BlockPos pos) {
@@ -609,6 +617,46 @@ public abstract class ActionableEntity extends PathfinderMob {
     }
 
     @Override
+    public void dropLeash(boolean pBroadcastPacket, boolean pDropLeash) {
+        if(leashHolder != null) {
+            leashHolder = null;
+            leashInfoTag = null;
+            if(!level.isClientSide && pDropLeash) spawnAtLocation(ItemsNF.ROPE.get());
+            if(!level.isClientSide && pBroadcastPacket && level instanceof ServerLevel) {
+                ((ServerLevel)level).getChunkSource().broadcast(this, new ClientboundSetEntityLinkPacket(this, (Entity)null));
+            }
+        }
+    }
+
+    @Override
+    public boolean canBeLeashed(Player pPlayer) {
+        return false;
+    }
+
+    @Override
+    protected void restoreLeashFromSave() {
+        if(this.leashInfoTag != null && this.level instanceof ServerLevel) {
+            if(this.leashInfoTag.hasUUID("UUID")) {
+                UUID uuid = this.leashInfoTag.getUUID("UUID");
+                Entity entity = ((ServerLevel)this.level).getEntity(uuid);
+                if(entity != null) {
+                    this.setLeashedTo(entity, true);
+                    return;
+                }
+            }
+            else if(this.leashInfoTag.contains("X", 99) && this.leashInfoTag.contains("Y", 99) && this.leashInfoTag.contains("Z", 99)) {
+                BlockPos blockpos = NbtUtils.readBlockPos(this.leashInfoTag);
+                this.setLeashedTo(RopeKnotEntity.getOrCreateKnot(this.level, blockpos), true);
+                return;
+            }
+            if(this.tickCount > 100) {
+                this.spawnAtLocation(ItemsNF.ROPE.get());
+                this.leashInfoTag = null;
+            }
+        }
+    }
+
+    @Override
     public void aiStep() {
         super.aiStep();
         audioSensing.tick();
@@ -704,6 +752,10 @@ public abstract class ActionableEntity extends PathfinderMob {
         return deathTime > 0;
     }
 
+    public @Nullable ResourceLocation getCollapseAction() {
+        return null;
+    }
+
     @Override
     public void die(DamageSource pCause) {
         if(net.minecraftforge.common.ForgeHooks.onLivingDeath(this, pCause)) return;
@@ -771,11 +823,6 @@ public abstract class ActionableEntity extends PathfinderMob {
     @Override
     public boolean doHurtTarget(Entity entityIn) {
         return true;
-    }
-
-    @Override
-    public boolean canBeLeashed(Player pPlayer) {
-        return false;
     }
 
     @Override

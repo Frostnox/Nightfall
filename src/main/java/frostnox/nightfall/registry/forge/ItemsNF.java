@@ -289,6 +289,12 @@ public class ItemsNF {
             () -> new ForgeSpawnEggItem(EntitiesNF.RABBIT, 0xd7bb91, BEAST_COLOR, utility()));
     public static final RegistryObject<SpawnEggItem> DEER_SPAWN_EGG = register(EntitiesNF.DEER.getId().getPath() + "_spawn_egg",
             () -> new ForgeSpawnEggItem(EntitiesNF.DEER, 0xd6cec1, BEAST_COLOR, utility()));
+    public static final RegistryObject<SpawnEggItem> DRAKEFOWL_ROOSTER_SPAWN_EGG = register(EntitiesNF.DRAKEFOWL_ROOSTER.getId().getPath() + "_spawn_egg",
+            () -> new ForgeSpawnEggItem(EntitiesNF.DRAKEFOWL_ROOSTER, 0x526c1f, 0xc25217, utility()));
+    public static final RegistryObject<SpawnEggItem> DRAKEFOWL_HEN_SPAWN_EGG = register(EntitiesNF.DRAKEFOWL_HEN.getId().getPath() + "_spawn_egg",
+            () -> new ForgeSpawnEggItem(EntitiesNF.DRAKEFOWL_HEN, 0x526c1f, 0xc25217, utility()));
+    public static final RegistryObject<SpawnEggItem> DRAKEFOWL_CHICK_SPAWN_EGG = register(EntitiesNF.DRAKEFOWL_CHICK.getId().getPath() + "_spawn_egg",
+            () -> new ForgeSpawnEggItem(EntitiesNF.DRAKEFOWL_CHICK, 0x526c1f, 0xc25217, utility()));
     public static final RegistryObject<SpawnEggItem> HUSK_SPAWN_EGG = register(EntitiesNF.HUSK.getId().getPath() + "_spawn_egg",
             () -> new ForgeSpawnEggItem(EntitiesNF.HUSK, 0x6d727e, UNDEAD_COLOR, utility()));
     public static final RegistryObject<SpawnEggItem> SKELETON_SPAWN_EGG = register(EntitiesNF.SKELETON.getId().getPath() + "_spawn_egg",

@@ -24,6 +24,8 @@ import frostnox.nightfall.encyclopedia.PuzzleContainer;
 import frostnox.nightfall.encyclopedia.knowledge.Knowledge;
 import frostnox.nightfall.entity.entity.ambient.JellyfishEntity;
 import frostnox.nightfall.entity.entity.animal.DeerEntity;
+import frostnox.nightfall.entity.entity.animal.DrakefowlBabyEntity;
+import frostnox.nightfall.entity.entity.animal.DrakefowlEntity;
 import frostnox.nightfall.entity.entity.animal.RabbitEntity;
 import frostnox.nightfall.entity.entity.monster.*;
 import frostnox.nightfall.item.IArmament;
@@ -354,6 +356,9 @@ public class Nightfall {
     public static void onEntityAttributeCreationEvent(EntityAttributeCreationEvent event) {
         event.put(EntitiesNF.RABBIT.get(), RabbitEntity.getAttributeMap().build());
         event.put(EntitiesNF.DEER.get(), DeerEntity.getAttributeMap().build());
+        event.put(EntitiesNF.DRAKEFOWL_ROOSTER.get(), DrakefowlEntity.getAttributeMap().build());
+        event.put(EntitiesNF.DRAKEFOWL_HEN.get(), DrakefowlEntity.getAttributeMap().build());
+        event.put(EntitiesNF.DRAKEFOWL_CHICK.get(), DrakefowlBabyEntity.getAttributeMap().build());
         event.put(EntitiesNF.HUSK.get(), HuskEntity.getAttributeMap().build());
         event.put(EntitiesNF.SKELETON.get(), SkeletonEntity.getAttributeMap().build());
         event.put(EntitiesNF.DREG.get(), DregEntity.getAttributeMap().build());
@@ -512,6 +517,9 @@ public class Nightfall {
         public static void onEntityRenderersEvent(EntityRenderersEvent.RegisterRenderers event) {
             event.registerEntityRenderer(EntitiesNF.RABBIT.get(), RabbitRenderer::new);
             event.registerEntityRenderer(EntitiesNF.DEER.get(), DeerRenderer::new);
+            event.registerEntityRenderer(EntitiesNF.DRAKEFOWL_ROOSTER.get(), DrakefowlRenderer::new);
+            event.registerEntityRenderer(EntitiesNF.DRAKEFOWL_HEN.get(), DrakefowlRenderer::new);
+            event.registerEntityRenderer(EntitiesNF.DRAKEFOWL_CHICK.get(), DrakefowlBabyRenderer::new);
             event.registerEntityRenderer(EntitiesNF.HUSK.get(), HuskRenderer::new);
             event.registerEntityRenderer(EntitiesNF.SKELETON.get(), SkeletonRenderer::new);
             event.registerEntityRenderer(EntitiesNF.DREG.get(), DregRenderer::new);
@@ -534,6 +542,7 @@ public class Nightfall {
             event.registerEntityRenderer(EntitiesNF.ARMOR_STAND.get(), ArmorStandDummyRenderer::new);
             event.registerEntityRenderer(EntitiesNF.BOAT.get(), BoatRendererNF::new);
             event.registerEntityRenderer(EntitiesNF.SEAT.get(), NoopRenderer::new);
+            event.registerEntityRenderer(EntitiesNF.ROPE_KNOT.get(), RopeKnotRenderer::new);
             event.registerEntityRenderer(EntitiesNF.MOVING_BLOCK.get(), MovingBlockRenderer::new);
             event.registerEntityRenderer(EntitiesNF.THROWN_ROCK.get(), ThrownItemRenderer::new);
             event.registerEntityRenderer(EntitiesNF.ARROW.get(), ArrowRendererNF::new);

@@ -283,6 +283,7 @@ public class TagsNF {
     public static final TagKey<Item> FOOD_INGREDIENT = itemTag("food_group/ingredient"); //Controls item insertion in cooking containers
     public static final TagKey<Item> RABBIT_FOOD_ITEM = itemTag("rabbit_food_item");
     public static final TagKey<Item> DEER_FOOD_ITEM = itemTag("deer_food_item");
+    public static final TagKey<Item> DRAKEFOWL_FOOD_ITEM = itemTag("drakefowl_food_item");
     public static final TagKey<Item> COCKATRICE_FOOD_ITEM = itemTag("cockatrice_food_item");
     public static final TagKey<Item> SPIDER_FOOD_ITEM = itemTag("spider_food_item");
     public static final TagKey<Item> PIT_DEVIL_FOOD_ITEM = itemTag("pit_devil_food_item");

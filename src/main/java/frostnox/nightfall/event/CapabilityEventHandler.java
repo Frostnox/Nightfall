@@ -44,6 +44,7 @@ import net.minecraft.server.level.TicketType;
 import net.minecraft.util.Unit;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -275,6 +276,9 @@ public class CapabilityEventHandler {
         if(capP.dropBlockEntity()) capA.startAction(ActionsNF.EMPTY.getId());
         if(player.isPassenger()) player.stopRiding();
         if(player.isAlive()) {
+            for(Mob mob : player.level.getEntitiesOfClass(Mob.class, player.getBoundingBox().inflate(15))) {
+                if(mob.isLeashed() && mob.getLeashHolder() == player) mob.dropLeash(true, true);
+            }
             LevelUtil.warpServerPlayer(event.getPlayer(), false);
         }
         if(!player.isAlive()) player.invalidateCaps();

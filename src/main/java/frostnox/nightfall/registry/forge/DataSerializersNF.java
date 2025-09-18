@@ -4,6 +4,7 @@ import frostnox.nightfall.Nightfall;
 import frostnox.nightfall.entity.Sex;
 import frostnox.nightfall.entity.entity.ambient.JellyfishEntity;
 import frostnox.nightfall.entity.entity.animal.DeerEntity;
+import frostnox.nightfall.entity.entity.animal.DrakefowlEntity;
 import frostnox.nightfall.entity.entity.animal.RabbitEntity;
 import frostnox.nightfall.entity.entity.monster.CockatriceEntity;
 import frostnox.nightfall.entity.entity.monster.SpiderEntity;
@@ -63,6 +64,22 @@ public class DataSerializersNF {
             return pValue;
         }
     };
+    public static final EntityDataSerializer<DrakefowlEntity.Type> DRAKEFOWL_TYPE = new EntityDataSerializer<>() {
+        @Override
+        public void write(FriendlyByteBuf pBuffer, DrakefowlEntity.Type pValue) {
+            pBuffer.writeEnum(pValue);
+        }
+
+        @Override
+        public DrakefowlEntity.Type read(FriendlyByteBuf pBuffer) {
+            return pBuffer.readEnum(DrakefowlEntity.Type.class);
+        }
+
+        @Override
+        public DrakefowlEntity.Type copy(DrakefowlEntity.Type pValue) {
+            return pValue;
+        }
+    };
     public static final EntityDataSerializer<CockatriceEntity.Type> COCKATRICE_TYPE = new EntityDataSerializer<>() {
         @Override
         public void write(FriendlyByteBuf pBuffer, CockatriceEntity.Type pValue) {
@@ -116,6 +133,7 @@ public class DataSerializersNF {
         SERIALIZERS.register("sex", () -> new DataSerializerEntry(SEX));
         SERIALIZERS.register("rabbit_type", () -> new DataSerializerEntry(RABBIT_TYPE));
         SERIALIZERS.register("deer_type", () -> new DataSerializerEntry(DEER_TYPE));
+        SERIALIZERS.register("drakefowl_type", () -> new DataSerializerEntry(DRAKEFOWL_TYPE));
         SERIALIZERS.register("cockatrice_type", () -> new DataSerializerEntry(COCKATRICE_TYPE));
         SERIALIZERS.register("spider_type", () -> new DataSerializerEntry(SPIDER_TYPE));
         SERIALIZERS.register("jellyfish_type", () -> new DataSerializerEntry(JELLYFISH_TYPE));

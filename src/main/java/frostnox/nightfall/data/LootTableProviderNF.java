@@ -640,6 +640,9 @@ public class LootTableProviderNF extends LootTableProvider {
                     .withPool(pool(entry(ItemsNF.DEER_HIDES.get(DeerEntity.Type.BRIAR).get(), 1F, 1F, LootItemEntityCondition.of(LootItemEntityCondition.Test.DEER_BRIAR))))
                     .withPool(pool(entry(ItemsNF.DEER_HIDES.get(DeerEntity.Type.RED).get(), 1F, 1F, LootItemEntityCondition.of(LootItemEntityCondition.Test.DEER_RED))))
                     .withPool(pool(entry(ItemsNF.DEER_HIDES.get(DeerEntity.Type.SPOTTED).get(), 1F, 1F, LootItemEntityCondition.of(LootItemEntityCondition.Test.DEER_SPOTTED)))));
+            add(EntitiesNF.DRAKEFOWL_ROOSTER.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.RAW_POULTRY.get(), 2, 2))));
+            add(EntitiesNF.DRAKEFOWL_HEN.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.RAW_POULTRY.get(), 2, 2))));
+            add(EntitiesNF.DRAKEFOWL_CHICK.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.RAW_POULTRY.get(), 1, 1))));
             add(EntitiesNF.HUSK.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.ROTTEN_FLESH.get(), 1, 2))));
             add(EntitiesNF.SKELETON.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.BONE_SHARD.get(), 1, 2)))
                     .withPool(pool(entry(ItemsNF.BONE_SHARD.get(), 1, 2, DamageTypeCondition.of(DamageType.STRIKING))))

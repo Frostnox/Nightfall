@@ -189,7 +189,6 @@ public class DamageEventHandler {
         CombatUtil.knockbackEntity(entity, source.getKnockbackVec().scale(magnitude));
 
         damageAmount = Math.max(damageAmount, oldDamageAmount * 0.1F); //Limit damage reduction to 90%
-        //Copied from vanilla
         float healthDamage = Math.max(damageAmount - entity.getAbsorptionAmount(), 0.0F);
         entity.setAbsorptionAmount(entity.getAbsorptionAmount() - (damageAmount - healthDamage));
         float f = damageAmount - healthDamage;
@@ -198,18 +197,24 @@ public class DamageEventHandler {
         }
         int stunDuration = source.getStunDuration();
         if(damageAmount > 0) {
-            if(impacted && stunDuration > 0 && (entity instanceof ActionableEntity || entity instanceof Player)) {
-                IActionTracker capA = ActionTracker.get(entity);
-                if(!capA.isStunned()) capA.stunServer(Math.round(stunDuration * chargedModifier), false);
-            }
+            boolean doStun = true;
             if(healthDamage != 0) {
                 float health = entity.getHealth();
+                if(healthDamage >= health && healthDamage - health < 40 && entity instanceof ActionableEntity actionable && actionable.getCollapseAction() != null
+                        && !actionable.getActionTracker().getActionID().equals(actionable.getCollapseAction())) {
+                    doStun = false;
+                    healthDamage = health - 1;
+                    actionable.startAction(actionable.getCollapseAction());
+                }
                 entity.getCombatTracker().recordDamage(damageSrc, health, healthDamage);
                 entity.setHealth(health - healthDamage);
-                entity.setAbsorptionAmount(entity.getAbsorptionAmount() - healthDamage);
                 if(damageSrc.getDirectEntity() instanceof Player) {
                     if(healthDamage < 3.4028235E37F) ((Player) damageSrc.getDirectEntity()).awardStat(Stats.DAMAGE_TAKEN, Math.round(healthDamage * 10.0F));
                 }
+            }
+            if(doStun && impacted && stunDuration > 0 && (entity instanceof ActionableEntity || entity instanceof Player)) {
+                IActionTracker capA = ActionTracker.get(entity);
+                if(!capA.isStunned()) capA.stunServer(Math.round(stunDuration * chargedModifier), false);
             }
             float x, y, z;
             if(source.hasHitCoords()) {

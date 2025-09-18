@@ -37,6 +37,7 @@ public class ModelRegistryNF {
     public static ModelLayerLocation ARMOR_STAND, BOAT;
     public static ModelLayerLocation PLAYER, PLAYER_SLIM;
     public static ModelLayerLocation RABBIT, DEER;
+    public static ModelLayerLocation DRAKEFOWL, DRAKEFOWL_BABY;
     public static ModelLayerLocation HUSK, SKELETON, DREG;
     public static ModelLayerLocation CREEPER;
     public static ModelLayerLocation COCKATRICE;
@@ -80,6 +81,8 @@ public class ModelRegistryNF {
         PLAYER_SLIM = register("player_slim_combat", LayerDefinition.create(PlayerModelNF.createMesh(CubeDeformation.NONE, true), 64, 64));
         RABBIT = register("rabbit", RabbitModel.createBodyLayer());
         DEER = register("deer", DeerModel.createBodyLayer());
+        DRAKEFOWL = register("drakefowl", DrakefowlModel.createBodyLayer());
+        DRAKEFOWL_BABY = register("drakefowl_baby", DrakefowlBabyModel.createBodyLayer());
         HUSK = register("husk", HuskModel.createBodyLayer());
         SKELETON = register("skeleton", SkeletonModel.createBodyLayer());
         DREG = register("dreg", DregModel.createBodyLayer());
