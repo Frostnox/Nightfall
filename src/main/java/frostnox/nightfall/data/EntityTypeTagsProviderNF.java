@@ -1,11 +1,18 @@
 package frostnox.nightfall.data;
 
 import frostnox.nightfall.registry.forge.EntitiesNF;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
 import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Stream;
 
 public class EntityTypeTagsProviderNF extends EntityTypeTagsProvider {
     public EntityTypeTagsProviderNF(DataGenerator pGenerator, String modId, @Nullable ExistingFileHelper existingFileHelper) {
@@ -14,25 +21,51 @@ public class EntityTypeTagsProviderNF extends EntityTypeTagsProvider {
 
     @Override
     protected void addTags() {
-        tag(TagsNF.BOAT_PASSENGER);
+        List<RegistryObject<?>> drakefowl = List.of(EntitiesNF.DRAKEFOWL_ROOSTER, EntitiesNF.DRAKEFOWL_HEN, EntitiesNF.DRAKEFOWL_CHICK);
+
+        tag(TagsNF.BOAT_PASSENGER).add(single(drakefowl));
         tag(TagsNF.IMPACT_TYPE_BONE).add(EntitiesNF.SKELETON.get());
         tag(TagsNF.IMPACT_TYPE_STONE).add(EntitiesNF.ROCKWORM.get());
         tag(TagsNF.IMPACT_TYPE_GASEOUS);
         tag(EntityTypeTags.IMPACT_PROJECTILES).add(EntitiesNF.THROWN_ROCK.get(), EntitiesNF.ARROW.get(), EntitiesNF.THROWN_WEAPON.get());
-        tag(TagsNF.RABBIT_PREDATOR).add(EntitiesNF.COCKATRICE.get(), EntitiesNF.SPIDER.get(), EntitiesNF.ROCKWORM.get(), EntitiesNF.PIT_DEVIL.get(),
-                EntitiesNF.SCORPION.get(), EntitiesNF.OLMUR.get(), EntitiesNF.SKARA_SWARM.get());
-        tag(TagsNF.DEER_PREDATOR).add(EntitiesNF.COCKATRICE.get(), EntitiesNF.ROCKWORM.get(), EntitiesNF.PIT_DEVIL.get(),
-                EntitiesNF.SCORPION.get(), EntitiesNF.TROLL.get(), EntitiesNF.OLMUR.get(), EntitiesNF.SPIDER.get(), EntitiesNF.SKARA_SWARM.get());
-        tag(TagsNF.COCKATRICE_PREDATOR).add(EntitiesNF.ROCKWORM.get(), EntitiesNF.TROLL.get(), EntitiesNF.OLMUR.get(), EntitiesNF.SKARA_SWARM.get());
-        tag(TagsNF.COCKATRICE_PREY).add(EntitiesNF.RABBIT.get(), EntitiesNF.DEER.get(), EntitiesNF.SPIDER.get());
-        tag(TagsNF.SPIDER_PREDATOR).add(EntitiesNF.ROCKWORM.get(), EntitiesNF.PIT_DEVIL.get(), EntitiesNF.SKARA_SWARM.get());
-        tag(TagsNF.SPIDER_PREY).add(EntitiesNF.RABBIT.get(), EntitiesNF.DEER.get());
-        tag(TagsNF.PIT_DEVIL_PREDATOR).add(EntitiesNF.ROCKWORM.get(), EntitiesNF.TROLL.get(), EntitiesNF.OLMUR.get(), EntitiesNF.SKARA_SWARM.get());
-        tag(TagsNF.PIT_DEVIL_PREY).add(EntitiesNF.RABBIT.get(), EntitiesNF.DEER.get(), EntitiesNF.SPIDER.get());
-        tag(TagsNF.SKARA_SWARM_PREY).add(EntitiesNF.RABBIT.get(), EntitiesNF.DEER.get(), EntitiesNF.SPIDER.get(), EntitiesNF.PIT_DEVIL.get(), EntitiesNF.COCKATRICE.get(),
-                EntitiesNF.HUSK.get(), EntitiesNF.DREG.get());
+
+        tag(TagsNF.RABBIT_PREDATOR).add(merge(EntitiesNF.COCKATRICE, EntitiesNF.SPIDER, EntitiesNF.ROCKWORM, EntitiesNF.PIT_DEVIL,
+                EntitiesNF.SCORPION, EntitiesNF.OLMUR, EntitiesNF.SKARA_SWARM, EntitiesNF.DRAKEFOWL_ROOSTER));
+        tag(TagsNF.DEER_PREDATOR).add(merge(EntitiesNF.COCKATRICE, EntitiesNF.ROCKWORM, EntitiesNF.PIT_DEVIL,
+                EntitiesNF.SCORPION, EntitiesNF.TROLL, EntitiesNF.OLMUR, EntitiesNF.SPIDER, EntitiesNF.SKARA_SWARM));
+        tag(TagsNF.DRAKEFOWL_PREDATOR).add(merge(EntitiesNF.ROCKWORM, EntitiesNF.TROLL, EntitiesNF.OLMUR, EntitiesNF.SKARA_SWARM, EntitiesNF.SPIDER,
+                EntitiesNF.PIT_DEVIL, EntitiesNF.SCORPION));
+        tag(TagsNF.DRAKEFOWL_PREY).add(merge(EntitiesNF.RABBIT));
+        tag(TagsNF.COCKATRICE_PREDATOR).add(merge(EntitiesNF.ROCKWORM, EntitiesNF.TROLL, EntitiesNF.OLMUR, EntitiesNF.SKARA_SWARM));
+        tag(TagsNF.COCKATRICE_PREY).add(merge(EntitiesNF.RABBIT, EntitiesNF.DEER, EntitiesNF.SPIDER));
+        tag(TagsNF.SPIDER_PREDATOR).add(merge(EntitiesNF.ROCKWORM, EntitiesNF.PIT_DEVIL, EntitiesNF.SKARA_SWARM));
+        tag(TagsNF.SPIDER_PREY).add(merge(merge(drakefowl), EntitiesNF.RABBIT, EntitiesNF.DEER));
+        tag(TagsNF.PIT_DEVIL_PREDATOR).add(merge(EntitiesNF.ROCKWORM, EntitiesNF.TROLL, EntitiesNF.OLMUR, EntitiesNF.SKARA_SWARM));
+        tag(TagsNF.PIT_DEVIL_PREY).add(merge(merge(drakefowl), EntitiesNF.RABBIT, EntitiesNF.DEER, EntitiesNF.SPIDER));
+        tag(TagsNF.SKARA_SWARM_PREY).add(merge(merge(drakefowl), EntitiesNF.RABBIT, EntitiesNF.DEER, EntitiesNF.SPIDER, EntitiesNF.PIT_DEVIL, EntitiesNF.COCKATRICE,
+                EntitiesNF.HUSK, EntitiesNF.DREG));
         tag(TagsNF.JELLYFISH_IMMUNE).add(EntitiesNF.JELLYFISH.get());
-        tag(TagsNF.EDIBLE_CORPSE).add(EntitiesNF.RABBIT.get(), EntitiesNF.SPIDER.get(), EntitiesNF.DEER.get(),
-                EntitiesNF.COCKATRICE.get(), EntitiesNF.ROCKWORM.get(), EntitiesNF.PIT_DEVIL.get());
+        tag(TagsNF.EDIBLE_CORPSE).add(merge(merge(drakefowl), EntitiesNF.RABBIT, EntitiesNF.SPIDER, EntitiesNF.DEER,
+                EntitiesNF.COCKATRICE, EntitiesNF.ROCKWORM, EntitiesNF.PIT_DEVIL));
+    }
+
+    private static EntityType<?>[] single(List<RegistryObject<?>> list) {
+        return list.stream().map((obj) -> (EntityType<?>) obj.get()).toArray(EntityType<?>[]::new);
+    }
+
+    private static List<List<RegistryObject<?>>> merge(List<RegistryObject<?>>... lists) {
+        List<List<RegistryObject<?>>> mergedList = new ObjectArrayList<>();
+        mergedList.addAll(Arrays.asList(lists));
+        return mergedList;
+    }
+
+    private static EntityType<?>[] merge(List<List<RegistryObject<?>>> arrays, RegistryObject<?>... types) {
+        Stream<EntityType<?>> stream = Arrays.stream(types).map((obj) -> (EntityType<?>) obj.get());
+        for(var array : arrays) stream = Stream.concat(stream, array.stream().map((obj) -> (EntityType<?>) obj.get()));
+        return stream.toArray(EntityType<?>[]::new);
+    }
+
+    private static EntityType<?>[] merge(RegistryObject<?>... types) {
+        return Arrays.stream(types).<EntityType<?>>map((obj) -> (EntityType<?>) obj.get()).toArray(EntityType<?>[]::new);
     }
 }

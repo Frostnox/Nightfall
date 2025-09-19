@@ -248,6 +248,7 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
         tag(TagsNF.COOKED_VEGETABLE).add(ItemsNF.ROASTED_CARROT.get(), ItemsNF.ROASTED_POTATO.get());
         tag(ItemTags.ARROWS).add(ItemsNF.FLINT_ARROW.get(), ItemsNF.BONE_ARROW.get(), ItemsNF.RUSTED_ARROW.get());
         for(var arrow : ItemsNF.METAL_ARROWS.values()) tag(ItemTags.ARROWS).add(arrow.get());
+        tag(Tags.Items.SEEDS).add(ItemsNF.CARROT_SEEDS.get(), ItemsNF.POTATO_SEEDS.get(), ItemsNF.YARROW_SEEDS.get());
         tag(TagsNF.MEAT).add(ItemsNF.RAW_GAME.get(), ItemsNF.RAW_VENISON.get(), ItemsNF.RAW_POULTRY.get());
         tag(TagsNF.MEAT).addTags(TagsNF.COOKED_MEAT, TagsNF.CURED_MEAT);
         tag(TagsNF.VEGETABLE).add(ItemsNF.POTATO.get(), ItemsNF.CARROT.get(), ItemsNF.ROASTED_POTATO.get(), ItemsNF.ROASTED_CARROT.get());
@@ -261,7 +262,7 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
         tag(TagsNF.DEER_FOOD_ITEM).add(ItemsNF.CARROT.get(), ItemsNF.POTATO.get(), ItemsNF.ROASTED_CARROT.get(), ItemsNF.ROASTED_POTATO.get());
         tag(TagsNF.DEER_FOOD_ITEM).addTag(TagsNF.FRUIT);
         tag(TagsNF.DRAKEFOWL_FOOD_ITEM).add(ItemsNF.ROASTED_CARROT.get(), ItemsNF.ROASTED_POTATO.get());
-        tag(TagsNF.DRAKEFOWL_FOOD_ITEM).addTags(TagsNF.GRAIN, TagsNF.FRUIT, TagsNF.ANIMAL_EDIBLE_MEAT);
+        tag(TagsNF.DRAKEFOWL_FOOD_ITEM).addTags(TagsNF.GRAIN, TagsNF.FRUIT, TagsNF.ANIMAL_EDIBLE_MEAT, Tags.Items.SEEDS);
         tag(TagsNF.COCKATRICE_FOOD_ITEM).addTag(TagsNF.ANIMAL_EDIBLE_MEAT);
         tag(TagsNF.SPIDER_FOOD_ITEM).addTag(TagsNF.ANIMAL_EDIBLE_MEAT);
         tag(TagsNF.PIT_DEVIL_FOOD_ITEM).addTag(TagsNF.ANIMAL_EDIBLE_MEAT);

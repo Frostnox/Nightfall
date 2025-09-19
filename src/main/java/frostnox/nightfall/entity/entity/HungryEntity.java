@@ -86,7 +86,7 @@ public abstract class HungryEntity extends ActionableEntity implements IHungerEn
             playSound(getEatSound(), 1F, 1F);
             if(state.getBlock() instanceof IFoodBlock foodBlock) foodBlock.eat(this, level, pos);
             else LevelUtil.destroyBlockNoSound(level, pos, true, this);
-            satiety = getMaxSatiety();
+            addSatiety(getMaxSatiety());
         }
     }
 
@@ -116,7 +116,7 @@ public abstract class HungryEntity extends ActionableEntity implements IHungerEn
                     }
                     entity.remove(RemovalReason.KILLED);
                 }
-                satiety = getMaxSatiety();
+                addSatiety(getMaxSatiety());
             }
         }
     }

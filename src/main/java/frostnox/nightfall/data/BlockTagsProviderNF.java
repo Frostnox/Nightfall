@@ -259,6 +259,7 @@ public class BlockTagsProviderNF extends BlockTagsProvider {
         tag(TagsNF.NO_BREAKING_TEXTURE).addTags(BlockTags.REPLACEABLE_PLANTS, BlockTags.CROPS);
         tag(TagsNF.RABBIT_FOOD_BLOCK).add(BlocksNF.CARROTS.get());
         tag(TagsNF.DEER_FOOD_BLOCK).add(BlocksNF.BERRY_BUSH.get());
+        tag(TagsNF.DRAKEFOWL_FOOD_BLOCK).add(BlocksNF.BERRY_BUSH.get(), BlocksNF.CARROTS.get());
         tag(TagsNF.COCKATRICE_FOOD_BLOCK);
         tag(TagsNF.SPIDER_FOOD_BLOCK);
         tag(TagsNF.PIT_DEVIL_FOOD_BLOCK);

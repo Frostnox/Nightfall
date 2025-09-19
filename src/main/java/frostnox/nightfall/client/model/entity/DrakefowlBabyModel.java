@@ -16,7 +16,6 @@ import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.util.Mth;
 
 import java.util.EnumMap;
 import java.util.List;
@@ -71,48 +70,34 @@ public class DrakefowlBabyModel extends AnimatedModel<DrakefowlBabyEntity> imple
         resetPose();
         float speed = 4.25F;
         limbSwingAmount = Math.min(1F, limbSwingAmount * 2);
-        //limbSwing = time/3F;
-        //limbSwingAmount = 0.65F;
+//        limbSwing = time/3F;
+//        limbSwingAmount = 0.65F;
         //Look
-        head.xRot += MathUtil.toRadians(headPitch);
-        if(netHeadYaw > 60F || netHeadYaw < -60F) {
-            float yaw = Mth.clamp(netHeadYaw, -60F, 60F);
-            head.yRot += MathUtil.toRadians(netHeadYaw - yaw);
-            neck.yRot += MathUtil.toRadians(yaw);
-        }
-        else neck.yRot += MathUtil.toRadians(netHeadYaw);
+        neck.xRot += MathUtil.toRadians(headPitch);
+        neck.yRot += MathUtil.toRadians(netHeadYaw);
         //Idle
         if(!entity.isDeadOrDying()) {
             float idleAmount = 1F;
             int hash = entity.getUUID().hashCode();
-            float idle1 = (time + (hash & 255)) % 210F;
-            if(idle1 < 3F * 2F) rotateX(wingRight, 5F, 3F, 0, 0, idle1, idleAmount, Easing.inOutSine, false);
-            float idle2 = (time + (hash >> 8 & 255)) % 210F;
-            if(idle2 < 3F * 2F) rotateX(wingLeft, 5F, 3F, 0, 0, idle2, idleAmount, Easing.inOutSine, false);
-            float idle3 = (time + (hash >> 16 & 255)) % 320F;
+            float idle3 = (time + (hash >> 16 & 255)) % 210F;
             if(idle3 < 90F) {
                 float p = Easing.inOutCubic.apply(idle3 < 4F ? (idle3 / 4F) : (idle3 >= 86F ? (1F - (idle3 - 86F) / 4F) : 1F));
-                head.yRot += MathUtil.toRadians(10) * p * idleAmount;
+                neck.yRot += MathUtil.toRadians(12) * p * idleAmount;
             }
-            float idle4 = (time + (hash >>> 24 & 255)) % 320F;
+            float idle4 = (time + (hash >>> 24 & 255)) % 210F;
             if(idle4 < 90F) {
                 float p = Easing.inOutCubic.apply(idle4 < 4F ? (idle4 / 4F) : (idle4 >= 86F ? (1F - (idle4 - 86F) / 4F) : 1F));
-                head.yRot += MathUtil.toRadians(-10) * p * idleAmount;
+                neck.yRot += MathUtil.toRadians(-12) * p * idleAmount;
             }
-            translateY(neck, 0.1F, 30F, 0, 0, time, 1F, Easing.inOutSine, true);
-            translateY(body, -0.1F, 30F, 0, 0, time, 1F, Easing.inOutSine, true);
         }
         //Walk
-        translateY(neck, 0.5F, speed, 0, 0, limbSwing, limbSwingAmount, Easing.inOutSine, true);
-        translateY(body, -0.5F, 1 * speed, 0, 0, limbSwing, limbSwingAmount, Easing.inOutSine, false);
-        translateY(legLeft, -1F, speed, MathUtil.PI - MathUtil.PI/8F, -0.5F, limbSwing, limbSwingAmount, Easing.inOutSine, false);
-        translateY(legRight, -1F, speed, -MathUtil.PI/8F, -0.5F, limbSwing, limbSwingAmount, Easing.inOutSine, false);
-        translateZ(legLeft, -1F, speed, MathUtil.PI, -1F, limbSwing, limbSwingAmount, Easing.inOutSine, false);
-        translateZ(legRight, -1F, speed, 0, -1F, limbSwing, limbSwingAmount, Easing.inOutSine, false);
-        rotateX(legLeft, 125, 1 * speed, MathUtil.PI, MathUtil.toRadians(-25), limbSwing, limbSwingAmount, Easing.inOutSine, false);
-        rotateX(legRight, 125, 1 * speed, 0, MathUtil.toRadians(-25), limbSwing, limbSwingAmount, Easing.inOutSine, false);
-        rotateZ(wingLeft, 20, 1 * speed, MathUtil.PI, 0, limbSwing, limbSwingAmount, Easing.inOutSine, false);
-        rotateZ(wingRight, 20, 1 * speed, 0, 0, limbSwing, limbSwingAmount, Easing.inOutSine, false);
+        translateZ(neck, -1.25F/2, speed / 2, MathUtil.PI, 0, limbSwing, limbSwingAmount, Easing.inOutCubic, false);
+        translateY(legLeft, -0.5F, speed, MathUtil.PI - MathUtil.PI/8F, -0.5F, limbSwing, limbSwingAmount, Easing.inOutSine, false);
+        translateY(legRight, -0.5F, speed, -MathUtil.PI/8F, -0.5F, limbSwing, limbSwingAmount, Easing.inOutSine, false);
+        translateZ(legLeft, 1F, speed, MathUtil.PI, -1F, limbSwing, limbSwingAmount, Easing.inOutSine, false);
+        translateZ(legRight, 1F, speed, 0, -1F, limbSwing, limbSwingAmount, Easing.inOutSine, false);
+        rotateX(legLeft, 115, 1 * speed, MathUtil.PI, MathUtil.toRadians(-30), limbSwing, limbSwingAmount, Easing.inOutSine, false);
+        rotateX(legRight, 115, 1 * speed, 0, MathUtil.toRadians(-30), limbSwing, limbSwingAmount, Easing.inOutSine, false);
     }
 
     @Override

@@ -19,6 +19,7 @@ import frostnox.nightfall.client.ClientEngine;
 import frostnox.nightfall.data.TagsNF;
 import frostnox.nightfall.data.recipe.CrucibleRecipe;
 import frostnox.nightfall.data.recipe.MixtureRecipe;
+import frostnox.nightfall.entity.ITamable;
 import frostnox.nightfall.entity.entity.ActionableEntity;
 import frostnox.nightfall.item.IActionableItem;
 import frostnox.nightfall.item.IWeaponItem;
@@ -1066,7 +1067,7 @@ public class CommonEventHandler {
                     if(!player.isCreative() && !rider.isOnGround() && !rider.isInWater() && !rider.isInLava()) event.setCanceled(true);
                 }
                 else if(event.getEntityBeingMounted() instanceof Boat) {
-                    if(!rider.getType().is(TagsNF.BOAT_PASSENGER)) event.setCanceled(true);
+                    if(!rider.getType().is(TagsNF.BOAT_PASSENGER) || (rider instanceof ITamable tamable && !tamable.isTamed())) event.setCanceled(true);
                 }
             }
             else {

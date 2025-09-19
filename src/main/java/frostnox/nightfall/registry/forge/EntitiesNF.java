@@ -28,7 +28,7 @@ public class EntitiesNF {
 
     public static final RegistryObject<EntityType<DrakefowlEntity>> DRAKEFOWL_ROOSTER = ENTITIES.register("drakefowl_rooster", () -> EntityType.Builder.of(DrakefowlEntity::createMale, MobCategory.CREATURE)
             .sized(6F/16F, 9F/16F).clientTrackingRange(10).setShouldReceiveVelocityUpdates(false).build("drakefowl_rooster"));
-    public static final RegistryObject<EntityType<DrakefowlEntity>> DRAKEFOWL_HEN = ENTITIES.register("drakefowl_hen", () -> EntityType.Builder.of(DrakefowlEntity::createMale, MobCategory.CREATURE)
+    public static final RegistryObject<EntityType<DrakefowlEntity>> DRAKEFOWL_HEN = ENTITIES.register("drakefowl_hen", () -> EntityType.Builder.of(DrakefowlEntity::createFemale, MobCategory.CREATURE)
             .sized(6F/16F, 9F/16F).clientTrackingRange(10).setShouldReceiveVelocityUpdates(false).build("drakefowl_hen"));
     public static final RegistryObject<EntityType<DrakefowlBabyEntity>> DRAKEFOWL_CHICK = ENTITIES.register("drakefowl_chick", () -> EntityType.Builder.of(DrakefowlBabyEntity::new, MobCategory.CREATURE)
             .sized(4F/16F, 5F/16F).clientTrackingRange(10).setShouldReceiveVelocityUpdates(false).build("drakefowl_chick"));

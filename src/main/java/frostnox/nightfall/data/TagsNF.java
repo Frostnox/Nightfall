@@ -92,6 +92,7 @@ public class TagsNF {
     public static final TagKey<Block> NO_BREAKING_TEXTURE = blockTag("no_breaking_texture");
     public static final TagKey<Block> RABBIT_FOOD_BLOCK = blockTag("rabbit_food_block");
     public static final TagKey<Block> DEER_FOOD_BLOCK = blockTag("deer_food_block");
+    public static final TagKey<Block> DRAKEFOWL_FOOD_BLOCK = blockTag("drakefowl_food_block");
     public static final TagKey<Block> COCKATRICE_FOOD_BLOCK = blockTag("cockatrice_food_block");
     public static final TagKey<Block> COCKATRICE_SPAWN_BLOCK = blockTag("cockatrice_spawn_block");
     public static final TagKey<Block> SPIDER_FOOD_BLOCK = blockTag("spider_food_block");
@@ -113,6 +114,8 @@ public class TagsNF {
     public static final TagKey<EntityType<?>> AQUATIC_ENTITY = entityTag("aquatic_entity");
     public static final TagKey<EntityType<?>> RABBIT_PREDATOR = entityTag("rabbit_predator");
     public static final TagKey<EntityType<?>> DEER_PREDATOR = entityTag("deer_predator");
+    public static final TagKey<EntityType<?>> DRAKEFOWL_PREDATOR = entityTag("drakefowl_predator");
+    public static final TagKey<EntityType<?>> DRAKEFOWL_PREY = entityTag("drakefowl_prey");
     public static final TagKey<EntityType<?>> COCKATRICE_PREDATOR = entityTag("cockatrice_predator");
     public static final TagKey<EntityType<?>> COCKATRICE_PREY = entityTag("cockatrice_prey");
     public static final TagKey<EntityType<?>> SPIDER_PREDATOR = entityTag("spider_predator");
