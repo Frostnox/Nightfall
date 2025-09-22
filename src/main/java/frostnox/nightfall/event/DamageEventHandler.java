@@ -204,7 +204,7 @@ public class DamageEventHandler {
                         && !actionable.getActionTracker().getActionID().equals(actionable.getCollapseAction())) {
                     doStun = false;
                     healthDamage = health - 1;
-                    actionable.startAction(actionable.getCollapseAction());
+                    actionable.forceAction(actionable.getCollapseAction());
                 }
                 entity.getCombatTracker().recordDamage(damageSrc, health, healthDamage);
                 entity.setHealth(health - healthDamage);

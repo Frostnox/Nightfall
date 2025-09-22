@@ -8,10 +8,7 @@ import frostnox.nightfall.entity.entity.animal.DrakefowlBabyEntity;
 import frostnox.nightfall.entity.entity.animal.DrakefowlEntity;
 import frostnox.nightfall.entity.entity.animal.RabbitEntity;
 import frostnox.nightfall.entity.entity.monster.*;
-import frostnox.nightfall.entity.entity.projectile.ArrowEntity;
-import frostnox.nightfall.entity.entity.projectile.CockatriceSpitEntity;
-import frostnox.nightfall.entity.entity.projectile.ThrownRockEntity;
-import frostnox.nightfall.entity.entity.projectile.ThrownWeaponEntity;
+import frostnox.nightfall.entity.entity.projectile.*;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.registries.DeferredRegister;
@@ -86,8 +83,10 @@ public class EntitiesNF {
             .sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(20).build("arrow"));
     public static final RegistryObject<EntityType<ThrownWeaponEntity>> THROWN_WEAPON = ENTITIES.register("thrown_weapon", () -> EntityType.Builder.<ThrownWeaponEntity>of(ThrownWeaponEntity::new, MobCategory.MISC)
             .sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20).build("thrown_weapon"));
-    public static final RegistryObject<EntityType<CockatriceSpitEntity>> COCKATRICE_SPIT = ENTITIES.register("cockatrice_spit", () -> EntityType.Builder.<CockatriceSpitEntity>of(CockatriceSpitEntity::new, MobCategory.MISC)
-            .sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(20).build("cockatrice_spit"));
+    public static final RegistryObject<EntityType<PoisonSpitEntity>> POISON_SPIT = ENTITIES.register("poison_spit", () -> EntityType.Builder.<PoisonSpitEntity>of(PoisonSpitEntity::new, MobCategory.MISC)
+            .sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(20).build("poison_spit"));
+    public static final RegistryObject<EntityType<FireSpitEntity>> FIRE_SPIT = ENTITIES.register("fire_spit", () -> EntityType.Builder.<FireSpitEntity>of(FireSpitEntity::new, MobCategory.MISC)
+            .sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(20).build("fire_spit"));
 
     public static void register() {
         ENTITIES.register(Nightfall.MOD_EVENT_BUS);

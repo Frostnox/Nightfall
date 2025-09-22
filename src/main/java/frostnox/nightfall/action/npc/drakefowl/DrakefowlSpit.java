@@ -5,7 +5,8 @@ import frostnox.nightfall.capability.ActionTracker;
 import frostnox.nightfall.capability.IActionTracker;
 import frostnox.nightfall.entity.EntityPart;
 import frostnox.nightfall.entity.entity.ActionableEntity;
-import frostnox.nightfall.entity.entity.projectile.CockatriceSpitEntity;
+import frostnox.nightfall.entity.entity.projectile.FireSpitEntity;
+import frostnox.nightfall.entity.entity.projectile.SpitEntity;
 import frostnox.nightfall.registry.vanilla.GameEventsNF;
 import frostnox.nightfall.util.animation.AnimationCalculator;
 import frostnox.nightfall.util.animation.AnimationData;
@@ -36,7 +37,7 @@ public class DrakefowlSpit extends Action {
         IActionTracker capA = ActionTracker.get(user);
         if(user.level instanceof ServerLevel level && capA.getState() == 1 && capA.getFrame() == 2 && !capA.isStunned()) {
             ActionableEntity entity = (ActionableEntity) user;
-            CockatriceSpitEntity spit = new CockatriceSpitEntity(level, user);
+            SpitEntity spit = new FireSpitEntity(level, user);
             BlockPos targetPos = entity.getTargetPos();
             if(targetPos != null) {
                 double x, y, z;
@@ -68,7 +69,6 @@ public class DrakefowlSpit extends Action {
     protected void transformModelSingle(int state, int frame, int duration, float charge, float pitch, LivingEntity user, EnumMap<EntityPart, AnimationData> data, AnimationCalculator mCalc) {
         AnimationData neck = data.get(EntityPart.NECK);
         AnimationData head = data.get(EntityPart.HEAD);
-        AnimationData tail = data.get(EntityPart.TAIL);
         AnimationData wingRight = data.get(EntityPart.WING_RIGHT);
         AnimationData wingLeft = data.get(EntityPart.WING_LEFT);
         switch(state) {
@@ -76,7 +76,6 @@ public class DrakefowlSpit extends Action {
                 neck.rCalc.add(-15, 0, 0);
                 head.rCalc.add(-15, 0, 0);
                 head.tCalc.add(0, 1F, 0F);
-                tail.rCalc.add(10, 0, 0);
                 wingRight.rCalc.add(8, 0, 8);
                 wingLeft.rCalc.add(8, 0, -8);
             }
@@ -84,14 +83,12 @@ public class DrakefowlSpit extends Action {
                 neck.rCalc.add(20, 0, 0, Easing.outQuart);
                 head.rCalc.add(15, 0, 0, Easing.outQuart);
                 head.tCalc.add(0, -1.5F, 0F, Easing.outQuart);
-                tail.rCalc.freeze();
                 wingRight.rCalc.add(-8, 0, -12.5F, Easing.outQuart);
                 wingLeft.rCalc.add(-8, 0, 12.5F, Easing.outQuart);
             }
             case 2 -> {
                 head.toDefault();
                 neck.toDefaultRotation();
-                tail.toDefaultRotation();
                 wingRight.toDefaultRotation();
                 wingLeft.toDefaultRotation();
             }

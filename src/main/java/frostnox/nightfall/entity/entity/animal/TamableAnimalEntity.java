@@ -5,6 +5,7 @@ import frostnox.nightfall.entity.Sex;
 import frostnox.nightfall.network.NetworkHandler;
 import frostnox.nightfall.network.message.GenericEntityToClient;
 import frostnox.nightfall.network.message.entity.EatItemToClient;
+import frostnox.nightfall.registry.ActionsNF;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -72,6 +73,7 @@ public abstract class TamableAnimalEntity extends AnimalEntity implements ITamab
                 gestationTime--;
                 if(gestationTime == 0) onGestationEnd();
             }
+            if(getActionTracker().isInactive()) startAction(ActionsNF.DRAKEFOWL_SPIT.getId());
         }
     }
 
@@ -91,6 +93,9 @@ public abstract class TamableAnimalEntity extends AnimalEntity implements ITamab
                         NetworkHandler.toAllTracking(this, new EatItemToClient(item.copy(), getId()));
                         item.shrink(1);
                         getEntityData().set(TAMED, true);
+                        setTarget(null);
+                        lastTargetPos = null;
+                        setAggressive(false);
                         noDespawnTicks = -1;
                         satiety = getMaxSatiety();
                         if(getCollapseAction() != null && getActionTracker().getActionID().equals(getCollapseAction()) && getActionTracker().isCharging()) {

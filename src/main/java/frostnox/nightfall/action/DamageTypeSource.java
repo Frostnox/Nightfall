@@ -241,6 +241,10 @@ public class DamageTypeSource extends DamageSource {
         return new DamageTypeSource(attack.getName(user), user, hitData, attack.getDamageTypes(user)).setAttack(attack);
     }
 
+    public static DamageTypeSource createIndirectSource(Entity source, DamageType[] type, @Nullable Entity pIndirectEntity, HitData hitData) {
+        return (DamageTypeSource) new DamageTypeSource(type[0].toString(), source, pIndirectEntity, hitData, type).setProjectile();
+    }
+
     public static DamageTypeSource createProjectileSource(Entity source, DamageType[] type, @Nullable Entity pIndirectEntity, HitData hitData) {
         return (DamageTypeSource) new DamageTypeSource("projectile", source, pIndirectEntity, hitData, type).setProjectile();
     }

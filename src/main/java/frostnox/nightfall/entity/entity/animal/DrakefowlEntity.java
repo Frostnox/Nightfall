@@ -10,6 +10,7 @@ import frostnox.nightfall.entity.Sex;
 import frostnox.nightfall.registry.ActionsNF;
 import frostnox.nightfall.registry.forge.AttributesNF;
 import frostnox.nightfall.registry.forge.DataSerializersNF;
+import frostnox.nightfall.registry.forge.SoundsNF;
 import frostnox.nightfall.util.animation.AnimationData;
 import frostnox.nightfall.util.math.OBB;
 import frostnox.nightfall.world.ContinentalWorldType;
@@ -19,7 +20,6 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -58,7 +58,7 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
     }
 
     public static AttributeSupplier.Builder getAttributeMap() {
-        return createAttributes().add(Attributes.MAX_HEALTH, 30D)
+        return createAttributes().add(Attributes.MAX_HEALTH, 20D)
                 .add(Attributes.MOVEMENT_SPEED, 0.275F)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0D)
                 .add(Attributes.ATTACK_DAMAGE, 1)
@@ -109,12 +109,13 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
         super.aiStep();
         oFlap = flap;
         oFlapSpeed = flapSpeed;
-        flapSpeed += (onGround ? -1.0F : 4.0F) * 0.3F;
+        boolean shouldFlap = !onGround && isAlive();
+        flapSpeed += (!shouldFlap ? -1.0F : 4.0F) * 0.3F;
         flapSpeed = Mth.clamp(flapSpeed, 0.0F, 1.0F);
-        if(!onGround && flapping < 1.0F) flapping = 1.0F;
+        if(shouldFlap && flapping < 1.0F) flapping = 1.0F;
         flapping *= 0.9F;
         Vec3 velocity = getDeltaMovement();
-        if(!onGround && velocity.y < 0.0D) {
+        if(shouldFlap && velocity.y < 0.0D) {
             setDeltaMovement(velocity.multiply(1.0D, 0.6D, 1.0D));
         }
         flap += flapping * 2.0F;
@@ -142,23 +143,30 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
     }
 
     @Override
+    public float getVoicePitch() {
+        if(sex == Sex.MALE) return super.getVoicePitch() * 0.97F;
+        else return super.getVoicePitch() * 1.03F;
+    }
+
+    @Override
     protected SoundEvent getAmbientSound() {
-        return SoundEvents.CHICKEN_AMBIENT;
+        if(getActionTracker().getActionID().equals(getCollapseAction())) return null;
+        else return SoundsNF.DRAKEFOWL_AMBIENT.get();
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource pDamageSource) {
-        return SoundEvents.CHICKEN_HURT;
+        return SoundsNF.DRAKEFOWL_HURT.get();
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return SoundEvents.CHICKEN_DEATH;
+        return SoundsNF.DRAKEFOWL_DEATH.get();
     }
 
     @Override
     protected void playStepSound(BlockPos pPos, BlockState pBlock) {
-        playSound(SoundEvents.CHICKEN_STEP, 0.15F, 1.0F);
+        playSound(SoundsNF.DRAKEFOWL_STEP.get(), 0.15F, 1.0F);
     }
 
     @Override
@@ -211,7 +219,7 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
 
     @Override
     public SoundEvent getEatSound() {
-        return null;
+        return SoundsNF.DRAKEFOWL_EAT.get();
     }
 
     @Override

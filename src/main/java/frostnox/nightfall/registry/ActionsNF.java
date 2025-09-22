@@ -408,10 +408,10 @@ public class ActionsNF {
     public static final RegistryObject<DrakefowlCollapse> DRAKEFOWL_COLLAPSE = ACTIONS.register("drakefowl_collapse", () ->
             new DrakefowlCollapse(new Action.Properties().setChargeState(1), 9, 1, 12));
     public static final RegistryObject<DrakefowlClaw> DRAKEFOWL_CLAW = ACTIONS.register("drakefowl_claw", () ->
-            new DrakefowlClaw(26F, DamageType.SLASHING.asArray(), HurtSphere.DRAKEFOWL_CLAW, 1, CombatUtil.STUN_LONG,
-                    new int[] {9, 4, 6}, new Action.Properties().setKnockback(0.3F).setImpact(Impact.MEDIUM)));
+            new DrakefowlClaw(15F, DamageType.SLASHING.asArray(), HurtSphere.DRAKEFOWL_CLAW, 1, CombatUtil.STUN_LONG,
+                    new int[] {9, 4, 6}, new Action.Properties().setImpact(Impact.LOW)));
     public static final RegistryObject<DrakefowlSpit> DRAKEFOWL_SPIT = ACTIONS.register("drakefowl_spit", () ->
-            new DrakefowlSpit(new Action.Properties().setSound(SoundsNF.COCKATRICE_SPIT), 14, 6, 9));
+            new DrakefowlSpit(new Action.Properties().setSound(SoundsNF.DRAKEFOWL_SPIT), 14, 6, 9));
 
     public static final RegistryObject<HuskRightSwipe> HUSK_RIGHT_SWIPE_1 = ACTIONS.register("husk_right_swipe_1", () ->
             new HuskRightSwipe(10, DamageType.STRIKING.asArray(), HurtSphere.HUSK_ARM, 2, CombatUtil.STUN_SHORT, new int[] {7, 1, 6, 2, 7},

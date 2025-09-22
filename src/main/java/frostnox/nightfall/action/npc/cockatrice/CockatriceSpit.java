@@ -5,7 +5,8 @@ import frostnox.nightfall.capability.ActionTracker;
 import frostnox.nightfall.capability.IActionTracker;
 import frostnox.nightfall.entity.EntityPart;
 import frostnox.nightfall.entity.entity.ActionableEntity;
-import frostnox.nightfall.entity.entity.projectile.CockatriceSpitEntity;
+import frostnox.nightfall.entity.entity.projectile.PoisonSpitEntity;
+import frostnox.nightfall.entity.entity.projectile.SpitEntity;
 import frostnox.nightfall.registry.vanilla.GameEventsNF;
 import frostnox.nightfall.util.animation.AnimationCalculator;
 import frostnox.nightfall.util.animation.AnimationData;
@@ -36,7 +37,7 @@ public class CockatriceSpit extends Action {
         IActionTracker capA = ActionTracker.get(user);
         if(user.level instanceof ServerLevel level && capA.getState() == 1 && capA.getFrame() == 2 && !capA.isStunned()) {
             ActionableEntity entity = (ActionableEntity) user;
-            CockatriceSpitEntity spit = new CockatriceSpitEntity(level, user);
+            PoisonSpitEntity spit = new PoisonSpitEntity(level, user);
             BlockPos targetPos = entity.getTargetPos();
             if(targetPos != null) {
                 double x, y, z;

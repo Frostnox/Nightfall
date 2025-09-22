@@ -281,7 +281,7 @@ public class CockatriceEntity extends HungryMonsterEntity implements IOrientedHi
 
     @Override
     public SoundEvent getEatSound() {
-        return null; //TODO:
+        return SoundsNF.COCKATRICE_BITE.get();
     }
 
     @Override

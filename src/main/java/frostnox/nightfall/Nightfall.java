@@ -547,7 +547,8 @@ public class Nightfall {
             event.registerEntityRenderer(EntitiesNF.THROWN_ROCK.get(), ThrownItemRenderer::new);
             event.registerEntityRenderer(EntitiesNF.ARROW.get(), ArrowRendererNF::new);
             event.registerEntityRenderer(EntitiesNF.THROWN_WEAPON.get(), ThrownWeaponRenderer::new);
-            event.registerEntityRenderer(EntitiesNF.COCKATRICE_SPIT.get(), NoopRenderer::new);
+            event.registerEntityRenderer(EntitiesNF.POISON_SPIT.get(), NoopRenderer::new);
+            event.registerEntityRenderer(EntitiesNF.FIRE_SPIT.get(), NoopRenderer::new);
             event.registerBlockEntityRenderer(BlockEntitiesNF.ANVIL.get(), TieredAnvilRenderer::new);
             event.registerBlockEntityRenderer(BlockEntitiesNF.BOWL.get(), BowlRenderer::new);
             event.registerBlockEntityRenderer(BlockEntitiesNF.CAULDRON.get(), CauldronRenderer::new);
@@ -621,7 +622,7 @@ public class Nightfall {
             engine.register(ParticleTypesNF.ECTOPLASM.get(), FadingGlowingParticle.EctoplasmProvider::new);
             engine.register(ParticleTypesNF.FRAGMENT_BONE.get(), FragmentParticle.BoneProvider::new);
             engine.register(ParticleTypesNF.FRAGMENT_CREEPER.get(), FragmentParticle.CreeperProvider::new);
-            engine.register(ParticleTypesNF.COCKATRICE_SPIT.get(), FadingParticle.CockatriceSpitProvider::new);
+            engine.register(ParticleTypesNF.POISON_SPIT.get(), FadingParticle.PoisonSpitProvider::new);
             engine.register(ParticleTypesNF.DRIPPING_WATER.get(), WaterHangProvider::new);
             engine.register(ParticleTypesNF.FALLING_WATER.get(), WaterFallProvider::new);
             engine.register(ParticleTypesNF.DRIPPING_LAVA.get(), LavaHangProvider::new);

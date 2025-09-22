@@ -100,10 +100,10 @@ public class FadingParticle extends ConstantCollidingParticle {
         }
     }
 
-    public static class CockatriceSpitProvider implements ParticleProvider<SimpleParticleType> {
+    public static class PoisonSpitProvider implements ParticleProvider<SimpleParticleType> {
         private final SpriteSet sprite;
 
-        public CockatriceSpitProvider(SpriteSet sprite) {
+        public PoisonSpitProvider(SpriteSet sprite) {
             this.sprite = sprite;
         }
 

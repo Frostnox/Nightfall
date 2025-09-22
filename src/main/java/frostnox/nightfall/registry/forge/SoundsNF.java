@@ -80,6 +80,17 @@ public class SoundsNF {
     public static final RegistryObject<SoundEvent> DEER_DEATH = generic("entity.deer.death");
     public static final RegistryObject<SoundEvent> DEER_HURT = generic("entity.deer.hurt");
     public static final RegistryObject<SoundEvent> DEER_STEP = generic("entity.deer.step");
+    public static final RegistryObject<SoundEvent> DRAKEFOWL_AMBIENT = generic("entity.drakefowl.ambient");
+    public static final RegistryObject<SoundEvent> DRAKEFOWL_DEATH = generic("entity.drakefowl.death");
+    public static final RegistryObject<SoundEvent> DRAKEFOWL_HURT = generic("entity.drakefowl.hurt");
+    public static final RegistryObject<SoundEvent> DRAKEFOWL_STEP = generic("entity.drakefowl.step");
+    public static final RegistryObject<SoundEvent> DRAKEFOWL_FLAP = generic("entity.drakefowl.flap");
+    public static final RegistryObject<SoundEvent> DRAKEFOWL_CROW = generic("entity.drakefowl.crow");
+    public static final RegistryObject<SoundEvent> DRAKEFOWL_SPIT = generic("entity.drakefowl.spit");
+    public static final RegistryObject<SoundEvent> DRAKEFOWL_EAT = generic("entity.drakefowl.eat");
+    public static final RegistryObject<SoundEvent> DRAKEFOWL_BABY_AMBIENT = generic("entity.drakefowl_baby.ambient");
+    public static final RegistryObject<SoundEvent> DRAKEFOWL_BABY_DEATH = generic("entity.drakefowl_baby.death");
+    public static final RegistryObject<SoundEvent> DRAKEFOWL_BABY_HURT = generic("entity.drakefowl_baby.hurt");
     public static final RegistryObject<SoundEvent> DREG_AMBIENT = generic("entity.dreg.ambient");
     public static final RegistryObject<SoundEvent> DREG_DEATH = generic("entity.dreg.death");
     public static final RegistryObject<SoundEvent> DREG_HURT = generic("entity.dreg.hurt");
@@ -129,6 +140,7 @@ public class SoundsNF {
     public static final RegistryObject<SoundEvent> JELLYFISH_HURT = generic("entity.jellyfish.hurt");
     public static final RegistryObject<SoundEvent> JELLYFISH_STING = generic("entity.jellyfish.sting");
     public static final RegistryObject<SoundEvent> PROJECTILE_POISON_IMPACT = generic("entity.projectile.poison_impact");
+    public static final RegistryObject<SoundEvent> PROJECTILE_FIRE_IMPACT = generic("entity.projectile.fire_impact");
     public static final RegistryObject<SoundEvent> PROJECTILE_ROCK_IMPACT = generic("entity.projectile.rock_impact");
     public static final RegistryObject<SoundEvent> ROPE_KNOT_PLACE = generic("entity.rope_knot.place");
     public static final RegistryObject<SoundEvent> ROPE_KNOT_BREAK = generic("entity.rope_knot.break");

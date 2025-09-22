@@ -376,6 +376,16 @@ public class LanguageProviderNF extends LanguageProvider {
         addSound(SoundsNF.SKIN_FLESH, "Skin peels");
         addSound(SoundsNF.DEER_DEATH, "Deer dies");
         addSound(SoundsNF.DEER_HURT, "Deer whines");
+        addSound(SoundsNF.DRAKEFOWL_AMBIENT, "Drakefowl clucks");
+        addSound(SoundsNF.DRAKEFOWL_DEATH, "Drakefowl dies");
+        addSound(SoundsNF.DRAKEFOWL_HURT, "Drakefowl squawks");
+        addSound(SoundsNF.DRAKEFOWL_FLAP, "Drakefowl flaps");
+        addSound(SoundsNF.DRAKEFOWL_CROW, "Drakefowl Rooster crows");
+        addSound(SoundsNF.DRAKEFOWL_SPIT, "Drakefowl Rooster spits");
+        addSound(SoundsNF.DRAKEFOWL_EAT, "Drakefowl pecks");
+        addSound(SoundsNF.DRAKEFOWL_BABY_AMBIENT, "Drakefowl Chick chirps");
+        addSound(SoundsNF.DRAKEFOWL_BABY_DEATH, "Drakefowl Chick dies");
+        addSound(SoundsNF.DRAKEFOWL_BABY_HURT, "Drakefowl Chick cries");
         addSound(SoundsNF.DREG_AMBIENT, "Dreg breathes");
         addSound(SoundsNF.DREG_DEATH, "Dreg collapses");
         addSound(SoundsNF.DREG_HURT, "Dreg wheezes");
@@ -394,7 +404,7 @@ public class LanguageProviderNF extends LanguageProvider {
         addSound(SoundsNF.COCKATRICE_DEATH, "Cockatrice dies");
         addSound(SoundsNF.COCKATRICE_HURT, "Cockatrice screeches");
         addSound(SoundsNF.COCKATRICE_FLAP, "Cockatrice flaps");
-        addSound(SoundsNF.COCKATRICE_BITE, "Cockatrice bites");
+        addSound(SoundsNF.COCKATRICE_BITE, "Cockatrice pecks");
         addSound(SoundsNF.COCKATRICE_SPIT, "Cockatrice spits");
         addSound(SoundsNF.SPIDER_BITE, "Spider bites");
         addSound(SoundsNF.ROCKWORM_DEATH, "Rockworm dies");
@@ -420,6 +430,7 @@ public class LanguageProviderNF extends LanguageProvider {
         addSound(SoundsNF.JELLYFISH_HURT, "Jellyfish squishes");
         addSound(SoundsNF.JELLYFISH_STING, "Jellyfish stings");
         addSound(SoundsNF.PROJECTILE_POISON_IMPACT, "Poison corrodes");
+        addSound(SoundsNF.PROJECTILE_FIRE_IMPACT, "Fire bursts");
         addSound(SoundsNF.PROJECTILE_ROCK_IMPACT, "Rock collides");
         addSound(SoundsNF.ROPE_KNOT_PLACE, "Rope knot tightens");
         addSound(SoundsNF.ROPE_KNOT_BREAK, "Rope knot breaks");
@@ -490,6 +501,7 @@ public class LanguageProviderNF extends LanguageProvider {
         addAttack("maul", "%1$s was mauled by %2$s");
         addAttack("sting", "%1$s was stung by %2$s");
         addAttack("stomp", "%1$s was stomped by %2$s");
+        addAttack("claw", "%1$s was clawed by %2$s");
 
         addItemClues(EntriesNF.TOOLS, "A hard, brittle rock", "A wooden handle", "A binding");
         addItemClues(EntriesNF.SLING, "Twisted fibers", "A round projectile");

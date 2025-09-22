@@ -8,13 +8,16 @@ import frostnox.nightfall.entity.EntityPart;
 import frostnox.nightfall.entity.IOrientedHitBoxes;
 import frostnox.nightfall.registry.forge.AttributesNF;
 import frostnox.nightfall.registry.forge.DataSerializersNF;
+import frostnox.nightfall.registry.forge.SoundsNF;
 import frostnox.nightfall.util.animation.AnimationData;
 import frostnox.nightfall.util.math.OBB;
 import frostnox.nightfall.world.ContinentalWorldType;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -80,6 +83,27 @@ public class DrakefowlBabyEntity extends BabyAnimalEntity implements IOrientedHi
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         getEntityData().set(TYPE, DrakefowlEntity.Type.values()[tag.getInt("type")]);
+    }
+
+    @Override
+    protected SoundEvent getAmbientSound() {
+        if(getActionTracker().getActionID().equals(getCollapseAction())) return null;
+        else return SoundsNF.DRAKEFOWL_BABY_AMBIENT.get();
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource pDamageSource) {
+        return SoundsNF.DRAKEFOWL_BABY_HURT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return SoundsNF.DRAKEFOWL_BABY_DEATH.get();
+    }
+
+    @Override
+    protected void playStepSound(BlockPos pPos, BlockState pBlock) {
+
     }
 
     @Override

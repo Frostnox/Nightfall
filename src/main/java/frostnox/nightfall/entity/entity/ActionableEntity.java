@@ -318,6 +318,16 @@ public abstract class ActionableEntity extends PathfinderMob {
         return ActionTracker.get(this);
     }
 
+    public void forceAction(ResourceLocation actionID) {
+        if(!isAlive()) return;
+        IActionTracker capA = getActionTracker();
+        capA.startAction(actionID);
+        capA.setFrame(0); //Tick update runs after other logic so start at 0 instead
+        if(!level.isClientSide()) {
+            NetworkHandler.toAllTracking(this, new ActionToClient(actionID, getId()));
+        }
+    }
+
     public void startAction(ResourceLocation actionID) {
         if(!isAlive()) return;
         IActionTracker capA = getActionTracker();

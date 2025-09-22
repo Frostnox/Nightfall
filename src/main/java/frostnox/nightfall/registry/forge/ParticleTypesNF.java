@@ -40,7 +40,7 @@ public class ParticleTypesNF {
     public static final RegistryObject<SimpleParticleType> ECTOPLASM = PARTICLES.register("ectoplasm", () -> new SimpleParticleType(false));
     public static final RegistryObject<SimpleParticleType> FRAGMENT_BONE = PARTICLES.register("fragment_bone", () -> new SimpleParticleType(false));
     public static final RegistryObject<SimpleParticleType> FRAGMENT_CREEPER = PARTICLES.register("fragment_creeper", () -> new SimpleParticleType(false));
-    public static final RegistryObject<SimpleParticleType> COCKATRICE_SPIT = PARTICLES.register("cockatrice_spit", () -> new SimpleParticleType(false));
+    public static final RegistryObject<SimpleParticleType> POISON_SPIT = PARTICLES.register("poison_spit", () -> new SimpleParticleType(false));
     public static final RegistryObject<SimpleParticleType> DRIPPING_WATER = PARTICLES.register("dripping_water", () -> new SimpleParticleType(false));
     public static final RegistryObject<SimpleParticleType> FALLING_WATER = PARTICLES.register("falling_water", () -> new SimpleParticleType(false));
     public static final RegistryObject<SimpleParticleType> DRIPPING_LAVA = PARTICLES.register("dripping_lava", () -> new SimpleParticleType(false));

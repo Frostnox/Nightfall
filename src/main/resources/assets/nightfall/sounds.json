@@ -270,6 +270,50 @@
     "subtitle": "subtitles.block.generic.footsteps",
     "sounds": ["mob/llama/step1", "mob/llama/step2", "mob/llama/step3", "mob/llama/step4", "mob/llama/step5"]
   },
+  "entity.drakefowl.ambient": {
+    "subtitle": "nightfall.entity.drakefowl.ambient",
+    "sounds": ["nightfall:entity/drakefowl/ambient_0", "nightfall:entity/drakefowl/ambient_1", "nightfall:entity/drakefowl/ambient_2", "nightfall:entity/drakefowl/ambient_3"]
+  },
+  "entity.drakefowl.death": {
+    "subtitle": "nightfall.entity.drakefowl.death",
+    "sounds": ["nightfall:entity/drakefowl/death"]
+  },
+  "entity.drakefowl.hurt": {
+    "subtitle": "nightfall.entity.drakefowl.hurt",
+    "sounds": ["nightfall:entity/drakefowl/hurt_0", "nightfall:entity/drakefowl/hurt_1"]
+  },
+  "entity.drakefowl.step": {
+    "subtitle": "subtitles.block.generic.footsteps",
+    "sounds": ["mob/parrot/step1", "mob/parrot/step2", "mob/parrot/step3", "mob/parrot/step4", "mob/parrot/step5"]
+  },
+  "entity.drakefowl.flap": {
+    "subtitle": "nightfall.entity.drakefowl.flap",
+    "sounds": ["nightfall:entity/drakefowl/flap", "nightfall:entity/drakefowl/flap_1", "nightfall:entity/drakefowl/flap_2"]
+  },
+  "entity.drakefowl.crow": {
+    "subtitle": "nightfall.entity.drakefowl.crow",
+    "sounds": ["nightfall:entity/drakefowl/crow"]
+  },
+  "entity.drakefowl.spit": {
+    "subtitle": "nightfall.entity.drakefowl.spit",
+    "sounds": ["nightfall:entity/drakefowl/spit_0", "nightfall:entity/drakefowl/spit_1", "nightfall:entity/drakefowl/spit_2"]
+  },
+  "entity.drakefowl.eat": {
+    "subtitle": "nightfall.entity.drakefowl.eat",
+    "sounds": ["nightfall:entity/drakefowl/eat_0", "nightfall:entity/drakefowl/eat_1", "nightfall:entity/drakefowl/eat_2"]
+  },
+  "entity.drakefowl_baby.ambient": {
+    "subtitle": "nightfall.entity.drakefowl_baby.ambient",
+    "sounds": ["nightfall:entity/drakefowl_baby/ambient_0", "nightfall:entity/drakefowl_baby/ambient_1", "nightfall:entity/drakefowl_baby/ambient_2", "nightfall:entity/drakefowl_baby/ambient_3"]
+  },
+  "entity.drakefowl_baby.death": {
+    "subtitle": "nightfall.entity.drakefowl_baby.death",
+    "sounds": ["nightfall:entity/drakefowl_baby/hurt_0", "nightfall:entity/drakefowl_baby/hurt_1"]
+  },
+  "entity.drakefowl_baby.hurt": {
+    "subtitle": "nightfall.entity.drakefowl_baby.hurt",
+    "sounds": ["nightfall:entity/drakefowl_baby/hurt_0", "nightfall:entity/drakefowl_baby/hurt_1"]
+  },
   "entity.dreg.ambient": {
     "subtitle": "nightfall.entity.dreg.ambient",
     "sounds": ["nightfall:entity/dreg/ambient_0", "nightfall:entity/dreg/ambient_1", "nightfall:entity/dreg/ambient_2", "nightfall:entity/dreg/ambient_3", "nightfall:entity/dreg/ambient_4"]
@@ -465,6 +509,10 @@
   "entity.projectile.poison_impact": {
     "subtitle": "nightfall.entity.projectile.poison_impact",
     "sounds": ["nightfall:entity/projectile/poison_impact"]
+  },
+  "entity.projectile.fire_impact": {
+    "subtitle": "nightfall.entity.projectile.fire_impact",
+    "sounds": ["nightfall:entity/projectile/fire_impact"]
   },
   "entity.projectile.rock_impact": {
     "subtitle": "nightfall.entity.projectile.rock_impact",
