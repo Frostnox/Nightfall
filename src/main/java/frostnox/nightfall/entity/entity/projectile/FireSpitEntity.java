@@ -17,7 +17,7 @@ import net.minecraft.world.phys.EntityHitResult;
 
 public class FireSpitEntity extends SpitEntity {
     public FireSpitEntity(EntityType<? extends SpitEntity> pEntityType, Level level) {
-        super(pEntityType, level);
+        super(pEntityType, level, false);
     }
 
     public FireSpitEntity(Level level, LivingEntity pSpitter) {
@@ -39,7 +39,7 @@ public class FireSpitEntity extends SpitEntity {
         if(getOwner() instanceof LivingEntity owner) {
             Entity target = pResult.getEntity();
             target.hurt(DamageTypeSource.createIndirectSource(this, DamageType.FIRE.asArray(), owner, null).setSound(SoundsNF.PROJECTILE_FIRE_IMPACT)
-                    .setProjectile(), 5.0F);
+                    .setProjectile(), 10.0F);
             if(target instanceof LivingEntity livingTarget) livingTarget.setSecondsOnFire(6);
         }
     }

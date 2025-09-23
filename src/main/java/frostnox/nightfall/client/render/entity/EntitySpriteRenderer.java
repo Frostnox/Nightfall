@@ -39,6 +39,7 @@ public abstract class EntitySpriteRenderer<T extends Entity> extends EntityRende
             vertex.transform(quat);
         }
         VertexConsumer buffer = bufferSource.getBuffer(RenderType.itemEntityTranslucentCull(getTextureLocation(pEntity)));
+        stack.translate(0, halfSize, 0);
         PoseStack.Pose pose = stack.last();
         Matrix4f mat = pose.pose();
         Matrix3f normal = pose.normal();

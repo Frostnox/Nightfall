@@ -35,7 +35,7 @@ public class DrakefowlClaw extends NPCAttack {
 
     @Override
     public double getMaxDistToStart(LivingEntity user) {
-        return 1.5;
+        return 1;
     }
 
     @Override
@@ -51,9 +51,6 @@ public class DrakefowlClaw extends NPCAttack {
                 if(capA.getFrame() == getDuration(0, user) - 2 && capA.getState() == 0) {
                     CombatUtil.addMovementTowardsTarget(1, 1, mob);
                 }
-                if(capA.getState() == 0 && capA.getFrame() == 1) {
-                    user.playSound(SoundsNF.DRAKEFOWL_FLAP.get(), 1F, 1F + user.level.random.nextFloat(-0.03F, 0.03F));
-                }
             }
         }
     }
@@ -64,44 +61,28 @@ public class DrakefowlClaw extends NPCAttack {
             AnimationData body = data.get(EntityPart.BODY);
             AnimationData neck = data.get(EntityPart.NECK);
             AnimationData head = data.get(EntityPart.HEAD);
-            AnimationData wingRight = data.get(EntityPart.WING_RIGHT);
-            AnimationData wingLeft = data.get(EntityPart.WING_LEFT);
             AnimationData legRight = data.get(EntityPart.LEG_RIGHT);
             AnimationData legLeft = data.get(EntityPart.LEG_LEFT);
             switch(state) {
                 case 0 -> {
-                    body.tCalc.add(0, -1.5F, 0);
-                    body.rCalc.extend(-50, 0, 0);
-                    neck.rCalc.extend(75, 0, 0);
-                    head.rCalc.extend(-25, 0, 0);
-                    legRight.tCalc.add(0, -1.5F, -3);
-                    legRight.rCalc.extend(-95, 0, 0, Easing.outCubic);
-                    legLeft.tCalc.add(0, -1.5F, -3);
-                    legLeft.rCalc.extend(-95, 0, 0, Easing.outCubic);
-                    wingLeft.rCalc.extend(-15, 0, 50, Easing.outCubic);
-                    wingLeft.rCalc.length /= 2;
-                    wingRight.rCalc.extend(-15, 0, -50, Easing.outCubic);
-                    wingRight.rCalc.length /= 2;
-                    if(frame > duration/2) {
-                        wingLeft.rCalc.resetLength(duration);
-                        wingLeft.rCalc.offset = duration/2;
-                        wingLeft.rCalc.add(0, 0, -100, Easing.outCubic);
-                        wingRight.rCalc.resetLength(duration);
-                        wingRight.rCalc.offset = duration/2;
-                        wingRight.rCalc.add(0, 0, 100, Easing.outCubic);
-                    }
+                    body.tCalc.add(0, -2F, 0);
+                    body.rCalc.extend(-45, 0, 0);
+                    neck.rCalc.extend(70, 0, 0);
+                    head.rCalc.extend(-20, 0, 0);
+                    legRight.tCalc.add(0, -3.5F, -3);
+                    legRight.rCalc.extend(-115, 0, 0, Easing.outCubic);
+                    legLeft.tCalc.add(0, -3.5F, -3);
+                    legLeft.rCalc.extend(-115, 0, 0, Easing.outCubic);
                 }
                 case 1 -> {
                     body.tCalc.freeze();
                     body.rCalc.add(10F, 0, 0, Easing.outQuart);
                     neck.rCalc.add(-10F, 0, 0, Easing.outQuart);
                     head.rCalc.freeze();
-                    legRight.tCalc.freeze();
-                    legRight.rCalc.add(90, 0, 0, Easing.outQuart);
-                    legLeft.tCalc.freeze();
-                    legLeft.rCalc.add(90, 0, 0, Easing.outCubic);
-                    wingLeft.rCalc.add(0, 0, 100, Easing.outCubic);
-                    wingRight.rCalc.add(0, 0, -100, Easing.outCubic);
+                    legRight.tCalc.add(0, 1.5F, 1.5F, Easing.outQuart);
+                    legRight.rCalc.add(95, 0, 0, Easing.outQuart);
+                    legLeft.tCalc.add(0, 1.5F, 1.5F, Easing.outCubic);
+                    legLeft.rCalc.add(95, 0, 0, Easing.outCubic);
                 }
                 case 2 -> {
                     body.toDefault();
@@ -109,8 +90,6 @@ public class DrakefowlClaw extends NPCAttack {
                     neck.toDefaultRotation();
                     legRight.toDefault();
                     legLeft.toDefault();
-                    wingRight.toDefaultRotation();
-                    wingLeft.toDefaultRotation();
                 }
             }
         }
@@ -118,7 +97,7 @@ public class DrakefowlClaw extends NPCAttack {
 
     @Override
     public Vector3f getTranslation(LivingEntity user) {
-        return new Vector3f(0F/16F, 12F/16F, 9F/16F);
+        return new Vector3f(0F/16F, 6/16F, 4F/16F);
     }
 
     @Override

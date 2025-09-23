@@ -28,7 +28,7 @@ public class DrakefowlSpit extends Action {
 
     @Override
     public double getMaxDistToStart(LivingEntity user) {
-        return 20;
+        return 15;
     }
 
     @Override
@@ -56,9 +56,9 @@ public class DrakefowlSpit extends Action {
                 double d1 = y - spit.getY();
                 double d2 = z - user.getZ();
                 double d3 = Math.sqrt(d0 * d0 + d2 * d2) * 0.2;
-                spit.shoot(d0, d1 + d3, d2, 1.5F, 0.5F);
+                spit.shoot(d0, d1 + d3, d2, 1.2F, 0.3F);
             }
-            else spit.shootFromRotation(user, entity.getXRot(), entity.getViewYRot(1F), 0, 1.5F, 0.5F);
+            else spit.shootFromRotation(user, entity.getXRot(), entity.getViewYRot(1F), 0, 1.2F, 0.3F);
             level.addFreshEntity(spit);
             user.playSound(getSound().get(), 1F, 1F);
             user.gameEvent(GameEventsNF.ACTION_SOUND);
@@ -73,16 +73,16 @@ public class DrakefowlSpit extends Action {
         AnimationData wingLeft = data.get(EntityPart.WING_LEFT);
         switch(state) {
             case 0 -> {
-                neck.rCalc.add(-15, 0, 0);
-                head.rCalc.add(-15, 0, 0);
-                head.tCalc.add(0, 1F, 0F);
+                neck.rCalc.extend(-30, 0, 0);
+                head.rCalc.extend(0, 0, 0);
+                head.tCalc.add(0, 0F, 0.5F);
                 wingRight.rCalc.add(8, 0, 8);
                 wingLeft.rCalc.add(8, 0, -8);
             }
             case 1 -> {
-                neck.rCalc.add(20, 0, 0, Easing.outQuart);
-                head.rCalc.add(15, 0, 0, Easing.outQuart);
-                head.tCalc.add(0, -1.5F, 0F, Easing.outQuart);
+                neck.rCalc.add(40, 0, 0, Easing.outQuart);
+                head.rCalc.add(-5, 0, 0, Easing.outQuart);
+                head.tCalc.add(0, 0F, -0.5F, Easing.outQuart);
                 wingRight.rCalc.add(-8, 0, -12.5F, Easing.outQuart);
                 wingLeft.rCalc.add(-8, 0, 12.5F, Easing.outQuart);
             }

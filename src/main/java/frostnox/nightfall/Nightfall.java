@@ -28,6 +28,7 @@ import frostnox.nightfall.entity.entity.animal.DrakefowlBabyEntity;
 import frostnox.nightfall.entity.entity.animal.DrakefowlEntity;
 import frostnox.nightfall.entity.entity.animal.RabbitEntity;
 import frostnox.nightfall.entity.entity.monster.*;
+import frostnox.nightfall.entity.entity.projectile.FireSpitEntity;
 import frostnox.nightfall.item.IArmament;
 import frostnox.nightfall.item.IDye;
 import frostnox.nightfall.item.IStyle;
@@ -68,6 +69,7 @@ import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.item.ItemPropertyFunction;
 import net.minecraft.commands.synchronization.ArgumentTypes;
 import net.minecraft.commands.synchronization.EmptyArgumentSerializer;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -548,7 +550,18 @@ public class Nightfall {
             event.registerEntityRenderer(EntitiesNF.ARROW.get(), ArrowRendererNF::new);
             event.registerEntityRenderer(EntitiesNF.THROWN_WEAPON.get(), ThrownWeaponRenderer::new);
             event.registerEntityRenderer(EntitiesNF.POISON_SPIT.get(), NoopRenderer::new);
-            event.registerEntityRenderer(EntitiesNF.FIRE_SPIT.get(), NoopRenderer::new);
+            final ResourceLocation FIRE_SPIT_TEXTURE = ResourceLocation.fromNamespaceAndPath(MODID, "textures/entity/projectile/fire_spit.png");
+            event.registerEntityRenderer(EntitiesNF.FIRE_SPIT.get(), (context) -> new EntitySpriteRenderer<>(context, 4F/16F, 0, 0) {
+                @Override
+                protected int getBlockLightLevel(FireSpitEntity pEntity, BlockPos pPos) {
+                    return 15;
+                }
+
+                @Override
+                public ResourceLocation getTextureLocation(FireSpitEntity pEntity) {
+                    return FIRE_SPIT_TEXTURE;
+                }
+            });
             event.registerBlockEntityRenderer(BlockEntitiesNF.ANVIL.get(), TieredAnvilRenderer::new);
             event.registerBlockEntityRenderer(BlockEntitiesNF.BOWL.get(), BowlRenderer::new);
             event.registerBlockEntityRenderer(BlockEntitiesNF.CAULDRON.get(), CauldronRenderer::new);

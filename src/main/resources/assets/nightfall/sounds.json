@@ -288,7 +288,7 @@
   },
   "entity.drakefowl.flap": {
     "subtitle": "nightfall.entity.drakefowl.flap",
-    "sounds": ["nightfall:entity/drakefowl/flap", "nightfall:entity/drakefowl/flap_1", "nightfall:entity/drakefowl/flap_2"]
+    "sounds": ["nightfall:entity/drakefowl/flap_0", "nightfall:entity/drakefowl/flap_1"]
   },
   "entity.drakefowl.crow": {
     "subtitle": "nightfall.entity.drakefowl.crow",

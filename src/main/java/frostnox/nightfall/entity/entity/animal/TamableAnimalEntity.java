@@ -73,7 +73,6 @@ public abstract class TamableAnimalEntity extends AnimalEntity implements ITamab
                 gestationTime--;
                 if(gestationTime == 0) onGestationEnd();
             }
-            if(getActionTracker().isInactive()) startAction(ActionsNF.DRAKEFOWL_SPIT.getId());
         }
     }
 

@@ -3,10 +3,13 @@ package frostnox.nightfall.entity.entity.animal;
 import com.mojang.math.Vector3d;
 import com.mojang.math.Vector3f;
 import frostnox.nightfall.block.IFoodBlock;
+import frostnox.nightfall.client.ClientEngine;
 import frostnox.nightfall.data.TagsNF;
 import frostnox.nightfall.entity.EntityPart;
 import frostnox.nightfall.entity.IOrientedHitBoxes;
 import frostnox.nightfall.entity.Sex;
+import frostnox.nightfall.entity.ai.goals.*;
+import frostnox.nightfall.entity.ai.goals.target.TrackNearestTargetGoal;
 import frostnox.nightfall.registry.ActionsNF;
 import frostnox.nightfall.registry.forge.AttributesNF;
 import frostnox.nightfall.registry.forge.DataSerializersNF;
@@ -20,11 +23,13 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -43,6 +48,7 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
     private static final EntityPart[] OBB_PARTS = new EntityPart[]{EntityPart.BODY, EntityPart.NECK, EntityPart.HEAD};
     protected static final EntityDataAccessor<DrakefowlEntity.Type> TYPE = SynchedEntityData.defineId(DrakefowlEntity.class, DataSerializersNF.DRAKEFOWL_TYPE);
     public float flap, flapSpeed, oFlapSpeed, oFlap, flapping = 1.0F, nextFlap = 1.0F;
+    protected int ticksOffGround = 0;
     protected @Nullable Type fatherType;
 
     public DrakefowlEntity(EntityType<? extends TamableAnimalEntity> type, Level level, Sex sex) {
@@ -105,11 +111,50 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
     }
 
     @Override
+    protected void registerGoals() {
+        goalSelector.addGoal(1, new FloatAtHeightGoal(this, 0.25D));
+        goalSelector.addGoal(2, new FleeEntityGoal<>(this, LivingEntity.class, 1.2D, 1.3D, (entity) -> {
+            if(entity.isDeadOrDying()) return false;
+            else return entity.getType().is(TagsNF.DRAKEFOWL_PREDATOR);
+        }));
+        goalSelector.addGoal(4, new FleeEntityGoal<>(this, Player.class, 1.2D, 1.3D, (entity) -> {
+            Player player = (Player) entity;
+            if(player.isDeadOrDying() || player.isSpectator() || player.isCreative()) return false;
+            return true;
+        }));
+        goalSelector.addGoal(5, new FleeDamageGoal(this, 1.3D));
+        goalSelector.addGoal(7, new EatEntityGoal(this, 1D, 15, 2));
+        goalSelector.addGoal(8, new EatBlockGoal(this, 1D, 15, 2));
+        goalSelector.addGoal(9, new ReducedWanderLandGoal(this, 0.8D, 6));
+        goalSelector.addGoal(10, new RandomLookGoal(this, 0.02F / 6));
+        if(sex == Sex.MALE) {
+            goalSelector.addGoal(3, new RushAttackGoal(this, 1.2D));
+            targetSelector.addGoal(1, new HurtByTargetGoal(this));
+            targetSelector.addGoal(2, new TrackNearestTargetGoal<>(this, LivingEntity.class, true, (entity) -> {
+                if(entity.isDeadOrDying()) return false;
+                else return entity.getType().is(TagsNF.DRAKEFOWL_PREY);
+            }) {
+                @Override
+                protected double getFollowDistance() {
+                    return super.getFollowDistance() / 2;
+                }
+            });
+        }
+        else {
+            //3: lure goal - after a random amount of time, approach sneaking players (player can stop sneaking once interest is active)
+            //6: egg goal - tamed female, fed, find or create a nest and lay 1 egg at night
+        }
+    }
+
+    @Override
     public void aiStep() {
         super.aiStep();
+        if(level.isClientSide && tickCount == 1) move(MoverType.SELF, new Vec3(0, -0.1, 0)); //Client level not move entity for a while so do it immediately
+        if(!onGround) ticksOffGround++;
+        else ticksOffGround = 0;
         oFlap = flap;
         oFlapSpeed = flapSpeed;
-        boolean shouldFlap = !onGround && isAlive();
+        boolean shouldFlap = isAlive() && ((!onGround && ticksOffGround > 5) || getActionTracker().getActionID().equals(ActionsNF.DRAKEFOWL_CLAW.getId()));
         flapSpeed += (!shouldFlap ? -1.0F : 4.0F) * 0.3F;
         flapSpeed = Mth.clamp(flapSpeed, 0.0F, 1.0F);
         if(shouldFlap && flapping < 1.0F) flapping = 1.0F;
@@ -119,6 +164,9 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
             setDeltaMovement(velocity.multiply(1.0D, 0.6D, 1.0D));
         }
         flap += flapping * 2.0F;
+        if(shouldFlap && level.isClientSide && (getSynchedRandom() + tickCount) % 11 == 0) {
+            ClientEngine.get().playEntitySound(this, SoundsNF.DRAKEFOWL_FLAP.get(), SoundSource.NEUTRAL, 1F, 1F + random.nextFloat(-0.05F, 0.05F));
+        }
         fallDistance = 0;
     }
 
@@ -184,6 +232,7 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putInt("type", getDrakefowlType().ordinal());
+        tag.putInt("ticksOffGround", ticksOffGround);
         if(fatherType != null) tag.putInt("fatherType", fatherType.ordinal());
     }
 
@@ -191,6 +240,7 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         getEntityData().set(TYPE, DrakefowlEntity.Type.values()[tag.getInt("type")]);
+        ticksOffGround = tag.getInt("ticksOffGround");
         if(tag.contains("fatherType")) fatherType = DrakefowlEntity.Type.values()[tag.getInt("fatherType")];
     }
 

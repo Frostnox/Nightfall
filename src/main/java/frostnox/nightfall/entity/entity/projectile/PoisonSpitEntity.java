@@ -18,7 +18,7 @@ import net.minecraft.world.phys.EntityHitResult;
 
 public class PoisonSpitEntity extends SpitEntity {
     public PoisonSpitEntity(EntityType<? extends SpitEntity> pEntityType, Level level) {
-        super(pEntityType, level);
+        super(pEntityType, level, true);
     }
 
     public PoisonSpitEntity(Level level, LivingEntity pSpitter) {

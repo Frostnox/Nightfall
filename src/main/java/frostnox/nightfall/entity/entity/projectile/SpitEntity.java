@@ -11,8 +11,11 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 public abstract class SpitEntity extends Projectile {
-    protected SpitEntity(EntityType<? extends SpitEntity> pEntityType, Level level) {
+    protected final boolean doParticleSpeed;
+
+    protected SpitEntity(EntityType<? extends SpitEntity> pEntityType, Level level, boolean doParticleSpeed) {
         super(pEntityType, level);
+        this.doParticleSpeed = doParticleSpeed;
     }
 
     protected abstract ParticleOptions getParticle();
@@ -39,10 +42,15 @@ public abstract class SpitEntity extends Projectile {
             setPos(x, y, z);
             velocity = getDeltaMovement();
             double dX = velocity.x, dY = velocity.y, dZ = velocity.z;
-            for(int i = 0; i < 3; i++) {
+            if(doParticleSpeed) for(int i = 0; i < 3; i++) {
                 level.addParticle(getParticle(), this.getX() + dX * (double)i / 4.0D,
                         this.getY() + dY * (double)i / 4.0D, this.getZ() + dZ * (double)i / 4.0D,
                         -dX, -dY + 0.2D, -dZ);
+            }
+            else for(int i = 0; i < 3; i++) {
+                level.addParticle(getParticle(), this.getX() + dX * (double)i / 4.0D,
+                        this.getY() + dY * (double)i / 4.0D, this.getZ() + dZ * (double)i / 4.0D,
+                        0, 0, 0);
             }
         }
     }

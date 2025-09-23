@@ -78,7 +78,7 @@ public class DrakefowlModel extends AnimatedModel<DrakefowlEntity> implements He
     @Override
     public void setupAnim(DrakefowlEntity entity, float limbSwing, float limbSwingAmount, float time, float netHeadYaw, float headPitch) {
         resetPose();
-        float speed = 4.25F;
+        float speed = 4F;
         limbSwingAmount = Math.min(1F, limbSwingAmount * 2);
 //        limbSwing = time/3F;
 //        limbSwingAmount = 0.65F;
