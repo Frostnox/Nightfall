@@ -145,7 +145,8 @@ public class BlockTagsProviderNF extends BlockTagsProvider {
 
         tag(TagsNF.MINEABLE_WITH_SICKLE).addTags(TagsNF.BRANCHES_OR_LEAVES, BlockTags.MINEABLE_WITH_HOE, BlockTags.REPLACEABLE_PLANTS, BlockTags.CROPS);
         tag(TagsNF.MINEABLE_WITH_SICKLE).add(BlocksNF.DEAD_PLANT.get(), BlocksNF.THATCH.get(), BlocksNF.THATCH_STAIRS.get(), BlocksNF.THATCH_SLAB.get(),
-                BlocksNF.THATCH_SIDING.get(), BlocksNF.ROPE.get(), BlocksNF.MOON_ESSENCE.get(), BlocksNF.SPIDER_WEB.get(), BlocksNF.SPIDER_NEST.get());
+                BlocksNF.THATCH_SIDING.get(), BlocksNF.ROPE.get(), BlocksNF.MOON_ESSENCE.get(), BlocksNF.SPIDER_WEB.get(), BlocksNF.SPIDER_NEST.get(),
+                BlocksNF.DRAKEFOWL_NEST.get());
         for(var block : BlocksNF.TREE_SEEDS.values()) tag(TagsNF.MINEABLE_WITH_SICKLE).add(block.get());
 
         tag(BlockTags.MINEABLE_WITH_PICKAXE).addTags(Tags.Blocks.STONE, BlockTags.ICE, TagsNF.METAL_ANVILS, TagsNF.TERRACOTTA, Tags.Blocks.GLASS,
@@ -192,7 +193,8 @@ public class BlockTagsProviderNF extends BlockTagsProvider {
         tag(TagsNF.FALLING_DESTROYABLE).add(BlocksNF.TORCH.get(), BlocksNF.TORCH_UNLIT.get(), BlocksNF.WALL_TORCH.get(), BlocksNF.WALL_TORCH_UNLIT.get(),
                 BlocksNF.ROPE.get(), BlocksNF.CRUCIBLE.get(), BlocksNF.UNFIRED_CRUCIBLE.get(), BlocksNF.CAULDRON.get(), BlocksNF.UNFIRED_CAULDRON.get(),
                 BlocksNF.POT.get(), BlocksNF.UNFIRED_POT.get(), BlocksNF.INGOT_MOLD.get(), BlocksNF.ARROWHEAD_MOLD.get(), BlocksNF.UNFIRED_INGOT_MOLD.get(),
-                BlocksNF.UNFIRED_ARROWHEAD_MOLD.get(), BlocksNF.FLINT_CLUSTER.get(), BlocksNF.SEASHELL.get(), BlocksNF.SPIDER_WEB.get());
+                BlocksNF.UNFIRED_ARROWHEAD_MOLD.get(), BlocksNF.FLINT_CLUSTER.get(), BlocksNF.SEASHELL.get(), BlocksNF.SPIDER_WEB.get(),
+                BlocksNF.DRAKEFOWL_NEST.get());
         for(var block : BlocksNF.LANTERNS.values()) tag(TagsNF.FALLING_DESTROYABLE).add(block.get());
         for(var block : BlocksNF.LANTERNS_UNLIT.values()) tag(TagsNF.FALLING_DESTROYABLE).add(block.get());
         for(var block : BlocksNF.ARMAMENT_MOLDS.values()) tag(TagsNF.FALLING_DESTROYABLE).add(block.get());

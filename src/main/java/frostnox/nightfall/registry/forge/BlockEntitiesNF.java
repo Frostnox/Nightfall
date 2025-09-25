@@ -5,6 +5,7 @@ import frostnox.nightfall.block.Metal;
 import frostnox.nightfall.block.block.anvil.TieredAnvilBlockEntity;
 import frostnox.nightfall.block.block.barrel.BarrelBlockEntityNF;
 import frostnox.nightfall.block.block.bowl.BowlBlockEntity;
+import frostnox.nightfall.block.block.eggnest.EggNestBlockEntity;
 import frostnox.nightfall.block.block.itemframe.ItemFrameBlockEntity;
 import frostnox.nightfall.block.block.nest.GuardedNestBlockEntity;
 import frostnox.nightfall.block.block.nest.NestBlockEntity;
@@ -113,6 +114,8 @@ public class BlockEntitiesNF {
                                 return skara;
                             }, 15),
                     BlocksNF.SKARA_ROCK_CLUSTERS.values().stream().map(RegistryObject::get).toArray(Block[]::new)).build(null));
+    public static final RegistryObject<BlockEntityType<EggNestBlockEntity>> EGG_NEST = BLOCK_ENTITIES.register("egg_nest", () ->
+            BlockEntityType.Builder.of(EggNestBlockEntity::new, BlocksNF.DRAKEFOWL_NEST.get()).build(null));
     public static final RegistryObject<BlockEntityType<TimeDataBlockEntity>> TIME_DATA = BLOCK_ENTITIES.register("time_data", () ->
             BlockEntityType.Builder.of(TimeDataBlockEntity::new, BlocksNF.WET_MUD_BRICKS.get(), BlocksNF.POTATOES.get(), BlocksNF.CARROTS.get(), BlocksNF.FLAX.get(),
                     BlocksNF.YARROW.get(), BlocksNF.BERRY_BUSH.get()).build(null));

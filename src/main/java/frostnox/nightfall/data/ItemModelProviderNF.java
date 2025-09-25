@@ -350,6 +350,7 @@ public class ItemModelProviderNF extends ModelProvider<AnimatedItemModelBuilder>
         genericBlock(ItemsNF.CRUCIBLE.get(), "_none");
 
         genericBlockAsItem(ItemsNF.SPIDER_WEB.get());
+        genericBlock(ItemsNF.DRAKEFOWL_NEST.get(), "_0");
 
         for(RegistryObject<? extends Item> item : ItemsNF.ITEMS.getEntries()) {
             ResourceLocation loc = extendWithFolder(ResourceLocation.fromNamespaceAndPath(modid, item.getId().getPath()));

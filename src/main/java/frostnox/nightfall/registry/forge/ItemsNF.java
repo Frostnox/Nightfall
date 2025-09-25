@@ -186,6 +186,7 @@ public class ItemsNF {
     public static final RegistryObject<Item> BONE = ITEMS.register("bone", () -> new Item(ingredient()));
     public static final RegistryObject<Item> ECTOPLASM = ITEMS.register("ectoplasm", () -> new Item(ingredient()));
     public static final RegistryObject<Item> SKARA_SHELLS = ITEMS.register("skara_shells", () -> new Item(ingredient()));
+    public static final RegistryObject<Item> DRAKEFOWL_EGG = ITEMS.register("drakefowl_egg", () -> new Item(ingredient().stacksTo(4)));
     //Food
     public static final RegistryObject<Item> POTATO = ITEMS.register("potato", () -> new Item(new Item.Properties().food(
             food(2, 0F)).tab(FOOD_TAB).stacksTo(4)));
@@ -678,6 +679,7 @@ public class ItemsNF {
             register(BlocksNF.STONE_TUNNELS.get(stone), NATURAL_TAB));
     public static final Map<Stone, RegistryObject<BlockItemNF>> SKARA_ROCK_CLUSTERS = DataUtil.mapEnum(Stone.class, stone -> !BlocksNF.SKARA_ROCK_CLUSTERS.containsKey(stone), stone ->
             register(BlocksNF.SKARA_ROCK_CLUSTERS.get(stone), NATURAL_TAB));
+    public static final RegistryObject<BlockItemNF> DRAKEFOWL_NEST = register(BlocksNF.DRAKEFOWL_NEST, NATURAL_TAB);
 
     public static void register() {
         ITEMS.register(Nightfall.MOD_EVENT_BUS);

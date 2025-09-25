@@ -21,6 +21,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -349,6 +350,10 @@ public abstract class Action extends ForgeRegistryEntry<Action> {
     }
 
     public boolean allowDodging(int state) {
+        return true;
+    }
+
+    public boolean allowFlag(int state, Goal.Flag flag) {
         return true;
     }
 

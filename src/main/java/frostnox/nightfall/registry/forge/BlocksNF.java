@@ -10,6 +10,7 @@ import frostnox.nightfall.block.block.anvil.TieredAnvilBlock;
 import frostnox.nightfall.block.block.barrel.BarrelBlockNF;
 import frostnox.nightfall.block.block.bowl.BowlBlock;
 import frostnox.nightfall.block.block.ChairBlock;
+import frostnox.nightfall.block.block.eggnest.DrakefowlEggNestBlock;
 import frostnox.nightfall.block.block.itemframe.ItemFrameBlock;
 import frostnox.nightfall.block.block.nest.AnchoringResinBlock;
 import frostnox.nightfall.block.block.nest.RabbitBurrowBlock;
@@ -734,6 +735,9 @@ public class BlocksNF {
     public static final Map<Stone, RegistryObject<SkaraNestBlock>> SKARA_ROCK_CLUSTERS = DataUtil.mapEnum(Stone.class, stone -> stone == Stone.PUMICE || stone == Stone.MOONSTONE,
             stone -> register(stone.getName() + "_skara_rocks", () -> new SkaraNestBlock(BlockBehaviour.Properties.of(Material.DECORATION)
                     .noCollission().strength(1F).sound(SoundType.STONE))));
+    public static final RegistryObject<DrakefowlEggNestBlock> DRAKEFOWL_NEST = BLOCKS.register("drakefowl_nest", () -> new DrakefowlEggNestBlock(
+            ItemsNF.DRAKEFOWL_EGG, (int) ContinentalWorldType.DAY_LENGTH * 3, 0.4F, 1F,
+            BlockBehaviour.Properties.of(FLAMMABLE_DECORATION).strength(2F).noCollission().sound(SoundType.GRASS)));
 
     public static void register() {
         BLOCKS.register(Nightfall.MOD_EVENT_BUS);

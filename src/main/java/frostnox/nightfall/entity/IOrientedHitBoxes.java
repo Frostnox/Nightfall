@@ -71,6 +71,7 @@ public interface IOrientedHitBoxes {
                     AnimationData data = transforms.get(parts[j]);
                     Vector3f t = new Vector3f();
                     Vector3f translations = data.tCalc.getTransformations();
+                    translations.sub(data.dTranslation);
                     translations.mul(scale * 1F/16F, scale * -1/16F, scale * -1F/16F);
                     if(j > 0) {
                         Quaternion r = new Quaternion(0, 0, 0, 1);

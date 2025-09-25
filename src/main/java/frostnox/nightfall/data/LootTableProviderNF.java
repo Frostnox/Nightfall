@@ -9,6 +9,7 @@ import frostnox.nightfall.block.*;
 import frostnox.nightfall.block.block.ClusterBlock;
 import frostnox.nightfall.block.block.FruitBushBlock;
 import frostnox.nightfall.block.block.SidingBlock;
+import frostnox.nightfall.block.block.eggnest.EggNestBlock;
 import frostnox.nightfall.block.block.pile.PileBlock;
 import frostnox.nightfall.data.loot.*;
 import frostnox.nightfall.entity.entity.animal.DeerEntity;
@@ -333,6 +334,7 @@ public class LootTableProviderNF extends LootTableProvider {
             dropOthers(BlocksNF.SPIDER_NEST.get(), entry(ItemsNF.SILK.get(), 10, 12));
             dropOtherPerception(BlocksNF.ANCHORING_RESIN.get(), ItemsNF.ANCHORING_RESIN.get(), 3, 1, 0.5F, 0.1F, 1);
             for(Stone type : BlocksNF.SKARA_ROCK_CLUSTERS.keySet()) dropStone(BlocksNF.SKARA_ROCK_CLUSTERS.get(type).get(), type, 4);
+            dropEggNest(BlocksNF.DRAKEFOWL_NEST.get());
 
             for(var block : getKnownBlocks()) {
                 if(!addedBlocks.contains(block)) dropSelf(block);
@@ -511,6 +513,21 @@ public class LootTableProviderNF extends LootTableProvider {
                                     .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(ClusterBlock.COUNT, 3))))
                             .apply(SetItemCountFunction.setCount(ConstantValue.exactly(4.0F)).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(block)
                                     .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(ClusterBlock.COUNT, 4))))))));
+        }
+
+        protected void dropEggNest(EggNestBlock block) {
+            add(block, LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
+                    .add(applyExplosionDecay(block.eggItem.get(), LootItem.lootTableItem(block.eggItem.get())
+                            .apply(SetItemCountFunction.setCount(ConstantValue.exactly(0.0F)).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(block)
+                                    .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(EggNestBlock.EGGS, 0))))
+                            .apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F)).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(block)
+                                    .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(EggNestBlock.EGGS, 1))))
+                            .apply(SetItemCountFunction.setCount(ConstantValue.exactly(2.0F)).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(block)
+                                    .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(EggNestBlock.EGGS, 2))))
+                            .apply(SetItemCountFunction.setCount(ConstantValue.exactly(3.0F)).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(block)
+                                    .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(EggNestBlock.EGGS, 3))))
+                            .apply(SetItemCountFunction.setCount(ConstantValue.exactly(4.0F)).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(block)
+                                    .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(EggNestBlock.EGGS, 4))))))));
         }
 
         protected void dropPile(PileBlock block) {

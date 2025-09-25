@@ -53,11 +53,13 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.decoration.LeashFenceKnotEntity;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.*;
@@ -723,7 +725,8 @@ public abstract class ActionableEntity extends PathfinderMob {
         //yHeadRot = yHeadRotO;
         float maxRotX = getMaxXRotPerTick();
         float maxRotY = getMaxYRotPerTick();
-        if(action instanceof Attack attack && !capA.isInactive() && capA.getActionID() != ActionsNF.EMPTY.getId()) {
+        boolean isActive = !capA.isInactive();
+        if(action instanceof Attack attack && isActive && capA.getActionID() != ActionsNF.EMPTY.getId()) {
             maxRotX = attack.getMaxXRot(capA.getState());
             maxRotY = attack.getMaxYRot(capA.getState());
         }
@@ -734,7 +737,7 @@ public abstract class ActionableEntity extends PathfinderMob {
         //yBodyRot = Mth.clamp(yBodyRot, yBodyRotO - maxRot, yBodyRotO + maxRot);
         //yHeadRot = Mth.clamp(yHeadRot, yBodyRot - 45, yBodyRot + 45);
         //yHeadRot = Mth.clamp(yHeadRot, yHeadRotO - maxRot, yHeadRotO + maxRot);
-        if(!capA.isInactive() && action instanceof Attack && capA.getActionID() != ActionsNF.EMPTY.getId()) {
+        if(isActive && action instanceof Attack && capA.getActionID() != ActionsNF.EMPTY.getId()) {
             CombatUtil.alignBodyRotWithHead(this, capA);
         }
         if(action instanceof Attack attack) {
@@ -755,6 +758,31 @@ public abstract class ActionableEntity extends PathfinderMob {
             gameEvent(GameEventsNF.ACTION_SOUND);
         }
         capA.setLastPosition(position());
+        //Update control flags on every tick instead of only every 5
+        if(!level.isClientSide && tickCount % 5 != 0) updateControlFlags();
+    }
+
+    @Override
+    protected void updateControlFlags() {
+        if(isAlive() && !isRemoved()) {
+            boolean notControlled = !(getControllingPassenger() instanceof Mob);
+            boolean notInBoat = !(getVehicle() instanceof Boat);
+            IActionTracker capA = getActionTracker();
+            if(!capA.getActionID().equals(ActionsNF.EMPTY.getId())) {
+                Action action = capA.getAction();
+                int state = capA.getState();
+                boolean canMove = notControlled && action.allowFlag(state, Goal.Flag.MOVE);
+                goalSelector.setControlFlag(Goal.Flag.MOVE, canMove);
+                if(!canMove) getNavigator().stop();
+                goalSelector.setControlFlag(Goal.Flag.LOOK, notControlled && action.allowFlag(state, Goal.Flag.LOOK));
+                goalSelector.setControlFlag(Goal.Flag.JUMP, notControlled && notInBoat && action.allowFlag(state, Goal.Flag.JUMP));
+            }
+            else {
+                goalSelector.setControlFlag(Goal.Flag.MOVE, notControlled);
+                goalSelector.setControlFlag(Goal.Flag.LOOK, notControlled);
+                goalSelector.setControlFlag(Goal.Flag.JUMP, notControlled && notInBoat);
+            }
+        }
     }
 
     @Override

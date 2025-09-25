@@ -9,8 +9,8 @@ import frostnox.nightfall.data.TagsNF;
 import frostnox.nightfall.entity.EntityPart;
 import frostnox.nightfall.entity.IChaser;
 import frostnox.nightfall.entity.IOrientedHitBoxes;
-import frostnox.nightfall.entity.ai.goals.*;
-import frostnox.nightfall.entity.ai.goals.target.TrackNearestTargetGoal;
+import frostnox.nightfall.entity.ai.goal.*;
+import frostnox.nightfall.entity.ai.goal.target.TrackNearestTargetGoal;
 import frostnox.nightfall.network.NetworkHandler;
 import frostnox.nightfall.network.message.GenericEntityToClient;
 import frostnox.nightfall.registry.ActionsNF;
@@ -23,30 +23,24 @@ import frostnox.nightfall.util.math.Easing;
 import frostnox.nightfall.util.math.OBB;
 import frostnox.nightfall.world.ContinentalWorldType;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ItemParticleOption;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
 import java.util.EnumMap;
@@ -300,8 +294,7 @@ public class CockatriceEntity extends HungryMonsterEntity implements IOrientedHi
         float trackAmount = AnimationUtil.applyEasing(targetTime / 9F, Easing.inOutSine);
         map.put(EntityPart.BODY, new AnimationData(new Vector3f(0F/16F, -7.5F/16F, -5F/16F)));
         map.put(EntityPart.NECK, new AnimationData(new Vector3f(0F/16F, -8F/16F, 0F/16F), new Vector3f(35 + trackAmount * 45, 0, 0)));
-        map.put(EntityPart.HEAD, new AnimationData(new Vector3f(0F/16F, 0F/16F, 0F/16F), new Vector3f(-35 + trackAmount * -45, 0, 0),
-                new Vector3f(0, 0, -1 * trackAmount)));
+        map.put(EntityPart.HEAD, new AnimationData(new Vector3f(0F/16F, 0F/16F, 1 * trackAmount/16F), new Vector3f(-35 + trackAmount * -45, 0, 0)));
         return map;
     }
 

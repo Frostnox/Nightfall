@@ -26,6 +26,7 @@ public class BlockStatePropertiesNF {
     public static final IntegerProperty CHUNKS = IntegerProperty.create("chunks", 1, 4);
     public static final IntegerProperty LOGS = IntegerProperty.create("logs", 1, 9);
     public static final IntegerProperty FIREWOOD = IntegerProperty.create("firewood", 0, 4);
+    public static final IntegerProperty EGGS = IntegerProperty.create("eggs", 0, 4);
     public static final IntegerProperty COUNT_4 = IntegerProperty.create("count", 1, 4);
     public static final IntegerProperty COUNT_8 = IntegerProperty.create("count", 1, 8);
     public static final IntegerProperty STAGE_4 = IntegerProperty.create("stage", 1, 4);

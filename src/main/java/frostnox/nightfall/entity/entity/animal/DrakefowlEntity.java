@@ -8,8 +8,8 @@ import frostnox.nightfall.data.TagsNF;
 import frostnox.nightfall.entity.EntityPart;
 import frostnox.nightfall.entity.IOrientedHitBoxes;
 import frostnox.nightfall.entity.Sex;
-import frostnox.nightfall.entity.ai.goals.*;
-import frostnox.nightfall.entity.ai.goals.target.TrackNearestTargetGoal;
+import frostnox.nightfall.entity.ai.goal.*;
+import frostnox.nightfall.entity.ai.goal.target.TrackNearestTargetGoal;
 import frostnox.nightfall.registry.ActionsNF;
 import frostnox.nightfall.registry.forge.AttributesNF;
 import frostnox.nightfall.registry.forge.DataSerializersNF;
@@ -25,15 +25,18 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -47,12 +50,19 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
     }
     private static final EntityPart[] OBB_PARTS = new EntityPart[]{EntityPart.BODY, EntityPart.NECK, EntityPart.HEAD};
     protected static final EntityDataAccessor<DrakefowlEntity.Type> TYPE = SynchedEntityData.defineId(DrakefowlEntity.class, DataSerializersNF.DRAKEFOWL_TYPE);
+    private final Goal fleePlayerGoal = new FleeEntityGoal<>(this, Player.class, 1.2D, 1.3D, (entity) -> {
+        Player player = (Player) entity;
+        if(player.isDeadOrDying() || player.isSpectator() || player.isCreative()) return false;
+        return true;
+    });
+    private final Goal breedGoal = new BreedGoal(this, 1);
     public float flap, flapSpeed, oFlapSpeed, oFlap, flapping = 1.0F, nextFlap = 1.0F;
     protected int ticksOffGround = 0;
     protected @Nullable Type fatherType;
 
     public DrakefowlEntity(EntityType<? extends TamableAnimalEntity> type, Level level, Sex sex) {
         super(type, level, sex);
+        updateGoals();
     }
 
     public static DrakefowlEntity createFemale(EntityType<? extends TamableAnimalEntity> type, Level level) {
@@ -79,6 +89,22 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
 
     public DrakefowlEntity.Type getDrakefowlType() {
         return getEntityData().get(TYPE);
+    }
+
+    @Override
+    protected void updateGoals() {
+        if(!level.isClientSide) {
+            goalSelector.removeGoal(fleePlayerGoal);
+            goalSelector.removeGoal(breedGoal);
+            //3: lure goal - after a random amount of time, approach sneaking players (player can stop sneaking once interest is active)
+            //7: egg goal - tamed, fed, find or create a nest and lay 1 egg at night / if not fed then just go to nest but don't make one
+            if(isTamed()) {
+                goalSelector.addGoal(6, breedGoal);
+            }
+            else {
+                goalSelector.addGoal(4, fleePlayerGoal);
+            }
+        }
     }
 
     @Override
@@ -117,16 +143,11 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
             if(entity.isDeadOrDying()) return false;
             else return entity.getType().is(TagsNF.DRAKEFOWL_PREDATOR);
         }));
-        goalSelector.addGoal(4, new FleeEntityGoal<>(this, Player.class, 1.2D, 1.3D, (entity) -> {
-            Player player = (Player) entity;
-            if(player.isDeadOrDying() || player.isSpectator() || player.isCreative()) return false;
-            return true;
-        }));
         goalSelector.addGoal(5, new FleeDamageGoal(this, 1.3D));
-        goalSelector.addGoal(7, new EatEntityGoal(this, 1D, 15, 2));
-        goalSelector.addGoal(8, new EatBlockGoal(this, 1D, 15, 2));
-        goalSelector.addGoal(9, new ReducedWanderLandGoal(this, 0.8D, 6));
-        goalSelector.addGoal(10, new RandomLookGoal(this, 0.02F / 6));
+        goalSelector.addGoal(8, new EatEntityGoal(this, 1D, 15, 2));
+        goalSelector.addGoal(9, new EatBlockGoal(this, 1D, 15, 2));
+        goalSelector.addGoal(10, new ReducedWanderLandGoal(this, 0.8D, 6));
+        goalSelector.addGoal(11, new RandomLookGoal(this, 0.02F / 6));
         if(sex == Sex.MALE) {
             goalSelector.addGoal(3, new RushAttackGoal(this, 1.2D));
             targetSelector.addGoal(1, new HurtByTargetGoal(this));
@@ -139,10 +160,6 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
                     return super.getFollowDistance() / 2;
                 }
             });
-        }
-        else {
-            //3: lure goal - after a random amount of time, approach sneaking players (player can stop sneaking once interest is active)
-            //6: egg goal - tamed female, fed, find or create a nest and lay 1 egg at night
         }
     }
 
@@ -168,6 +185,14 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
             ClientEngine.get().playEntitySound(this, SoundsNF.DRAKEFOWL_FLAP.get(), SoundSource.NEUTRAL, 1F, 1F + random.nextFloat(-0.05F, 0.05F));
         }
         fallDistance = 0;
+    }
+
+    @Override
+    @Nullable
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+        spawnDataIn = super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+        updateGoals();
+        return spawnDataIn;
     }
 
     @Override
@@ -242,6 +267,7 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
         getEntityData().set(TYPE, DrakefowlEntity.Type.values()[tag.getInt("type")]);
         ticksOffGround = tag.getInt("ticksOffGround");
         if(tag.contains("fatherType")) fatherType = DrakefowlEntity.Type.values()[tag.getInt("fatherType")];
+        updateGoals();
     }
 
     @Override
@@ -290,9 +316,9 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
     @Override
     public EnumMap<EntityPart, AnimationData> getDefaultAnimMap() {
         EnumMap<EntityPart, AnimationData> map = getGenericAnimMap();
-        map.put(EntityPart.BODY, new AnimationData(new Vector3f(0F/16F, -4.5F/16F, -3F/16F)));
-        map.put(EntityPart.NECK, new AnimationData(new Vector3f(0F/16F, -4F/16F, 0F/16F)));
-        map.put(EntityPart.HEAD, new AnimationData(new Vector3f(0F/16F, 0F/16F, 0F/16F)));
+        map.put(EntityPart.BODY, new AnimationData(new Vector3f(0F/16F, -4.5F/16F, -3F/16F), new Vector3f(0, 0, 0), new Vector3f(0, 17.5F, 0)));
+        map.put(EntityPart.NECK, new AnimationData(new Vector3f(0F/16F, -4F/16F, 0F/16F), new Vector3f(0, 0, 0), new Vector3f(0, -0.5F, -3)));
+        map.put(EntityPart.HEAD, new AnimationData(new Vector3f(0F/16F, 0F/16F, 0F/16F), new Vector3f(0, 0, 0), new Vector3f(0, 0, 0)));
         return map;
     }
 

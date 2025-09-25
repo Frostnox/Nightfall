@@ -29,6 +29,10 @@ public abstract class TamableAnimalEntity extends AnimalEntity implements ITamab
         this.sex = sex;
     }
 
+    public int getBreedTime() {
+        return breedTime;
+    }
+
     public boolean isSpecial() {
         return getEntityData().get(SPECIAL);
     }
@@ -47,6 +51,10 @@ public abstract class TamableAnimalEntity extends AnimalEntity implements ITamab
         other.breedWith(this);
         breedTime = 0;
         other.breedTime = 0;
+    }
+
+    protected void updateGoals() {
+
     }
 
     protected void onGestationEnd() {
@@ -97,6 +105,7 @@ public abstract class TamableAnimalEntity extends AnimalEntity implements ITamab
                         setAggressive(false);
                         noDespawnTicks = -1;
                         satiety = getMaxSatiety();
+                        updateGoals();
                         if(getCollapseAction() != null && getActionTracker().getActionID().equals(getCollapseAction()) && getActionTracker().isCharging()) {
                             getActionTracker().queue();
                             NetworkHandler.toAllTracking(this, new GenericEntityToClient(NetworkHandler.Type.QUEUE_ACTION_TRACKER, getId()));

@@ -9,6 +9,7 @@ import frostnox.nightfall.block.block.campfire.CampfireBlockNF;
 import frostnox.nightfall.block.block.cauldron.CauldronBlockNF;
 import frostnox.nightfall.block.block.cauldron.Task;
 import frostnox.nightfall.block.block.ChairBlock;
+import frostnox.nightfall.block.block.eggnest.EggNestBlock;
 import frostnox.nightfall.block.block.fireable.FireablePartialBlock;
 import frostnox.nightfall.block.block.nest.OverlayBurrowBlock;
 import frostnox.nightfall.block.block.pile.PileBlock;
@@ -801,6 +802,14 @@ public class BlockStateProviderNF extends BlockStateProvider {
                 .modelFile(model).rotationY(90).nextModel().modelFile(model).rotationY(180).nextModel().modelFile(model).rotationY(270).build());
     }
 
+    public void eggNestBlock(EggNestBlock block) {
+        for(int i = 0; i <= 4; i++) {
+            ModelFile model = models().withExistingParent(name(block) + "_" + i, resource("egg_nest_" + i)).texture("egg", resource(block, "_egg"));
+            getVariantBuilder(block).partialState().with(EggNestBlock.EGGS, i).addModels(ConfiguredModel.builder().modelFile(model).nextModel()
+                    .modelFile(model).rotationY(90).nextModel().modelFile(model).rotationY(180).nextModel().modelFile(model).rotationY(270).build());
+        }
+    }
+
     public void pileBlock(PileBlock block, ResourceLocation texture, String baseModelPath) {
         for(int i = 1; i <= 8; i++) {
             ModelFile model = models().withExistingParent(name(block) + "_" + i, resource(baseModelPath + "_" + i))
@@ -1127,6 +1136,7 @@ public class BlockStateProviderNF extends BlockStateProvider {
         for(var type : BlocksNF.STONE_TUNNELS.keySet()) axisBlock(BlocksNF.STONE_TUNNELS.get(type).get(),
                 resource(BlocksNF.STONE_BLOCKS.get(type).get()), resource(BlocksNF.STONE_TUNNELS.get(type).get()));
         for(var type : BlocksNF.SKARA_ROCK_CLUSTERS.keySet()) skaraNestBlock(BlocksNF.SKARA_ROCK_CLUSTERS.get(type).get(), blockTexture(BlocksNF.STONE_BLOCKS.get(type).get()), "rock");
+        eggNestBlock(BlocksNF.DRAKEFOWL_NEST.get());
 
         //Note that generated models used in generation of others will still need to be manually created before
         for(RegistryObject<? extends Block> block : BlocksNF.BLOCKS.getEntries()) {
