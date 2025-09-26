@@ -405,11 +405,12 @@ public class ActionsNF {
     public static final RegistryObject<DeerGraze> DEER_GRAZE = ACTIONS.register("deer_graze", () ->
             new DeerGraze(new Action.Properties().setChargeState(1), 8, 1, 10));
 
+    public static final RegistryObject<Action> DRAKEFOWL_BREED = ACTIONS.register("drakefowl_breed", () -> new Action(new Action.Properties().setSpecial(), 30));
     public static final RegistryObject<DrakefowlCollapse> DRAKEFOWL_COLLAPSE = ACTIONS.register("drakefowl_collapse", () ->
             new DrakefowlCollapse(new Action.Properties().setChargeState(1), 9, 1, 12));
     public static final RegistryObject<DrakefowlClaw> DRAKEFOWL_CLAW = ACTIONS.register("drakefowl_claw", () ->
             new DrakefowlClaw(15F, DamageType.SLASHING.asArray(), HurtSphere.DRAKEFOWL_CLAW, 1, CombatUtil.STUN_SHORT,
-                    new int[] {8, 4, 4}, new Action.Properties().setImpact(Impact.LOW)));
+                    new int[] {8, 4, 4}, new Action.Properties().setImpact(Impact.LOW).setSpecial()));
     public static final RegistryObject<DrakefowlSpit> DRAKEFOWL_SPIT = ACTIONS.register("drakefowl_spit", () ->
             new DrakefowlSpit(new Action.Properties().setSound(SoundsNF.DRAKEFOWL_SPIT), 12, 5, 8));
 

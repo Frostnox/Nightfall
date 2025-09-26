@@ -42,7 +42,7 @@ import java.util.function.Supplier;
 /**
  * Base action class for entities, used for generic keyframe animations.
  */
-public abstract class Action extends ForgeRegistryEntry<Action> {
+public class Action extends ForgeRegistryEntry<Action> {
     public static final int DEFAULT_DURATION = 2;
     public static final int CHARGE_MAX = 32768;
     private final int[] duration; //Array of states and duration for each
@@ -51,6 +51,7 @@ public abstract class Action extends ForgeRegistryEntry<Action> {
     private final boolean freeze;
     private final boolean sprinting;
     private final boolean crawling;
+    private final boolean special;
     private final int chainState; //State where action can be chained into another
     private final int chargeState; //State where action can be charged
     public final Set<ResourceLocation> linkedActions = new HashSet<>(); //All actions linked to this one via from, to, and conditionalTo
@@ -76,6 +77,7 @@ public abstract class Action extends ForgeRegistryEntry<Action> {
         this.freeze = false;
         this.sprinting = false;
         this.crawling = false;
+        this.special = false;
         this.duration = duration;
         this.sound = () -> null;
         this.extraSound = () -> null;
@@ -96,6 +98,7 @@ public abstract class Action extends ForgeRegistryEntry<Action> {
         this.freeze = properties.freeze;
         this.sprinting = properties.sprinting;
         this.crawling = properties.crawling;
+        this.special = properties.special;
         this.duration = duration;
         this.sound = properties.sound;
         this.extraSound = properties.extraSound;
@@ -345,6 +348,10 @@ public abstract class Action extends ForgeRegistryEntry<Action> {
         return crawling;
     }
 
+    public boolean isSpecial() {
+        return special;
+    }
+
     public boolean allowStaminaRegen(int state) {
         return true;
     }
@@ -538,6 +545,7 @@ public abstract class Action extends ForgeRegistryEntry<Action> {
         private boolean freeze = false;
         private boolean sprinting = false;
         private boolean crawling = false;
+        private boolean special = false;
         private Supplier<SoundEvent> sound = () -> null;
         private Supplier<SoundEvent> extraSound = () -> null;
         private TagKey<Block> harvestableBlocks;
@@ -586,6 +594,11 @@ public abstract class Action extends ForgeRegistryEntry<Action> {
 
         public Action.Properties setCrawling() {
             this.crawling = true;
+            return this;
+        }
+
+        public Action.Properties setSpecial() {
+            this.special = true;
             return this;
         }
 

@@ -10,6 +10,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
@@ -43,7 +44,7 @@ public abstract class TamableAnimalEntity extends AnimalEntity implements ITamab
     }
 
     public boolean canBreed() {
-        return breedTime > 0 && satiety == 0 && gestationTime == 0;
+        return breedTime > 0 && gestationTime == 0;
     }
 
     public final void breedPair(TamableAnimalEntity other) {
@@ -67,6 +68,8 @@ public abstract class TamableAnimalEntity extends AnimalEntity implements ITamab
 
     protected abstract boolean isFeedItem(ItemStack item);
 
+    public abstract ResourceLocation getBreedAction();
+
     @Override
     public boolean canBeLeashed(Player pPlayer) {
         return !isLeashed() && isTamed();
@@ -86,7 +89,7 @@ public abstract class TamableAnimalEntity extends AnimalEntity implements ITamab
 
     @Override
     public void addSatiety(int amount) {
-        if(satiety == 0 && gestationTime == 0 && amount >= getMaxSatiety() && isTamed()) breedTime = 20 * 15;
+        if(satiety == 0 && gestationTime == 0 && amount >= getMaxSatiety() && isTamed()) breedTime = 20 * 20;
         super.addSatiety(amount);
     }
 

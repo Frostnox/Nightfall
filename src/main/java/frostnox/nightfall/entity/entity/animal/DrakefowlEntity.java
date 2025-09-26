@@ -55,7 +55,7 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
         if(player.isDeadOrDying() || player.isSpectator() || player.isCreative()) return false;
         return true;
     });
-    private final Goal breedGoal = new BreedGoal(this, 1);
+    private final Goal breedGoal = new BreedGoal(this, 0.8);
     public float flap, flapSpeed, oFlapSpeed, oFlap, flapping = 1.0F, nextFlap = 1.0F;
     protected int ticksOffGround = 0;
     protected @Nullable Type fatherType;
@@ -127,6 +127,11 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
     }
 
     @Override
+    public ResourceLocation getBreedAction() {
+        return ActionsNF.DRAKEFOWL_BREED.getId();
+    }
+
+    @Override
     public boolean canTargetFromSound(LivingEntity target) {
         return target.getType().is(TagsNF.DRAKEFOWL_PREY) || target instanceof Player;
     }
@@ -171,7 +176,7 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
         else ticksOffGround = 0;
         oFlap = flap;
         oFlapSpeed = flapSpeed;
-        boolean shouldFlap = isAlive() && ((!onGround && ticksOffGround > 5) || getActionTracker().getActionID().equals(ActionsNF.DRAKEFOWL_CLAW.getId()));
+        boolean shouldFlap = isAlive() && ((!onGround && ticksOffGround > 5) || getActionTracker().getAction().isSpecial());
         flapSpeed += (!shouldFlap ? -1.0F : 4.0F) * 0.3F;
         flapSpeed = Mth.clamp(flapSpeed, 0.0F, 1.0F);
         if(shouldFlap && flapping < 1.0F) flapping = 1.0F;
