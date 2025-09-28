@@ -93,6 +93,7 @@ public class TagsNF {
     public static final TagKey<Block> RABBIT_FOOD_BLOCK = blockTag("rabbit_food_block");
     public static final TagKey<Block> DEER_FOOD_BLOCK = blockTag("deer_food_block");
     public static final TagKey<Block> DRAKEFOWL_FOOD_BLOCK = blockTag("drakefowl_food_block");
+    public static final TagKey<Block> DRAKEFOWL_NEST_BLOCK = blockTag("drakefowl_nest_block");
     public static final TagKey<Block> COCKATRICE_FOOD_BLOCK = blockTag("cockatrice_food_block");
     public static final TagKey<Block> COCKATRICE_SPAWN_BLOCK = blockTag("cockatrice_spawn_block");
     public static final TagKey<Block> SPIDER_FOOD_BLOCK = blockTag("spider_food_block");

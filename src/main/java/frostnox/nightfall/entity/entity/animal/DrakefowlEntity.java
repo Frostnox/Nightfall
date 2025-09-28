@@ -12,8 +12,10 @@ import frostnox.nightfall.entity.ai.goal.*;
 import frostnox.nightfall.entity.ai.goal.target.TrackNearestTargetGoal;
 import frostnox.nightfall.registry.ActionsNF;
 import frostnox.nightfall.registry.forge.AttributesNF;
+import frostnox.nightfall.registry.forge.BlocksNF;
 import frostnox.nightfall.registry.forge.DataSerializersNF;
 import frostnox.nightfall.registry.forge.SoundsNF;
+import frostnox.nightfall.util.LevelUtil;
 import frostnox.nightfall.util.animation.AnimationData;
 import frostnox.nightfall.util.math.OBB;
 import frostnox.nightfall.world.ContinentalWorldType;
@@ -52,10 +54,28 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
     protected static final EntityDataAccessor<DrakefowlEntity.Type> TYPE = SynchedEntityData.defineId(DrakefowlEntity.class, DataSerializersNF.DRAKEFOWL_TYPE);
     private final Goal fleePlayerGoal = new FleeEntityGoal<>(this, Player.class, 1.2D, 1.3D, (entity) -> {
         Player player = (Player) entity;
-        if(player.isDeadOrDying() || player.isSpectator() || player.isCreative()) return false;
-        return true;
+        return !player.isDeadOrDying() && !player.isCrouching() && !player.isSpectator() && !player.isCreative();
     });
     private final Goal breedGoal = new BreedGoal(this, 0.8);
+    private final Goal lureGoal = new LureGoal(this, 10, 0.9D);
+    private final Goal eggGoal = new LayEggGoal(this, BlocksNF.DRAKEFOWL_NEST, 1) {
+        @Override
+        protected boolean isNestSpotValid(BlockPos pos) {
+            return super.isNestSpotValid(pos) && mob.level.getBlockState(pos.below()).is(TagsNF.DRAKEFOWL_NEST_BLOCK);
+        }
+
+        @Override
+        public boolean canUse() {
+            if(LevelUtil.isDayTimeWithin(mob.level, LevelUtil.SUNRISE_TIME, LevelUtil.NIGHT_TIME)) return false;
+            else return super.canUse();
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            if(LevelUtil.isDayTimeWithin(mob.level, LevelUtil.SUNRISE_TIME, LevelUtil.NIGHT_TIME)) return false;
+            else return super.canContinueToUse();
+        }
+    };
     public float flap, flapSpeed, oFlapSpeed, oFlap, flapping = 1.0F, nextFlap = 1.0F;
     protected int ticksOffGround = 0;
     protected @Nullable Type fatherType;
@@ -96,13 +116,16 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
         if(!level.isClientSide) {
             goalSelector.removeGoal(fleePlayerGoal);
             goalSelector.removeGoal(breedGoal);
-            //3: lure goal - after a random amount of time, approach sneaking players (player can stop sneaking once interest is active)
-            //7: egg goal - tamed, fed, find or create a nest and lay 1 egg at night / if not fed then just go to nest but don't make one
+            goalSelector.removeGoal(lureGoal);
+            goalSelector.removeGoal(eggGoal);
             if(isTamed()) {
                 goalSelector.addGoal(6, breedGoal);
+                goalSelector.addGoal(7, lureGoal);
+                if(sex == Sex.FEMALE) goalSelector.addGoal(8, eggGoal);
             }
             else {
                 goalSelector.addGoal(4, fleePlayerGoal);
+                if(sex == Sex.FEMALE) goalSelector.addGoal(7, lureGoal);
             }
         }
     }
@@ -122,7 +145,7 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
     }
 
     @Override
-    protected boolean isFeedItem(ItemStack item) {
+    public boolean isFeedItem(ItemStack item) {
         return item.is(TagsNF.DRAKEFOWL_FOOD_ITEM);
     }
 
@@ -149,10 +172,10 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
             else return entity.getType().is(TagsNF.DRAKEFOWL_PREDATOR);
         }));
         goalSelector.addGoal(5, new FleeDamageGoal(this, 1.3D));
-        goalSelector.addGoal(8, new EatEntityGoal(this, 1D, 15, 2));
-        goalSelector.addGoal(9, new EatBlockGoal(this, 1D, 15, 2));
-        goalSelector.addGoal(10, new ReducedWanderLandGoal(this, 0.8D, 6));
-        goalSelector.addGoal(11, new RandomLookGoal(this, 0.02F / 6));
+        goalSelector.addGoal(9, new EatEntityGoal(this, 1D, 15, 2));
+        goalSelector.addGoal(10, new EatBlockGoal(this, 1D, 15, 2));
+        goalSelector.addGoal(11, new ReducedWanderLandGoal(this, 0.8D, 6));
+        goalSelector.addGoal(12, new RandomLookGoal(this, 0.02F / 6));
         if(sex == Sex.MALE) {
             goalSelector.addGoal(3, new RushAttackGoal(this, 1.2D));
             targetSelector.addGoal(1, new HurtByTargetGoal(this));

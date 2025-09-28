@@ -5,7 +5,6 @@ import frostnox.nightfall.entity.Sex;
 import frostnox.nightfall.network.NetworkHandler;
 import frostnox.nightfall.network.message.GenericEntityToClient;
 import frostnox.nightfall.network.message.entity.EatItemToClient;
-import frostnox.nightfall.registry.ActionsNF;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -32,6 +31,15 @@ public abstract class TamableAnimalEntity extends AnimalEntity implements ITamab
 
     public int getBreedTime() {
         return breedTime;
+    }
+
+    public int getGestationTime() {
+        return gestationTime;
+    }
+
+    public void endGestation() {
+        gestationTime = 0;
+        onGestationEnd();
     }
 
     public boolean isSpecial() {
@@ -66,7 +74,7 @@ public abstract class TamableAnimalEntity extends AnimalEntity implements ITamab
 
     protected abstract void breedWith(TamableAnimalEntity other);
 
-    protected abstract boolean isFeedItem(ItemStack item);
+    public abstract boolean isFeedItem(ItemStack item);
 
     public abstract ResourceLocation getBreedAction();
 

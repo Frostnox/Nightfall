@@ -3,6 +3,7 @@ package frostnox.nightfall.util;
 import com.mojang.authlib.GameProfile;
 import com.mojang.math.Vector3d;
 import frostnox.nightfall.block.*;
+import frostnox.nightfall.block.block.tree.TreeTrunkBlockEntity;
 import frostnox.nightfall.capability.*;
 import frostnox.nightfall.client.ClientEngine;
 import frostnox.nightfall.data.TagsNF;
@@ -14,14 +15,12 @@ import frostnox.nightfall.network.message.GenericEntityToClient;
 import frostnox.nightfall.network.message.world.DestroyBlockNoSoundToClient;
 import frostnox.nightfall.registry.KnowledgeNF;
 import frostnox.nightfall.registry.RegistriesNF;
-import frostnox.nightfall.registry.forge.BlocksNF;
-import frostnox.nightfall.registry.forge.ItemsNF;
-import frostnox.nightfall.registry.forge.ParticleTypesNF;
-import frostnox.nightfall.registry.forge.SoundsNF;
+import frostnox.nightfall.registry.forge.*;
 import frostnox.nightfall.util.data.WrappedInt;
 import frostnox.nightfall.util.math.OBB;
 import frostnox.nightfall.world.ContinentalWorldType;
 import frostnox.nightfall.world.OrientedEntityHitResult;
+import frostnox.nightfall.world.generation.tree.TreeGenerator;
 import frostnox.nightfall.world.inventory.AccessorySlot;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import it.unimi.dsi.fastutil.ints.IntSet;
@@ -29,6 +28,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectArraySet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.SectionPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -56,6 +56,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraft.world.level.chunk.ChunkSource;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -79,10 +80,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
 import java.awt.*;
+import java.util.*;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
 import java.util.function.Predicate;
 
 public class LevelUtil {
@@ -665,5 +664,44 @@ public class LevelUtil {
             }
         }
         return items;
+    }
+
+    /**
+     * @param range distance to search from center, no more than 16 blocks
+     * @return all block entities within specified area
+     */
+    public static List<BlockEntity> getBlockEntities(Level level, BlockPos centerPos, int range, Predicate<BlockEntity> filter) {
+        if(range < 0 || range > 16) throw new IllegalArgumentException("Range must be between 0 and 16.");
+        int centerX = SectionPos.blockToSectionCoord(centerPos.getX()), centerZ = SectionPos.blockToSectionCoord(centerPos.getZ());
+        int minX = SectionPos.blockToSectionCoord(centerPos.getX() - range), maxX = SectionPos.blockToSectionCoord(centerPos.getX() + range);
+        int minZ = SectionPos.blockToSectionCoord(centerPos.getZ() - range), maxZ = SectionPos.blockToSectionCoord(centerPos.getZ() + range);
+
+        Set<LevelChunk> chunks = new ObjectArraySet<>(9 * (1 + range/16));
+        ChunkSource source = level.getChunkSource();
+        chunks.add(source.getChunk(centerX, centerZ, true));
+        if(minX != centerX) chunks.add(source.getChunk(minX, centerZ, true));
+        if(minZ != centerZ) chunks.add(source.getChunk(centerX, minZ, true));
+        if(maxX != centerX) chunks.add(source.getChunk(maxX, centerZ, true));
+        if(maxZ != centerZ) chunks.add(source.getChunk(centerX, maxZ, true));
+        chunks.add(source.getChunk(minX, minZ, true));
+        if(maxX != minX) chunks.add(source.getChunk(maxX, minZ, true));
+        if(maxZ != minZ) chunks.add(source.getChunk(minX, maxZ, true));
+        chunks.add(source.getChunk(maxX, maxZ, true));
+
+        List<BlockEntity> nearbyBlocks = new ArrayList<>(16);
+        for(LevelChunk chunk : chunks) {
+            for(BlockEntity entity : chunk.getBlockEntities().values()) {
+                BlockPos pos = entity.getBlockPos();
+                if(Math.abs(centerPos.getX() - pos.getX()) <= range && Math.abs(centerPos.getY() - pos.getY()) <= range
+                        && Math.abs(centerPos.getZ() - pos.getZ()) <= range && filter.test(entity)) {
+                    nearbyBlocks.add(entity);
+                }
+            }
+        }
+        return nearbyBlocks;
+    }
+
+    public static boolean isSkyUnobstructed(Level level, BlockPos pos) {
+        return level.canSeeSky(pos) && level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, pos).getY() - 1 < pos.getY();
     }
 }

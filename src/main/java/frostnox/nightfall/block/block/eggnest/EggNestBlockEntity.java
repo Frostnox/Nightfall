@@ -19,7 +19,6 @@ public class EggNestBlockEntity extends TimeDataBlockEntity {
         super.load(tag);
         for(int i = 0; i < hatchTimes.length; i++) hatchTimes[i] = tag.getInt("hatch" + i);
         for(int i = 0; i < eggData.length; i++) eggData[i] = tag.getInt("data" + i);
-        occupied = tag.getBoolean("occupied");
     }
 
     @Override
@@ -27,6 +26,5 @@ public class EggNestBlockEntity extends TimeDataBlockEntity {
         super.saveAdditional(tag);
         for(int i = 0; i < hatchTimes.length; i++) tag.putInt("hatch" + i, hatchTimes[i]);
         for(int i = 0; i < eggData.length; i++) tag.putInt("data" + i, eggData[i]);
-        tag.putBoolean("occupied", occupied);
     }
 }
