@@ -106,7 +106,7 @@ public class DregEntity extends UndeadEntity {
         if(!level.isClientSide) {
             if(buildCooldown > 0) buildCooldown--;
             //If necessary, look for new ally and update client
-            if(tickCount % 30 == 0 && (ally == null || ally instanceof DregEntity || distanceToSqr(ally) > 30 * 30)) {
+            if(randTickCount % 30 == 0 && (ally == null || ally instanceof DregEntity || distanceToSqr(ally) > 30 * 30)) {
                 List<Entity> entities = level.getEntities(this, getBoundingBox().inflate(16D, 8D, 16D));
                 UndeadEntity candidate = null;
                 int cPrio = 0;

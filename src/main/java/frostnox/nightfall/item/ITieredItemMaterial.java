@@ -2,7 +2,6 @@ package frostnox.nightfall.item;
 
 import frostnox.nightfall.block.IMetal;
 import net.minecraft.world.item.Tier;
-import net.minecraft.world.item.crafting.Ingredient;
 
 import javax.annotation.Nullable;
 import java.util.Locale;

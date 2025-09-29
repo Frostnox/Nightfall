@@ -81,7 +81,7 @@ public abstract class MoveToEntityGoal extends Goal {
     @Override
     public void tick() {
         if(mob.distanceToSqr(target) > minDistSqr) {
-            if(mob.tickCount % 20 == 0) {
+            if(mob.randTickCount % 20 == 0) {
                 path = mob.getNavigator().findPath(target, 0);
                 mob.getNavigator().moveTo(path, speedModifier);
             }

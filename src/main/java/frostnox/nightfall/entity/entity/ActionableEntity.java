@@ -2,7 +2,6 @@ package frostnox.nightfall.entity.entity;
 
 import com.mojang.math.Vector3d;
 import com.mojang.math.Vector3f;
-import frostnox.nightfall.Nightfall;
 import frostnox.nightfall.action.*;
 import frostnox.nightfall.block.IAdjustableNodeType;
 import frostnox.nightfall.capability.GlobalChunkData;
@@ -55,13 +54,10 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.entity.decoration.LeashFenceKnotEntity;
-import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.SoundType;
@@ -84,6 +80,7 @@ import java.util.List;
 import java.util.UUID;
 
 public abstract class ActionableEntity extends PathfinderMob {
+    public static final float PUSH_ZERO = 0, PUSH_LOW = 1, PUSH_MEDIUM = 2, PUSH_HIGH = 3, PUSH_MAX = 4;
     protected static final EntityDataAccessor<Integer> RANDOM = SynchedEntityData.defineId(ActionableEntity.class, EntityDataSerializers.INT);
     public @Nullable BlockPos lastInteractPos = null; //Last block that was mined, used, etc
     public @Nullable BlockPos lastTargetPos = null; //Last position of target before it was lost
@@ -95,6 +92,7 @@ public abstract class ActionableEntity extends PathfinderMob {
     public int noDespawnTicks = -1;
     public boolean reducedAI = false;
     protected long lastTickedGameTime;
+    public int randTickCount;
 
     public ActionableEntity(EntityType<? extends ActionableEntity> type, Level level) {
         super(type, level);
@@ -603,11 +601,22 @@ public abstract class ActionableEntity extends PathfinderMob {
         else return super.getLastDamageSource();
     }
 
+    public float getPushResistance() {
+        return PUSH_MEDIUM;
+    }
+
+    public float getPushForce() {
+        return PUSH_MEDIUM;
+    }
+
     @Override
     protected void pushEntities() {
         if(!isDeadOrDying()) {
             List<Entity> entities = level.isClientSide ? ClientEngine.get().getPlayerToPush(this) :
-                level.getEntities(this, getBoundingBox(), EntitySelector.pushableBy(this));
+                level.getEntities(this, getBoundingBox(), EntitySelector.pushableBy(this).and((target) -> {
+                    float pushResistance = target instanceof ActionableEntity actionable ? actionable.getPushResistance() : PUSH_MEDIUM;
+                    return getPushForce() >= pushResistance;
+                }));
             if(!entities.isEmpty()) {
                 int maxGroup = level.getGameRules().getInt(GameRules.RULE_MAX_ENTITY_CRAMMING);
                 if(maxGroup > 0 && entities.size() > maxGroup - 1 && random.nextInt(4) == 0) {
@@ -618,6 +627,31 @@ public abstract class ActionableEntity extends PathfinderMob {
                     if(count > maxGroup - 1) hurt(DamageSource.CRAMMING, 6.0F);
                 }
                 for(Entity entity : entities) doPush(entity);
+            }
+        }
+    }
+
+    @Override
+    public void push(Entity pusher) {
+        if(!isPassengerOfSameVehicle(pusher) && !pusher.noPhysics && !noPhysics) {
+            double dX = pusher.getX() - getX();
+            double dZ = pusher.getZ() - getZ();
+            double maxD = Mth.absMax(dX, dZ);
+            if(maxD >= 0.01) {
+                maxD = Math.sqrt(maxD);
+                dX /= maxD;
+                dZ /= maxD;
+                double scale = 1.0D / maxD;
+                if(scale > 1.0D) scale = 1.0D;
+                dX *= scale * 0.05;
+                dZ *= scale * 0.05;
+
+                if(!isVehicle() && (pusher instanceof ActionableEntity actionable ? actionable.getPushForce() : PUSH_MEDIUM) >= getPushResistance()) {
+                    push(-dX, 0.0D, -dZ);
+                }
+                if(!pusher.isVehicle() && (pusher instanceof ActionableEntity actionable ? actionable.getPushResistance() : PUSH_MEDIUM) <= getPushForce()) {
+                    pusher.push(dX, 0.0D, dZ);
+                }
             }
         }
     }
@@ -690,8 +724,9 @@ public abstract class ActionableEntity extends PathfinderMob {
 
     @Override
     public void tick() {
+        randTickCount = getSynchedRandom() + tickCount;
         if(!level.isClientSide) {
-            if(tickCount % 200 == 0) {
+            if(randTickCount % 200 == 0) {
                 Entity nearPlayer = level.getNearestPlayer(this, -1);
                 if(nearPlayer == null) reducedAI = true;
                 else reducedAI = nearPlayer.distanceToSqr(this) > getReducedAIThresholdSqr();

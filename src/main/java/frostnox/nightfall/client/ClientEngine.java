@@ -29,6 +29,7 @@ import frostnox.nightfall.client.render.BlockEntityAsItemRenderer;
 import frostnox.nightfall.client.render.entity.PlayerRendererNF;
 import frostnox.nightfall.data.TagsNF;
 import frostnox.nightfall.encyclopedia.Entry;
+import frostnox.nightfall.entity.entity.ActionableEntity;
 import frostnox.nightfall.item.Armament;
 import frostnox.nightfall.item.TieredArmorMaterial;
 import frostnox.nightfall.item.TieredItemMaterial;
@@ -40,6 +41,7 @@ import frostnox.nightfall.registry.ActionsNF;
 import frostnox.nightfall.registry.EntriesNF;
 import frostnox.nightfall.registry.forge.ItemsNF;
 import frostnox.nightfall.registry.forge.SoundsNF;
+import frostnox.nightfall.util.LevelUtil;
 import frostnox.nightfall.util.MathUtil;
 import frostnox.nightfall.util.data.SingleSortedSet;
 import frostnox.nightfall.util.data.Vec3f;
@@ -727,8 +729,9 @@ public class ClientEngine {
         return mc.player;
     }
 
-    public List<Entity> getPlayerToPush(Entity pusher) {
-        if(mc.player != null && pusher.getBoundingBox().intersects(mc.player.getBoundingBox()) && EntitySelector.pushableBy(pusher).test(mc.player)) {
+    public List<Entity> getPlayerToPush(ActionableEntity pusher) {
+        if(mc.player != null && pusher.getPushForce() >= LevelUtil.PLAYER_PUSH && pusher.getBoundingBox().intersects(mc.player.getBoundingBox())
+                && EntitySelector.pushableBy(pusher).test(mc.player)) {
             return List.of(mc.player);
         }
         return List.of();

@@ -155,6 +155,16 @@ public class RabbitEntity extends AnimalEntity implements IOrientedHitBoxes, IHo
         if(tag.contains("homePos")) homePos = NbtUtils.readBlockPos(tag.getCompound("homePos"));
     }
 
+    @Override
+    public float getPushResistance() {
+        return PUSH_LOW;
+    }
+
+    @Override
+    public float getPushForce() {
+        return PUSH_LOW;
+    }
+
     public static class GroupData extends AgeableMob.AgeableMobGroupData {
         public final Type type;
 
@@ -194,16 +204,6 @@ public class RabbitEntity extends AnimalEntity implements IOrientedHitBoxes, IHo
     @Override
     protected float getStandingEyeHeight(Pose poseIn, EntityDimensions sizeIn) {
         return sizeIn.height * 0.95F;
-    }
-
-    @Override
-    protected void pushEntities() {
-
-    }
-
-    @Override
-    protected void doPush(Entity pEntity) {
-
     }
 
     @Override

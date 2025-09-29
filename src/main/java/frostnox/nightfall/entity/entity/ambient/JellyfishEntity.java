@@ -110,7 +110,7 @@ public class JellyfishEntity extends AquaticAmbientEntity {
     }
 
     protected boolean shouldPropel() {
-        if(isAlive() && tickCount % 8 == 0 && random.nextBoolean()) {
+        if(isAlive() && randTickCount % 8 == 0 && random.nextBoolean()) {
             //Sink at day to low sky light
             if(LevelUtil.isDayTimeWithin(level, LevelUtil.SUNRISE_TIME, LevelUtil.NIGHT_TIME)) {
                 return level.getBrightness(LightLayer.SKY, eyeBlockPosition()) <= lightSensitivity
@@ -167,7 +167,7 @@ public class JellyfishEntity extends AquaticAmbientEntity {
     @Override
     protected void pushEntities() {
         if(level.isClientSide) return;
-        List<Entity> entities = level.getEntities(this, this.getBoundingBox(), EntitySelector.pushableBy(this));
+        List<Entity> entities = level.getEntities(this, getBoundingBox(), EntitySelector.pushableBy(this));
         if(!entities.isEmpty()) {
             int maxGroup = level.getGameRules().getInt(GameRules.RULE_MAX_ENTITY_CRAMMING);
             if(maxGroup > 0 && entities.size() > maxGroup - 1 && random.nextInt(4) == 0) {
@@ -182,7 +182,8 @@ public class JellyfishEntity extends AquaticAmbientEntity {
             if(getJellyfishType().paralyzing) damageSource.setEffects(new AttackEffect(EffectsNF.PARALYSIS, 60 * 20, 0, 1));
             boolean stung = false;
             for(Entity entity : entities) {
-                if(entity instanceof AmbientEntity) doPush(entity);
+                float pushResistance = entity instanceof ActionableEntity actionable ? actionable.getPushResistance() : PUSH_MEDIUM;
+                if(getPushForce() >= pushResistance) doPush(entity);
                 if(stingCooldown <= 0 && !entity.getType().is(TagsNF.JELLYFISH_IMMUNE)) {
                     stung = true;
                     entity.hurt(damageSource, 5);

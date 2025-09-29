@@ -93,7 +93,8 @@ public class CombatUtil {
         float sin = Mth.sin(MathUtil.toRadians(entity.getYHeadRot()));
         double xMove = -magnitude * sin;
         double zMove = magnitude * cos;
-        entity.setDeltaMovement(vec.x() + xMove, vec.y(), vec.z() + zMove);
+        double scalar = entity.isInWaterOrBubble() ? 0.5 : 1;
+        entity.setDeltaMovement(vec.x() + xMove * scalar, vec.y(), vec.z() + zMove * scalar);
     }
 
     /**

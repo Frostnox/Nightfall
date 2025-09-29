@@ -82,4 +82,14 @@ public abstract class BabyAnimalEntity extends AnimalEntity {
         setAge(tag.getInt("age"));
         getEntityData().set(SPECIAL, tag.getBoolean("special"));
     }
+
+    @Override
+    public float getPushResistance() {
+        return PUSH_ZERO;
+    }
+
+    @Override
+    public float getPushForce() {
+        return PUSH_ZERO;
+    }
 }

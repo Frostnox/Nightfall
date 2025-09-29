@@ -234,6 +234,20 @@ public class EctoplasmEntity extends MonsterEntity {
     }
 
     @Override
+    public float getPushResistance() {
+        return switch(size) {
+            case LARGE -> PUSH_HIGH;
+            case MEDIUM -> PUSH_MEDIUM;
+            case SMALL -> PUSH_LOW;
+        };
+    }
+
+    @Override
+    public float getPushForce() {
+        return getPushResistance();
+    }
+
+    @Override
     protected float getStandingEyeHeight(Pose poseIn, EntityDimensions sizeIn) {
         return sizeIn.height / 2;
     }

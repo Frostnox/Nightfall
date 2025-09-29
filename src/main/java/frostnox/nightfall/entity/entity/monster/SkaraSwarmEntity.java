@@ -115,7 +115,7 @@ public class SkaraSwarmEntity extends HungryMonsterEntity implements IHomeEntity
                 level.addParticle(ParticleTypesNF.SKARA.get(), getX() + (random.nextFloat() - 0.5F), getY(), getZ() + (random.nextFloat() - 0.5F),
                         MathUtil.toRadians(getYRot()), (xo != getX() || zo != getZ()) ? 1 : 0, getId());
             }
-            if((getSynchedRandom() + tickCount) % 37 == 0) {
+            if(randTickCount % 37 == 0) {
                 ClientEngine.get().playEntitySound(this, SoundsNF.SKARA_SWARM_AMBIENT.get(), SoundSource.HOSTILE, 0.35F, 0.95F + random.nextFloat() * 0.1F);
             }
         }
@@ -136,6 +136,16 @@ public class SkaraSwarmEntity extends HungryMonsterEntity implements IHomeEntity
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         if(tag.contains("homePos")) homePos = NbtUtils.readBlockPos(tag.getCompound("homePos"));
+    }
+
+    @Override
+    public float getPushResistance() {
+        return PUSH_ZERO;
+    }
+
+    @Override
+    public float getPushForce() {
+        return PUSH_ZERO;
     }
 
     @Override

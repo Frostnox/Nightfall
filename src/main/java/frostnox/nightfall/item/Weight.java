@@ -8,7 +8,7 @@ public enum Weight {
 
     private int id;
 
-    private Weight(int id) {
+    Weight(int id) {
         this.id = id;
     }
 

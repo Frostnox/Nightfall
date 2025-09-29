@@ -209,7 +209,7 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
             setDeltaMovement(velocity.multiply(1.0D, 0.6D, 1.0D));
         }
         flap += flapping * 2.0F;
-        if(shouldFlap && level.isClientSide && (getSynchedRandom() + tickCount) % 11 == 0) {
+        if(shouldFlap && level.isClientSide && randTickCount % 11 == 0) {
             ClientEngine.get().playEntitySound(this, SoundsNF.DRAKEFOWL_FLAP.get(), SoundSource.NEUTRAL, 1F, 1F + random.nextFloat(-0.05F, 0.05F));
         }
         fallDistance = 0;
@@ -296,6 +296,16 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
         ticksOffGround = tag.getInt("ticksOffGround");
         if(tag.contains("fatherType")) fatherType = DrakefowlEntity.Type.values()[tag.getInt("fatherType")];
         updateGoals();
+    }
+
+    @Override
+    public float getPushResistance() {
+        return PUSH_LOW;
+    }
+
+    @Override
+    public float getPushForce() {
+        return PUSH_LOW;
     }
 
     @Override

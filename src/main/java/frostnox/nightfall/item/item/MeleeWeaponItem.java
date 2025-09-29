@@ -14,6 +14,7 @@ import frostnox.nightfall.registry.ActionsNF;
 import frostnox.nightfall.registry.KnowledgeNF;
 import frostnox.nightfall.registry.forge.SoundsNF;
 import frostnox.nightfall.world.ToolActionsNF;
+import frostnox.nightfall.item.Weight;
 import it.unimi.dsi.fastutil.floats.FloatImmutableList;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;

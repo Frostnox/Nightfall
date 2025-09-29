@@ -299,6 +299,16 @@ public class SpiderEntity extends HungryMonsterEntity implements IChaser, IHomeE
         alertedTime = tag.getInt("alertedTime");
     }
 
+    @Override
+    public float getPushResistance() {
+        return PUSH_LOW;
+    }
+
+    @Override
+    public float getPushForce() {
+        return PUSH_LOW;
+    }
+
     public static class GroupData extends AgeableMob.AgeableMobGroupData {
         public final Type type;
 

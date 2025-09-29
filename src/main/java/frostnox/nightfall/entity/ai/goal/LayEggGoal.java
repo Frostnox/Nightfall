@@ -123,11 +123,11 @@ public class LayEggGoal extends Goal {
 
     @Override
     public void tick() {
-        if(mob.refreshPath || (mob.getSynchedRandom() + mob.tickCount) % 20 < 2) {
+        if(mob.refreshPath || mob.randTickCount % 20 < 2) {
             mob.getNavigator().moveTo(pos.x, pos.y, pos.z, speedModifier, 0);
         }
         if(mob.distanceToSqr(pos) < 0.25 * 0.25) {
-            if(mob.tickCount % 100 < 2) {
+            if(mob.randTickCount % 100 < 2) {
                 BlockPos.MutableBlockPos adjPos = blockPos.mutable();
                 lookX = 0;
                 lookZ = 0;
