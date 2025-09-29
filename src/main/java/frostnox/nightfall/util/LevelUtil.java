@@ -136,6 +136,13 @@ public class LevelUtil {
     }
 
     /**
+     * @param time 0 <= time <= day length
+     */
+    public static boolean isDayTimeExactly(Level level, long time) {
+        return Math.floorMod(level.getDayTime(), getDayLength(level)) == time;
+    }
+
+    /**
      * @param startTime 0 <= time <= day length
      * @param endTime 0 <= time <= day length
      */

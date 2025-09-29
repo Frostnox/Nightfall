@@ -28,7 +28,7 @@ public class DrakefowlSpit extends Action {
 
     @Override
     public double getMaxDistToStart(LivingEntity user) {
-        return 15;
+        return 13;
     }
 
     @Override

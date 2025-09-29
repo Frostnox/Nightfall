@@ -3,6 +3,7 @@ package frostnox.nightfall.entity.entity.animal;
 import com.mojang.math.Vector3d;
 import com.mojang.math.Vector3f;
 import frostnox.nightfall.block.IFoodBlock;
+import frostnox.nightfall.capability.ChunkData;
 import frostnox.nightfall.client.ClientEngine;
 import frostnox.nightfall.data.TagsNF;
 import frostnox.nightfall.entity.EntityPart;
@@ -10,11 +11,9 @@ import frostnox.nightfall.entity.IOrientedHitBoxes;
 import frostnox.nightfall.entity.Sex;
 import frostnox.nightfall.entity.ai.goal.*;
 import frostnox.nightfall.entity.ai.goal.target.TrackNearestTargetGoal;
+import frostnox.nightfall.entity.entity.monster.CockatriceEntity;
 import frostnox.nightfall.registry.ActionsNF;
-import frostnox.nightfall.registry.forge.AttributesNF;
-import frostnox.nightfall.registry.forge.BlocksNF;
-import frostnox.nightfall.registry.forge.DataSerializersNF;
-import frostnox.nightfall.registry.forge.SoundsNF;
+import frostnox.nightfall.registry.forge.*;
 import frostnox.nightfall.util.LevelUtil;
 import frostnox.nightfall.util.animation.AnimationData;
 import frostnox.nightfall.util.math.OBB;
@@ -66,13 +65,13 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
 
         @Override
         public boolean canUse() {
-            if(LevelUtil.isDayTimeWithin(mob.level, LevelUtil.SUNRISE_TIME, LevelUtil.NIGHT_TIME)) return false;
+            if(LevelUtil.isDayTimeWithin(mob.level, LevelUtil.MORNING_TIME, LevelUtil.NIGHT_TIME)) return false;
             else return super.canUse();
         }
 
         @Override
         public boolean canContinueToUse() {
-            if(LevelUtil.isDayTimeWithin(mob.level, LevelUtil.SUNRISE_TIME, LevelUtil.NIGHT_TIME)) return false;
+            if(LevelUtil.isDayTimeWithin(mob.level, LevelUtil.MORNING_TIME, LevelUtil.NIGHT_TIME)) return false;
             else return super.canContinueToUse();
         }
     };
@@ -165,8 +164,14 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
     }
 
     @Override
+    public ResourceLocation pickActionEnemy(double distanceSqr, Entity target) {
+        if(distanceSqr > 2 * 2 && random.nextFloat() < Math.min(0.9, distanceSqr / (5 * 5))) return ActionsNF.DRAKEFOWL_SPIT.getId();
+        else return ActionsNF.DRAKEFOWL_CLAW.getId();
+    }
+
+    @Override
     protected void registerGoals() {
-        goalSelector.addGoal(1, new FloatAtHeightGoal(this, 0.25D));
+        goalSelector.addGoal(1, new FloatAtHeightGoal(this, 0.4D));
         goalSelector.addGoal(2, new FleeEntityGoal<>(this, LivingEntity.class, 1.2D, 1.3D, (entity) -> {
             if(entity.isDeadOrDying()) return false;
             else return entity.getType().is(TagsNF.DRAKEFOWL_PREDATOR);
@@ -174,9 +179,15 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
         goalSelector.addGoal(5, new FleeDamageGoal(this, 1.3D));
         goalSelector.addGoal(9, new EatEntityGoal(this, 1D, 15, 2));
         goalSelector.addGoal(10, new EatBlockGoal(this, 1D, 15, 2));
-        goalSelector.addGoal(11, new ReducedWanderLandGoal(this, 0.8D, 6));
+        goalSelector.addGoal(11, new ReducedWanderLandGoal(this, 0.8D, 6) {
+            @Override
+            protected @Nullable Vec3 getPosition() {
+                Vec3 pos = super.getPosition();
+                return pos != null && mob.level.getBlockState(new BlockPos(pos)).is(BlocksNF.DRAKEFOWL_NEST.get()) ? null : pos;
+            }
+        });
         goalSelector.addGoal(12, new RandomLookGoal(this, 0.02F / 6));
-        if(sex == Sex.MALE) {
+        if(getType() == EntitiesNF.DRAKEFOWL_ROOSTER.get()) { //Function gets called mid-constructor so can't use sex
             goalSelector.addGoal(3, new RushAttackGoal(this, 1.2D));
             targetSelector.addGoal(1, new HurtByTargetGoal(this));
             targetSelector.addGoal(2, new TrackNearestTargetGoal<>(this, LivingEntity.class, true, (entity) -> {
@@ -185,7 +196,7 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
             }) {
                 @Override
                 protected double getFollowDistance() {
-                    return super.getFollowDistance() / 2;
+                    return super.getFollowDistance() * 2F/3F;
                 }
             });
         }
@@ -213,12 +224,34 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
             ClientEngine.get().playEntitySound(this, SoundsNF.DRAKEFOWL_FLAP.get(), SoundSource.NEUTRAL, 1F, 1F + random.nextFloat(-0.05F, 0.05F));
         }
         fallDistance = 0;
+        if(level.isClientSide && isTamed() && sex == Sex.MALE && isAlive() && LevelUtil.isDayTimeExactly(level, LevelUtil.MORNING_TIME)) {
+            ClientEngine.get().playUniqueEntitySound(this, SoundsNF.DRAKEFOWL_CROW.get(), SoundSource.NEUTRAL, 2F, 1F);
+        }
+    }
+
+    public static class GroupData extends AgeableMob.AgeableMobGroupData {
+        public final Type type;
+
+        public GroupData(Type type) {
+            super(0F);
+            this.type = type;
+        }
     }
 
     @Override
     @Nullable
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
         spawnDataIn = super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+        Type type;
+        if(spawnDataIn instanceof GroupData data) type = data.type;
+        else {
+            float temperature = ChunkData.get(worldIn.getLevel().getChunkAt(blockPosition())).getTemperature(blockPosition());
+            if(temperature > 0.7F) type = Type.BRONZE;
+            else type = Type.EMERALD;
+            spawnDataIn = new GroupData(type);
+        }
+        getEntityData().set(TYPE, type);
+        if(sex == Sex.MALE && random.nextInt() % 512 == 0) getEntityData().set(SPECIAL, true);
         updateGoals();
         return spawnDataIn;
     }

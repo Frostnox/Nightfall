@@ -99,7 +99,6 @@ import org.apache.commons.compress.utils.Lists;
 import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.*;
-import java.util.function.Predicate;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -209,7 +208,7 @@ public class ClientEngine {
     public @Nullable EntryClient openEntry;
     private final HashMap<EncyclopediaCategory, HashMap<ResourceLocation, EntryClient>> categories = new HashMap<>(); //Contains all categories, each with unique client entries
     private final List<EncyclopediaCategory> orderedCategories = new ObjectArrayList<>(5);
-    private final Set<SoundEvent> newToastSounds = new ObjectArraySet<>(4); //Toast sounds played this tick
+    private final Set<SoundEvent> soundsPlayedThisTick = new ObjectArraySet<>(4); //Sounds played this tick
 
     private ClientEngine() {
         MENU_MUSIC = new Music(SoundsNF.MUSIC_MENU.get(), 20, 20 * 20, true);
@@ -464,7 +463,7 @@ public class ClientEngine {
 
     public void tickStart() {
         tickCount++;
-        newToastSounds.clear();
+        soundsPlayedThisTick.clear();
         LocalPlayer player = mc.player;
         if(player != null && player.isAlive()) {
             IPlayerData capP = PlayerData.get(player);
@@ -976,8 +975,10 @@ public class ClientEngine {
     }
 
     public void playToastSound(SoundEvent sound, float pitch, float volume) {
-        if(!newToastSounds.contains(sound)) mc.getSoundManager().play(SimpleSoundInstance.forUI(sound, pitch, volume));
-        else newToastSounds.add(sound);
+        if(!soundsPlayedThisTick.contains(sound)) {
+            mc.getSoundManager().play(SimpleSoundInstance.forUI(sound, pitch, volume));
+            soundsPlayedThisTick.add(sound);
+        }
     }
 
     public void tryCategoryNotification(ResourceLocation entryId) {
@@ -1018,6 +1019,13 @@ public class ClientEngine {
 
     public void playEntitySound(Entity pEntity, SoundEvent pEvent, SoundSource pCategory, float pVolume, float pPitch) {
         pEntity.level.playSound(mc.player, pEntity, pEvent, pCategory, pVolume, pPitch);
+    }
+
+    public void playUniqueEntitySound(Entity pEntity, SoundEvent sound, SoundSource pCategory, float pVolume, float pPitch) {
+        if(!soundsPlayedThisTick.contains(sound) && mc.player != null && mc.player.distanceToSqr(pEntity) <= pVolume * 16 * pVolume * 16) {
+            pEntity.level.playSound(mc.player, pEntity, sound, pCategory, pVolume, pPitch);
+            soundsPlayedThisTick.add(sound);
+        }
     }
 
     /**

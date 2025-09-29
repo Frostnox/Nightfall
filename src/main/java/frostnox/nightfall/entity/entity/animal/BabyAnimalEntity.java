@@ -1,5 +1,7 @@
 package frostnox.nightfall.entity.entity.animal;
 
+import frostnox.nightfall.entity.ai.goal.FloatAtHeightGoal;
+import frostnox.nightfall.entity.entity.ActionableEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -20,6 +22,8 @@ public abstract class BabyAnimalEntity extends AnimalEntity {
         this.matureTime = matureTime;
     }
 
+    protected abstract ActionableEntity createMatureEntity();
+
     public boolean isSpecial() {
         return getEntityData().get(SPECIAL);
     }
@@ -32,7 +36,10 @@ public abstract class BabyAnimalEntity extends AnimalEntity {
     public void setAge(int age) {
         this.age = age;
         if(age >= matureTime) {
-            //TODO: Replace this baby with an adult
+            ActionableEntity adult = createMatureEntity();
+            adult.moveTo(getX(), getY(), getZ(), getYRot(), getXRot());
+            discard();
+            level.addFreshEntity(adult);
         }
     }
 

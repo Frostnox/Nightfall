@@ -6,9 +6,11 @@ import frostnox.nightfall.block.IFoodBlock;
 import frostnox.nightfall.data.TagsNF;
 import frostnox.nightfall.entity.EntityPart;
 import frostnox.nightfall.entity.IOrientedHitBoxes;
-import frostnox.nightfall.registry.forge.AttributesNF;
-import frostnox.nightfall.registry.forge.DataSerializersNF;
-import frostnox.nightfall.registry.forge.SoundsNF;
+import frostnox.nightfall.entity.Sex;
+import frostnox.nightfall.entity.ai.goal.*;
+import frostnox.nightfall.entity.ai.goal.target.TrackNearestTargetGoal;
+import frostnox.nightfall.entity.entity.ActionableEntity;
+import frostnox.nightfall.registry.forge.*;
 import frostnox.nightfall.util.animation.AnimationData;
 import frostnox.nightfall.util.math.OBB;
 import frostnox.nightfall.world.ContinentalWorldType;
@@ -16,16 +18,20 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 
+import javax.annotation.Nullable;
 import java.util.EnumMap;
 
 public class DrakefowlBabyEntity extends BabyAnimalEntity implements IOrientedHitBoxes {
@@ -38,7 +44,7 @@ public class DrakefowlBabyEntity extends BabyAnimalEntity implements IOrientedHi
 
     public static AttributeSupplier.Builder getAttributeMap() {
         return createAttributes().add(Attributes.MAX_HEALTH, 10D)
-                .add(Attributes.MOVEMENT_SPEED, 0.275F)
+                .add(Attributes.MOVEMENT_SPEED, 0.23F)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0D)
                 .add(Attributes.ATTACK_DAMAGE, 1)
                 .add(Attributes.ATTACK_KNOCKBACK, 0)
@@ -50,6 +56,33 @@ public class DrakefowlBabyEntity extends BabyAnimalEntity implements IOrientedHi
 
     public DrakefowlEntity.Type getDrakefowlType() {
         return getEntityData().get(TYPE);
+    }
+
+    @Override
+    protected ActionableEntity createMatureEntity() {
+        DrakefowlEntity adult = random.nextBoolean() ? EntitiesNF.DRAKEFOWL_ROOSTER.get().create(level) : EntitiesNF.DRAKEFOWL_HEN.get().create(level);
+        adult.finalizeSpawn((ServerLevel) level, level.getCurrentDifficultyAt(blockPosition()), MobSpawnType.CONVERSION, new DrakefowlEntity.GroupData(getDrakefowlType()), null);
+        return adult;
+    }
+
+    @Override
+    protected void registerGoals() {
+        goalSelector.addGoal(1, new FloatAtHeightGoal(this, 0.4D));
+        goalSelector.addGoal(2, new FollowParentGoal(this, 1.1D));
+        goalSelector.addGoal(3, new FleeEntityGoal<>(this, LivingEntity.class, 1.1D, 1.1D, (entity) -> {
+            if(entity.isDeadOrDying()) return false;
+            else return entity.getType().is(TagsNF.DRAKEFOWL_PREDATOR);
+        }));
+        goalSelector.addGoal(4, new FleeDamageGoal(this, 1.1D));
+        goalSelector.addGoal(5, new RandomLookGoal(this, 0.02F));
+        targetSelector.addGoal(1, new TrackNearestTargetGoal<>(this, DrakefowlEntity.class, true, (entity) -> {
+            if(entity.isDeadOrDying()) return false;
+            else return ((DrakefowlEntity) entity).sex == Sex.FEMALE;
+        }));
+        targetSelector.addGoal(2, new TrackNearestTargetGoal<>(this, DrakefowlEntity.class, true, (entity) -> {
+            if(entity.isDeadOrDying()) return false;
+            else return ((DrakefowlEntity) entity).sex == Sex.MALE;
+        }));
     }
 
     @Override
@@ -65,6 +98,11 @@ public class DrakefowlBabyEntity extends BabyAnimalEntity implements IOrientedHi
     @Override
     public float getVisionAngle() {
         return 160F;
+    }
+
+    @Override
+    public float getNavigatorWaypointDist() {
+        return 6F/16F;
     }
 
     @Override

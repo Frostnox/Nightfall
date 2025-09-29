@@ -352,7 +352,7 @@ public abstract class ActionableEntity extends PathfinderMob {
         lastTickedGameTime = worldIn.getLevelData().getGameTime();
         entityData.set(RANDOM, worldIn.getRandom().nextInt() & Integer.MAX_VALUE);
         if(noDespawnTicks == -1 && reason != MobSpawnType.NATURAL && reason != MobSpawnType.CHUNK_GENERATION && reason != MobSpawnType.STRUCTURE
-        && reason != MobSpawnType.BREEDING && reason != MobSpawnType.EVENT) noDespawnTicks = 0;
+        && reason != MobSpawnType.BREEDING && reason != MobSpawnType.EVENT && reason != MobSpawnType.CONVERSION) noDespawnTicks = 0;
         return spawnDataIn;
     }
 
