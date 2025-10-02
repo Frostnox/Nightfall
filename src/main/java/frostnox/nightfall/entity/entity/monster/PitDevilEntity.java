@@ -122,8 +122,8 @@ public class PitDevilEntity extends HungryMonsterEntity implements IOrientedHitB
     }
 
     @Override
-    protected void simulateTime(long timePassed) {
-        growlTicks = Math.max(0, growlTicks - (int) timePassed);
+    protected void simulateTime(int timePassed) {
+        growlTicks = Math.max(0, growlTicks - timePassed);
     }
 
     @Override

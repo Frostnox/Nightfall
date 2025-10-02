@@ -3,7 +3,7 @@ package frostnox.nightfall.entity.ai.goal;
 import frostnox.nightfall.block.block.eggnest.EggNestBlock;
 import frostnox.nightfall.block.block.eggnest.EggNestBlockEntity;
 import frostnox.nightfall.entity.ai.pathfinding.ReversePath;
-import frostnox.nightfall.entity.entity.animal.TamableAnimalEntity;
+import frostnox.nightfall.entity.entity.animal.DrakefowlEntity;
 import frostnox.nightfall.util.LevelUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class LayEggGoal extends Goal {
-    protected final TamableAnimalEntity mob;
+    protected final DrakefowlEntity mob;
     protected final Supplier<? extends Block> nestBlock;
     protected final double speedModifier;
     protected @Nullable ReversePath path;
@@ -28,7 +28,7 @@ public class LayEggGoal extends Goal {
     protected @Nullable BlockPos blockPos;
     protected int lookX, lookZ;
 
-    public LayEggGoal(TamableAnimalEntity mob, Supplier<? extends Block> nestBlock, double speedModifier) {
+    public LayEggGoal(DrakefowlEntity mob, Supplier<? extends Block> nestBlock, double speedModifier) {
         this.mob = mob;
         this.nestBlock = nestBlock;
         this.speedModifier = speedModifier;
@@ -139,12 +139,14 @@ public class LayEggGoal extends Goal {
                 }
             }
             mob.getLookControl().setLookAt(mob.getX() + lookX, mob.getEyeY(), mob.getZ() + lookZ);
-            if(mob.getGestationTime() > 0) {
+            if(mob.getGestationTime() > 0 && mob.isComfortable() && mob.getRandom().nextInt(20 * 80) == 0) {
                 if(mob.level.getBlockEntity(blockPos) instanceof EggNestBlockEntity nest) {
                     for(int i = 0; i < nest.hatchTimes.length; i++) {
                         if(nest.hatchTimes[i] == 0) {
                             mob.level.setBlockAndUpdate(blockPos, nest.getBlockState().setValue(EggNestBlock.EGGS, nest.getBlockState().getValue(EggNestBlock.EGGS) + 1));
-                            nest.hatchTimes[i] = ((EggNestBlock) nest.getBlockState().getBlock()).hatchDuration;
+                            nest.hatchTimes[i] = mob.fatherType == null ? -1 : ((EggNestBlock) nest.getBlockState().getBlock()).hatchDuration;
+                            if(mob.fatherType != null) nest.eggData[0] = mob.getDrakefowlType() == mob.fatherType ? mob.fatherType.ordinal()
+                                    : (mob.getRandom().nextBoolean() ? mob.getDrakefowlType().ordinal() : mob.fatherType.ordinal());
                             break;
                         }
                     }
@@ -152,7 +154,9 @@ public class LayEggGoal extends Goal {
                 else if(isNestSpotValid(blockPos)) {
                     mob.level.setBlockAndUpdate(blockPos, nestBlock.get().defaultBlockState().setValue(EggNestBlock.EGGS, 1));
                     if(mob.level.getBlockEntity(blockPos) instanceof EggNestBlockEntity nest) {
-                        nest.hatchTimes[0] = ((EggNestBlock) nest.getBlockState().getBlock()).hatchDuration;
+                        nest.hatchTimes[0] = mob.fatherType == null ? -1 : ((EggNestBlock) nest.getBlockState().getBlock()).hatchDuration;
+                        if(mob.fatherType != null) nest.eggData[0] = mob.getDrakefowlType() == mob.fatherType ? mob.fatherType.ordinal()
+                                : (mob.getRandom().nextBoolean() ? mob.getDrakefowlType().ordinal() : mob.fatherType.ordinal());
                         nest.occupied = true;
                     }
                 }

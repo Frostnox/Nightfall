@@ -712,9 +712,9 @@ public abstract class ActionableEntity extends PathfinderMob {
         if(target != null && target.isRemoved()) setTarget(null);
     }
 
-    protected void simulateTime(long timePassed) {
+    protected void simulateTime(int timePassed) {
         if(noDespawnTicks > 0) {
-            noDespawnTicks = (int) Math.max(0, noDespawnTicks - timePassed - 1);
+            noDespawnTicks = Math.max(0, noDespawnTicks - timePassed - 1);
             if(noDespawnTicks == 0) discard();
         }
         if(!isRemoved()) {
@@ -732,7 +732,7 @@ public abstract class ActionableEntity extends PathfinderMob {
                 else reducedAI = nearPlayer.distanceToSqr(this) > getReducedAIThresholdSqr();
             }
             long timePassed = level.getGameTime() - lastTickedGameTime;
-            if(timePassed > 1) simulateTime(timePassed);
+            if(timePassed > 1) simulateTime(timePassed > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) timePassed);
             lastTickedGameTime = level.getGameTime();
         }
         float yRot = yBodyRot;

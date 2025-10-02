@@ -2,7 +2,6 @@ package frostnox.nightfall.entity.entity.animal;
 
 import com.mojang.math.Vector3d;
 import com.mojang.math.Vector3f;
-import frostnox.nightfall.block.IFoodBlock;
 import frostnox.nightfall.data.TagsNF;
 import frostnox.nightfall.entity.EntityPart;
 import frostnox.nightfall.entity.IOrientedHitBoxes;
@@ -10,7 +9,10 @@ import frostnox.nightfall.entity.Sex;
 import frostnox.nightfall.entity.ai.goal.*;
 import frostnox.nightfall.entity.ai.goal.target.TrackNearestTargetGoal;
 import frostnox.nightfall.entity.entity.ActionableEntity;
-import frostnox.nightfall.registry.forge.*;
+import frostnox.nightfall.registry.forge.AttributesNF;
+import frostnox.nightfall.registry.forge.DataSerializersNF;
+import frostnox.nightfall.registry.forge.EntitiesNF;
+import frostnox.nightfall.registry.forge.SoundsNF;
 import frostnox.nightfall.util.animation.AnimationData;
 import frostnox.nightfall.util.math.OBB;
 import frostnox.nightfall.world.ContinentalWorldType;
@@ -24,21 +26,17 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
 
-import javax.annotation.Nullable;
 import java.util.EnumMap;
 
 public class DrakefowlBabyEntity extends BabyAnimalEntity implements IOrientedHitBoxes {
     private static final EntityPart[] OBB_PARTS = new EntityPart[]{EntityPart.BODY, EntityPart.NECK, EntityPart.HEAD};
     protected static final EntityDataAccessor<DrakefowlEntity.Type> TYPE = SynchedEntityData.defineId(DrakefowlEntity.class, DataSerializersNF.DRAKEFOWL_TYPE);
 
-    public DrakefowlBabyEntity(EntityType<? extends AnimalEntity> type, Level level) {
+    public DrakefowlBabyEntity(EntityType<? extends ActionableEntity> type, Level level) {
         super(type, level, (int) ContinentalWorldType.DAY_LENGTH * 4);
     }
 
@@ -62,6 +60,7 @@ public class DrakefowlBabyEntity extends BabyAnimalEntity implements IOrientedHi
     protected ActionableEntity createMatureEntity() {
         DrakefowlEntity adult = random.nextBoolean() ? EntitiesNF.DRAKEFOWL_ROOSTER.get().create(level) : EntitiesNF.DRAKEFOWL_HEN.get().create(level);
         adult.finalizeSpawn((ServerLevel) level, level.getCurrentDifficultyAt(blockPosition()), MobSpawnType.CONVERSION, new DrakefowlEntity.GroupData(getDrakefowlType()), null);
+        adult.getEntityData().set(TamableAnimalEntity.TAMED, true);
         return adult;
     }
 
@@ -97,7 +96,7 @@ public class DrakefowlBabyEntity extends BabyAnimalEntity implements IOrientedHi
 
     @Override
     public float getVisionAngle() {
-        return 160F;
+        return 180F;
     }
 
     @Override
@@ -142,31 +141,6 @@ public class DrakefowlBabyEntity extends BabyAnimalEntity implements IOrientedHi
     @Override
     protected void playStepSound(BlockPos pPos, BlockState pBlock) {
 
-    }
-
-    @Override
-    public boolean canEat(BlockState state) {
-        if(state.is(TagsNF.DRAKEFOWL_FOOD_BLOCK)) {
-            if(state.getBlock() instanceof IFoodBlock foodBlock) return foodBlock.isEatable(state);
-            else return true;
-        }
-        else return false;
-    }
-
-    @Override
-    public boolean canEat(Entity entity) {
-        if(entity instanceof ItemEntity itemEntity) return itemEntity.getItem().is(TagsNF.DRAKEFOWL_FOOD_ITEM);
-        else return false;
-    }
-
-    @Override
-    public SoundEvent getEatSound() {
-        return null;
-    }
-
-    @Override
-    protected int getMaxSatiety() {
-        return (int) ContinentalWorldType.DAY_LENGTH;
     }
 
     @Override

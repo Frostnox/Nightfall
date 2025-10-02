@@ -1,6 +1,5 @@
 package frostnox.nightfall.entity.entity.animal;
 
-import frostnox.nightfall.entity.ai.goal.FloatAtHeightGoal;
 import frostnox.nightfall.entity.entity.ActionableEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -12,12 +11,12 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
-public abstract class BabyAnimalEntity extends AnimalEntity {
+public abstract class BabyAnimalEntity extends ActionableEntity {
     protected static final EntityDataAccessor<Boolean> SPECIAL = SynchedEntityData.defineId(BabyAnimalEntity.class, EntityDataSerializers.BOOLEAN);
     protected final int matureTime;
     protected int age;
 
-    public BabyAnimalEntity(EntityType<? extends AnimalEntity> type, Level level, int matureTime) {
+    public BabyAnimalEntity(EntityType<? extends ActionableEntity> type, Level level, int matureTime) {
         super(type, level);
         this.matureTime = matureTime;
     }
@@ -46,9 +45,7 @@ public abstract class BabyAnimalEntity extends AnimalEntity {
     @Override
     public void aiStep() {
         super.aiStep();
-        if(isAlive() && !level.isClientSide) {
-            setAge(age + 1);
-        }
+        if(isAlive() && !level.isClientSide) setAge(age + 1);
     }
 
     @Override
@@ -62,12 +59,19 @@ public abstract class BabyAnimalEntity extends AnimalEntity {
     }
 
     @Override
-    protected void simulateTime(long timePassed) {
+    protected void simulateTime(int timePassed) {
         super.simulateTime(timePassed);
-        if(isAlive()) {
-            if(timePassed > matureTime) setAge(age + matureTime);
-            else setAge(age + (int) timePassed);
-        }
+        if(isAlive()) setAge(age + timePassed);
+    }
+
+    @Override
+    public double getReducedAIThresholdSqr() {
+        return 250 * 250;
+    }
+
+    @Override
+    public boolean dropLootFromSkinning() {
+        return true;
     }
 
     @Override

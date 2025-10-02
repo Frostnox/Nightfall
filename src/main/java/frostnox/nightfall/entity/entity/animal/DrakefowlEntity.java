@@ -4,6 +4,7 @@ import com.mojang.math.Vector3d;
 import com.mojang.math.Vector3f;
 import frostnox.nightfall.block.IFoodBlock;
 import frostnox.nightfall.capability.ChunkData;
+import frostnox.nightfall.capability.LevelData;
 import frostnox.nightfall.client.ClientEngine;
 import frostnox.nightfall.data.TagsNF;
 import frostnox.nightfall.entity.EntityPart;
@@ -23,6 +24,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -77,7 +79,7 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
     };
     public float flap, flapSpeed, oFlapSpeed, oFlap, flapping = 1.0F, nextFlap = 1.0F;
     protected int ticksOffGround = 0;
-    protected @Nullable Type fatherType;
+    public @Nullable Type fatherType;
 
     public DrakefowlEntity(EntityType<? extends TamableAnimalEntity> type, Level level, Sex sex) {
         super(type, level, sex);
@@ -138,9 +140,14 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
     @Override
     public void breedWith(TamableAnimalEntity other) {
         if(sex == Sex.FEMALE) {
-            gestationTime = (int) ContinentalWorldType.DAY_LENGTH;
             fatherType = ((DrakefowlEntity) other).getDrakefowlType();
         }
+    }
+
+    @Override
+    protected boolean checkComfort() {
+        return (!LevelData.isPresent(level) || LevelData.get(level).getSeasonalTemperature(ChunkData.get(level.getChunkAt(blockPosition())), blockPosition()) > 0.4F)
+                && level.getEntitiesOfClass(TamableAnimalEntity.class, getBoundingBox().inflate(8, 1, 8)).size() <= 25;
     }
 
     @Override
@@ -151,6 +158,17 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
     @Override
     public ResourceLocation getBreedAction() {
         return ActionsNF.DRAKEFOWL_BREED.getId();
+    }
+
+    @Override
+    protected void onGestationEnd() {
+        fatherType = null;
+    }
+
+    @Override
+    protected void onFeed() {
+        super.onFeed();
+        gestationTime = (int) ContinentalWorldType.DAY_LENGTH;
     }
 
     @Override
@@ -226,6 +244,13 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
         fallDistance = 0;
         if(level.isClientSide && isTamed() && sex == Sex.MALE && isAlive() && LevelUtil.isDayTimeExactly(level, LevelUtil.MORNING_TIME)) {
             ClientEngine.get().playUniqueEntitySound(this, SoundsNF.DRAKEFOWL_CROW.get(), SoundSource.NEUTRAL, 2F, 1F);
+        }
+        if(!level.isClientSide && isSpecial() && getRandom().nextFloat() < 1D / (ContinentalWorldType.DAY_LENGTH * 2)) {
+            CockatriceEntity cockatrice = EntitiesNF.COCKATRICE.get().create(level);
+            cockatrice.finalizeSpawn((ServerLevel) level, level.getCurrentDifficultyAt(blockPosition()), MobSpawnType.CONVERSION, new CockatriceEntity.GroupData(CockatriceEntity.Type.values()[getDrakefowlType().ordinal()]), null);
+            cockatrice.moveTo(getX(), getY(), getZ(), getYRot(), getXRot());
+            discard();
+            level.addFreshEntity(cockatrice);
         }
     }
 

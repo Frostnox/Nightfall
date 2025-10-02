@@ -23,6 +23,7 @@ public abstract class TamableAnimalEntity extends AnimalEntity implements ITamab
     public final Sex sex;
     public boolean tamable;
     protected int breedTime, gestationTime;
+    protected boolean comfortable;
 
     public TamableAnimalEntity(EntityType<? extends AnimalEntity> type, Level level, Sex sex) {
         super(type, level);
@@ -35,6 +36,10 @@ public abstract class TamableAnimalEntity extends AnimalEntity implements ITamab
 
     public int getGestationTime() {
         return gestationTime;
+    }
+
+    public boolean isComfortable() {
+        return comfortable;
     }
 
     public void endGestation() {
@@ -52,7 +57,7 @@ public abstract class TamableAnimalEntity extends AnimalEntity implements ITamab
     }
 
     public boolean canBreed() {
-        return breedTime > 0 && gestationTime == 0;
+        return breedTime > 0 && gestationTime == 0 && comfortable;
     }
 
     public final void breedPair(TamableAnimalEntity other) {
@@ -70,9 +75,15 @@ public abstract class TamableAnimalEntity extends AnimalEntity implements ITamab
 
     }
 
+    protected void onFeed() {
+        breedTime = 20 * 20;
+    }
+
     public abstract boolean canBreedWith(TamableAnimalEntity other);
 
     protected abstract void breedWith(TamableAnimalEntity other);
+
+    protected abstract boolean checkComfort();
 
     public abstract boolean isFeedItem(ItemStack item);
 
@@ -92,12 +103,13 @@ public abstract class TamableAnimalEntity extends AnimalEntity implements ITamab
                 gestationTime--;
                 if(gestationTime == 0) onGestationEnd();
             }
+            if(!level.isClientSide && randTickCount % 30 == 0) comfortable = checkComfort();
         }
     }
 
     @Override
     public void addSatiety(int amount) {
-        if(satiety == 0 && gestationTime == 0 && amount >= getMaxSatiety() && isTamed()) breedTime = 20 * 20;
+        if(satiety == 0 && gestationTime == 0 && amount >= getMaxSatiety() && isTamed()) onFeed();
         super.addSatiety(amount);
     }
 
@@ -141,7 +153,7 @@ public abstract class TamableAnimalEntity extends AnimalEntity implements ITamab
     }
 
     @Override
-    protected void simulateTime(long timePassed) {
+    protected void simulateTime(int timePassed) {
         super.simulateTime(timePassed);
         if(isAlive()) {
 
@@ -161,6 +173,7 @@ public abstract class TamableAnimalEntity extends AnimalEntity implements ITamab
         tag.putBoolean("special", isSpecial());
         tag.putBoolean("tamed", isTamed());
         tag.putBoolean("tamable", tamable);
+        tag.putBoolean("comfortable", comfortable);
         tag.putInt("breedTime", breedTime);
         tag.putInt("gestationTime", gestationTime);
     }
@@ -171,6 +184,7 @@ public abstract class TamableAnimalEntity extends AnimalEntity implements ITamab
         getEntityData().set(SPECIAL, tag.getBoolean("special"));
         getEntityData().set(TAMED, tag.getBoolean("tamed"));
         tamable = tag.getBoolean("tamable");
+        comfortable = tag.getBoolean("comfortable");
         breedTime = tag.getInt("breedTime");
         gestationTime = tag.getInt("gestationTime");
     }
