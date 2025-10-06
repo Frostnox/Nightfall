@@ -224,7 +224,8 @@ public class ClientEngine {
         registerCategory(WYLDERY);
         registerEntry(WYLDERY, EntriesNF.TOOLS, 0, 0, new ItemStack(ItemsNF.FLINT_AXE.get()));
         registerEntry(WYLDERY, EntriesNF.SLING, 2, 0, new ItemStack(ItemsNF.SLING.get()));
-        registerEntry(WYLDERY, EntriesNF.TAMING, 4, 0, new ItemStack(ItemsNF.ROPE.get()));
+        registerEntry(WYLDERY, EntriesNF.TAMING, 4, 0, new ItemStack(ItemsNF.ROPE.get()), null,
+                null, image(122, 23, imageLoc("breeding")), false);
         registerEntry(WYLDERY, EntriesNF.WOODCARVING, -2, -1, new ItemStack(ItemsNF.WOODEN_BOWL.get()));
         registerEntry(WYLDERY, EntriesNF.WOODWORKING, -4, -1, new ItemStack(ItemsNF.PLANKS.get(Tree.OAK).get()));
         registerEntry(WYLDERY, EntriesNF.ADVANCED_WOODWORKING, -5, -3, new ItemStack(ItemsNF.CHESTS.get(Tree.OAK).get()));

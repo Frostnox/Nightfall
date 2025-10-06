@@ -212,6 +212,7 @@ public class LanguageProviderNF extends LanguageProvider {
         }
         add("item.nightfall.mask.info", "Hides name");
         add("item.nightfall.warding_charm.info", "Reduces nearby Undead occurrence");
+        add("item.leading", "Use on tamed animals to lead");
         add(Nightfall.MODID + ".anvil", "Anvil");
         add(Nightfall.MODID + ".bowl_crushing", "Bowl");
         add(Nightfall.MODID + ".building", "Building");
@@ -506,7 +507,7 @@ public class LanguageProviderNF extends LanguageProvider {
 
         addItemClues(EntriesNF.TOOLS, "A hard, brittle rock", "A wooden handle", "A binding");
         addItemClues(EntriesNF.SLING, "Twisted fibers", "A round projectile");
-        addKnowledgeClues(EntriesNF.TAMING, "Tame a wild animal");
+        addKnowledgeClues(EntriesNF.TAMING, "Tame a wild animal with force or temptation");
         addItemClues(EntriesNF.WOODCARVING, "Fallen timber");
         addItemClues(EntriesNF.WOODWORKING, "A split plank of clean wood");
         addItemClues(EntriesNF.ADVANCED_WOODWORKING, "A plank of soft wood", "A plank of hard wood", "A plank of wood neither hard nor soft");

@@ -111,6 +111,12 @@ public class FeaturesNF {
             ElevationPreciseFilter.with(-0.647F, 0.3F), SurfaceHeightFilter.with(SEA_LEVEL - 30, SEA_LEVEL + 1),
             HeightRangePlacement.triangle(VerticalAnchor.absolute(SEA_LEVEL - 30), VerticalAnchor.absolute(SEA_LEVEL + 30)),
             InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_OCEAN_FLOOR, BiomeFilter.biome());
+    public static final AbandonedEggNestFeature ABANDONED_EGG_NEST_FEATURE = new AbandonedEggNestFeature(name("abandoned_egg_nest"));
+    public static final Holder<ConfiguredFeature<BlockStateConfiguration, ?>> ABANDONED_DRAKEFOWL_NEST_CONFIG = register("abandoned_drakefowl_nest",
+            ABANDONED_EGG_NEST_FEATURE, new BlockStateConfiguration(BlocksNF.DRAKEFOWL_NEST.get().defaultBlockState()));
+    public static final Holder<PlacedFeature> ABANDONED_DRAKEFOWL_NEST = register("abandoned_drakefowl_nest", ABANDONED_DRAKEFOWL_NEST_CONFIG,
+            CountPlacement.of(1), ChanceFilter.with(0.004F), RectangleClimateFilter.with(0.55F, 1, 0.65F, 1),
+            InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP_WORLD_SURFACE, BiomeFilter.biome());
     //Ore
     public static final OreVeinFeature ORE_VEIN_FEATURE = new OreVeinFeature(name("ore_vein"));
 
@@ -191,7 +197,8 @@ public class FeaturesNF {
             HeightRangePlacement.uniform(VerticalAnchor.absolute(30), VerticalAnchor.belowTop(16)), BiomeFilter.biome(), BlockPredicateFilter.forPredicate(CAVE_AIR_PREDICATE));
 
     public static void registerEvent(RegistryEvent.Register<Feature<?>> event) {
-        event.getRegistry().registerAll(TREE_FEATURE, LONE_TREE_FEATURE, ROCKS_FEATURE, SINGLE_BLOCK_FEATURE, BOULDER_FEATURE, ORE_VEIN_FEATURE,
+        event.getRegistry().registerAll(TREE_FEATURE, LONE_TREE_FEATURE, ROCKS_FEATURE, SINGLE_BLOCK_FEATURE, ABANDONED_EGG_NEST_FEATURE,
+                BOULDER_FEATURE, ORE_VEIN_FEATURE,
                 CAVE_ROCKS_FEATURE, ROCKWORM_NEST_FEATURE, SKARA_NEST_FEATURE,
                 METEORITE_FEATURE, RABBIT_BURROW_FEATURE, SPIDER_NEST_FEATURE);
     }
