@@ -258,7 +258,7 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
         tag(TagsNF.HERBIVORE_FOOD).add(ItemsNF.CARROT.get(), ItemsNF.ROASTED_CARROT.get(), ItemsNF.ROASTED_POTATO.get());
         tag(TagsNF.HERBIVORE_FOOD).addTags(TagsNF.FRUIT, TagsNF.GRAIN);
         tag(TagsNF.CARNIVORE_FOOD).addTag(TagsNF.MEAT);
-        tag(TagsNF.CARNIVORE_FOOD).add(ItemsNF.CURED_JELLYFISH.get(), ItemsNF.RAW_PALE_FLESH.get());
+        tag(TagsNF.CARNIVORE_FOOD).add(ItemsNF.CURED_JELLYFISH.get(), ItemsNF.RAW_PALE_FLESH.get(), ItemsNF.DRAKEFOWL_EGG.get());
         tag(TagsNF.OMNIVORE_FOOD).addTags(TagsNF.HERBIVORE_FOOD, TagsNF.CARNIVORE_FOOD);
 
         copy(TagsNF.HEAT_RESISTANT_1, TagsNF.HEAT_RESISTANT_ITEM_1);

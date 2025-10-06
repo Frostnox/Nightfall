@@ -385,7 +385,8 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
 
     @Override
     public boolean canEat(Entity entity) {
-        if(super.canEat(entity)) return true;
+        if(entity instanceof ItemEntity itemEntity && itemEntity.getItem().is(ItemsNF.DRAKEFOWL_EGG.get())) return false;
+        else if(super.canEat(entity)) return true;
         else if(entity instanceof LivingEntity livingEntity) {
             return livingEntity.deathTime > 20 && entity.getType().is(TagsNF.EDIBLE_CORPSE) && !(entity instanceof DrakefowlEntity || entity instanceof DrakefowlBabyEntity);
         }
