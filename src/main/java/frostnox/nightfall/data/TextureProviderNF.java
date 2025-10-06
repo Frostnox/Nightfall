@@ -300,6 +300,9 @@ public class TextureProviderNF extends TextureProvider {
             replaceImagePalette(item(ItemsNF.PLANKS.get(type)), item("plank"), WOOD_REDUCED_PALETTES.get(type));
             replaceImagePalette(item(ItemsNF.PLANK_SIGNS.get(type)), item("plank_sign" + signStyle), combine(subset(WOOD_FULL_PALETTES.get(type), 2, 1), subset(WOOD_FULL_PALETTES.get(type), 4, 3)));
             replaceImagePalette(block(BlocksNF.PLANK_FENCES.get(type)), block("fence"), subset(WOOD_FULL_PALETTES.get(type), 5, 2));
+            replaceImagePalette(block(BlocksNF.TROUGHS.get(type)), block("trough"), WOOD_REDUCED_PALETTES.get(type));
+            replaceImagePalette(block(BlocksNF.TROUGHS.get(type), "_bottom"), block("trough_bottom"), WOOD_REDUCED_PALETTES.get(type));
+            replaceImagePalette(block(BlocksNF.TROUGHS.get(type), "_side"), block("trough_side"), WOOD_REDUCED_PALETTES.get(type));
         }
         for(Tree type : BlocksNF.STRIPPED_LOGS.keySet()) {
             replaceImagePalette(block(BlocksNF.STRIPPED_LOGS.get(type)), block("log_stripped"), STRIPPED_WOOD_PALETTES.get(type));

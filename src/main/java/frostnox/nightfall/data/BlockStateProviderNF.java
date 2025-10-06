@@ -300,6 +300,26 @@ public class BlockStateProviderNF extends BlockStateProvider {
         }
     }
 
+    public void troughBlock(TroughBlock block, ResourceLocation particle) {
+        for(Direction.Axis facing : TroughBlock.AXIS.getPossibleValues()) {
+            for(int amount : TroughBlock.AMOUNT.getPossibleValues()) {
+                if(amount == 0) {
+                    getVariantBuilder(block).partialState().with(TroughBlock.AXIS, facing).with(TroughBlock.AMOUNT, amount).addModels((ConfiguredModel.builder()
+                            .modelFile(templateModel(name(block) + "_" + amount, resource("trough_" + amount),
+                                    Pair.of("long", resource(block)), Pair.of("short", resource(block, "_side")), Pair.of("bottom", resource(block, "_bottom")), Pair.of("particle", particle)))
+                            .rotationY(facing == Direction.Axis.X ? 90 : 0).build()));
+                }
+                else for(TroughBlock.FoodType foodType : TroughBlock.FOOD_TYPE.getPossibleValues()) {
+                    getVariantBuilder(block).partialState().with(TroughBlock.AXIS, facing).with(TroughBlock.AMOUNT, amount).with(TroughBlock.FOOD_TYPE, foodType).addModels((ConfiguredModel.builder()
+                            .modelFile(templateModel(name(block) + "_" + foodType.getSerializedName() + "_" + amount, resource("trough_" + amount),
+                                    Pair.of("long", resource(block)), Pair.of("short", resource(block, "_side")), Pair.of("bottom", resource(block, "_bottom")),
+                                    Pair.of("food", resource("trough_" + foodType.getSerializedName())), Pair.of("particle", particle)))
+                            .rotationY(facing == Direction.Axis.X ? 90 : 0).build()));
+                }
+            }
+        }
+    }
+
     public void crossBlock(Block block) {
         getVariantBuilder(block).partialState().addModels(ConfiguredModel.builder().modelFile(models().withExistingParent(name(block), "cross").texture("cross", resource(block))).build());
     }
@@ -1069,6 +1089,7 @@ public class BlockStateProviderNF extends BlockStateProvider {
                     templateModel(BlocksNF.SHELVES.get(type).get(), resource("shelf_simple"), Pair.of("all", resource(BlocksNF.SHELVES.get(type).get()))),
                     0);
             chairBlock(BlocksNF.CHAIRS.get(type).get(), resource(BlocksNF.PLANK_BLOCKS.get(type).get()));
+            troughBlock(BlocksNF.TROUGHS.get(type).get(), resource(BlocksNF.PLANK_BLOCKS.get(type).get()));
         }
         for(Tree type : BlocksNF.FRUIT_LEAVES.keySet()) {
             if(type.isDeciduous()) tintedFruitLeavesBlock(BlocksNF.LEAVES.get(type).get(), BlocksNF.FRUIT_LEAVES.get(type).get());

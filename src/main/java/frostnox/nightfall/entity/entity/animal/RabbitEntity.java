@@ -13,6 +13,7 @@ import frostnox.nightfall.entity.IOrientedHitBoxes;
 import frostnox.nightfall.entity.ai.goal.*;
 import frostnox.nightfall.entity.ai.sensing.AmplifiedAudioSensing;
 import frostnox.nightfall.entity.ai.sensing.AudioSensing;
+import frostnox.nightfall.entity.entity.Diet;
 import frostnox.nightfall.registry.forge.AttributesNF;
 import frostnox.nightfall.registry.forge.DataSerializersNF;
 import frostnox.nightfall.util.LevelUtil;
@@ -278,18 +279,8 @@ public class RabbitEntity extends AnimalEntity implements IOrientedHitBoxes, IHo
     }
 
     @Override
-    public boolean canEat(BlockState state) {
-        if(state.is(TagsNF.RABBIT_FOOD_BLOCK)) {
-            if(state.getBlock() instanceof IFoodBlock foodBlock) return foodBlock.isEatable(state);
-            else return true;
-        }
-        else return false;
-    }
-
-    @Override
-    public boolean canEat(Entity entity) {
-        if(entity instanceof ItemEntity itemEntity) return itemEntity.getItem().is(TagsNF.RABBIT_FOOD_ITEM);
-        else return false;
+    public Diet getDiet() {
+        return Diet.CARNIVORE;
     }
 
     @Override

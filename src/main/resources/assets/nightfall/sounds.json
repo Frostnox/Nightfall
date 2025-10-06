@@ -111,16 +111,20 @@
     "sounds": ["nightfall:block/moon_essence/place_0", "nightfall:block/moon_essence/place_1", "nightfall:block/moon_essence/place_2", "nightfall:block/moon_essence/place_3", "nightfall:block/moon_essence/place_4"]
   },
   "block.bowl.wooden_crush": {
-    "subtitle": "subtitles.block.bowl.wooden_crush",
+    "subtitle": "nightfall.block.bowl.wooden_crush",
     "sounds": ["nightfall:block/bowl/wooden_crush_0"]
   },
   "block.crucible.pour": {
-    "subtitle": "subtitles.block.crucible.pour",
+    "subtitle": "nightfall.block.crucible.pour",
     "sounds": ["nightfall:block/crucible/pour_0", "nightfall:block/crucible/pour_1", "nightfall:block/crucible/pour_2", "nightfall:block/crucible/pour_3", "nightfall:block/crucible/pour_4"]
   },
   "block.fire_crackle": {
-    "subtitle": "subtitles.block.fire_crackle",
+    "subtitle": "nightfall.block.fire_crackle",
     "sounds": ["block/furnace/fire_crackle1", "block/furnace/fire_crackle2", "block/furnace/fire_crackle3", "block/furnace/fire_crackle4", "block/furnace/fire_crackle5"]
+  },
+  "block.trough.fill": {
+    "subtitle": "nightfall.block.trough.fill",
+    "sounds": ["block/composter/ready1", "block/composter/ready2", "block/composter/ready3", "block/composter/ready4"]
   },
   "action.swing": {
     "subtitle": "nightfall.action.swing",

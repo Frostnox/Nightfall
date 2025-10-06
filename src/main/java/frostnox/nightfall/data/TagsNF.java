@@ -57,6 +57,7 @@ public class TagsNF {
     public static final TagKey<Block> RACKS = blockTag("racks");
     public static final TagKey<Block> SHELVES = blockTag("shelves");
     public static final TagKey<Block> CHAIRS = blockTag("chairs");
+    public static final TagKey<Block> TROUGHS = blockTag("troughs");
     public static final TagKey<Block> ITEM_FRAMES = blockTag("item_frames");
     public static final TagKey<Block> WOODEN_LADDERS = blockTag("ladders/wooden_ladders");
     public static final TagKey<Block> WOODEN_CHESTS = blockTag("chests/wooden_chests");
@@ -90,14 +91,8 @@ public class TagsNF {
     public static final TagKey<Block> SUPPORT_4 = blockTag("support/units_4");
     public static final TagKey<Block> SUPPORT_8 = blockTag("support/units_8");
     public static final TagKey<Block> NO_BREAKING_TEXTURE = blockTag("no_breaking_texture");
-    public static final TagKey<Block> RABBIT_FOOD_BLOCK = blockTag("rabbit_food_block");
-    public static final TagKey<Block> DEER_FOOD_BLOCK = blockTag("deer_food_block");
-    public static final TagKey<Block> DRAKEFOWL_FOOD_BLOCK = blockTag("drakefowl_food_block");
     public static final TagKey<Block> DRAKEFOWL_NEST_BLOCK = blockTag("drakefowl_nest_block");
-    public static final TagKey<Block> COCKATRICE_FOOD_BLOCK = blockTag("cockatrice_food_block");
     public static final TagKey<Block> COCKATRICE_SPAWN_BLOCK = blockTag("cockatrice_spawn_block");
-    public static final TagKey<Block> SPIDER_FOOD_BLOCK = blockTag("spider_food_block");
-    public static final TagKey<Block> PIT_DEVIL_FOOD_BLOCK = blockTag("pit_devil_food_block");
     public static final TagKey<Block> DEER_SPAWN_BLOCK = blockTag("deer_spawn_block");
     public static final TagKey<Block> RABBIT_SPAWN_BLOCK = blockTag("rabbit_spawn_block");
     public static final TagKey<Block> CREEPER_SPAWN_BLOCK = blockTag("creeper_spawn_block");
@@ -228,7 +223,6 @@ public class TagsNF {
     public static final TagKey<Item> FLETCHING = itemTag("fletching");
     public static final TagKey<Item> COOKED_MEAT = itemTag("cooked_meat");
     public static final TagKey<Item> CURED_MEAT = itemTag("cured_meat");
-    public static final TagKey<Item> ANIMAL_EDIBLE_MEAT = itemTag("animal_edible_meat");
     public static final TagKey<Item> CURABLE_FOOD = itemTag("curable_food");
     public static final TagKey<Item> COOKED_VEGETABLE = itemTag("cooked_vegetable");
     public static final TagKey<Item> ARMOR_STAND = itemTag("armor_stand");
@@ -285,12 +279,9 @@ public class TagsNF {
     public static final TagKey<Item> GRAIN = itemTag("food_group/grain");
     public static final TagKey<Item> HERB = itemTag("food_group/herb");
     public static final TagKey<Item> FOOD_INGREDIENT = itemTag("food_group/ingredient"); //Controls item insertion in cooking containers
-    public static final TagKey<Item> RABBIT_FOOD_ITEM = itemTag("rabbit_food_item");
-    public static final TagKey<Item> DEER_FOOD_ITEM = itemTag("deer_food_item");
-    public static final TagKey<Item> DRAKEFOWL_FOOD_ITEM = itemTag("drakefowl_food_item");
-    public static final TagKey<Item> COCKATRICE_FOOD_ITEM = itemTag("cockatrice_food_item");
-    public static final TagKey<Item> SPIDER_FOOD_ITEM = itemTag("spider_food_item");
-    public static final TagKey<Item> PIT_DEVIL_FOOD_ITEM = itemTag("pit_devil_food_item");
+    public static final TagKey<Item> HERBIVORE_FOOD = itemTag("herbivore_food");
+    public static final TagKey<Item> CARNIVORE_FOOD = itemTag("carnivore_food");
+    public static final TagKey<Item> OMNIVORE_FOOD = itemTag("omnivore_food");
     //Block tag copies
     public static final TagKey<Item> HEAT_RESISTANT_ITEM_1 = itemTag(HEAT_RESISTANT_1);
     public static final TagKey<Item> HEAT_RESISTANT_ITEM_2 = itemTag(HEAT_RESISTANT_2);
@@ -304,6 +295,7 @@ public class TagsNF {
     public static final TagKey<Item> WOODEN_BARRELS_ITEM = itemTag(WOODEN_BARRELS);
     public static final TagKey<Item> WOODEN_FENCE_GATES_ITEM = itemTag(WOODEN_FENCE_GATES);
     public static final TagKey<Item> CHAIRS_ITEM = itemTag(CHAIRS);
+    public static final TagKey<Item> TROUGHS_ITEM = itemTag(TROUGHS);
     public static final TagKey<Item> ITEM_FRAMES_ITEM = itemTag(ITEM_FRAMES);
     public static final TagKey<Item> ANVILS_ITEM = itemTag(ANVILS);
     public static final TagKey<Item> METAL_ANVILS_ITEM = itemTag(METAL_ANVILS);

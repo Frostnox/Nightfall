@@ -8,6 +8,7 @@ import frostnox.nightfall.capability.IChunkData;
 import frostnox.nightfall.capability.ILevelData;
 import frostnox.nightfall.capability.LevelData;
 import frostnox.nightfall.data.TagsNF;
+import frostnox.nightfall.entity.entity.Diet;
 import frostnox.nightfall.registry.forge.BlockEntitiesNF;
 import frostnox.nightfall.registry.forge.BlocksNF;
 import frostnox.nightfall.util.MathUtil;
@@ -38,7 +39,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Random;
 import java.util.function.Supplier;
 
-public class CropBlockNF extends BushBlock implements EntityBlock, ITimeSimulatedBlock, IFoodBlock, INaturalVegetation {
+public class CropBlockNF extends BushBlock implements EntityBlock, ITimeSimulatedBlock, INaturalVegetation {
     public static final IntegerProperty STAGE = BlockStatePropertiesNF.STAGE_8;
     public static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D);
     public final Supplier<? extends Item> seedItem;
@@ -364,11 +365,6 @@ public class CropBlockNF extends BushBlock implements EntityBlock, ITimeSimulate
     }
 
     @Override
-    public boolean isEatable(BlockState state) {
-        return state.getValue(STAGE) == 8;
-    }
-
-    @Override
     public PlantType getPlantType(BlockGetter world, BlockPos pos) {
         return null;
     }
@@ -397,10 +393,5 @@ public class CropBlockNF extends BushBlock implements EntityBlock, ITimeSimulate
     public boolean canGrowAt(ServerLevel level, BlockPos pos, ISoil soil, SoilCover cover, int skyLight, float temperature, float humidity) {
         return skyLight >= minSunlight && minFertility.poorerThanOrEqual(soil.getFertility()) && temperature >= minTemp && temperature <= maxTemp
                 && humidity >= minHumidity && humidity <= maxHumidity;
-    }
-
-    @Override
-    public void eat(Entity eater, Level level, BlockPos pos) {
-        level.setBlock(pos, level.getBlockState(pos).setValue(STAGE, 1), 2);
     }
 }

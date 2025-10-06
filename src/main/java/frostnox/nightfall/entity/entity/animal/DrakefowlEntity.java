@@ -12,6 +12,7 @@ import frostnox.nightfall.entity.IOrientedHitBoxes;
 import frostnox.nightfall.entity.Sex;
 import frostnox.nightfall.entity.ai.goal.*;
 import frostnox.nightfall.entity.ai.goal.target.TrackNearestTargetGoal;
+import frostnox.nightfall.entity.entity.Diet;
 import frostnox.nightfall.entity.entity.monster.CockatriceEntity;
 import frostnox.nightfall.registry.ActionsNF;
 import frostnox.nightfall.registry.forge.*;
@@ -152,7 +153,7 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
 
     @Override
     public boolean isFeedItem(ItemStack item) {
-        return item.is(TagsNF.DRAKEFOWL_FOOD_ITEM);
+        return item.is(TagsNF.OMNIVORE_FOOD);
     }
 
     @Override
@@ -372,17 +373,19 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
     }
 
     @Override
+    public Diet getDiet() {
+        return Diet.OMNIVORE;
+    }
+
+    @Override
     public boolean canEat(BlockState state) {
-        if(state.is(TagsNF.DRAKEFOWL_FOOD_BLOCK)) {
-            if(state.getBlock() instanceof IFoodBlock foodBlock) return foodBlock.isEatable(state);
-            else return true;
-        }
-        else return false;
+        if(state.is(BlocksNF.DRAKEFOWL_NEST.get())) return false;
+        else return super.canEat(state);
     }
 
     @Override
     public boolean canEat(Entity entity) {
-        if(entity instanceof ItemEntity itemEntity) return itemEntity.getItem().is(TagsNF.DRAKEFOWL_FOOD_ITEM);
+        if(super.canEat(entity)) return true;
         else if(entity instanceof LivingEntity livingEntity) {
             return livingEntity.deathTime > 20 && entity.getType().is(TagsNF.EDIBLE_CORPSE) && !(entity instanceof DrakefowlEntity || entity instanceof DrakefowlBabyEntity);
         }

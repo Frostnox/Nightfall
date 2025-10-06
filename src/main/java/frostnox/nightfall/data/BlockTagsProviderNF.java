@@ -107,6 +107,7 @@ public class BlockTagsProviderNF extends BlockTagsProvider {
             tag(TagsNF.WOODEN_RACKS).add(BlocksNF.RACKS.get(type).get());
             tag(TagsNF.WOODEN_SHELVES).add(BlocksNF.SHELVES.get(type).get());
             tag(TagsNF.CHAIRS).add(BlocksNF.CHAIRS.get(type).get());
+            tag(TagsNF.TROUGHS).add(BlocksNF.TROUGHS.get(type).get());
             tag(Tags.Blocks.BARRELS_WOODEN).add(BlocksNF.BARRELS.get(type).get());
             tag(TagsNF.WOODEN_BARRELS).add(BlocksNF.BARRELS.get(type).get());
             tag(BlockTags.CLIMBABLE).add(BlocksNF.PLANK_LADDERS.get(type).get());
@@ -223,7 +224,7 @@ public class BlockTagsProviderNF extends BlockTagsProvider {
             sup.put(block, 4);
         }
         for(Tree type : Tree.values()) {
-            addSupports(sup, 0, BlocksNF.BARRELS.get(type), BlocksNF.CHESTS.get(type), BlocksNF.SHELVES.get(type));
+            addSupports(sup, 0, BlocksNF.BARRELS.get(type), BlocksNF.CHESTS.get(type), BlocksNF.SHELVES.get(type), BlocksNF.TROUGHS.get(type));
             addSupports(sup, 6, BlocksNF.LOGS.get(type), BlocksNF.STRIPPED_LOGS.get(type), BlocksNF.PLANK_BLOCKS.get(type),
                     BlocksNF.PLANK_STAIRS.get(type), BlocksNF.PLANK_SLABS.get(type), BlocksNF.PLANK_SIDINGS.get(type),
                     BlocksNF.PLANK_FENCES.get(type));
@@ -259,16 +260,10 @@ public class BlockTagsProviderNF extends BlockTagsProvider {
         }
 
         tag(TagsNF.NO_BREAKING_TEXTURE).addTags(BlockTags.REPLACEABLE_PLANTS, BlockTags.CROPS);
-        tag(TagsNF.RABBIT_FOOD_BLOCK).add(BlocksNF.CARROTS.get());
-        tag(TagsNF.DEER_FOOD_BLOCK).add(BlocksNF.BERRY_BUSH.get());
-        tag(TagsNF.DRAKEFOWL_FOOD_BLOCK).add(BlocksNF.BERRY_BUSH.get(), BlocksNF.CARROTS.get());
 
         tag(TagsNF.DRAKEFOWL_NEST_BLOCK).add(BlocksNF.THATCH.get(), BlocksNF.COVERED_SILT.get(SoilCover.GRASS).get(), BlocksNF.COVERED_DIRT.get(SoilCover.GRASS).get(),
                 BlocksNF.COVERED_LOAM.get(SoilCover.GRASS).get(), BlocksNF.COVERED_SILT.get(SoilCover.FOREST).get(), BlocksNF.COVERED_DIRT.get(SoilCover.FOREST).get(),
                 BlocksNF.COVERED_LOAM.get(SoilCover.FOREST).get());
-        tag(TagsNF.COCKATRICE_FOOD_BLOCK);
-        tag(TagsNF.SPIDER_FOOD_BLOCK);
-        tag(TagsNF.PIT_DEVIL_FOOD_BLOCK);
         tag(TagsNF.COCKATRICE_SPAWN_BLOCK).addTag(TagsNF.NATURAL_SOIL);
         tag(TagsNF.DEER_SPAWN_BLOCK).addTag(TagsNF.NATURAL_SOIL);
         tag(TagsNF.RABBIT_SPAWN_BLOCK).addTag(TagsNF.TILLABLE_SOIL);

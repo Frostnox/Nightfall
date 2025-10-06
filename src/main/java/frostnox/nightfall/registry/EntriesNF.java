@@ -37,6 +37,14 @@ public class EntriesNF {
                     List.of())));
     public static final RegistryObject<Entry> REINFORCED_SLING = ENTRIES.register("reinforced_sling",
             () -> Entry.createAddendum(List.of(SLING), knowledge(ItemsNF.LEATHER)));
+    public static final RegistryObject<Entry> TAMING = ENTRIES.register("taming", () -> Entry.create(
+            List.of(SLING),
+            Set.of(),
+            new Puzzle(List.of(KnowledgeNF.TAMED_ANIMAL),
+                    List.of(),
+                    List.of())));
+    public static final RegistryObject<Entry> TROUGH = ENTRIES.register("trough",
+            () -> Entry.createAddendum(List.of(TAMING, EntriesNF.WOODWORKING)));
     public static final RegistryObject<Entry> WOODCARVING = ENTRIES.register("woodcarving", () -> Entry.create(
             List.of(TOOLS),
             Set.of(),

@@ -10,6 +10,7 @@ import frostnox.nightfall.block.block.anvil.TieredAnvilBlock;
 import frostnox.nightfall.block.block.barrel.BarrelBlockNF;
 import frostnox.nightfall.block.block.bowl.BowlBlock;
 import frostnox.nightfall.block.block.ChairBlock;
+import frostnox.nightfall.block.block.crop.FoodCropBlock;
 import frostnox.nightfall.block.block.eggnest.DrakefowlEggNestBlock;
 import frostnox.nightfall.block.block.itemframe.ItemFrameBlock;
 import frostnox.nightfall.block.block.nest.AnchoringResinBlock;
@@ -194,7 +195,7 @@ public class BlocksNF {
     public static final RegistryObject<CropBlockNF> POTATOES = BLOCKS.register("potatoes", () -> new CropBlockNF(
             Fertility.FAIR, 0.375F, 1F, 0.35F, 0.9F, 11, (int) (ContinentalWorldType.DAY_LENGTH * 7F/8F / 2F),
             ItemsNF.POTATO_SEEDS, false, BlockBehaviour.Properties.of(Material.PLANT).noCollission().strength(0.6F).sound(SoundType.CROP)));
-    public static final RegistryObject<CropBlockNF> CARROTS = BLOCKS.register("carrots", () -> new CropBlockNF(
+    public static final RegistryObject<FoodCropBlock> CARROTS = BLOCKS.register("carrots", () -> new FoodCropBlock(
             Fertility.POOR, 0.25F, 1F, 0.2F, 0.85F, 8, (int) (ContinentalWorldType.DAY_LENGTH * 6F/8F / 2F),
             ItemsNF.CARROT_SEEDS, false, BlockBehaviour.Properties.of(Material.PLANT).noCollission().strength(0.6F).sound(SoundType.CROP)));
     public static final RegistryObject<CropBlockNF> FLAX = BLOCKS.register("flax", () -> new CropBlockNF(
@@ -583,6 +584,10 @@ public class BlocksNF {
 
     public static final Map<Tree, RegistryObject<ChairBlock>> CHAIRS = DataUtil.mapEnum(Tree.class, tree ->
             register(tree.getName() + "_chair", () -> new ChairBlock(BlockBehaviour.Properties.of(Material.WOOD, tree.getBaseColor())
+                    .strength(tree.getStrength() * 0.5F, tree.getExplosionResistance() * 0.5F).sound(SoundType.WOOD))));
+
+    public static final Map<Tree, RegistryObject<TroughBlock>> TROUGHS = DataUtil.mapEnum(Tree.class, tree ->
+            register(tree.getName() + "_trough", () -> new TroughBlock(BlockBehaviour.Properties.of(Material.WOOD, tree.getBaseColor())
                     .strength(tree.getStrength() * 0.5F, tree.getExplosionResistance() * 0.5F).sound(SoundType.WOOD))));
 
     //Metallurgy

@@ -106,6 +106,7 @@ public class RecipeProviderNF extends RecipeProvider {
             BuildingRecipeBuilder.base(plank, 4, ItemsNF.RACKS.get(type).get()).requirement(EntriesNF.WOODWORKING).save(consumer);
             BuildingRecipeBuilder.base(plank, 8, ItemsNF.SHELVES.get(type).get()).requirement(EntriesNF.WOODWORKING).save(consumer);
             BuildingRecipeBuilder.base(plank, 4, ItemsNF.CHAIRS.get(type).get()).requirement(EntriesNF.ADVANCED_WOODWORKING).save(consumer);
+            BuildingRecipeBuilder.base(plank, 8, ItemsNF.TROUGHS.get(type).get()).requirement(EntriesNF.TROUGH).save(consumer);
             if(ItemsNF.BOWS.containsKey(type)) CraftingRecipeBuilder.base(ItemsNF.BOWS.get(type).get(), EntriesNF.BOW_AND_ARROW).define('P', plank).define('L', ItemsNF.FLAX_FIBERS.get()).pattern(" PL").pattern("P L").pattern(" PL").save(consumer);
         }
         for(Metal type : ItemsNF.INGOTS.keySet()) {

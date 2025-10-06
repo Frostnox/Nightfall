@@ -58,6 +58,7 @@ public class LureGoal extends Goal {
         entity.tamable = false;
         player = null;
         entity.getNavigator().stop();
+        entity.getLookControl().setLookAt(entity.getEyePosition());
         cooldown = reducedTickDelay(100);
     }
 

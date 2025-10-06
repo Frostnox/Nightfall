@@ -1,12 +1,16 @@
 package frostnox.nightfall.entity;
 
+import frostnox.nightfall.block.IFoodBlock;
+import frostnox.nightfall.data.TagsNF;
 import frostnox.nightfall.entity.entity.ActionableEntity;
+import frostnox.nightfall.entity.entity.Diet;
 import frostnox.nightfall.util.MathUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -18,13 +22,25 @@ public interface IHungerEntity extends IActionableEntity {
 
     boolean isHungry();
 
-    boolean canEat(BlockState state);
+    Diet getDiet();
 
     void eatBlock(BlockState state, BlockPos pos);
 
-    boolean canEat(Entity entity);
-
     void eatEntity(Entity entity);
+
+    default boolean canEat(BlockState state) {
+        if(state.getBlock() instanceof IFoodBlock foodBlock) return foodBlock.isEatable(state, getDiet());
+        else return false;
+    }
+
+    default boolean canEat(Entity entity) {
+        if(entity instanceof ItemEntity itemEntity) return switch(getDiet()) {
+            case HERBIVORE -> itemEntity.getItem().is(TagsNF.HERBIVORE_FOOD);
+            case CARNIVORE -> itemEntity.getItem().is(TagsNF.CARNIVORE_FOOD);
+            case OMNIVORE -> itemEntity.getItem().is(TagsNF.OMNIVORE_FOOD);
+        };
+        else return false;
+    }
 
     default void doEatClient(ItemStack item) {
         ActionableEntity entity = getEntity();

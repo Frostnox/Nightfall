@@ -241,6 +241,7 @@ public class LootTableProviderNF extends LootTableProvider {
                 dropOther(BlocksNF.RACKS.get(type).get(), ItemsNF.PLANKS.get(type).get(), 4);
                 dropOther(BlocksNF.SHELVES.get(type).get(), ItemsNF.PLANKS.get(type).get(), 8);
                 add(BlocksNF.CHAIRS.get(type).get(), createDoubleBlockDrops(BlocksNF.CHAIRS.get(type).get(), ItemsNF.PLANKS.get(type).get(), 4));
+                dropOther(BlocksNF.TROUGHS.get(type).get(), ItemsNF.PLANKS.get(type).get(), 8);
             }
             dropFruitLeaves(BlocksNF.FRUIT_LEAVES.get(Tree.JUNGLE).get(), ItemsNF.TREE_SEEDS.get(Tree.JUNGLE).get(), -68, 1, 1, ItemsNF.STICK.get(), -1, 1, ItemsNF.COCOA_POD.get());
             dropFruitLeaves(BlocksNF.FRUIT_LEAVES.get(Tree.OAK).get(), ItemsNF.TREE_SEEDS.get(Tree.OAK).get(), -68, 1, 1, ItemsNF.STICK.get(), -1, 1, ItemsNF.APPLE.get());

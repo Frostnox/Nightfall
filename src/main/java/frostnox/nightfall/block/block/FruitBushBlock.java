@@ -6,13 +6,11 @@ import frostnox.nightfall.capability.IChunkData;
 import frostnox.nightfall.capability.ILevelData;
 import frostnox.nightfall.capability.LevelData;
 import frostnox.nightfall.data.TagsNF;
+import frostnox.nightfall.entity.entity.Diet;
 import frostnox.nightfall.registry.forge.BlockEntitiesNF;
-import frostnox.nightfall.registry.forge.BlocksNF;
 import frostnox.nightfall.util.LevelUtil;
 import frostnox.nightfall.util.MathUtil;
-import frostnox.nightfall.util.data.Vec2f;
 import frostnox.nightfall.world.Season;
-import it.unimi.dsi.fastutil.ints.IntLongPair;
 import it.unimi.dsi.fastutil.longs.LongLongPair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -43,7 +41,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.ticks.TickPriority;
 import net.minecraftforge.common.PlantType;
-import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
@@ -324,8 +321,8 @@ public class FruitBushBlock extends BushBlock implements EntityBlock, ITimeSimul
     }
 
     @Override
-    public boolean isEatable(BlockState state) {
-        return state.getValue(STAGE) >= 3;
+    public boolean isEatable(BlockState state, Diet diet) {
+        return state.getValue(STAGE) >= 3 && diet != Diet.CARNIVORE;
     }
 
     @Override

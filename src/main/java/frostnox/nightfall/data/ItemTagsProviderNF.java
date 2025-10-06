@@ -242,8 +242,6 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
         tag(TagsNF.FLETCHING).add(ItemsNF.COCKATRICE_FEATHER.get());
         tag(TagsNF.COOKED_MEAT).add(ItemsNF.COOKED_GAME.get(), ItemsNF.COOKED_POULTRY.get(), ItemsNF.COOKED_VENISON.get(), ItemsNF.COOKED_PALE_FLESH.get());
         tag(TagsNF.CURED_MEAT).add(ItemsNF.CURED_GAME.get(), ItemsNF.CURED_POULTRY.get(), ItemsNF.CURED_VENISON.get(), ItemsNF.CURED_PALE_FLESH.get());
-        tag(TagsNF.ANIMAL_EDIBLE_MEAT).addTag(TagsNF.MEAT);
-        tag(TagsNF.ANIMAL_EDIBLE_MEAT).add(ItemsNF.RAW_JELLYFISH.get(), ItemsNF.RAW_PALE_FLESH.get());
         tag(TagsNF.CURABLE_FOOD).add(ItemsNF.RAW_GAME.get(), ItemsNF.RAW_VENISON.get(), ItemsNF.RAW_POULTRY.get(), ItemsNF.RAW_JELLYFISH.get(), ItemsNF.RAW_PALE_FLESH.get());
         tag(TagsNF.COOKED_VEGETABLE).add(ItemsNF.ROASTED_CARROT.get(), ItemsNF.ROASTED_POTATO.get());
         tag(ItemTags.ARROWS).add(ItemsNF.FLINT_ARROW.get(), ItemsNF.BONE_ARROW.get(), ItemsNF.RUSTED_ARROW.get());
@@ -257,15 +255,11 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
         tag(TagsNF.HERB);
         tag(TagsNF.FOOD_INGREDIENT).addTags(TagsNF.MEAT, TagsNF.VEGETABLE, TagsNF.FRUIT, TagsNF.GRAIN, TagsNF.HERB);
 
-        tag(TagsNF.RABBIT_FOOD_ITEM).add(ItemsNF.CARROT.get(), ItemsNF.ROASTED_CARROT.get());
-        tag(TagsNF.RABBIT_FOOD_ITEM).addTag(TagsNF.FRUIT);
-        tag(TagsNF.DEER_FOOD_ITEM).add(ItemsNF.CARROT.get(), ItemsNF.POTATO.get(), ItemsNF.ROASTED_CARROT.get(), ItemsNF.ROASTED_POTATO.get());
-        tag(TagsNF.DEER_FOOD_ITEM).addTag(TagsNF.FRUIT);
-        tag(TagsNF.DRAKEFOWL_FOOD_ITEM).add(ItemsNF.ROASTED_CARROT.get(), ItemsNF.ROASTED_POTATO.get());
-        tag(TagsNF.DRAKEFOWL_FOOD_ITEM).addTags(TagsNF.GRAIN, TagsNF.FRUIT, TagsNF.ANIMAL_EDIBLE_MEAT, Tags.Items.SEEDS);
-        tag(TagsNF.COCKATRICE_FOOD_ITEM).addTag(TagsNF.ANIMAL_EDIBLE_MEAT);
-        tag(TagsNF.SPIDER_FOOD_ITEM).addTag(TagsNF.ANIMAL_EDIBLE_MEAT);
-        tag(TagsNF.PIT_DEVIL_FOOD_ITEM).addTag(TagsNF.ANIMAL_EDIBLE_MEAT);
+        tag(TagsNF.HERBIVORE_FOOD).add(ItemsNF.CARROT.get(), ItemsNF.ROASTED_CARROT.get(), ItemsNF.ROASTED_POTATO.get());
+        tag(TagsNF.HERBIVORE_FOOD).addTags(TagsNF.FRUIT, TagsNF.GRAIN);
+        tag(TagsNF.CARNIVORE_FOOD).addTag(TagsNF.MEAT);
+        tag(TagsNF.CARNIVORE_FOOD).add(ItemsNF.CURED_JELLYFISH.get(), ItemsNF.RAW_PALE_FLESH.get());
+        tag(TagsNF.OMNIVORE_FOOD).addTags(TagsNF.HERBIVORE_FOOD, TagsNF.CARNIVORE_FOOD);
 
         copy(TagsNF.HEAT_RESISTANT_1, TagsNF.HEAT_RESISTANT_ITEM_1);
         copy(TagsNF.HEAT_RESISTANT_2, TagsNF.HEAT_RESISTANT_ITEM_2);
@@ -279,6 +273,7 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
         copy(TagsNF.WOODEN_BARRELS, TagsNF.WOODEN_BARRELS_ITEM);
         copy(TagsNF.WOODEN_FENCE_GATES, TagsNF.WOODEN_FENCE_GATES_ITEM);
         copy(TagsNF.CHAIRS, TagsNF.CHAIRS_ITEM);
+        copy(TagsNF.TROUGHS, TagsNF.TROUGHS_ITEM);
         copy(TagsNF.ITEM_FRAMES, TagsNF.ITEM_FRAMES_ITEM);
         copy(TagsNF.ANVILS, TagsNF.ANVILS_ITEM);
         copy(TagsNF.METAL_ANVILS, TagsNF.METAL_ANVILS_ITEM);
@@ -354,7 +349,7 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
                 TagsNF.DAGGER_HEAD, TagsNF.MACE_HEAD, TagsNF.PICKAXE_HEAD, TagsNF.SABRE_HEAD, TagsNF.SHOVEL_HEAD, TagsNF.SICKLE_HEAD, TagsNF.SPEAR_HEAD,
                 TagsNF.SWORD_HEAD, TagsNF.ADZE, TagsNF.AXE, TagsNF.CHISEL, TagsNF.DAGGER, TagsNF.HAMMER, TagsNF.MACE, TagsNF.PICKAXE, TagsNF.SABRE, TagsNF.SICKLE, TagsNF.SHOVEL,
                 TagsNF.SPEAR, TagsNF.SWORD, TagsNF.BOW, TagsNF.SHIELD, TagsNF.WOODEN_BOW, TagsNF.UNDYED_METAL_SHIELD, TagsNF.NATIVE_METAL, TagsNF.NATIVE_METAL_INGOT,
-                TagsNF.LUMBER_TANNIN, TagsNF.CURABLE_FOOD, TagsNF.CURED_MEAT, ItemTags.SIGNS, TagsNF.CHAIRS_ITEM, TagsNF.ITEM_FRAMES_ITEM, ItemTags.BOATS);
+                TagsNF.LUMBER_TANNIN, TagsNF.CURABLE_FOOD, TagsNF.CURED_MEAT, ItemTags.SIGNS, TagsNF.CHAIRS_ITEM, TagsNF.TROUGHS_ITEM, TagsNF.ITEM_FRAMES_ITEM, ItemTags.BOATS);
         tag(TagsNF.RECIPE_GROUP).addTags(TagsNF.SURVIVOR_PLATE_PIECES.values().toArray(TagKey[]::new));
         tag(TagsNF.RECIPE_GROUP).addTags(TagsNF.SURVIVOR_SCALE_PIECES.values().toArray(TagKey[]::new));
         tag(TagsNF.RECIPE_GROUP).addTags(TagsNF.SURVIVOR_CHAINMAIL_PIECES.values().toArray(TagKey[]::new));

@@ -41,6 +41,7 @@ public class KnowledgeNF {
 
     public static final RegistryObject<Knowledge> STARTED_FIRE = KNOWLEDGE.register("started_fire", () -> new Knowledge());
     public static final RegistryObject<Knowledge> COLLECTED_WATER = KNOWLEDGE.register("collected_water", () -> new Knowledge());
+    public static final RegistryObject<Knowledge> TAMED_ANIMAL = KNOWLEDGE.register("tamed_animal", () -> new Knowledge());
     public static final RegistryObject<Knowledge> ESSENCE = KNOWLEDGE.register("essence_knowledge", () -> new ItemKnowledge(ItemsNF.METEORITE_CHUNK.get()));
     public static final RegistryObject<Knowledge> UNDEAD_PRESENCE = KNOWLEDGE.register("undead_presence", () -> new Knowledge());
     public static final RegistryObject<Knowledge> MELTED_HARD_METAL = KNOWLEDGE.register("melted_hard_metal", () -> new Knowledge());

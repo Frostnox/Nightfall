@@ -7,6 +7,7 @@ import frostnox.nightfall.capability.ChunkData;
 import frostnox.nightfall.capability.IChunkData;
 import frostnox.nightfall.capability.ILevelData;
 import frostnox.nightfall.capability.LevelData;
+import frostnox.nightfall.entity.entity.Diet;
 import frostnox.nightfall.registry.forge.BlockEntitiesNF;
 import frostnox.nightfall.util.LevelUtil;
 import net.minecraft.core.BlockPos;
@@ -173,8 +174,8 @@ public abstract class EggNestBlock extends BaseEntityBlock implements ITimeSimul
     }
 
     @Override
-    public boolean isEatable(BlockState state) {
-        return state.getValue(EGGS) > 0;
+    public boolean isEatable(BlockState state, Diet diet) {
+        return state.getValue(EGGS) > 0 && diet != Diet.HERBIVORE;
     }
 
     @Override

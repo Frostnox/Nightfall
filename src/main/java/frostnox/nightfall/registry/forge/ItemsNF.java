@@ -527,6 +527,7 @@ public class ItemsNF {
     public static final Map<Tree, RegistryObject<BlockItemNF>> RACKS = DataUtil.mapEnum(Tree.class, tree -> register(BlocksNF.RACKS.get(tree)));
     public static final Map<Tree, RegistryObject<BlockItemNF>> SHELVES = DataUtil.mapEnum(Tree.class, tree -> register(BlocksNF.SHELVES.get(tree)));
     public static final Map<Tree, RegistryObject<BlockItemNF>> CHAIRS = DataUtil.mapEnum(Tree.class, tree -> register(BlocksNF.CHAIRS.get(tree)));
+    public static final Map<Tree, RegistryObject<BlockItemNF>> TROUGHS = DataUtil.mapEnum(Tree.class, tree -> register(BlocksNF.TROUGHS.get(tree)));
     public static final RegistryObject<TorchItem> TORCH = ITEMS.register("torch", () -> new TorchItem(BlocksNF.TORCH.get(), BlocksNF.WALL_TORCH.get(),
             ItemsNF.TORCH_UNLIT, new Item.Properties().tab(UTILITIES_TAB)));
     public static final RegistryObject<IgnitableItem> TORCH_UNLIT = register("torch_unlit", () -> new IgnitableItem(TORCH, utility()));

@@ -12,6 +12,7 @@ import frostnox.nightfall.entity.IChaser;
 import frostnox.nightfall.entity.IHomeEntity;
 import frostnox.nightfall.entity.ai.goal.*;
 import frostnox.nightfall.entity.ai.goal.target.TrackNearestTargetGoal;
+import frostnox.nightfall.entity.entity.Diet;
 import frostnox.nightfall.network.NetworkHandler;
 import frostnox.nightfall.network.message.GenericEntityToClient;
 import frostnox.nightfall.registry.ActionsNF;
@@ -380,17 +381,13 @@ public class SpiderEntity extends HungryMonsterEntity implements IChaser, IHomeE
     }
 
     @Override
-    public boolean canEat(BlockState state) {
-        if(state.is(TagsNF.SPIDER_FOOD_BLOCK)) {
-            if(state.getBlock() instanceof IFoodBlock foodBlock) return foodBlock.isEatable(state);
-            else return true;
-        }
-        else return false;
+    public Diet getDiet() {
+        return Diet.CARNIVORE;
     }
 
     @Override
     public boolean canEat(Entity entity) {
-        if(entity instanceof ItemEntity itemEntity) return itemEntity.getItem().is(TagsNF.SPIDER_FOOD_ITEM);
+        if(super.canEat(entity)) return true;
         else if(entity instanceof LivingEntity livingEntity) return livingEntity.deathTime > 20 && !(entity instanceof SpiderEntity) && entity.getType().is(TagsNF.EDIBLE_CORPSE);
         else return false;
     }

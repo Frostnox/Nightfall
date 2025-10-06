@@ -339,6 +339,7 @@ public class LanguageProviderNF extends LanguageProvider {
         addSound(SoundsNF.WOODEN_BOWL_CRUSH, "Something crushes in wooden bowl");
         addSound(SoundsNF.CRUCIBLE_POUR, "Metal pours from crucible");
         addSound(SoundsNF.FIRE_CRACKLE, "Fire crackles");
+        addSound(SoundsNF.TROUGH_FILL, "Trough fills");
         add("nightfall.block.ceramic.open", "Ceramic vessel opens");
         addSound(SoundsNF.SWING, "Weapon whooshes");
         addSound(SoundsNF.SWING_CHARGED, "Weapon whooshes forcefully");
@@ -505,6 +506,7 @@ public class LanguageProviderNF extends LanguageProvider {
 
         addItemClues(EntriesNF.TOOLS, "A hard, brittle rock", "A wooden handle", "A binding");
         addItemClues(EntriesNF.SLING, "Twisted fibers", "A round projectile");
+        addKnowledgeClues(EntriesNF.TAMING, "Tame a wild animal");
         addItemClues(EntriesNF.WOODCARVING, "Fallen timber");
         addItemClues(EntriesNF.WOODWORKING, "A split plank of clean wood");
         addItemClues(EntriesNF.ADVANCED_WOODWORKING, "A plank of soft wood", "A plank of hard wood", "A plank of wood neither hard nor soft");

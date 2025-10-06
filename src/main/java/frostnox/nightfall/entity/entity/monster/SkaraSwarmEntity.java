@@ -10,6 +10,7 @@ import frostnox.nightfall.data.TagsNF;
 import frostnox.nightfall.entity.IHomeEntity;
 import frostnox.nightfall.entity.ai.goal.*;
 import frostnox.nightfall.entity.ai.goal.target.TrackNearestTargetGoal;
+import frostnox.nightfall.entity.entity.Diet;
 import frostnox.nightfall.registry.forge.AttributesNF;
 import frostnox.nightfall.registry.forge.EffectsNF;
 import frostnox.nightfall.registry.forge.ParticleTypesNF;
@@ -256,6 +257,11 @@ public class SkaraSwarmEntity extends HungryMonsterEntity implements IHomeEntity
     @Override
     public EquipmentSlot getHitSlot(Vector3d hitPos, int boxIndex) {
         return EquipmentSlot.CHEST;
+    }
+
+    @Override
+    public Diet getDiet() {
+        return Diet.CARNIVORE;
     }
 
     @Override

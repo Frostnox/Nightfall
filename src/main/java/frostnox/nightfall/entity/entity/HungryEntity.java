@@ -6,7 +6,6 @@ import frostnox.nightfall.data.TagsNF;
 import frostnox.nightfall.entity.IHungerEntity;
 import frostnox.nightfall.network.NetworkHandler;
 import frostnox.nightfall.network.message.entity.EatItemToClient;
-import frostnox.nightfall.registry.forge.ItemsNF;
 import frostnox.nightfall.util.LevelUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -107,7 +106,7 @@ public abstract class HungryEntity extends ActionableEntity implements IHungerEn
                         level.broadcastEntityEvent(entity, (byte) 60);
                         ItemStack foodDrop = ItemStack.EMPTY;
                         for(Item item : LevelUtil.getAllLootItems(livingEntity.getLootTable(), (ServerLevel) level)) {
-                            if(item.builtInRegistryHolder().is(TagsNF.ANIMAL_EDIBLE_MEAT)) {
+                            if(item.builtInRegistryHolder().is(TagsNF.CARNIVORE_FOOD)) {
                                 foodDrop = new ItemStack(item);
                                 break;
                             }

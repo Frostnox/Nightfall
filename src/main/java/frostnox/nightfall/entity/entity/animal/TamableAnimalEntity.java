@@ -1,10 +1,12 @@
 package frostnox.nightfall.entity.entity.animal;
 
+import frostnox.nightfall.capability.PlayerData;
 import frostnox.nightfall.entity.ITamable;
 import frostnox.nightfall.entity.Sex;
 import frostnox.nightfall.network.NetworkHandler;
 import frostnox.nightfall.network.message.GenericEntityToClient;
 import frostnox.nightfall.network.message.entity.EatItemToClient;
+import frostnox.nightfall.registry.KnowledgeNF;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -120,6 +122,7 @@ public abstract class TamableAnimalEntity extends AnimalEntity implements ITamab
                 ItemStack item = pPlayer.getItemInHand(pHand);
                 if(isFeedItem(item)) {
                     if(!level.isClientSide) {
+                        PlayerData.get(pPlayer).addKnowledge(KnowledgeNF.TAMED_ANIMAL.getId());
                         NetworkHandler.toAllTracking(this, new EatItemToClient(item.copy(), getId()));
                         item.shrink(1);
                         getEntityData().set(TAMED, true);
