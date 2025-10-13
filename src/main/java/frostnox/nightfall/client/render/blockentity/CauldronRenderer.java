@@ -116,7 +116,7 @@ public class CauldronRenderer<T extends CauldronBlockEntity> implements BlockEnt
             if(state.getValue(CauldronBlockNF.AXIS) == Direction.Axis.X) stack.mulPose(Vector3f.YP.rotationDegrees(-90));
             Material material = MATERIALS.get(cauldronBlock);
             if(material == null) {
-                material = new Material(TextureAtlas.LOCATION_BLOCKS, ResourceLocation.fromNamespaceAndPath (cauldronBlock.getRegistryName().getNamespace(),
+                material = new Material(TextureAtlas.LOCATION_BLOCKS, ResourceLocation.fromNamespaceAndPath(cauldronBlock.getRegistryName().getNamespace(),
                         "block/" + cauldronBlock.getRegistryName().getPath()));
                 MATERIALS.put(cauldronBlock, material);
             }

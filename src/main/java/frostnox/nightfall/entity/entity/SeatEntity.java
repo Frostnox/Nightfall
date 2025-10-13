@@ -45,7 +45,10 @@ public class SeatEntity extends Entity {
 
     @Override
     public void tick() {
-        super.tick();
+        if(isPassenger() && getVehicle().isRemoved()) stopRiding();
+        if(boardingCooldown > 0) boardingCooldown--;
+        checkOutOfWorld();
+        firstTick = false;
         if(!level.isClientSide && getPassengers().isEmpty()) remove(RemovalReason.DISCARDED);
     }
 

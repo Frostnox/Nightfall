@@ -2,7 +2,6 @@ package frostnox.nightfall.entity.entity.animal;
 
 import com.mojang.math.Vector3d;
 import com.mojang.math.Vector3f;
-import frostnox.nightfall.block.IFoodBlock;
 import frostnox.nightfall.capability.ChunkData;
 import frostnox.nightfall.capability.LevelData;
 import frostnox.nightfall.client.ClientEngine;
@@ -174,7 +173,7 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
 
     @Override
     public boolean canTargetFromSound(LivingEntity target) {
-        return target.getType().is(TagsNF.DRAKEFOWL_PREY) || target instanceof Player;
+        return target.getType().is(TagsNF.DRAKEFOWL_PREY) || (target instanceof Player player && !player.isCreative() && !player.isSpectator());
     }
 
     @Override
@@ -272,8 +271,8 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
         if(spawnDataIn instanceof GroupData data) type = data.type;
         else {
             float temperature = ChunkData.get(worldIn.getLevel().getChunkAt(blockPosition())).getTemperature(blockPosition());
-            if(temperature > 0.7F) type = Type.BRONZE;
-            else type = Type.EMERALD;
+            if(temperature > 0.7F) type = Type.EMERALD;
+            else type = Type.BRONZE;
             spawnDataIn = new GroupData(type);
         }
         getEntityData().set(TYPE, type);

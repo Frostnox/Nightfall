@@ -186,7 +186,6 @@ public class ItemsNF {
     public static final RegistryObject<Item> BONE = ITEMS.register("bone", () -> new Item(ingredient()));
     public static final RegistryObject<Item> ECTOPLASM = ITEMS.register("ectoplasm", () -> new Item(ingredient()));
     public static final RegistryObject<Item> SKARA_SHELLS = ITEMS.register("skara_shells", () -> new Item(ingredient()));
-    public static final RegistryObject<Item> DRAKEFOWL_EGG = ITEMS.register("drakefowl_egg", () -> new Item(ingredient().stacksTo(4)));
     //Food
     public static final RegistryObject<Item> POTATO = ITEMS.register("potato", () -> new Item(new Item.Properties().food(
             food(2, 0F)).tab(FOOD_TAB).stacksTo(4)));
@@ -241,6 +240,16 @@ public class ItemsNF {
                     30 * 20, 0), 0.5F).build()).tab(FOOD_TAB).stacksTo(1)));
     public static final RegistryObject<Item> BURNT_FOOD = ITEMS.register("burnt_food", () -> new Item(new Item.Properties().food(
             food(1, 0F)).tab(FOOD_TAB).stacksTo(4)));
+    public static final RegistryObject<Item> DRAKEFOWL_EGG = ITEMS.register("drakefowl_egg", () -> new Item(food()
+            .food(food(2, 0.2F)).stacksTo(4)));
+    public static final RegistryObject<Item> BOILED_EGG = ITEMS.register("boiled_egg", () -> new Item(food()
+            .food(food(4, 0.25F)).stacksTo(4)));
+    public static final RegistryObject<Item> SOUFFLE = ITEMS.register("souffle", () -> new Item(food()
+            .food(food(6, 0.3F)).stacksTo(4)));
+    public static final RegistryObject<Item> FRUIT_SOUFFLE = ITEMS.register("fruit_souffle", () -> new Item(food()
+            .food(food(6, 0.3F)).stacksTo(4)));
+    public static final RegistryObject<Item> SAVORY_SOUFFLE = ITEMS.register("savory_souffle", () -> new Item(food()
+            .food(food(6, 0.5F)).stacksTo(4)));
     //Seeds
     public static final RegistryObject<Item> POTATO_SEEDS = ITEMS.register("potato_seeds", () -> new ItemNameBlockItem(BlocksNF.POTATOES.get(), ingredient()));
     public static final RegistryObject<Item> CARROT_SEEDS = ITEMS.register("carrot_seeds", () -> new ItemNameBlockItem(BlocksNF.CARROTS.get(), ingredient()));
@@ -740,6 +749,10 @@ public class ItemsNF {
 
     private static Item.Properties utility() {
         return new Item.Properties().tab(UTILITIES_TAB);
+    }
+
+    private static Item.Properties food() {
+        return new Item.Properties().tab(FOOD_TAB);
     }
 
     private static FoodProperties food(int hunger, float saturation) {

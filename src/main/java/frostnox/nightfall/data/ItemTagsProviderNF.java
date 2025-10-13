@@ -247,18 +247,19 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
         tag(ItemTags.ARROWS).add(ItemsNF.FLINT_ARROW.get(), ItemsNF.BONE_ARROW.get(), ItemsNF.RUSTED_ARROW.get());
         for(var arrow : ItemsNF.METAL_ARROWS.values()) tag(ItemTags.ARROWS).add(arrow.get());
         tag(Tags.Items.SEEDS).add(ItemsNF.CARROT_SEEDS.get(), ItemsNF.POTATO_SEEDS.get(), ItemsNF.YARROW_SEEDS.get());
-        tag(TagsNF.MEAT).add(ItemsNF.RAW_GAME.get(), ItemsNF.RAW_VENISON.get(), ItemsNF.RAW_POULTRY.get());
+        tag(TagsNF.MEAT).add(ItemsNF.RAW_GAME.get(), ItemsNF.RAW_VENISON.get(), ItemsNF.RAW_POULTRY.get(), ItemsNF.RAW_PALE_FLESH.get());
         tag(TagsNF.MEAT).addTags(TagsNF.COOKED_MEAT, TagsNF.CURED_MEAT);
         tag(TagsNF.VEGETABLE).add(ItemsNF.POTATO.get(), ItemsNF.CARROT.get(), ItemsNF.ROASTED_POTATO.get(), ItemsNF.ROASTED_CARROT.get());
         tag(TagsNF.FRUIT).add(ItemsNF.BERRIES.get(), ItemsNF.APPLE.get(), ItemsNF.COCONUT_HALF.get(), ItemsNF.COCOA_POD.get());
         tag(TagsNF.GRAIN);
         tag(TagsNF.HERB);
         tag(TagsNF.FOOD_INGREDIENT).addTags(TagsNF.MEAT, TagsNF.VEGETABLE, TagsNF.FRUIT, TagsNF.GRAIN, TagsNF.HERB);
+        tag(TagsNF.FOOD_INGREDIENT).add(ItemsNF.DRAKEFOWL_EGG.get());
 
         tag(TagsNF.HERBIVORE_FOOD).add(ItemsNF.CARROT.get(), ItemsNF.ROASTED_CARROT.get(), ItemsNF.ROASTED_POTATO.get());
         tag(TagsNF.HERBIVORE_FOOD).addTags(TagsNF.FRUIT, TagsNF.GRAIN);
         tag(TagsNF.CARNIVORE_FOOD).addTag(TagsNF.MEAT);
-        tag(TagsNF.CARNIVORE_FOOD).add(ItemsNF.CURED_JELLYFISH.get(), ItemsNF.RAW_PALE_FLESH.get(), ItemsNF.DRAKEFOWL_EGG.get());
+        tag(TagsNF.CARNIVORE_FOOD).add(ItemsNF.CURED_JELLYFISH.get(), ItemsNF.DRAKEFOWL_EGG.get());
         tag(TagsNF.OMNIVORE_FOOD).addTags(TagsNF.HERBIVORE_FOOD, TagsNF.CARNIVORE_FOOD);
 
         copy(TagsNF.HEAT_RESISTANT_1, TagsNF.HEAT_RESISTANT_ITEM_1);

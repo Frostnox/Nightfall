@@ -23,6 +23,9 @@ public class SpawnGroupsNF {
     public static final RegistryObject<SpawnGroup> RABBIT = GROUPS.register("rabbit", () -> new LandSpawnGroup(
             2, true, EntitiesNF.RABBIT.get(), SEA_LEVEL, SEA_LEVEL + 312, 1, 15, 1, 1,
             0.05F, 1F, 0.0F, 1.0F, TagsNF.RABBIT_SPAWN_BLOCK));
+    public static final RegistryObject<SpawnGroup> DRAKEFOWL = GROUPS.register("drakefowl", () -> new DrakefowlSpawnGroup(
+            3, true, SEA_LEVEL, Integer.MAX_VALUE, 1, 15,
+            0.55F, 1F, 0.65F, 1.0F, TagsNF.NATURAL_SOIL));
     public static final RegistryObject<SpawnGroup> CREEPER = GROUPS.register("creeper", () -> new LandSpawnGroup(
             1, false, EntitiesNF.CREEPER.get(), SEA_LEVEL, Integer.MAX_VALUE, 0, 15, 1, 1,
             0.1F, 1F, 0.4F, 1F, TagsNF.CREEPER_SPAWN_BLOCK));
