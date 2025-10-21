@@ -63,6 +63,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffectUtil;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -76,6 +77,7 @@ import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.GameRules;
@@ -435,6 +437,20 @@ public class CommonEventHandler {
                 if(saturation < 0.2F) tooltip.add(getTooltipIndex(tooltip), new TranslatableComponent("item.low_saturation").withStyle(ChatFormatting.DARK_GREEN));
                 else if(saturation < 0.4F) tooltip.add(getTooltipIndex(tooltip), new TranslatableComponent("item.medium_saturation").withStyle(ChatFormatting.DARK_GREEN));
                 else tooltip.add(getTooltipIndex(tooltip), new TranslatableComponent("item.high_saturation").withStyle(ChatFormatting.DARK_GREEN));
+
+                for(var pair : food.getEffects()) {
+                    if(pair.getSecond() < 1F) continue;
+                    MobEffectInstance effect = pair.getFirst();
+                    MutableComponent tip = new TranslatableComponent(effect.getDescriptionId());
+                    MobEffect mobeffect = effect.getEffect();
+                    if(effect.getAmplifier() > 0) {
+                        tip = new TranslatableComponent("potion.withAmplifier", tip, new TranslatableComponent("potion.potency." + effect.getAmplifier()));
+                    }
+                    if(effect.getDuration() > 20) {
+                        tip = new TranslatableComponent("potion.withDuration", tip, MobEffectUtil.formatDuration(effect, 1));
+                    }
+                    tooltip.add(tip.withStyle(mobeffect.getCategory().getTooltipFormatting()));
+                }
             }
         }
     }

@@ -7,6 +7,7 @@ import frostnox.nightfall.block.TieredHeat;
 import frostnox.nightfall.block.block.WaterloggedEntityBlock;
 import frostnox.nightfall.entity.ai.pathfinding.NodeManager;
 import frostnox.nightfall.entity.ai.pathfinding.NodeType;
+import frostnox.nightfall.item.item.ChangeOnUseFinishItem;
 import frostnox.nightfall.item.item.FilledBucketItem;
 import frostnox.nightfall.registry.forge.BlockEntitiesNF;
 import frostnox.nightfall.registry.forge.BlocksNF;
@@ -85,14 +86,17 @@ public class CauldronBlockNF extends WaterloggedEntityBlock implements IHeatable
         else {
             if(level.getBlockEntity(pos) instanceof CauldronBlockEntity cauldron) {
                 if(cauldron.hasMeal()) {
-                    ItemStack useItem = player.getItemInHand(hand);
-                    if(useItem.is(ItemsNF.WOODEN_BOWL.get())) {
-                        if(!player.getAbilities().instabuild) useItem.shrink(1);
-                        LevelUtil.giveItemToPlayer(cauldron.takeMeal(), player, true);
+                    if(cauldron.meal.getItem() instanceof ChangeOnUseFinishItem item) {
+                        ItemStack useItem = player.getItemInHand(hand);
+                        if(useItem.is(item.changeItem.get())) {
+                            if(!player.getAbilities().instabuild) useItem.shrink(1);
+                            LevelUtil.giveItemToPlayer(cauldron.takeMeal(), player, true);
+                        }
+                        else if(player.canEat(false)) {
+                            player.eat(level, cauldron.takeMeal());
+                        }
                     }
-                    else if(player.canEat(false)) {
-                        player.eat(level, cauldron.takeMeal());
-                    }
+                    else LevelUtil.giveItemToPlayer(cauldron.takeMeal(), player, true);
                 }
                 else {
                     //Try placing water directly before opening gui

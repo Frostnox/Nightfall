@@ -66,6 +66,7 @@ public class CauldronRecipe extends FlatMixtureRecipe {
         for(Pair<Ingredient, Vec2> part : input) {
             Ingredient ingredient = part.getA();
             Vec2 range = part.getB();
+            if(range.y == 0) continue;
             Component text;
             boolean multiple;
             if(range.x == 0) {

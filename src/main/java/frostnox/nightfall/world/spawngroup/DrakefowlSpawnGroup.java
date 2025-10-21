@@ -37,13 +37,13 @@ public class DrakefowlSpawnGroup extends VariedLandSpawnGroup {
                 else if(level.random.nextBoolean()) {
                     group = new EntityType[1 + level.random.nextInt(4)];
                     group[0] = EntitiesNF.DRAKEFOWL_HEN.get();
-                    for(int i = 1; i < group.length; i++) group[i] = EntitiesNF.DRAKEFOWL_CHICK.get();
+                    for(int i = 1; i < group.length; i++) group[i] = level.random.nextBoolean() ? EntitiesNF.DRAKEFOWL_ROOSTER.get() : EntitiesNF.DRAKEFOWL_HEN.get();
                 }
                 else {
                     group = new EntityType[2 + level.random.nextInt(4)];
                     group[0] = EntitiesNF.DRAKEFOWL_HEN.get();
                     group[1] = EntitiesNF.DRAKEFOWL_ROOSTER.get();
-                    for(int i = 2; i < group.length; i++) group[i] = EntitiesNF.DRAKEFOWL_CHICK.get();
+                    for(int i = 2; i < group.length; i++) group[i] = level.random.nextBoolean() ? EntitiesNF.DRAKEFOWL_ROOSTER.get() : EntitiesNF.DRAKEFOWL_HEN.get();
                 }
             }
             default -> {

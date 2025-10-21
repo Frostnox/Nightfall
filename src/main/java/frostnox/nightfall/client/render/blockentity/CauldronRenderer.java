@@ -8,6 +8,7 @@ import frostnox.nightfall.block.block.cauldron.CauldronBlockNF;
 import frostnox.nightfall.block.block.cauldron.Task;
 import frostnox.nightfall.client.ClientEngine;
 import frostnox.nightfall.client.model.ModelRegistryNF;
+import frostnox.nightfall.data.TagsNF;
 import frostnox.nightfall.util.MathUtil;
 import frostnox.nightfall.util.RenderUtil;
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
@@ -39,6 +40,7 @@ public class CauldronRenderer<T extends CauldronBlockEntity> implements BlockEnt
     private final ModelPart LID;
     private static final Map<Block, Material> MATERIALS = new Object2ObjectArrayMap<>(1);
     private static final Map<Item, ResourceLocation> TEXTURES = new Object2ObjectArrayMap<>(1);
+    private static final Map<Item, ResourceLocation> SIDE_TEXTURES = new Object2ObjectArrayMap<>(1);
     private static final float FREQ = 0.25F;
 
     public CauldronRenderer(BlockEntityRendererProvider.Context context) {
@@ -82,7 +84,6 @@ public class CauldronRenderer<T extends CauldronBlockEntity> implements BlockEnt
                 }
                 TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(loc);
                 VertexConsumer builder = buffers.getBuffer(RenderType.entitySolid(sprite.atlas().location()));
-                Vec2 UV = new Vec2(sprite.getU0(), sprite.getV0());
                 switch((int) state.getSeed(cauldron.getBlockPos()) % 4) {
                     case 0 -> {
                         stack.mulPose(Vector3f.YP.rotationDegrees(90));
@@ -97,9 +98,31 @@ public class CauldronRenderer<T extends CauldronBlockEntity> implements BlockEnt
                         stack.translate(0, 0, -1);
                     }
                 }
-                RenderUtil.drawFace(Direction.UP, stack.last().pose(), stack.last().normal(), builder, Color.WHITE,
-                        new Vec3(8D/16D, 2D/16D + 1D/16D * cauldron.meal.getCount(), 8D/16D), 8F/16F, 8F/16F, UV,
-                        8F/ClientEngine.get().atlasWidth, 8F/ClientEngine.get().atlasHeight, pPackedLight);
+                if(cauldron.meal.is(TagsNF.CAULDRON_FLUID_MEAL)) {
+                    RenderUtil.drawFace(Direction.UP, stack.last().pose(), stack.last().normal(), builder, Color.WHITE,
+                            new Vec3(8D/16D, 2D/16D + 1D/16D * cauldron.meal.getCount(), 8D/16D), 8F/16F, 8F/16F, new Vec2(sprite.getU0(), sprite.getV0()),
+                            8F/ClientEngine.get().atlasWidth, 8F/ClientEngine.get().atlasHeight, pPackedLight);
+                }
+                else {
+                    float slice = 2F * (4 - cauldron.meal.getCount());
+                    float uOff = slice / ClientEngine.get().atlasWidth;
+                    RenderUtil.drawFace(Direction.UP, stack.last().pose(), stack.last().normal(), builder, Color.WHITE,
+                            new Vec3(8D/16D - slice/32, 6D/16D, 8D/16D), 8F/16F - slice/16F, 8F/16F, new Vec2(sprite.getU0() + uOff, sprite.getV0()),
+                            (8F - slice)/ClientEngine.get().atlasWidth, 8F/ClientEngine.get().atlasHeight, pPackedLight);
+                    if(slice > 0) {
+                        loc = SIDE_TEXTURES.get(meal);
+                        if(loc == null) {
+                            ResourceLocation itemLoc = meal.getRegistryName();
+                            loc = ResourceLocation.fromNamespaceAndPath(itemLoc.getNamespace(), "block/" + itemLoc.getPath() + "_side");
+                            SIDE_TEXTURES.put(meal, loc);
+                        }
+                        sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(loc);
+                        builder = buffers.getBuffer(RenderType.entitySolid(sprite.atlas().location()));
+                        RenderUtil.drawFace(Direction.EAST, stack.last().pose(), stack.last().normal(), builder, Color.WHITE,
+                                new Vec3(12D/16D - slice/16, 3.5D/16D, 8D/16D), 8F/16F, 5F/16F, new Vec2(sprite.getU0(), sprite.getV0()),
+                                8F/ClientEngine.get().atlasWidth, 5F/ClientEngine.get().atlasHeight, pPackedLight);
+                    }
+                }
                 stack.popPose();
                 return;
             }

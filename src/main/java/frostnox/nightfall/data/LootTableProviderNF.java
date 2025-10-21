@@ -658,8 +658,10 @@ public class LootTableProviderNF extends LootTableProvider {
                     .withPool(pool(entry(ItemsNF.DEER_HIDES.get(DeerEntity.Type.BRIAR).get(), 1F, 1F, LootItemEntityCondition.of(LootItemEntityCondition.Test.DEER_BRIAR))))
                     .withPool(pool(entry(ItemsNF.DEER_HIDES.get(DeerEntity.Type.RED).get(), 1F, 1F, LootItemEntityCondition.of(LootItemEntityCondition.Test.DEER_RED))))
                     .withPool(pool(entry(ItemsNF.DEER_HIDES.get(DeerEntity.Type.SPOTTED).get(), 1F, 1F, LootItemEntityCondition.of(LootItemEntityCondition.Test.DEER_SPOTTED)))));
-            add(EntitiesNF.DRAKEFOWL_ROOSTER.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.RAW_POULTRY.get(), 2, 2))));
-            add(EntitiesNF.DRAKEFOWL_HEN.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.RAW_POULTRY.get(), 2, 2))));
+            add(EntitiesNF.DRAKEFOWL_ROOSTER.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.RAW_POULTRY.get(), 2, 2)))
+                    .withPool(pool(entry(ItemsNF.SCARLET_FEATHER.get(), 5, 6))));
+            add(EntitiesNF.DRAKEFOWL_HEN.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.RAW_POULTRY.get(), 2, 2)))
+                    .withPool(pool(entry(ItemsNF.SCARLET_FEATHER.get(), 5, 6))));
             add(EntitiesNF.DRAKEFOWL_CHICK.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.RAW_POULTRY.get(), 1, 1))));
             add(EntitiesNF.HUSK.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.ROTTEN_FLESH.get(), 1, 2))));
             add(EntitiesNF.SKELETON.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.BONE_SHARD.get(), 1, 2)))
@@ -671,7 +673,7 @@ public class LootTableProviderNF extends LootTableProvider {
             add(EntitiesNF.COCKATRICE.get(), LootTable.lootTable()
                     .withPool(pool(entry(ItemsNF.COCKATRICE_SKINS.get(CockatriceEntity.Type.BRONZE).get(), 1F, 1F, LootItemEntityCondition.of(LootItemEntityCondition.Test.COCKATRICE_BRONZE))))
                     .withPool(pool(entry(ItemsNF.COCKATRICE_SKINS.get(CockatriceEntity.Type.EMERALD).get(), 1F, 1F, LootItemEntityCondition.of(LootItemEntityCondition.Test.COCKATRICE_EMERALD))))
-                    .withPool(pool(entry(ItemsNF.COCKATRICE_FEATHER.get(), 6, 8)))
+                    .withPool(pool(entry(ItemsNF.SCARLET_FEATHER.get(), 8, 10)))
                     .withPool(pool(entry(ItemsNF.RAW_GAME.get(), 1, 2))).withPool(pool(entry(ItemsNF.RAW_POULTRY.get(), 2, 2))));
             add(EntitiesNF.SPIDER.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.SILK.get(), 1, 2))));
             add(EntitiesNF.ROCKWORM.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.RAW_PALE_FLESH.get(), 1, 2)))
@@ -728,7 +730,7 @@ public class LootTableProviderNF extends LootTableProvider {
                             entry(ItemsNF.PLANT_FIBERS.get(),6, 8, 2),
                             entry(ItemsNF.FLINT.get(),2, 4, 1)))
                     .withPool(pool(2,
-                            entry(ItemsNF.COCKATRICE_FEATHER.get(), 6, 8, 1),
+                            entry(ItemsNF.SCARLET_FEATHER.get(), 6, 8, 1),
                             entry(ItemsNF.CLAY.get(), 20, 26, 2),
                             entry(ItemsNF.METEORITE_NUGGET.get(), 3, 5, 1),
                             entry(ItemsNF.METEORITE_CHUNK.get(), 1, 1, 1),

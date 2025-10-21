@@ -221,6 +221,7 @@ public class TagsNF {
     public static final TagKey<Item> CRUSHABLE_TO_LIME = itemTag("crushable_to_lime");
     public static final TagKey<Item> CRUSHABLE_TO_BONE_SHARD = itemTag("crushable_to_bone_shard");
     public static final TagKey<Item> FLETCHING = itemTag("fletching");
+    public static final TagKey<Item> CAULDRON_FLUID_MEAL = itemTag("cauldron_fluid_meal");
     public static final TagKey<Item> COOKED_MEAT = itemTag("cooked_meat");
     public static final TagKey<Item> CURED_MEAT = itemTag("cured_meat");
     public static final TagKey<Item> CURABLE_FOOD = itemTag("curable_food");
@@ -278,6 +279,8 @@ public class TagsNF {
     public static final TagKey<Item> FRUIT = itemTag("food_group/fruit");
     public static final TagKey<Item> GRAIN = itemTag("food_group/grain");
     public static final TagKey<Item> HERB = itemTag("food_group/herb");
+    public static final TagKey<Item> EGG = itemTag("food_group/egg");
+    public static final TagKey<Item> FRUIT_OR_VEGETABLE = itemTag("food_group/fruit_or_vegetable");
     public static final TagKey<Item> FOOD_INGREDIENT = itemTag("food_group/ingredient"); //Controls item insertion in cooking containers
     public static final TagKey<Item> HERBIVORE_FOOD = itemTag("herbivore_food");
     public static final TagKey<Item> CARNIVORE_FOOD = itemTag("carnivore_food");
@@ -301,7 +304,7 @@ public class TagsNF {
     public static final TagKey<Item> METAL_ANVILS_ITEM = itemTag(METAL_ANVILS);
     public static final TagKey<Item> METAL_BLOCKS_ITEM = itemTag(METAL_BLOCKS);
 
-    public static final List<TagKey<Item>> FOOD_GROUPS = List.of(TagsNF.MEAT, TagsNF.VEGETABLE, TagsNF.FRUIT, TagsNF.GRAIN, TagsNF.HERB);
+    public static final List<TagKey<Item>> FOOD_GROUPS = List.of(TagsNF.MEAT, TagsNF.VEGETABLE, TagsNF.FRUIT, TagsNF.GRAIN, TagsNF.HERB, TagsNF.EGG, TagsNF.FRUIT_OR_VEGETABLE);
 
     public static final TagKey<SpawnGroup> SURFACE_GROUPS = spawnGroupTag("surface_groups");
     public static final TagKey<SpawnGroup> FRESHWATER_GROUPS = spawnGroupTag("freshwater_groups");

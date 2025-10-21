@@ -9,6 +9,7 @@ import frostnox.nightfall.encyclopedia.EntryStage;
 import frostnox.nightfall.encyclopedia.knowledge.Knowledge;
 import frostnox.nightfall.entity.PlayerAttribute;
 import frostnox.nightfall.registry.RegistriesNF;
+import frostnox.nightfall.registry.forge.EffectsNF;
 import frostnox.nightfall.world.inventory.AccessoryInventory;
 import frostnox.nightfall.world.inventory.AccessorySlot;
 import frostnox.nightfall.network.NetworkHandler;
@@ -195,7 +196,9 @@ public class PlayerData implements IPlayerData {
         }
         else */
             if(player.tickCount - getLastStaminaDrainTick() >= 24 && (!player.level.isClientSide() || getStamina() > 0F)) {
-                addStamina(1.5D * AttributesNF.getStaminaRegenMultiplier(player));
+                double regen = 1.5D;
+                if(player.hasEffect(EffectsNF.ENERGIZING.get())) regen += 0.5;
+                addStamina(regen * AttributesNF.getStaminaRegenMultiplier(player));
             }
         }
 

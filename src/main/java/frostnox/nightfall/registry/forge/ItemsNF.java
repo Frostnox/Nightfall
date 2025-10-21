@@ -165,7 +165,7 @@ public class ItemsNF {
     public static final RegistryObject<Item> ROTTEN_FLESH = register("rotten_flesh", INGREDIENTS_TAB);
     public static final RegistryObject<Item> LIVING_BONE = register("living_bone", INGREDIENTS_TAB);
     public static final RegistryObject<Item> DREG_HEART = register("dreg_heart", INGREDIENTS_TAB);
-    public static final RegistryObject<Item> COCKATRICE_FEATHER = register("cockatrice_feather", INGREDIENTS_TAB);
+    public static final RegistryObject<Item> SCARLET_FEATHER = register("scarlet_feather", INGREDIENTS_TAB);
     public static final Map<RabbitEntity.Type, RegistryObject<Item>> RABBIT_PELTS = DataUtil.mapEnum(RabbitEntity.Type.class, type ->
             register(type.name().toLowerCase(Locale.ROOT) + "_rabbit_pelt", () -> new Item(ingredient().stacksTo(32))));
     public static final Map<DeerEntity.Type, RegistryObject<Item>> DEER_HIDES = DataUtil.mapEnum(DeerEntity.Type.class, type ->
@@ -234,7 +234,8 @@ public class ItemsNF {
     public static final RegistryObject<Item> VEGETABLE_STEW = ITEMS.register("vegetable_stew", () -> new ChangeOnUseFinishItem(ItemsNF.WOODEN_BOWL,
             new Item.Properties().food(food(5, 0.35F)).tab(FOOD_TAB).stacksTo(1)));
     public static final RegistryObject<Item> HEARTY_STEW = ITEMS.register("hearty_stew", () -> new ChangeOnUseFinishItem(ItemsNF.WOODEN_BOWL,
-            new Item.Properties().food(food(6, 0.4F)).tab(FOOD_TAB).stacksTo(1)));
+            new Item.Properties().food(foodBuilder(6, 0.4F).effect(() -> new MobEffectInstance(EffectsNF.INVIGORATING.get(),
+                    60 * 20 * 5, 0), 1F).build()).tab(FOOD_TAB).stacksTo(1)));
     public static final RegistryObject<Item> SUSPICIOUS_STEW = ITEMS.register("suspicious_stew", () -> new ChangeOnUseFinishItem(ItemsNF.WOODEN_BOWL,
             new Item.Properties().food(foodBuilder(3, 0.1F).effect(() -> new MobEffectInstance(EffectsNF.POISON.get(),
                     30 * 20, 0), 0.5F).build()).tab(FOOD_TAB).stacksTo(1)));
@@ -245,11 +246,13 @@ public class ItemsNF {
     public static final RegistryObject<Item> BOILED_EGG = ITEMS.register("boiled_egg", () -> new Item(food()
             .food(food(4, 0.25F)).stacksTo(4)));
     public static final RegistryObject<Item> SOUFFLE = ITEMS.register("souffle", () -> new Item(food()
-            .food(food(6, 0.3F)).stacksTo(4)));
+            .food(food(5, 0.3F)).stacksTo(4)));
     public static final RegistryObject<Item> FRUIT_SOUFFLE = ITEMS.register("fruit_souffle", () -> new Item(food()
-            .food(food(6, 0.3F)).stacksTo(4)));
+            .food(foodBuilder(5, 0.3F).effect(() -> new MobEffectInstance(EffectsNF.ENERGIZING.get(),
+                    60 * 20 * 5, 0), 1F).build()).stacksTo(4)));
     public static final RegistryObject<Item> SAVORY_SOUFFLE = ITEMS.register("savory_souffle", () -> new Item(food()
-            .food(food(6, 0.5F)).stacksTo(4)));
+            .food(foodBuilder(5, 0.5F).effect(() -> new MobEffectInstance(EffectsNF.INVIGORATING.get(),
+                    60 * 20 * 5, 0), 1F).build()).stacksTo(4)));
     //Seeds
     public static final RegistryObject<Item> POTATO_SEEDS = ITEMS.register("potato_seeds", () -> new ItemNameBlockItem(BlocksNF.POTATOES.get(), ingredient()));
     public static final RegistryObject<Item> CARROT_SEEDS = ITEMS.register("carrot_seeds", () -> new ItemNameBlockItem(BlocksNF.CARROTS.get(), ingredient()));
@@ -300,11 +303,11 @@ public class ItemsNF {
     public static final RegistryObject<SpawnEggItem> DEER_SPAWN_EGG = register(EntitiesNF.DEER.getId().getPath() + "_spawn_egg",
             () -> new ForgeSpawnEggItem(EntitiesNF.DEER, 0xd6cec1, BEAST_COLOR, utility()));
     public static final RegistryObject<SpawnEggItem> DRAKEFOWL_ROOSTER_SPAWN_EGG = register(EntitiesNF.DRAKEFOWL_ROOSTER.getId().getPath() + "_spawn_egg",
-            () -> new ForgeSpawnEggItem(EntitiesNF.DRAKEFOWL_ROOSTER, 0x526c1f, 0xc25217, utility()));
+            () -> new ForgeSpawnEggItem(EntitiesNF.DRAKEFOWL_ROOSTER, 0xaa1928, 0xc25217, utility()));
     public static final RegistryObject<SpawnEggItem> DRAKEFOWL_HEN_SPAWN_EGG = register(EntitiesNF.DRAKEFOWL_HEN.getId().getPath() + "_spawn_egg",
-            () -> new ForgeSpawnEggItem(EntitiesNF.DRAKEFOWL_HEN, 0x526c1f, 0xc25217, utility()));
+            () -> new ForgeSpawnEggItem(EntitiesNF.DRAKEFOWL_HEN, 0xf49f31, 0xc25217, utility()));
     public static final RegistryObject<SpawnEggItem> DRAKEFOWL_CHICK_SPAWN_EGG = register(EntitiesNF.DRAKEFOWL_CHICK.getId().getPath() + "_spawn_egg",
-            () -> new ForgeSpawnEggItem(EntitiesNF.DRAKEFOWL_CHICK, 0x526c1f, 0xc25217, utility()));
+            () -> new ForgeSpawnEggItem(EntitiesNF.DRAKEFOWL_CHICK, 0xecbd47, 0xc25217, utility()));
     public static final RegistryObject<SpawnEggItem> HUSK_SPAWN_EGG = register(EntitiesNF.HUSK.getId().getPath() + "_spawn_egg",
             () -> new ForgeSpawnEggItem(EntitiesNF.HUSK, 0x6d727e, UNDEAD_COLOR, utility()));
     public static final RegistryObject<SpawnEggItem> SKELETON_SPAWN_EGG = register(EntitiesNF.SKELETON.getId().getPath() + "_spawn_egg",

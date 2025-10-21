@@ -196,10 +196,12 @@ public class CauldronBlockEntity extends MenuContainerBlockEntity implements IHo
             entity.setChanged();
             if(entity.cookTicks >= entity.cookTicksTotal) {
                 RecipeWrapper container = new RecipeWrapper(entity.inventory);
-                ItemStack cookedMeal = level.getRecipeManager().getRecipeFor(CauldronRecipe.TYPE, container, level).map((recipe) ->
-                        recipe.assembleItem(container, null)).orElse(new ItemStack(ItemsNF.SUSPICIOUS_STEW.get(), 4));
+                CauldronRecipe bestRecipe = null;
+                for(CauldronRecipe recipe : level.getRecipeManager().getRecipesFor(CauldronRecipe.TYPE, container, level)) {
+                    if(bestRecipe == null || recipe.getInput().size() > bestRecipe.getInput().size()) bestRecipe = recipe;
+                }
                 entity.clearContent();
-                entity.meal = cookedMeal;
+                entity.meal = bestRecipe == null ? new ItemStack(ItemsNF.SUSPICIOUS_STEW.get(), 4) : bestRecipe.assembleItem(container, null);
                 entity.needsUpdate = true;
                 state = state.setValue(CauldronBlockNF.TASK, Task.DONE);
                 level.setBlockAndUpdate(pos, state);

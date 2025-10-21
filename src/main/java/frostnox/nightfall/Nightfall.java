@@ -602,6 +602,13 @@ public class Nightfall {
                 event.addSprite(ResourceLocation.fromNamespaceAndPath(MODID, "block/" + ItemsNF.VEGETABLE_STEW.getId().getPath()));
                 event.addSprite(ResourceLocation.fromNamespaceAndPath(MODID, "block/" + ItemsNF.HEARTY_STEW.getId().getPath()));
                 event.addSprite(ResourceLocation.fromNamespaceAndPath(MODID, "block/" + ItemsNF.SUSPICIOUS_STEW.getId().getPath()));
+                event.addSprite(ResourceLocation.fromNamespaceAndPath(MODID, "block/" + ItemsNF.BOILED_EGG.getId().getPath()));
+                event.addSprite(ResourceLocation.fromNamespaceAndPath(MODID, "block/" + ItemsNF.SOUFFLE.getId().getPath()));
+                event.addSprite(ResourceLocation.fromNamespaceAndPath(MODID, "block/" + ItemsNF.SOUFFLE.getId().getPath() + "_side"));
+                event.addSprite(ResourceLocation.fromNamespaceAndPath(MODID, "block/" + ItemsNF.FRUIT_SOUFFLE.getId().getPath()));
+                event.addSprite(ResourceLocation.fromNamespaceAndPath(MODID, "block/" + ItemsNF.FRUIT_SOUFFLE.getId().getPath() + "_side"));
+                event.addSprite(ResourceLocation.fromNamespaceAndPath(MODID, "block/" + ItemsNF.SAVORY_SOUFFLE.getId().getPath()));
+                event.addSprite(ResourceLocation.fromNamespaceAndPath(MODID, "block/" + ItemsNF.SAVORY_SOUFFLE.getId().getPath() + "_side"));
                 event.addSprite(ResourceLocation.fromNamespaceAndPath(MODID, "block/terracotta_darkened"));
             }
         }

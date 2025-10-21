@@ -168,7 +168,7 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
         tag(TagsNF.NO_HITSTOP).addTags(TagsNF.DAGGER, TagsNF.SICKLE);
         tag(TagsNF.GRID_INTERACTABLE).addTag(TagsNF.HAMMER);
         tag(TagsNF.MIXTURE_1);
-        tag(TagsNF.MIXTURE_2).add(ItemsNF.RAW_VENISON.get(), ItemsNF.COOKED_VENISON.get());
+        tag(TagsNF.MIXTURE_2).add(ItemsNF.RAW_VENISON.get(), ItemsNF.COOKED_VENISON.get(), ItemsNF.APPLE.get());
         tag(TagsNF.MIXTURE_3);
         tag(TagsNF.MIXTURE_4);
         tag(TagsNF.MIXTURE_5);
@@ -239,7 +239,8 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
             tag(TagsNF.RAWHIDE_MEDIUM).add(item.get());
         }
         tag(TagsNF.RAWHIDE_SMALL).add(ItemsNF.RAWHIDE.get());
-        tag(TagsNF.FLETCHING).add(ItemsNF.COCKATRICE_FEATHER.get());
+        tag(TagsNF.FLETCHING).add(ItemsNF.SCARLET_FEATHER.get());
+        tag(TagsNF.CAULDRON_FLUID_MEAL).add(ItemsNF.MEAT_STEW.get(), ItemsNF.VEGETABLE_STEW.get(), ItemsNF.HEARTY_STEW.get(), ItemsNF.SUSPICIOUS_STEW.get(), ItemsNF.BOILED_EGG.get());
         tag(TagsNF.COOKED_MEAT).add(ItemsNF.COOKED_GAME.get(), ItemsNF.COOKED_POULTRY.get(), ItemsNF.COOKED_VENISON.get(), ItemsNF.COOKED_PALE_FLESH.get());
         tag(TagsNF.CURED_MEAT).add(ItemsNF.CURED_GAME.get(), ItemsNF.CURED_POULTRY.get(), ItemsNF.CURED_VENISON.get(), ItemsNF.CURED_PALE_FLESH.get());
         tag(TagsNF.CURABLE_FOOD).add(ItemsNF.RAW_GAME.get(), ItemsNF.RAW_VENISON.get(), ItemsNF.RAW_POULTRY.get(), ItemsNF.RAW_JELLYFISH.get(), ItemsNF.RAW_PALE_FLESH.get());
@@ -253,14 +254,16 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
         tag(TagsNF.FRUIT).add(ItemsNF.BERRIES.get(), ItemsNF.APPLE.get(), ItemsNF.COCONUT_HALF.get(), ItemsNF.COCOA_POD.get());
         tag(TagsNF.GRAIN);
         tag(TagsNF.HERB);
-        tag(TagsNF.FOOD_INGREDIENT).addTags(TagsNF.MEAT, TagsNF.VEGETABLE, TagsNF.FRUIT, TagsNF.GRAIN, TagsNF.HERB);
-        tag(TagsNF.FOOD_INGREDIENT).add(ItemsNF.DRAKEFOWL_EGG.get());
+        tag(TagsNF.EGG).add(ItemsNF.DRAKEFOWL_EGG.get());
+        tag(TagsNF.FRUIT_OR_VEGETABLE).addTags(TagsNF.FRUIT, TagsNF.VEGETABLE);
+        tag(TagsNF.FOOD_INGREDIENT).addTags(TagsNF.MEAT, TagsNF.VEGETABLE, TagsNF.FRUIT, TagsNF.GRAIN, TagsNF.HERB, TagsNF.EGG);
 
         tag(TagsNF.HERBIVORE_FOOD).add(ItemsNF.CARROT.get(), ItemsNF.ROASTED_CARROT.get(), ItemsNF.ROASTED_POTATO.get());
         tag(TagsNF.HERBIVORE_FOOD).addTags(TagsNF.FRUIT, TagsNF.GRAIN);
-        tag(TagsNF.CARNIVORE_FOOD).addTag(TagsNF.MEAT);
-        tag(TagsNF.CARNIVORE_FOOD).add(ItemsNF.CURED_JELLYFISH.get(), ItemsNF.DRAKEFOWL_EGG.get());
+        tag(TagsNF.CARNIVORE_FOOD).addTags(TagsNF.MEAT, TagsNF.EGG);
+        tag(TagsNF.CARNIVORE_FOOD).add(ItemsNF.CURED_JELLYFISH.get(), ItemsNF.BOILED_EGG.get(), ItemsNF.SOUFFLE.get());
         tag(TagsNF.OMNIVORE_FOOD).addTags(TagsNF.HERBIVORE_FOOD, TagsNF.CARNIVORE_FOOD);
+        tag(TagsNF.OMNIVORE_FOOD).add(ItemsNF.FRUIT_SOUFFLE.get(), ItemsNF.SAVORY_SOUFFLE.get());
 
         copy(TagsNF.HEAT_RESISTANT_1, TagsNF.HEAT_RESISTANT_ITEM_1);
         copy(TagsNF.HEAT_RESISTANT_2, TagsNF.HEAT_RESISTANT_ITEM_2);

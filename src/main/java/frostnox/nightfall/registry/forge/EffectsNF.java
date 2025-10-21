@@ -117,6 +117,23 @@ public class EffectsNF {
             return duration % 20 == 0;
         }
     });
+    public static final RegistryObject<MobEffect> INVIGORATING = EFFECTS.register("invigorating", () -> new MobEffect(MobEffectCategory.BENEFICIAL, 0) {
+        @Override
+        public void applyEffectTick(LivingEntity entity, int amplifier) {
+            if(entity.getHealth() < entity.getMaxHealth()) entity.heal(0.5F);
+        }
+
+        @Override
+        public boolean isDurationEffectTick(int duration, int amplifier) {
+            return duration % 100 == 0;
+        }
+    });
+    public static final RegistryObject<MobEffect> ENERGIZING = EFFECTS.register("energizing", () -> new MobEffect(MobEffectCategory.BENEFICIAL, 0) {
+        @Override
+        public boolean isDurationEffectTick(int duration, int amplifier) {
+            return false;
+        }
+    });
 
     public static void register() {
         EFFECTS.register(Nightfall.MOD_EVENT_BUS);

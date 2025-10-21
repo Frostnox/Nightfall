@@ -288,7 +288,7 @@ public class LanguageProviderNF extends LanguageProvider {
         addComponent(RenderUtil.ARMOR_DEFENSE_TEXT, "Armor average: ");
         addComponent(RenderUtil.FREE_POINTS_TEXT, "Free points: ");
         for(var component : RenderUtil.FOOD_GROUPS_TEXT) {
-            addComponent(component, WordUtils.capitalize(component.getKey().substring(component.getKey().lastIndexOf('.') + 1)));
+            addComponent(component, DataUtil.toTitleCase(component.getKey().substring(component.getKey().lastIndexOf('.') + 1).replace("_", " ")));
         }
         for(PlayerAttribute attribute : PlayerAttribute.values()) {
             if(attribute == PlayerAttribute.WILLPOWER) addComponent(RenderUtil.getAttributeText(attribute), "???");

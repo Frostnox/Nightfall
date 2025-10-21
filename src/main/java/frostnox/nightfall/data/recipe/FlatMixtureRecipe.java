@@ -31,16 +31,13 @@ public abstract class FlatMixtureRecipe extends MixtureRecipe {
         for(int j = 0; j < inventory.getContainerSize(); j++) {
             ItemStack stack = inventory.getItem(j);
             if(stack.isEmpty()) continue;
-            boolean found = false;
             for(int i = 0; i < input.size(); i++) {
                 Ingredient ingredient = input.get(i).getA();
                 if(ingredient.test(stack)) {
-                    found = true;
                     if(amounts.containsKey(ingredient)) amounts.put(ingredient, amounts.get(ingredient) + getUnitsOf(stack));
                     else amounts.put(ingredient, getUnitsOf(stack));
                 }
             }
-            if(!found) return false;
         }
         //Check ingredients and amounts
         for(int i = 0; i < input.size(); i++) {

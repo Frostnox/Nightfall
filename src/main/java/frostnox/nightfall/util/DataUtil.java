@@ -13,7 +13,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.text.WordUtils;
@@ -22,6 +21,7 @@ import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.regex.*;
 
 public class DataUtil {
     public static final Direction[] DIRECTIONS_EXCEPT_UP = new Direction[] {Direction.DOWN, Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST};
@@ -245,5 +245,185 @@ public class DataUtil {
             }
         }
         return (targetDuration / totalDuration) * 100;
+    }
+
+    /**
+     * AI generated title casing code
+     * <p>
+     * Rules implemented (Chicago-style, pragmatic):
+     *  - Capitalize first and last words.
+     *  - Capitalize "major" words; keep minor words lowercase unless first/last or after punctuation like ':'.
+     *  - Preserve words with internal capitals (iPhone) and all-uppercase acronyms (NASA).
+     *  - Hyphenated words: title-cap each hyphen part (with minor-word logic applied per-part).
+     *  - Words after sentence/subtitle punctuation (. ! ? :) are capitalized.
+     */
+
+    private static final Set<String> MINOR_WORDS = new HashSet<>(Arrays.asList(
+            // Common "minor" words: articles, coordinating conjunctions, short prepositions, and a few others.
+            "a", "an", "and", "as", "at", "but", "by", "for", "if", "in", "nor",
+            "of", "on", "or", "per", "the", "to", "vs", "via", "with", "from", "over", "into", "onto"
+    ));
+
+    // Characters that, if immediately preceding a word, force the word to be capitalized
+    private static final Pattern FORCE_CAP_AFTER = Pattern.compile("[:!?.\\u2014\\u2013]$"); // :, !, ?, ., em-dash, en-dash
+
+    // Word detection (letters or digits plus internal apostrophes/hyphens/slashes)
+    private static final Pattern LEADING_PUNCT = Pattern.compile("^[^\\p{L}\\p{N}]+"); // leading non-letter/digit
+    private static final Pattern TRAILING_PUNCT = Pattern.compile("[^\\p{L}\\p{N}]+$"); // trailing non-letter/digit
+
+    /**
+     * Convert input text to title case using default locale.
+     */
+    public static String toTitleCase(String input) {
+        return toTitleCase(input, Locale.getDefault());
+    }
+
+    /**
+     * Convert input text to title case using specified locale.
+     */
+    public static String toTitleCase(String input, Locale locale) {
+        if (input == null || input.isEmpty()) return input;
+
+        // Normalize spaces (preserve multi-spaces? we collapse to single space for simplicity)
+        String[] tokens = input.trim().split("\\s+");
+        if (tokens.length == 0) return input;
+
+        StringBuilder out = new StringBuilder(input.length() + 16);
+        boolean prevForcesCapital = false;
+
+        for (int i = 0; i < tokens.length; i++) {
+            String token = tokens[i];
+            boolean isFirst = (i == 0);
+            boolean isLast = (i == tokens.length - 1);
+
+            // Check if previous token ended with punctuation that forces capitalization
+            if (i > 0) {
+                String prev = tokens[i - 1];
+                prevForcesCapital = FORCE_CAP_AFTER.matcher(prev).find();
+            } else {
+                prevForcesCapital = false;
+            }
+
+            String processed = processToken(token, isFirst, isLast, prevForcesCapital, locale);
+            out.append(processed);
+            if (i < tokens.length - 1) out.append(' ');
+        }
+
+        return out.toString();
+    }
+
+    // Process a single whitespace-separated token, preserving leading/trailing punctuation.
+    private static String processToken(String token, boolean isFirst, boolean isLast,
+                                       boolean prevForcesCapital, Locale locale) {
+        // Extract leading and trailing punctuation (if any)
+        Matcher leadM = LEADING_PUNCT.matcher(token);
+        int leadEnd = 0;
+        if (leadM.find()) leadEnd = leadM.end();
+
+        Matcher trailM = TRAILING_PUNCT.matcher(token);
+        int trailStart = token.length();
+        if (trailM.find()) trailStart = trailM.start();
+
+        String leading = token.substring(0, leadEnd);
+        String trailing = token.substring(trailStart);
+        String core = token.substring(leadEnd, trailStart);
+
+        if (core.isEmpty()) {
+            // Token is pure punctuation like "..." or "("
+            return token;
+        }
+
+        // Handle slash-separated (e.g., "and/or") by processing parts
+        if (core.contains("/")) {
+            String[] parts = core.split("/", -1);
+            for (int p = 0; p < parts.length; p++) {
+                parts[p] = processWordPart(parts[p], isFirst, isLast, prevForcesCapital, locale);
+            }
+            core = String.join("/", parts);
+            return leading + core + trailing;
+        }
+
+        // Handle hyphenated words: title-case each part (common editorial approach).
+        if (core.contains("-")) {
+            String[] parts = core.split("(?<=-)|(?=-)"); // keep hyphens as separate tokens
+            for (int p = 0; p < parts.length; p++) {
+                String part = parts[p];
+                if (part.equals("-")) continue;
+                // For hyphen parts, treat positions as: if overall token is first/last, mark accordingly only for edges
+                boolean partIsEdge = (p == 0) || (p == parts.length - 1);
+                parts[p] = processWordPart(part, isFirst && partIsEdge, isLast && partIsEdge, prevForcesCapital, locale);
+            }
+            core = String.join("", parts);
+            return leading + core + trailing;
+        }
+
+        // Normal single word
+        core = processWordPart(core, isFirst, isLast, prevForcesCapital, locale);
+        return leading + core + trailing;
+    }
+
+    // Process one word "part" (no hyphens/slashes) and apply capitalization rules.
+    private static String processWordPart(String word, boolean isFirst, boolean isLast,
+                                          boolean prevForcesCapital, Locale locale) {
+        if (word.isEmpty()) return word;
+
+        // If word contains any internal uppercase letters (not just first char), treat as "preserve" (iPhone, eBay)
+        if (hasInternalUppercase(word)) return word;
+
+        // If word is ALL CAPS and length > 1, preserve (acronyms)
+        if (isAllCaps(word)) return word;
+
+        String lower = word.toLowerCase(locale);
+
+        // Decide if it's a minor word (lowercase in titles)
+        boolean isMinor = MINOR_WORDS.contains(lower);
+
+        // Force capitalization if it's first, last, or previous token forced capitalization.
+        if (isFirst || isLast || prevForcesCapital) {
+            return capitalizeFirstLetterPreserveApostrophes(lower, locale);
+        }
+
+        if (isMinor) {
+            return lower;
+        } else {
+            return capitalizeFirstLetterPreserveApostrophes(lower, locale);
+        }
+    }
+
+    // Capitalize first alphabetic character, preserve later characters (but lowercased input provided)
+    private static String capitalizeFirstLetterPreserveApostrophes(String lower, Locale locale) {
+        int len = lower.length();
+        for (int i = 0; i < len; i++) {
+            char c = lower.charAt(i);
+            if (Character.isLetter(c)) {
+                String head = lower.substring(0, i);
+                String first = String.valueOf(lower.charAt(i)).toUpperCase(locale);
+                String tail = lower.substring(i + 1);
+                // Special: for contractions like "o'clock" -> "O'Clock" (tail already lowercased)
+                return head + first + tail;
+            }
+        }
+        // No letter found (digits-only?), just return as-is
+        return lower;
+    }
+
+    private static boolean hasInternalUppercase(String s) {
+        // internal uppercase meaning any uppercase after index 0
+        for (int i = 1; i < s.length(); i++) {
+            if (Character.isUpperCase(s.charAt(i))) return true;
+        }
+        return false;
+    }
+
+    private static boolean isAllCaps(String s) {
+        int letters = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (Character.isLetter(c)) {
+                letters++;
+                if (!Character.isUpperCase(c)) return false;
+            }
+        }
+        return letters > 0;
     }
 }
