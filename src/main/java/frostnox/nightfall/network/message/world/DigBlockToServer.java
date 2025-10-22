@@ -13,6 +13,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -101,6 +102,8 @@ public class DigBlockToServer {
                 int xRange = (stack.is(TagsNF.SICKLE) && (!action.isChargeable() || !facingX)) ? 1 : 0;
                 int zRange = (stack.is(TagsNF.SICKLE) && (!action.isChargeable() || facingX)) ? 1 : 0;
                 int yRange = (stack.is(TagsNF.SICKLE) && action.isChargeable()) ? 1 : 0;
+                ItemStack tempStack = player.getMainHandItem();
+                player.setItemInHand(InteractionHand.MAIN_HAND, stack);
                 for(BlockPos pos : BlockPos.betweenClosed(center.getX() - xRange, center.getY() - yRange, center.getZ() - zRange, center.getX() + xRange, center.getY() + yRange, center.getZ() + zRange)) {
                     BlockState block = player.level.getBlockState(pos);
                     if(!canMineAny && !action.canHarvest(block)) continue;
@@ -139,6 +142,7 @@ public class DigBlockToServer {
                     }
                     NetworkHandler.toAllTrackingAndSelf(player, new DigBlockToClient(pos.getX(), pos.getY(), pos.getZ(), progress));
                 }
+                player.setItemInHand(InteractionHand.MAIN_HAND, tempStack);
                 capP.setDugBlock(true);
                 if(!player.isCreative()) stack.hurtAndBreak(hits, player, (p) -> p.broadcastBreakEvent(capP.getActiveHand()));
             }

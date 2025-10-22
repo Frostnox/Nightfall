@@ -217,6 +217,8 @@ public class LandNodeManager extends NodeManager {
         //Look for different node if this one is invalid
         if(!startType.walkable || !canReachWithoutCollision(entity, new Vec2f(node.pathX, node.pathZ))) {
             AABB box = entity.getBoundingBox();
+            double boxWidth = Math.abs(box.maxX - box.minX);
+            if(boxWidth < 0.5) box = box.inflate(0.5 - boxWidth, 0, 0.5 - boxWidth); //Prevent getting stuck inside fences
             BlockPos bestPos = LevelUtil.NULL_POS;
             ObjectArraySet<BlockPos.MutableBlockPos> positions = ObjectArraySet.of(pos.mutable());
             if(!positions.contains(pos.set(box.minX, y, box.minZ))) positions.add(pos.mutable());
