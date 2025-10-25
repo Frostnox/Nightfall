@@ -308,6 +308,8 @@ public class ItemsNF {
             () -> new ForgeSpawnEggItem(EntitiesNF.DRAKEFOWL_HEN, 0xf49f31, 0xc25217, utility()));
     public static final RegistryObject<SpawnEggItem> DRAKEFOWL_CHICK_SPAWN_EGG = register(EntitiesNF.DRAKEFOWL_CHICK.getId().getPath() + "_spawn_egg",
             () -> new ForgeSpawnEggItem(EntitiesNF.DRAKEFOWL_CHICK, 0xecbd47, 0xc25217, utility()));
+    public static final RegistryObject<SpawnEggItem> MERBOR_TUSKER_SPAWN_EGG = register(EntitiesNF.MERBOR_TUSKER.getId().getPath() + "_spawn_egg",
+            () -> new ForgeSpawnEggItem(EntitiesNF.MERBOR_TUSKER, 0xecbd47, 0xc25217, utility()));
     public static final RegistryObject<SpawnEggItem> HUSK_SPAWN_EGG = register(EntitiesNF.HUSK.getId().getPath() + "_spawn_egg",
             () -> new ForgeSpawnEggItem(EntitiesNF.HUSK, 0x6d727e, UNDEAD_COLOR, utility()));
     public static final RegistryObject<SpawnEggItem> SKELETON_SPAWN_EGG = register(EntitiesNF.SKELETON.getId().getPath() + "_spawn_egg",

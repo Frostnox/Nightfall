@@ -21,9 +21,11 @@ public class EntityTypeTagsProviderNF extends EntityTypeTagsProvider {
 
     @Override
     protected void addTags() {
-        List<RegistryObject<?>> drakefowl = List.of(EntitiesNF.DRAKEFOWL_ROOSTER, EntitiesNF.DRAKEFOWL_HEN, EntitiesNF.DRAKEFOWL_CHICK);
+        List<RegistryObject<?>> drakefowl = List.of(EntitiesNF.DRAKEFOWL_ROOSTER, EntitiesNF.DRAKEFOWL_HEN);
+        List<RegistryObject<?>> merbor = List.of(EntitiesNF.MERBOR_TUSKER);
+        List<RegistryObject<?>> babies = List.of(EntitiesNF.DRAKEFOWL_CHICK);
 
-        tag(TagsNF.BOAT_PASSENGER).add(single(drakefowl));
+        tag(TagsNF.BOAT_PASSENGER).add(merge(merge(drakefowl, merbor, babies)));
         tag(TagsNF.IMPACT_TYPE_BONE).add(EntitiesNF.SKELETON.get());
         tag(TagsNF.IMPACT_TYPE_STONE).add(EntitiesNF.ROCKWORM.get());
         tag(TagsNF.IMPACT_TYPE_GASEOUS);
@@ -37,15 +39,15 @@ public class EntityTypeTagsProviderNF extends EntityTypeTagsProvider {
                 EntitiesNF.PIT_DEVIL, EntitiesNF.SCORPION));
         tag(TagsNF.DRAKEFOWL_PREY).add(merge(EntitiesNF.RABBIT));
         tag(TagsNF.COCKATRICE_PREDATOR).add(merge(EntitiesNF.ROCKWORM, EntitiesNF.TROLL, EntitiesNF.OLMUR, EntitiesNF.SKARA_SWARM));
-        tag(TagsNF.COCKATRICE_PREY).add(merge(EntitiesNF.RABBIT, EntitiesNF.DEER, EntitiesNF.SPIDER));
+        tag(TagsNF.COCKATRICE_PREY).add(merge(merge(merbor), EntitiesNF.RABBIT, EntitiesNF.DEER, EntitiesNF.SPIDER));
         tag(TagsNF.SPIDER_PREDATOR).add(merge(EntitiesNF.ROCKWORM, EntitiesNF.PIT_DEVIL, EntitiesNF.SKARA_SWARM));
-        tag(TagsNF.SPIDER_PREY).add(merge(merge(drakefowl), EntitiesNF.RABBIT, EntitiesNF.DEER));
+        tag(TagsNF.SPIDER_PREY).add(merge(merge(drakefowl, babies), EntitiesNF.RABBIT, EntitiesNF.DEER));
         tag(TagsNF.PIT_DEVIL_PREDATOR).add(merge(EntitiesNF.ROCKWORM, EntitiesNF.TROLL, EntitiesNF.OLMUR, EntitiesNF.SKARA_SWARM));
-        tag(TagsNF.PIT_DEVIL_PREY).add(merge(merge(drakefowl), EntitiesNF.RABBIT, EntitiesNF.DEER, EntitiesNF.SPIDER));
-        tag(TagsNF.SKARA_SWARM_PREY).add(merge(merge(drakefowl), EntitiesNF.RABBIT, EntitiesNF.DEER, EntitiesNF.SPIDER, EntitiesNF.PIT_DEVIL, EntitiesNF.COCKATRICE,
+        tag(TagsNF.PIT_DEVIL_PREY).add(merge(merge(drakefowl, babies), EntitiesNF.RABBIT, EntitiesNF.DEER, EntitiesNF.SPIDER));
+        tag(TagsNF.SKARA_SWARM_PREY).add(merge(merge(drakefowl, merbor, babies), EntitiesNF.RABBIT, EntitiesNF.DEER, EntitiesNF.SPIDER, EntitiesNF.PIT_DEVIL, EntitiesNF.COCKATRICE,
                 EntitiesNF.HUSK, EntitiesNF.DREG));
         tag(TagsNF.JELLYFISH_IMMUNE).add(EntitiesNF.JELLYFISH.get());
-        tag(TagsNF.EDIBLE_CORPSE).add(merge(merge(drakefowl), EntitiesNF.RABBIT, EntitiesNF.SPIDER, EntitiesNF.DEER,
+        tag(TagsNF.EDIBLE_CORPSE).add(merge(merge(drakefowl, merbor, babies), EntitiesNF.RABBIT, EntitiesNF.SPIDER, EntitiesNF.DEER,
                 EntitiesNF.COCKATRICE, EntitiesNF.ROCKWORM, EntitiesNF.PIT_DEVIL));
     }
 

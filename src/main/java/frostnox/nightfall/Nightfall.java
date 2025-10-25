@@ -23,10 +23,7 @@ import frostnox.nightfall.encyclopedia.Entry;
 import frostnox.nightfall.encyclopedia.PuzzleContainer;
 import frostnox.nightfall.encyclopedia.knowledge.Knowledge;
 import frostnox.nightfall.entity.entity.ambient.JellyfishEntity;
-import frostnox.nightfall.entity.entity.animal.DeerEntity;
-import frostnox.nightfall.entity.entity.animal.DrakefowlBabyEntity;
-import frostnox.nightfall.entity.entity.animal.DrakefowlEntity;
-import frostnox.nightfall.entity.entity.animal.RabbitEntity;
+import frostnox.nightfall.entity.entity.animal.*;
 import frostnox.nightfall.entity.entity.monster.*;
 import frostnox.nightfall.entity.entity.projectile.FireSpitEntity;
 import frostnox.nightfall.item.IArmament;
@@ -361,6 +358,7 @@ public class Nightfall {
         event.put(EntitiesNF.DRAKEFOWL_ROOSTER.get(), DrakefowlEntity.getAttributeMap().build());
         event.put(EntitiesNF.DRAKEFOWL_HEN.get(), DrakefowlEntity.getAttributeMap().build());
         event.put(EntitiesNF.DRAKEFOWL_CHICK.get(), DrakefowlBabyEntity.getAttributeMap().build());
+        event.put(EntitiesNF.MERBOR_TUSKER.get(), MerborEntity.getAttributeMap().build());
         event.put(EntitiesNF.HUSK.get(), HuskEntity.getAttributeMap().build());
         event.put(EntitiesNF.SKELETON.get(), SkeletonEntity.getAttributeMap().build());
         event.put(EntitiesNF.DREG.get(), DregEntity.getAttributeMap().build());
@@ -522,6 +520,7 @@ public class Nightfall {
             event.registerEntityRenderer(EntitiesNF.DRAKEFOWL_ROOSTER.get(), DrakefowlRenderer::new);
             event.registerEntityRenderer(EntitiesNF.DRAKEFOWL_HEN.get(), DrakefowlRenderer::new);
             event.registerEntityRenderer(EntitiesNF.DRAKEFOWL_CHICK.get(), DrakefowlBabyRenderer::new);
+            event.registerEntityRenderer(EntitiesNF.MERBOR_TUSKER.get(), MerborRenderer::new);
             event.registerEntityRenderer(EntitiesNF.HUSK.get(), HuskRenderer::new);
             event.registerEntityRenderer(EntitiesNF.SKELETON.get(), SkeletonRenderer::new);
             event.registerEntityRenderer(EntitiesNF.DREG.get(), DregRenderer::new);

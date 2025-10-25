@@ -3,10 +3,7 @@ package frostnox.nightfall.registry.forge;
 import frostnox.nightfall.Nightfall;
 import frostnox.nightfall.entity.entity.*;
 import frostnox.nightfall.entity.entity.ambient.JellyfishEntity;
-import frostnox.nightfall.entity.entity.animal.DeerEntity;
-import frostnox.nightfall.entity.entity.animal.DrakefowlBabyEntity;
-import frostnox.nightfall.entity.entity.animal.DrakefowlEntity;
-import frostnox.nightfall.entity.entity.animal.RabbitEntity;
+import frostnox.nightfall.entity.entity.animal.*;
 import frostnox.nightfall.entity.entity.monster.*;
 import frostnox.nightfall.entity.entity.projectile.*;
 import net.minecraft.world.entity.EntityType;
@@ -29,6 +26,8 @@ public class EntitiesNF {
             .sized(6F/16F, 9F/16F).clientTrackingRange(10).setShouldReceiveVelocityUpdates(false).build("drakefowl_hen"));
     public static final RegistryObject<EntityType<DrakefowlBabyEntity>> DRAKEFOWL_CHICK = ENTITIES.register("drakefowl_chick", () -> EntityType.Builder.of(DrakefowlBabyEntity::new, MobCategory.CREATURE)
             .sized(4F/16F, 5F/16F).clientTrackingRange(10).setShouldReceiveVelocityUpdates(false).build("drakefowl_chick"));
+    public static final RegistryObject<EntityType<MerborEntity>> MERBOR_TUSKER = ENTITIES.register("merbor_tusker", () -> EntityType.Builder.of(MerborEntity::createMale, MobCategory.CREATURE)
+            .sized(15.5F/16F, 15.5F/16F).clientTrackingRange(10).setShouldReceiveVelocityUpdates(false).build("merbor_tusker"));
 
     public static final RegistryObject<EntityType<HuskEntity>> HUSK = ENTITIES.register("husk", () -> EntityType.Builder.of(HuskEntity::new, MobCategory.MONSTER)
             .sized(0.6F, 1.9F).clientTrackingRange(10).setShouldReceiveVelocityUpdates(false).build("husk"));
