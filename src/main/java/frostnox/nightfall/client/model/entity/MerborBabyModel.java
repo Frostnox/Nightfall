@@ -7,14 +7,12 @@ import frostnox.nightfall.client.ClientEngine;
 import frostnox.nightfall.client.model.AnimatedModel;
 import frostnox.nightfall.client.model.AnimatedModelPart;
 import frostnox.nightfall.entity.EntityPart;
-import frostnox.nightfall.entity.Sex;
-import frostnox.nightfall.entity.entity.animal.MerborEntity;
+import frostnox.nightfall.entity.entity.animal.MerborBabyEntity;
 import frostnox.nightfall.util.AnimationUtil;
 import frostnox.nightfall.util.MathUtil;
 import frostnox.nightfall.util.animation.AnimationCalculator;
 import frostnox.nightfall.util.animation.AnimationData;
 import frostnox.nightfall.util.math.Easing;
-import frostnox.nightfall.world.Season;
 import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -24,13 +22,12 @@ import net.minecraft.util.Mth;
 import java.util.EnumMap;
 import java.util.List;
 
-public class MerborModel extends AnimatedModel<MerborEntity> implements HeadedModel {
+public class MerborBabyModel extends AnimatedModel<MerborBabyEntity> implements HeadedModel {
     private final AnimatedModelPart body;
     private final AnimatedModelPart hindRightLeg;
     private final AnimatedModelPart hindLeftLeg;
     private final AnimatedModelPart neck;
     private final AnimatedModelPart head;
-    private final AnimatedModelPart tusks;
     private final AnimatedModelPart rightEar;
     private final AnimatedModelPart leftEar;
     private final AnimatedModelPart tail;
@@ -38,14 +35,13 @@ public class MerborModel extends AnimatedModel<MerborEntity> implements HeadedMo
     private final AnimatedModelPart frontLeftLeg;
     private final List<AnimatedModelPart> noStunParts;
 
-    public MerborModel(ModelPart root) {
+    public MerborBabyModel(ModelPart root) {
         super(root);
         this.body = (AnimatedModelPart) root.getChild("body");
         this.hindRightLeg = (AnimatedModelPart) root.getChild("hindRightLeg");
         this.hindLeftLeg = (AnimatedModelPart) root.getChild("hindLeftLeg");
         this.neck = (AnimatedModelPart) body.getChild("neck");
         this.head = (AnimatedModelPart) neck.getChild("head");
-        this.tusks = (AnimatedModelPart) head.getChild("tusks");
         this.rightEar = (AnimatedModelPart) head.getChild("rightEar");
         this.leftEar = (AnimatedModelPart) head.getChild("leftEar");
         this.tail = (AnimatedModelPart) body.getChild("tail");
@@ -58,39 +54,33 @@ public class MerborModel extends AnimatedModel<MerborEntity> implements HeadedMo
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
-        PartDefinition body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create().texOffs(0, 7).mirror().addBox(-5.0F, -4.5F, -8.0F, 10.0F, 9.0F, 16.0F, new CubeDeformation(0.01F)).mirror(false), PartPose.offset(0.0F, 13.5F, 0.0F));
+        PartDefinition body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create().texOffs(6, 5).addBox(-2.0F, -2.0F, -3.5F, 4.0F, 4.0F, 7.0F, new CubeDeformation(0.01F)), PartPose.offset(0.0F, 20.0F, 0.0F));
 
-        PartDefinition neck = body.addOrReplaceChild("neck", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, -7.0F));
+        PartDefinition neck = body.addOrReplaceChild("neck", CubeListBuilder.create(), PartPose.offset(0.0F, -1.5F, -3.0F));
 
-        PartDefinition head = neck.addOrReplaceChild("head", CubeListBuilder.create().texOffs(37, 0).mirror().addBox(-4.0F, -3.5F, -5.0F, 8.0F, 7.0F, 5.0F, new CubeDeformation(0.0F)).mirror(false)
-                .texOffs(45, 12).mirror().addBox(-2.0F, -1.5F, -10.0F, 4.0F, 5.0F, 5.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(0.0F, 0.0F, 0.0F));
+        PartDefinition head = neck.addOrReplaceChild("head", CubeListBuilder.create().texOffs(0, 0).addBox(-1.5F, -1.5F, -2.5F, 3.0F, 3.0F, 3.0F, new CubeDeformation(0.0F))
+                .texOffs(13, 0).addBox(-1.0F, -0.5F, -3.5F, 2.0F, 2.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-        PartDefinition tusks = head.addOrReplaceChild("tusks", CubeListBuilder.create().texOffs(15, 1).mirror().addBox(2.0F, -5.0F, -16.5F, 1.0F, 1.0F, 3.0F, new CubeDeformation(0.0F)).mirror(false)
-                .texOffs(21, 1).mirror().addBox(2.0F, -6.0F, -16.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)).mirror(false)
-                .texOffs(15, 1).addBox(-3.0F, -5.0F, -16.5F, 1.0F, 1.0F, 3.0F, new CubeDeformation(0.0F))
-                .texOffs(21, 1).addBox(-3.0F, -6.0F, -16.5F, 1.0F, 1.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 6.5F, 4.5F));
+        PartDefinition rightEar = head.addOrReplaceChild("rightEar", CubeListBuilder.create().texOffs(0, 7).addBox(0.0F, -1.0F, 0.0F, 1.0F, 1.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offset(1.0F, -1.0F, -0.5F));
 
-        PartDefinition leftEar = head.addOrReplaceChild("leftEar", CubeListBuilder.create().texOffs(0, 9).addBox(0.0F, -2.0F, 0.0F, 2.0F, 2.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(3.0F, -2.5F, -2.0F, 0.0F, -0.1745F, 0.0F));
+        PartDefinition leftEar = head.addOrReplaceChild("leftEar", CubeListBuilder.create().texOffs(0, 7).addBox(-1.0F, -1.0F, 0.0F, 1.0F, 1.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offset(-1.0F, -1.0F, -0.5F));
 
-        PartDefinition rightEar = head.addOrReplaceChild("rightEar", CubeListBuilder.create().texOffs(0, 9).mirror().addBox(-2.0F, -2.0F, 0.0F, 2.0F, 2.0F, 0.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offsetAndRotation(-3.0F, -2.5F, -2.0F, 0.0F, 0.1745F, 0.0F));
+        PartDefinition tail = body.addOrReplaceChild("tail", CubeListBuilder.create().texOffs(3, 7).addBox(-0.5F, 0.0F, 0.0F, 1.0F, 2.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -1.0F, 3.5F, 0.2618F, 0.0F, 0.0F));
 
-        PartDefinition tail = body.addOrReplaceChild("tail", CubeListBuilder.create().texOffs(1, 0).mirror().addBox(-0.5F, 0.0F, 0.0F, 1.0F, 1.0F, 6.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offsetAndRotation(0.0F, -2.5F, 8.0F, -0.9599F, 0.0F, 0.0F));
+        PartDefinition frontRightLeg = partdefinition.addOrReplaceChild("frontRightLeg", CubeListBuilder.create().texOffs(0, 12).addBox(-0.5F, -1.0F, -0.5F, 1.0F, 3.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offset(1.5F, 22.0F, -3.0F));
 
-        PartDefinition frontLeftLeg = partdefinition.addOrReplaceChild("frontLeftLeg", CubeListBuilder.create().texOffs(1, 13).addBox(-1.5F, -1.0F, -1.5F, 3.0F, 7.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offset(-3.5F, 18.0F, -6.5F));
+        PartDefinition frontLeftLeg = partdefinition.addOrReplaceChild("frontLeftLeg", CubeListBuilder.create().texOffs(0, 12).addBox(-0.5F, -1.0F, -0.5F, 1.0F, 3.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offset(-1.5F, 22.0F, -3.0F));
 
-        PartDefinition hindLeftLeg = partdefinition.addOrReplaceChild("hindLeftLeg", CubeListBuilder.create().texOffs(1, 13).addBox(-1.5F, -1.0F, -1.5F, 3.0F, 7.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offset(-3.5F, 18.0F, 6.5F));
+        PartDefinition hindRightLeg = partdefinition.addOrReplaceChild("hindRightLeg", CubeListBuilder.create().texOffs(0, 12).addBox(-0.5F, -1.0F, -0.5F, 1.0F, 3.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offset(1.5F, 22.0F, 3.0F));
 
-        PartDefinition hindRightLeg = partdefinition.addOrReplaceChild("hindRightLeg", CubeListBuilder.create().texOffs(1, 13).mirror().addBox(-1.5F, -1.0F, -1.5F, 3.0F, 7.0F, 3.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(3.5F, 18.0F, 6.5F));
+        PartDefinition hindLeftLeg = partdefinition.addOrReplaceChild("hindLeftLeg", CubeListBuilder.create().texOffs(0, 12).addBox(-0.5F, -1.0F, -0.5F, 1.0F, 3.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offset(-1.5F, 22.0F, 3.0F));
 
-        PartDefinition frontRightLeg = partdefinition.addOrReplaceChild("frontRightLeg", CubeListBuilder.create().texOffs(1, 13).mirror().addBox(-1.5F, -1.0F, -1.5F, 3.0F, 7.0F, 3.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(3.5F, 18.0F, -6.5F));
-
-        return LayerDefinition.create(meshdefinition, 64, 32);
+        return LayerDefinition.create(meshdefinition, 32, 16);
     }
 
     @Override
-    public void setupAnim(MerborEntity entity, float limbSwing, float limbSwingAmount, float time, float netHeadYaw, float headPitch) {
+    public void setupAnim(MerborBabyEntity entity, float limbSwing, float limbSwingAmount, float time, float netHeadYaw, float headPitch) {
         resetPose();
-        tusks.visible = entity.sex == Sex.MALE;
         float speed = 4.5F;
         limbSwingAmount = Math.min(1F, limbSwingAmount * 2);
         //limbSwing = time/2F;
@@ -190,7 +180,7 @@ public class MerborModel extends AnimatedModel<MerborEntity> implements HeadedMo
     }
 
     @Override
-    public void animateStun(int frame, int duration, int dir, float mag, MerborEntity user, AnimationCalculator mCalc, Vector3f mVec, float partialTicks) {
+    public void animateStun(int frame, int duration, int dir, float mag, MerborBabyEntity user, AnimationCalculator mCalc, Vector3f mVec, float partialTicks) {
         super.animateStun(frame, duration, dir, mag, user, mCalc, mVec, partialTicks);
         AnimationUtil.stunPartToDefaultWithPause(head, head.animationData, frame, duration, partialTicks, -20F * mag, 1);
     }

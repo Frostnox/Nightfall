@@ -92,6 +92,16 @@ public class SoundsNF {
     public static final RegistryObject<SoundEvent> DRAKEFOWL_BABY_AMBIENT = generic("entity.drakefowl_baby.ambient");
     public static final RegistryObject<SoundEvent> DRAKEFOWL_BABY_DEATH = generic("entity.drakefowl_baby.death");
     public static final RegistryObject<SoundEvent> DRAKEFOWL_BABY_HURT = generic("entity.drakefowl_baby.hurt");
+    public static final RegistryObject<SoundEvent> MERBOR_AMBIENT = generic("entity.merbor.ambient");
+    public static final RegistryObject<SoundEvent> MERBOR_DEATH = generic("entity.merbor.death");
+    public static final RegistryObject<SoundEvent> MERBOR_HURT = generic("entity.merbor.hurt");
+    public static final RegistryObject<SoundEvent> MERBOR_STEP = generic("entity.merbor.step");
+    public static final RegistryObject<SoundEvent> MERBOR_ATTACK = generic("entity.merbor.attack");
+    public static final RegistryObject<SoundEvent> MERBOR_EAT = generic("entity.merbor.eat");
+    public static final RegistryObject<SoundEvent> MERBOR_BABY_AMBIENT = generic("entity.merbor_baby.ambient");
+    public static final RegistryObject<SoundEvent> MERBOR_BABY_DEATH = generic("entity.merbor_baby.death");
+    public static final RegistryObject<SoundEvent> MERBOR_BABY_HURT = generic("entity.merbor_baby.hurt");
+    public static final RegistryObject<SoundEvent> MERBOR_BABY_STEP = generic("entity.merbor_baby.step");
     public static final RegistryObject<SoundEvent> DREG_AMBIENT = generic("entity.dreg.ambient");
     public static final RegistryObject<SoundEvent> DREG_DEATH = generic("entity.dreg.death");
     public static final RegistryObject<SoundEvent> DREG_HURT = generic("entity.dreg.hurt");

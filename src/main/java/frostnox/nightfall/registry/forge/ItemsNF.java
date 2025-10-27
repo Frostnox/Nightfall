@@ -309,7 +309,11 @@ public class ItemsNF {
     public static final RegistryObject<SpawnEggItem> DRAKEFOWL_CHICK_SPAWN_EGG = register(EntitiesNF.DRAKEFOWL_CHICK.getId().getPath() + "_spawn_egg",
             () -> new ForgeSpawnEggItem(EntitiesNF.DRAKEFOWL_CHICK, 0xecbd47, 0xc25217, utility()));
     public static final RegistryObject<SpawnEggItem> MERBOR_TUSKER_SPAWN_EGG = register(EntitiesNF.MERBOR_TUSKER.getId().getPath() + "_spawn_egg",
-            () -> new ForgeSpawnEggItem(EntitiesNF.MERBOR_TUSKER, 0xecbd47, 0xc25217, utility()));
+            () -> new ForgeSpawnEggItem(EntitiesNF.MERBOR_TUSKER, 0xe1dfc5, 0x7fabd0, utility()));
+    public static final RegistryObject<SpawnEggItem> MERBOR_SOW_SPAWN_EGG = register(EntitiesNF.MERBOR_SOW.getId().getPath() + "_spawn_egg",
+            () -> new ForgeSpawnEggItem(EntitiesNF.MERBOR_SOW, 0xe1dfc5, 0x7fabd0, utility()));
+    public static final RegistryObject<SpawnEggItem> MERBOR_PIGLET_SPAWN_EGG = register(EntitiesNF.MERBOR_PIGLET.getId().getPath() + "_spawn_egg",
+            () -> new ForgeSpawnEggItem(EntitiesNF.MERBOR_PIGLET, 0xe1dfc5, 0x7fabd0, utility()));
     public static final RegistryObject<SpawnEggItem> HUSK_SPAWN_EGG = register(EntitiesNF.HUSK.getId().getPath() + "_spawn_egg",
             () -> new ForgeSpawnEggItem(EntitiesNF.HUSK, 0x6d727e, UNDEAD_COLOR, utility()));
     public static final RegistryObject<SpawnEggItem> SKELETON_SPAWN_EGG = register(EntitiesNF.SKELETON.getId().getPath() + "_spawn_egg",

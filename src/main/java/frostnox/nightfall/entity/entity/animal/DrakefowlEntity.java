@@ -198,14 +198,14 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
         goalSelector.addGoal(5, new FleeDamageGoal(this, 1.3D));
         goalSelector.addGoal(9, new EatEntityGoal(this, 1D, 15, 2));
         goalSelector.addGoal(10, new EatBlockGoal(this, 1D, 15, 2));
-        goalSelector.addGoal(11, new ReducedWanderLandGoal(this, 0.8D, 6) {
+        goalSelector.addGoal(11, new ReducedWanderLandGoal(this, 0.8D, 2) {
             @Override
             protected @Nullable Vec3 getPosition() {
                 Vec3 pos = super.getPosition();
                 return pos != null && mob.level.getBlockState(new BlockPos(pos)).is(BlocksNF.DRAKEFOWL_NEST.get()) ? null : pos;
             }
         });
-        goalSelector.addGoal(12, new RandomLookGoal(this, 0.02F / 6));
+        goalSelector.addGoal(12, new RandomLookGoal(this, 0.02F / 3));
         if(getType() == EntitiesNF.DRAKEFOWL_ROOSTER.get()) { //Function gets called mid-constructor so can't use sex
             goalSelector.addGoal(3, new RushAttackGoal(this, 1.2D));
             targetSelector.addGoal(1, new HurtByTargetGoal(this));

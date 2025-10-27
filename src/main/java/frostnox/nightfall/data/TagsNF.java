@@ -112,6 +112,8 @@ public class TagsNF {
     public static final TagKey<EntityType<?>> DEER_PREDATOR = entityTag("deer_predator");
     public static final TagKey<EntityType<?>> DRAKEFOWL_PREDATOR = entityTag("drakefowl_predator");
     public static final TagKey<EntityType<?>> DRAKEFOWL_PREY = entityTag("drakefowl_prey");
+    public static final TagKey<EntityType<?>> MERBOR_PREDATOR = entityTag("merbor_predator");
+    public static final TagKey<EntityType<?>> MERBOR_PREY = entityTag("merbor_prey");
     public static final TagKey<EntityType<?>> COCKATRICE_PREDATOR = entityTag("cockatrice_predator");
     public static final TagKey<EntityType<?>> COCKATRICE_PREY = entityTag("cockatrice_prey");
     public static final TagKey<EntityType<?>> SPIDER_PREDATOR = entityTag("spider_predator");

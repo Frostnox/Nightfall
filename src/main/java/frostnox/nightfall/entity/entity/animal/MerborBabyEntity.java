@@ -32,34 +32,35 @@ import net.minecraft.world.phys.AABB;
 
 import java.util.EnumMap;
 
-public class DrakefowlBabyEntity extends BabyAnimalEntity implements IOrientedHitBoxes {
+public class MerborBabyEntity extends BabyAnimalEntity implements IOrientedHitBoxes {
     private static final EntityPart[] OBB_PARTS = new EntityPart[]{EntityPart.BODY, EntityPart.NECK, EntityPart.HEAD};
-    protected static final EntityDataAccessor<DrakefowlEntity.Type> TYPE = SynchedEntityData.defineId(DrakefowlEntity.class, DataSerializersNF.DRAKEFOWL_TYPE);
+    protected static final EntityDataAccessor<MerborEntity.Type> TYPE = SynchedEntityData.defineId(MerborEntity.class, DataSerializersNF.MERBOR_TYPE);
 
-    public DrakefowlBabyEntity(EntityType<? extends ActionableEntity> type, Level level) {
+    public MerborBabyEntity(EntityType<? extends ActionableEntity> type, Level level) {
         super(type, level, (int) ContinentalWorldType.DAY_LENGTH * 3);
     }
 
     public static AttributeSupplier.Builder getAttributeMap() {
-        return createAttributes().add(Attributes.MAX_HEALTH, 10D)
-                .add(Attributes.MOVEMENT_SPEED, 0.23F)
+        return createAttributes().add(Attributes.MAX_HEALTH, 40D)
+                .add(Attributes.MOVEMENT_SPEED, 0.235F)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0D)
                 .add(Attributes.ATTACK_DAMAGE, 1)
                 .add(Attributes.ATTACK_KNOCKBACK, 0)
                 .add(Attributes.ATTACK_SPEED, 1)
                 .add(Attributes.FOLLOW_RANGE, 15)
                 .add(AttributesNF.HEARING_RANGE.get(), 15)
-                .add(AttributesNF.FIRE_DEFENSE.get(), 0.3);
+                .add(AttributesNF.FIRE_DEFENSE.get(), 0.5)
+                .add(AttributesNF.ELECTRIC_DEFENSE.get(), -0.5);
     }
 
-    public DrakefowlEntity.Type getDrakefowlType() {
+    public MerborEntity.Type getMerborType() {
         return getEntityData().get(TYPE);
     }
 
     @Override
     protected ActionableEntity createMatureEntity() {
-        DrakefowlEntity adult = random.nextBoolean() ? EntitiesNF.DRAKEFOWL_ROOSTER.get().create(level) : EntitiesNF.DRAKEFOWL_HEN.get().create(level);
-        adult.finalizeSpawn((ServerLevel) level, level.getCurrentDifficultyAt(blockPosition()), MobSpawnType.CONVERSION, new DrakefowlEntity.GroupData(getDrakefowlType()), null);
+        MerborEntity adult = random.nextBoolean() ? EntitiesNF.MERBOR_TUSKER.get().create(level) : EntitiesNF.MERBOR_SOW.get().create(level);
+        adult.finalizeSpawn((ServerLevel) level, level.getCurrentDifficultyAt(blockPosition()), MobSpawnType.CONVERSION, new MerborEntity.GroupData(getMerborType()), null);
         adult.getEntityData().set(TamableAnimalEntity.TAMED, true);
         return adult;
     }
@@ -70,33 +71,23 @@ public class DrakefowlBabyEntity extends BabyAnimalEntity implements IOrientedHi
         goalSelector.addGoal(2, new FollowParentGoal(this, 1.1D));
         goalSelector.addGoal(3, new FleeEntityGoal<>(this, LivingEntity.class, 1.1D, 1.1D, (entity) -> {
             if(entity.isDeadOrDying()) return false;
-            else return entity.getType().is(TagsNF.DRAKEFOWL_PREDATOR);
+            else return entity.getType().is(TagsNF.MERBOR_PREDATOR);
         }));
         goalSelector.addGoal(4, new FleeDamageGoal(this, 1.1D));
         goalSelector.addGoal(5, new RandomLookGoal(this, 0.02F));
-        targetSelector.addGoal(1, new TrackNearestTargetGoal<>(this, DrakefowlEntity.class, true, (entity) -> {
+        targetSelector.addGoal(1, new TrackNearestTargetGoal<>(this, MerborEntity.class, true, (entity) -> {
             if(entity.isDeadOrDying()) return false;
-            else return ((DrakefowlEntity) entity).sex == Sex.FEMALE;
+            else return ((MerborEntity) entity).sex == Sex.FEMALE;
         }));
-        targetSelector.addGoal(2, new TrackNearestTargetGoal<>(this, DrakefowlEntity.class, true, (entity) -> {
+        targetSelector.addGoal(2, new TrackNearestTargetGoal<>(this, MerborEntity.class, true, (entity) -> {
             if(entity.isDeadOrDying()) return false;
-            else return ((DrakefowlEntity) entity).sex == Sex.MALE;
+            else return ((MerborEntity) entity).sex == Sex.MALE;
         }));
-    }
-
-    @Override
-    protected int calculateFallDamage(float pFallDistance, float pDamageMultiplier) {
-        return super.calculateFallDamage(pFallDistance, pDamageMultiplier) - 30;
-    }
-
-    @Override
-    protected float getStandingEyeHeight(Pose poseIn, EntityDimensions sizeIn) {
-        return sizeIn.height - 0.01F;
     }
 
     @Override
     public float getVisionAngle() {
-        return 180F;
+        return 100F;
     }
 
     @Override
@@ -107,35 +98,35 @@ public class DrakefowlBabyEntity extends BabyAnimalEntity implements IOrientedHi
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        entityData.define(TYPE, DrakefowlEntity.Type.EMERALD);
+        entityData.define(TYPE, MerborEntity.Type.RIVER);
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        tag.putInt("type", getDrakefowlType().ordinal());
+        tag.putInt("type", getMerborType().ordinal());
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        getEntityData().set(TYPE, DrakefowlEntity.Type.values()[tag.getInt("type")]);
+        getEntityData().set(TYPE, MerborEntity.Type.values()[tag.getInt("type")]);
     }
 
     @Override
     protected SoundEvent getAmbientSound() {
         if(getActionTracker().getActionID().equals(getCollapseAction())) return null;
-        else return SoundsNF.DRAKEFOWL_BABY_AMBIENT.get();
+        else return SoundsNF.MERBOR_BABY_AMBIENT.get();
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource pDamageSource) {
-        return SoundsNF.DRAKEFOWL_BABY_HURT.get();
+        return SoundsNF.MERBOR_BABY_HURT.get();
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return SoundsNF.DRAKEFOWL_BABY_DEATH.get();
+        return SoundsNF.MERBOR_BABY_DEATH.get();
     }
 
     @Override

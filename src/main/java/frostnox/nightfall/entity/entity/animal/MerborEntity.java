@@ -1,6 +1,7 @@
 package frostnox.nightfall.entity.entity.animal;
 
 import com.mojang.math.Vector3d;
+import frostnox.nightfall.data.TagsNF;
 import frostnox.nightfall.entity.Sex;
 import frostnox.nightfall.entity.entity.Diet;
 import frostnox.nightfall.registry.forge.AttributesNF;
@@ -11,10 +12,13 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
@@ -57,6 +61,16 @@ public class MerborEntity extends TamableAnimalEntity {
     }
 
     @Override
+    public boolean canTargetFromSound(LivingEntity target) {
+        return target.getType().is(TagsNF.MERBOR_PREY) || (target instanceof Player player && !player.isCreative() && !player.isSpectator());
+    }
+
+    @Override
+    public boolean canAttack(LivingEntity target) {
+        return target.canBeSeenAsEnemy() && !(target instanceof MerborEntity || target instanceof MerborBabyEntity);
+    }
+
+    @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         entityData.define(TYPE, Type.RIVER);
@@ -75,6 +89,15 @@ public class MerborEntity extends TamableAnimalEntity {
         getEntityData().set(TYPE, Type.values()[tag.getInt("type")]);
         if(tag.contains("fatherType")) fatherType = Type.values()[tag.getInt("fatherType")];
         updateGoals();
+    }
+
+    public static class GroupData extends AgeableMob.AgeableMobGroupData {
+        public final Type type;
+
+        public GroupData(Type type) {
+            super(0F);
+            this.type = type;
+        }
     }
 
     @Override

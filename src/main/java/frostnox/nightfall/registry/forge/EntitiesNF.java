@@ -28,6 +28,10 @@ public class EntitiesNF {
             .sized(4F/16F, 5F/16F).clientTrackingRange(10).setShouldReceiveVelocityUpdates(false).build("drakefowl_chick"));
     public static final RegistryObject<EntityType<MerborEntity>> MERBOR_TUSKER = ENTITIES.register("merbor_tusker", () -> EntityType.Builder.of(MerborEntity::createMale, MobCategory.CREATURE)
             .sized(15.5F/16F, 15.5F/16F).clientTrackingRange(10).setShouldReceiveVelocityUpdates(false).build("merbor_tusker"));
+    public static final RegistryObject<EntityType<MerborEntity>> MERBOR_SOW = ENTITIES.register("merbor_sow", () -> EntityType.Builder.of(MerborEntity::createFemale, MobCategory.CREATURE)
+            .sized(15F/16F, 15F/16F).clientTrackingRange(10).setShouldReceiveVelocityUpdates(false).build("merbor_sow"));
+    public static final RegistryObject<EntityType<MerborBabyEntity>> MERBOR_PIGLET = ENTITIES.register("merbor_piglet", () -> EntityType.Builder.of(MerborBabyEntity::new, MobCategory.CREATURE)
+            .sized(7F/16F, 6F/16F).clientTrackingRange(10).setShouldReceiveVelocityUpdates(false).build("merbor_piglet"));
 
     public static final RegistryObject<EntityType<HuskEntity>> HUSK = ENTITIES.register("husk", () -> EntityType.Builder.of(HuskEntity::new, MobCategory.MONSTER)
             .sized(0.6F, 1.9F).clientTrackingRange(10).setShouldReceiveVelocityUpdates(false).build("husk"));
