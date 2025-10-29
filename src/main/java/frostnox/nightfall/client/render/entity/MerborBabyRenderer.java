@@ -13,7 +13,7 @@ public class MerborBabyRenderer extends AnimatedMobRenderer<MerborBabyEntity, Me
     public static final ResourceLocation RIVER = ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "textures/entity/merbor/river_baby.png");
 
     public MerborBabyRenderer(EntityRendererProvider.Context renderer) {
-        super(renderer, new MerborBabyModel(renderer.bakeLayer(ModelRegistryNF.MERBOR_BABY)), 0.2F);
+        super(renderer, new MerborBabyModel(renderer.bakeLayer(ModelRegistryNF.MERBOR_BABY)), 0.175F);
     }
 
     @Override
