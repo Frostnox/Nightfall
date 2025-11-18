@@ -5,7 +5,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import frostnox.nightfall.Nightfall;
 import frostnox.nightfall.block.TieredHeat;
-import frostnox.nightfall.registry.forge.FluidsNF;
 import frostnox.nightfall.data.TagsNF;
 import frostnox.nightfall.util.DataUtil;
 import net.minecraft.core.NonNullList;
@@ -34,15 +33,16 @@ public abstract class MixtureRecipe extends EncyclopediaRecipe<RecipeWrapper> im
     protected final NonNullList<Pair<Ingredient, Vec2>> input;
     protected final ItemStack itemOutput;
     protected final FluidStack fluidOutput;
-    protected final int unitsPerOutput, cookTime;
+    protected final int unitsPerOutput, cookTime, priority;
 
-    protected MixtureRecipe(ResourceLocation id, ResourceLocation requirement, NonNullList<Pair<Ingredient, Vec2>> input, ItemStack itemOutput, FluidStack fluidOutput, int unitsPerOutput, int cookTime) {
+    protected MixtureRecipe(ResourceLocation id, ResourceLocation requirement, NonNullList<Pair<Ingredient, Vec2>> input, ItemStack itemOutput, FluidStack fluidOutput, int unitsPerOutput, int cookTime, int priority) {
         super(id, requirement);
         this.input = input;
         this.itemOutput = itemOutput;
         this.fluidOutput = fluidOutput;
         this.unitsPerOutput = unitsPerOutput;
         this.cookTime = cookTime;
+        this.priority = priority;
     }
 
     public abstract ItemStack assembleItem(@Nullable RecipeWrapper inventory, @Nullable List<FluidStack> fluids);
@@ -63,6 +63,10 @@ public abstract class MixtureRecipe extends EncyclopediaRecipe<RecipeWrapper> im
 
     public int getCookTime() {
         return cookTime;
+    }
+
+    public int getPriority() {
+        return priority;
     }
 
     public float getTemperature() {
@@ -119,7 +123,7 @@ public abstract class MixtureRecipe extends EncyclopediaRecipe<RecipeWrapper> im
 
     public static class Serializer<T extends MixtureRecipe> extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<T> {
         interface Factory<T extends MixtureRecipe> {
-            T create(ResourceLocation id, ResourceLocation requirement, NonNullList<Pair<Ingredient, Vec2>> input, ItemStack itemOutput, FluidStack fluidOutput, int unitsPerOutput, int cookTime);
+            T create(ResourceLocation id, ResourceLocation requirement, NonNullList<Pair<Ingredient, Vec2>> input, ItemStack itemOutput, FluidStack fluidOutput, int unitsPerOutput, int cookTime, int priority);
         }
         private final Factory<T> factory;
 
@@ -144,10 +148,11 @@ public abstract class MixtureRecipe extends EncyclopediaRecipe<RecipeWrapper> im
             FluidStack fluidResult = json.has("fluidResult") ? DataUtil.fluidStackFromJson(GsonHelper.getAsJsonObject(json, "fluidResult")) : FluidStack.EMPTY;
             int unitsPerOutput = GsonHelper.getAsInt(json, "units", 1);
             int cookTime = GsonHelper.getAsInt(json, "cookTime", 1);
+            int priority = GsonHelper.getAsInt(json, "priority", 0);
             ResourceLocation requirement = null;
             if(json.has("requirement")) requirement = ResourceLocation.parse(json.get("requirement").getAsString());
 
-            return factory.create(id, requirement, inputs, itemResult, fluidResult, unitsPerOutput, cookTime);
+            return factory.create(id, requirement, inputs, itemResult, fluidResult, unitsPerOutput, cookTime, priority);
         }
 
         @Override
@@ -164,7 +169,8 @@ public abstract class MixtureRecipe extends EncyclopediaRecipe<RecipeWrapper> im
             FluidStack fluid = buf.readFluidStack();
             int unitsPerOutput = buf.readVarInt();
             int cookTime = buf.readVarInt();
-            return factory.create(id, requirement.getPath().equals("empty") ? null : requirement, inputs, item, fluid, unitsPerOutput, cookTime);
+            int priority = buf.readVarInt();
+            return factory.create(id, requirement.getPath().equals("empty") ? null : requirement, inputs, item, fluid, unitsPerOutput, cookTime, priority);
         }
 
         @Override
@@ -181,6 +187,7 @@ public abstract class MixtureRecipe extends EncyclopediaRecipe<RecipeWrapper> im
             buf.writeFluidStack(recipe.getResultFluid());
             buf.writeVarInt(recipe.getUnitsPerOutput());
             buf.writeVarInt(recipe.getCookTime());
+            buf.writeVarInt(recipe.getPriority());
         }
     }
 }

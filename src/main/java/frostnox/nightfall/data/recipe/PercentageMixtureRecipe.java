@@ -20,8 +20,8 @@ import java.util.List;
  * Inputs are always consumed in their entirety, regardless of whether it will increase the output.
  */
 public abstract class PercentageMixtureRecipe extends MixtureRecipe {
-    protected PercentageMixtureRecipe(ResourceLocation id, ResourceLocation requirement, NonNullList<Pair<Ingredient, Vec2>> input, ItemStack itemOutput, FluidStack fluidOutput, int unitsPerOutput, int cookTime) {
-        super(id, requirement, input, itemOutput, fluidOutput, unitsPerOutput, cookTime);
+    protected PercentageMixtureRecipe(ResourceLocation id, ResourceLocation requirement, NonNullList<Pair<Ingredient, Vec2>> input, ItemStack itemOutput, FluidStack fluidOutput, int unitsPerOutput, int cookTime, int priority) {
+        super(id, requirement, input, itemOutput, fluidOutput, unitsPerOutput, cookTime, priority);
     }
 
     @Override

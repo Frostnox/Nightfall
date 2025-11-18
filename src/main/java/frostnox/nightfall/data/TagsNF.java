@@ -282,6 +282,7 @@ public class TagsNF {
     public static final TagKey<Item> GRAIN = itemTag("food_group/grain");
     public static final TagKey<Item> HERB = itemTag("food_group/herb");
     public static final TagKey<Item> EGG = itemTag("food_group/egg");
+    public static final TagKey<Item> PORK = itemTag("food_group/pork");
     public static final TagKey<Item> FRUIT_OR_VEGETABLE = itemTag("food_group/fruit_or_vegetable");
     public static final TagKey<Item> FOOD_INGREDIENT = itemTag("food_group/ingredient"); //Controls item insertion in cooking containers
     public static final TagKey<Item> HERBIVORE_FOOD = itemTag("herbivore_food");
@@ -306,7 +307,7 @@ public class TagsNF {
     public static final TagKey<Item> METAL_ANVILS_ITEM = itemTag(METAL_ANVILS);
     public static final TagKey<Item> METAL_BLOCKS_ITEM = itemTag(METAL_BLOCKS);
 
-    public static final List<TagKey<Item>> FOOD_GROUPS = List.of(TagsNF.MEAT, TagsNF.VEGETABLE, TagsNF.FRUIT, TagsNF.GRAIN, TagsNF.HERB, TagsNF.EGG, TagsNF.FRUIT_OR_VEGETABLE);
+    public static final List<TagKey<Item>> FOOD_GROUPS = List.of(TagsNF.EGG, TagsNF.PORK, TagsNF.MEAT, TagsNF.VEGETABLE, TagsNF.FRUIT, TagsNF.GRAIN, TagsNF.HERB, TagsNF.FRUIT_OR_VEGETABLE);
 
     public static final TagKey<SpawnGroup> SURFACE_GROUPS = spawnGroupTag("surface_groups");
     public static final TagKey<SpawnGroup> FRESHWATER_GROUPS = spawnGroupTag("freshwater_groups");

@@ -37,8 +37,8 @@ public class CauldronRecipe extends FlatMixtureRecipe {
     public static final String MAX_PHRASE = Nightfall.MODID + ".cauldron.max_phrase";
     public static final String RANGE_PHRASE = Nightfall.MODID + ".cauldron.range_phrase";
 
-    public CauldronRecipe(ResourceLocation id, ResourceLocation requirement, NonNullList<Pair<Ingredient, Vec2>> input, ItemStack itemOutput, FluidStack fluidOutput, int unitsPerOutput, int cookTime) {
-        super(id, requirement, input, itemOutput, fluidOutput, unitsPerOutput, cookTime);
+    public CauldronRecipe(ResourceLocation id, ResourceLocation requirement, NonNullList<Pair<Ingredient, Vec2>> input, ItemStack itemOutput, FluidStack fluidOutput, int unitsPerOutput, int cookTime, int priority) {
+        super(id, requirement, input, itemOutput, fluidOutput, unitsPerOutput, cookTime, priority);
     }
 
     @Override
@@ -112,7 +112,11 @@ public class CauldronRecipe extends FlatMixtureRecipe {
                 }
             }
             if(itemText == null) itemText = LevelUtil.chooseUnlockedIngredient(ingredient, ClientEngine.get().getPlayer()).getHoverName();
-            font.draw(poseStack, itemText, x + xOff, y, RenderUtil.COLOR_BLACK);
+            if(font.width(itemText.getVisualOrderText()) + xOff > (116 * 7F/6F)) {
+                poseStack.translate(0, 10, 0);
+                font.draw(poseStack, itemText, x + font.width(" "), y, RenderUtil.COLOR_BLACK);
+            }
+            else font.draw(poseStack, itemText, x + xOff, y, RenderUtil.COLOR_BLACK);
             poseStack.translate(0, 10, 0);
         }
     }

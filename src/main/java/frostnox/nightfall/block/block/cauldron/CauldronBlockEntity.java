@@ -198,7 +198,7 @@ public class CauldronBlockEntity extends MenuContainerBlockEntity implements IHo
                 RecipeWrapper container = new RecipeWrapper(entity.inventory);
                 CauldronRecipe bestRecipe = null;
                 for(CauldronRecipe recipe : level.getRecipeManager().getRecipesFor(CauldronRecipe.TYPE, container, level)) {
-                    if(bestRecipe == null || recipe.getInput().size() > bestRecipe.getInput().size()) bestRecipe = recipe;
+                    if(bestRecipe == null || recipe.getPriority() > bestRecipe.getPriority()) bestRecipe = recipe;
                 }
                 entity.clearContent();
                 entity.meal = bestRecipe == null ? new ItemStack(ItemsNF.SUSPICIOUS_STEW.get(), 4) : bestRecipe.assembleItem(container, null);

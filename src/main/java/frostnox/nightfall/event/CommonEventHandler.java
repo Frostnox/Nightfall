@@ -449,7 +449,7 @@ public class CommonEventHandler {
                     if(effect.getDuration() > 20) {
                         tip = new TranslatableComponent("potion.withDuration", tip, MobEffectUtil.formatDuration(effect, 1));
                     }
-                    tooltip.add(tip.withStyle(mobeffect.getCategory().getTooltipFormatting()));
+                    tooltip.add(getTooltipIndex(tooltip), tip.withStyle(mobeffect.getCategory().getTooltipFormatting()));
                 }
             }
         }

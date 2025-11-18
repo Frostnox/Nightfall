@@ -580,6 +580,7 @@ public class TextureProviderNF extends TextureProvider {
         layerImages(item(ItemsNF.MEAT_STEW), item(ItemsNF.WOODEN_BOWL), item(ItemsNF.MEAT_STEW));
         layerImages(item(ItemsNF.VEGETABLE_STEW), item(ItemsNF.WOODEN_BOWL), item(ItemsNF.VEGETABLE_STEW));
         layerImages(item(ItemsNF.HEARTY_STEW), item(ItemsNF.WOODEN_BOWL), item(ItemsNF.HEARTY_STEW));
+        layerImages(item(ItemsNF.HAM_ROAST), item(ItemsNF.WOODEN_BOWL), item(ItemsNF.HAM_ROAST));
         layerImages(item(ItemsNF.SUSPICIOUS_STEW), item(ItemsNF.WOODEN_BOWL), item(ItemsNF.SUSPICIOUS_STEW));
     }
 }

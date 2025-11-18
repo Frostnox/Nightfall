@@ -18,8 +18,8 @@ public class FurnaceRecipe extends PercentageMixtureRecipe {
     public static final RecipeType<FurnaceRecipe> TYPE = RecipeType.register(Nightfall.MODID + ":furnace");
     public static final Serializer<FurnaceRecipe> SERIALIZER = new Serializer<>(FurnaceRecipe::new, "furnace");
 
-    public FurnaceRecipe(ResourceLocation id, ResourceLocation requirement, NonNullList<Pair<Ingredient, Vec2>> input, ItemStack itemOutput, FluidStack fluidOutput, int unitsPerOutput, int cookTime) {
-        super(id, requirement, input, itemOutput, fluidOutput, unitsPerOutput, cookTime);
+    public FurnaceRecipe(ResourceLocation id, ResourceLocation requirement, NonNullList<Pair<Ingredient, Vec2>> input, ItemStack itemOutput, FluidStack fluidOutput, int unitsPerOutput, int cookTime, int priority) {
+        super(id, requirement, input, itemOutput, fluidOutput, unitsPerOutput, cookTime, priority);
     }
 
     @Override

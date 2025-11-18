@@ -160,36 +160,40 @@ public class RecipeProviderNF extends RecipeProvider {
         MixtureRecipeBuilder.base(ItemsNF.MEAT_STEW.get())
                 .addIngredient(ItemsNF.WATER.get(), 1, 1)
                 .addIngredient(TagsNF.MEAT, 3, Float.MAX_VALUE)
-                .unitsPerOutput(4).cookTime(CauldronRecipe.COOK_TIME).requirement(itemKnowledge(ItemsNF.MEAT_STEW)).saveCauldron(consumer);
+                .unitsPerOutput(4).cookTime(CauldronRecipe.COOK_TIME).priority(1).requirement(itemKnowledge(ItemsNF.MEAT_STEW)).saveCauldron(consumer);
         MixtureRecipeBuilder.base(ItemsNF.VEGETABLE_STEW.get())
                 .addIngredient(ItemsNF.WATER.get(), 1, 1)
                 .addIngredient(TagsNF.MEAT, 0, 1)
                 .addIngredient(TagsNF.VEGETABLE, 2, Float.MAX_VALUE)
-                .unitsPerOutput(4).cookTime(CauldronRecipe.COOK_TIME).requirement(itemKnowledge(ItemsNF.VEGETABLE_STEW)).saveCauldron(consumer);
+                .unitsPerOutput(4).cookTime(CauldronRecipe.COOK_TIME).priority(1).requirement(itemKnowledge(ItemsNF.VEGETABLE_STEW)).saveCauldron(consumer);
         MixtureRecipeBuilder.base(ItemsNF.HEARTY_STEW.get())
                 .addIngredient(ItemsNF.WATER.get(), 1, 1)
                 .addIngredient(TagsNF.MEAT, 2, Float.MAX_VALUE)
                 .addIngredient(TagsNF.VEGETABLE, 1, Float.MAX_VALUE)
-                .unitsPerOutput(4).cookTime(CauldronRecipe.COOK_TIME).requirement(itemKnowledge(ItemsNF.HEARTY_STEW)).saveCauldron(consumer);
+                .unitsPerOutput(4).cookTime(CauldronRecipe.COOK_TIME).priority(1).requirement(itemKnowledge(ItemsNF.HEARTY_STEW)).saveCauldron(consumer);
+        MixtureRecipeBuilder.base(ItemsNF.HAM_ROAST.get())
+                .addIngredient(ItemsNF.WATER.get(), 1, 1)
+                .addIngredient(TagsNF.PORK, 2, Float.MAX_VALUE)
+                .unitsPerOutput(4).cookTime(CauldronRecipe.COOK_TIME).priority(2).requirement(itemKnowledge(ItemsNF.HAM_ROAST)).saveCauldron(consumer);
         MixtureRecipeBuilder.base(ItemsNF.BOILED_EGG.get())
                 .addIngredient(ItemsNF.WATER.get(), 1, 1)
                 .addIngredient(TagsNF.EGG, 2, Float.MAX_VALUE)
-                .unitsPerOutput(3).cookTime(CauldronRecipe.COOK_TIME).requirement(KnowledgeNF.ITEM_TAGS.get(TagsNF.EGG).getId()).saveCauldron(consumer);
+                .unitsPerOutput(3).cookTime(CauldronRecipe.COOK_TIME).priority(0).requirement(KnowledgeNF.ITEM_TAGS.get(TagsNF.EGG).getId()).saveCauldron(consumer);
         MixtureRecipeBuilder.base(ItemsNF.SOUFFLE.get())
                 .addIngredient(ItemsNF.WATER.get(), 0, 0)
                 .addIngredient(TagsNF.EGG, 2, Float.MAX_VALUE)
-                .unitsPerOutput(4).cookTime(CauldronRecipe.COOK_TIME).requirement(itemKnowledge(ItemsNF.SOUFFLE)).saveCauldron(consumer);
+                .unitsPerOutput(4).cookTime(CauldronRecipe.COOK_TIME).priority(1).requirement(itemKnowledge(ItemsNF.SOUFFLE)).saveCauldron(consumer);
         MixtureRecipeBuilder.base(ItemsNF.FRUIT_SOUFFLE.get())
                 .addIngredient(ItemsNF.WATER.get(), 0, 0)
                 .addIngredient(TagsNF.EGG, 2, Float.MAX_VALUE)
                 .addIngredient(TagsNF.FRUIT, 2, Float.MAX_VALUE)
-                .unitsPerOutput(4).cookTime(CauldronRecipe.COOK_TIME).requirement(itemKnowledge(ItemsNF.FRUIT_SOUFFLE)).saveCauldron(consumer);
+                .unitsPerOutput(4).cookTime(CauldronRecipe.COOK_TIME).priority(2).requirement(itemKnowledge(ItemsNF.FRUIT_SOUFFLE)).saveCauldron(consumer);
         MixtureRecipeBuilder.base(ItemsNF.SAVORY_SOUFFLE.get())
                 .addIngredient(ItemsNF.WATER.get(), 0, 0)
                 .addIngredient(TagsNF.EGG, 2, Float.MAX_VALUE)
                 .addIngredient(TagsNF.FRUIT_OR_VEGETABLE, 1, Float.MAX_VALUE)
                 .addIngredient(TagsNF.MEAT, 1, Float.MAX_VALUE)
-                .unitsPerOutput(4).cookTime(CauldronRecipe.COOK_TIME).requirement(itemKnowledge(ItemsNF.SAVORY_SOUFFLE)).saveCauldron(consumer);
+                .unitsPerOutput(4).cookTime(CauldronRecipe.COOK_TIME).priority(2).requirement(itemKnowledge(ItemsNF.SAVORY_SOUFFLE)).saveCauldron(consumer);
 
         BowlCrushingRecipe.saveBowl(Ingredient.of(ItemsNF.YARROW.get()), Ingredient.of(TagsNF.CHISEL), ItemsNF.YARROW_POWDER.get(), 1, EntriesNF.WOODCARVING.getId(), consumer);
         BowlCrushingRecipe.saveBowl(Ingredient.of(TagsNF.CRUSHABLE_TO_LIME), Ingredient.of(TagsNF.CHISEL_OR_HAMMER), ItemsNF.LIME.get(), 1, EntriesNF.WOODCARVING.getId(), consumer);

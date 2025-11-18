@@ -19,8 +19,8 @@ import java.util.List;
  * Output size is exactly unitsPerOutput.
  */
 public abstract class FlatMixtureRecipe extends MixtureRecipe {
-    protected FlatMixtureRecipe(ResourceLocation id, ResourceLocation requirement, NonNullList<Pair<Ingredient, Vec2>> input, ItemStack itemOutput, FluidStack fluidOutput, int unitsPerOutput, int cookTime) {
-        super(id, requirement, input, itemOutput, fluidOutput, unitsPerOutput, cookTime);
+    protected FlatMixtureRecipe(ResourceLocation id, ResourceLocation requirement, NonNullList<Pair<Ingredient, Vec2>> input, ItemStack itemOutput, FluidStack fluidOutput, int unitsPerOutput, int cookTime, int priority) {
+        super(id, requirement, input, itemOutput, fluidOutput, unitsPerOutput, cookTime, priority);
     }
 
     @Override

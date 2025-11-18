@@ -4,7 +4,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import frostnox.nightfall.Nightfall;
 import frostnox.nightfall.data.recipe.CauldronRecipe;
-import frostnox.nightfall.data.recipe.CrucibleRecipe;
 import frostnox.nightfall.data.recipe.FurnaceRecipe;
 import frostnox.nightfall.data.recipe.MixtureRecipe;
 import net.minecraft.data.recipes.FinishedRecipe;
@@ -31,7 +30,7 @@ public class MixtureRecipeBuilder {
     private final List<Ingredient> ingredients = Lists.newArrayList();
     private final List<Vec2> ranges = Lists.newArrayList();
     private @Nullable ResourceLocation requirement;
-    private int unitsPerOutput = 1, cookTime = 1;
+    private int unitsPerOutput = 1, cookTime = 1, priority = 0;
 
     public MixtureRecipeBuilder(ItemLike itemResult, Fluid fluidResult) {
         this.itemResult = itemResult.asItem();
@@ -86,6 +85,11 @@ public class MixtureRecipeBuilder {
         return this;
     }
 
+    public MixtureRecipeBuilder priority(int priority) {
+        this.priority = priority;
+        return this;
+    }
+
     public MixtureRecipeBuilder requirement(ResourceLocation requirement) {
         this.requirement = requirement;
         return this;
@@ -118,7 +122,7 @@ public class MixtureRecipeBuilder {
         ResourceLocation id = ResourceLocation.fromNamespaceAndPath(namespace, name + "_" + number);
         if(this.ingredients.isEmpty()) throw new IllegalStateException("No ingredients defined for mixture recipe " + id);
         else if(itemResult == null && fluidResult == null) throw new IllegalStateException("No result specified for mixture recipe " + id);
-        consumer.accept(new Result(serializer, id, requirement, itemResult, fluidResult, ingredients, ranges, unitsPerOutput, cookTime));
+        consumer.accept(new Result(serializer, id, requirement, itemResult, fluidResult, ingredients, ranges, unitsPerOutput, cookTime, priority));
     }
 
     public static class Result implements FinishedRecipe {
@@ -128,9 +132,9 @@ public class MixtureRecipeBuilder {
         private final Fluid fluidResult;
         private final List<Ingredient> ingredients;
         private final List<Vec2> ranges;
-        private final int unitsPerOutput, cookTime;
+        private final int unitsPerOutput, cookTime, priority;
 
-        public Result(MixtureRecipe.Serializer<?> serializer, ResourceLocation id, ResourceLocation requirement, Item itemResult, Fluid fluidResult, List<Ingredient> ingredients, List<Vec2> ranges, int unitsPerOutput, int cookTime) {
+        public Result(MixtureRecipe.Serializer<?> serializer, ResourceLocation id, ResourceLocation requirement, Item itemResult, Fluid fluidResult, List<Ingredient> ingredients, List<Vec2> ranges, int unitsPerOutput, int cookTime, int priority) {
             this.serializer = serializer;
             this.id = id;
             this.requirement = requirement;
@@ -140,6 +144,7 @@ public class MixtureRecipeBuilder {
             this.ranges = ranges;
             this.unitsPerOutput = unitsPerOutput;
             this.cookTime = cookTime;
+            this.priority = priority;
         }
 
         @Override
@@ -164,6 +169,7 @@ public class MixtureRecipeBuilder {
             json.add("input", input);
             if(unitsPerOutput > 0) json.addProperty("units", unitsPerOutput);
             json.addProperty("cookTime", cookTime);
+            if(priority != 0) json.addProperty("priority", priority);
 
             if(requirement != null) json.addProperty("requirement", requirement.toString());
         }

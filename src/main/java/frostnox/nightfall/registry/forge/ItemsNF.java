@@ -242,6 +242,9 @@ public class ItemsNF {
     public static final RegistryObject<Item> HEARTY_STEW = ITEMS.register("hearty_stew", () -> new ChangeOnUseFinishItem(ItemsNF.WOODEN_BOWL,
             new Item.Properties().food(foodBuilder(6, 0.4F).effect(() -> new MobEffectInstance(EffectsNF.INVIGORATING.get(),
                     60 * 20 * 5, 0), 1F).build()).tab(FOOD_TAB).stacksTo(1)));
+    public static final RegistryObject<Item> HAM_ROAST = ITEMS.register("ham_roast", () -> new ChangeOnUseFinishItem(ItemsNF.WOODEN_BOWL,
+            new Item.Properties().food(foodBuilder(7, 0.4F).effect(() -> new MobEffectInstance(EffectsNF.INVIGORATING.get(),
+                    60 * 20 * 5, 0), 1F).build()).tab(FOOD_TAB).stacksTo(1)));
     public static final RegistryObject<Item> SUSPICIOUS_STEW = ITEMS.register("suspicious_stew", () -> new ChangeOnUseFinishItem(ItemsNF.WOODEN_BOWL,
             new Item.Properties().food(foodBuilder(3, 0.1F).effect(() -> new MobEffectInstance(EffectsNF.POISON.get(),
                     30 * 20, 0), 0.5F).build()).tab(FOOD_TAB).stacksTo(1)));

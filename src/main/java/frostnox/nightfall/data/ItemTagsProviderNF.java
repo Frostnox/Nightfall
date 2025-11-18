@@ -240,7 +240,7 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
         }
         tag(TagsNF.RAWHIDE_SMALL).add(ItemsNF.RAWHIDE.get());
         tag(TagsNF.FLETCHING).add(ItemsNF.SCARLET_FEATHER.get());
-        tag(TagsNF.CAULDRON_FLUID_MEAL).add(ItemsNF.MEAT_STEW.get(), ItemsNF.VEGETABLE_STEW.get(), ItemsNF.HEARTY_STEW.get(), ItemsNF.SUSPICIOUS_STEW.get(), ItemsNF.BOILED_EGG.get());
+        tag(TagsNF.CAULDRON_FLUID_MEAL).add(ItemsNF.MEAT_STEW.get(), ItemsNF.VEGETABLE_STEW.get(), ItemsNF.HEARTY_STEW.get(), ItemsNF.HAM_ROAST.get(), ItemsNF.SUSPICIOUS_STEW.get(), ItemsNF.BOILED_EGG.get());
         tag(TagsNF.COOKED_MEAT).add(ItemsNF.COOKED_GAME.get(), ItemsNF.COOKED_POULTRY.get(), ItemsNF.COOKED_PORK.get(), ItemsNF.COOKED_VENISON.get(), ItemsNF.COOKED_PALE_FLESH.get());
         tag(TagsNF.CURED_MEAT).add(ItemsNF.CURED_GAME.get(), ItemsNF.CURED_POULTRY.get(), ItemsNF.CURED_PORK.get(), ItemsNF.CURED_VENISON.get(), ItemsNF.CURED_PALE_FLESH.get());
         tag(TagsNF.CURABLE_FOOD).add(ItemsNF.RAW_GAME.get(), ItemsNF.RAW_VENISON.get(), ItemsNF.RAW_POULTRY.get(), ItemsNF.RAW_PORK.get(), ItemsNF.RAW_JELLYFISH.get(), ItemsNF.RAW_PALE_FLESH.get());
@@ -255,6 +255,7 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
         tag(TagsNF.GRAIN);
         tag(TagsNF.HERB);
         tag(TagsNF.EGG).add(ItemsNF.DRAKEFOWL_EGG.get());
+        tag(TagsNF.PORK).add(ItemsNF.RAW_PORK.get(), ItemsNF.COOKED_PORK.get(), ItemsNF.CURED_PORK.get());
         tag(TagsNF.FRUIT_OR_VEGETABLE).addTags(TagsNF.FRUIT, TagsNF.VEGETABLE);
         tag(TagsNF.FOOD_INGREDIENT).addTags(TagsNF.MEAT, TagsNF.VEGETABLE, TagsNF.FRUIT, TagsNF.GRAIN, TagsNF.HERB, TagsNF.EGG);
 
