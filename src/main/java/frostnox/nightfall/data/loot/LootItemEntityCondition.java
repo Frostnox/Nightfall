@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import frostnox.nightfall.entity.IHungerEntity;
 import frostnox.nightfall.entity.entity.animal.DeerEntity;
+import frostnox.nightfall.entity.entity.animal.MerborEntity;
 import frostnox.nightfall.entity.entity.animal.RabbitEntity;
 import frostnox.nightfall.entity.entity.monster.CockatriceEntity;
 import frostnox.nightfall.registry.vanilla.LootItemConditionTypesNF;
@@ -21,7 +22,8 @@ import java.util.Set;
 
 public class LootItemEntityCondition implements LootItemCondition {
     public enum Test {
-        LIVING_PRESENT, HUNGRY, RABBIT_BRUSH, RABBIT_COTTONTAIL, RABBIT_ARCTIC, RABBIT_STRIPED, DEER_BRIAR, DEER_RED, DEER_SPOTTED, COCKATRICE_BRONZE, COCKATRICE_EMERALD;
+        LIVING_PRESENT, HUNGRY, RABBIT_BRUSH, RABBIT_COTTONTAIL, RABBIT_ARCTIC, RABBIT_STRIPED, DEER_BRIAR, DEER_RED, DEER_SPOTTED,
+        MERBOR_BOG, MERBOR_BRINE, MERBOR_RIVER, COCKATRICE_BRONZE, COCKATRICE_EMERALD;
 
         private final String name;
 
@@ -65,6 +67,9 @@ public class LootItemEntityCondition implements LootItemCondition {
             case DEER_BRIAR -> context.getParam(entityTarget.getParam()) instanceof DeerEntity deer && deer.getDeerType() == DeerEntity.Type.BRIAR;
             case DEER_RED -> context.getParam(entityTarget.getParam()) instanceof DeerEntity deer && deer.getDeerType() == DeerEntity.Type.RED;
             case DEER_SPOTTED -> context.getParam(entityTarget.getParam()) instanceof DeerEntity deer && deer.getDeerType() == DeerEntity.Type.SPOTTED;
+            case MERBOR_BOG -> context.getParam(entityTarget.getParam()) instanceof MerborEntity merbor && merbor.getMerborType() == MerborEntity.Type.BOG;
+            case MERBOR_BRINE -> context.getParam(entityTarget.getParam()) instanceof MerborEntity merbor && merbor.getMerborType() == MerborEntity.Type.BRINE;
+            case MERBOR_RIVER -> context.getParam(entityTarget.getParam()) instanceof MerborEntity merbor && merbor.getMerborType() == MerborEntity.Type.RIVER;
             case COCKATRICE_BRONZE -> context.getParam(entityTarget.getParam()) instanceof CockatriceEntity cockatrice && cockatrice.getCockatriceType() == CockatriceEntity.Type.BRONZE;
             case COCKATRICE_EMERALD -> context.getParam(entityTarget.getParam()) instanceof CockatriceEntity cockatrice && cockatrice.getCockatriceType() == CockatriceEntity.Type.EMERALD;
         };

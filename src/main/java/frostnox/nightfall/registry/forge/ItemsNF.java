@@ -8,6 +8,7 @@ import frostnox.nightfall.action.player.PlayerActionSet;
 import frostnox.nightfall.block.*;
 import frostnox.nightfall.data.TagsNF;
 import frostnox.nightfall.entity.entity.animal.DeerEntity;
+import frostnox.nightfall.entity.entity.animal.MerborEntity;
 import frostnox.nightfall.entity.entity.animal.RabbitEntity;
 import frostnox.nightfall.entity.entity.monster.CockatriceEntity;
 import frostnox.nightfall.item.*;
@@ -170,6 +171,8 @@ public class ItemsNF {
             register(type.name().toLowerCase(Locale.ROOT) + "_rabbit_pelt", () -> new Item(ingredient().stacksTo(32))));
     public static final Map<DeerEntity.Type, RegistryObject<Item>> DEER_HIDES = DataUtil.mapEnum(DeerEntity.Type.class, type ->
             register(type.name().toLowerCase(Locale.ROOT) + "_deer_hide", () -> new Item(ingredient().stacksTo(16))));
+    public static final Map<MerborEntity.Type, RegistryObject<Item>> MERBOR_HIDES = DataUtil.mapEnum(MerborEntity.Type.class, type ->
+            register(type.name().toLowerCase(Locale.ROOT) + "_merbor_hide", () -> new Item(ingredient().stacksTo(16))));
     public static final Map<CockatriceEntity.Type, RegistryObject<Item>> COCKATRICE_SKINS = DataUtil.mapEnum(CockatriceEntity.Type.class, type ->
             register(type.name().toLowerCase(Locale.ROOT) + "_cockatrice_skin", () -> new Item(ingredient().stacksTo(16))));
     public static final RegistryObject<MeleeWeaponItem> RUSTED_MAUL = register("rusted_maul", () -> new MeleeWeaponItem(TieredItemMaterial.METEORITE,
