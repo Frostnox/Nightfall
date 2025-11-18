@@ -201,11 +201,15 @@ public class ItemsNF {
             meat(4, 0.25F)).tab(FOOD_TAB).stacksTo(4)));
     public static final RegistryObject<Item> RAW_POULTRY = ITEMS.register("raw_poultry", () -> new FoodItem(48, new Item.Properties().food(
             meat(4, 0.25F)).tab(FOOD_TAB).stacksTo(4)));
+    public static final RegistryObject<Item> RAW_PORK = ITEMS.register("raw_pork", () -> new FoodItem(48, new Item.Properties().food(
+            meat(4, 0.25F)).tab(FOOD_TAB).stacksTo(4)));
     public static final RegistryObject<Item> COOKED_GAME = ITEMS.register("cooked_game", () -> new Item(new Item.Properties().food(
             meat(4, 0.3F)).tab(FOOD_TAB).stacksTo(4)));
     public static final RegistryObject<Item> COOKED_VENISON = ITEMS.register("cooked_venison", () -> new Item(new Item.Properties().food(
             meat(5, 0.35F)).tab(FOOD_TAB).stacksTo(4)));
     public static final RegistryObject<Item> COOKED_POULTRY = ITEMS.register("cooked_poultry", () -> new Item(new Item.Properties().food(
+            meat(5, 0.35F)).tab(FOOD_TAB).stacksTo(4)));
+    public static final RegistryObject<Item> COOKED_PORK = ITEMS.register("cooked_pork", () -> new Item(new Item.Properties().food(
             meat(5, 0.35F)).tab(FOOD_TAB).stacksTo(4)));
     public static final RegistryObject<Item> COOKED_PALE_FLESH = ITEMS.register("cooked_pale_flesh", () -> new FoodItem(48, new Item.Properties().food(
             meat(3, 0.2F)).tab(FOOD_TAB).stacksTo(4)));
@@ -214,6 +218,8 @@ public class ItemsNF {
     public static final RegistryObject<Item> CURED_VENISON = ITEMS.register("cured_venison", () -> new Item(new Item.Properties().food(
             meat(5, 0.35F)).tab(FOOD_TAB).stacksTo(8)));
     public static final RegistryObject<Item> CURED_POULTRY = ITEMS.register("cured_poultry", () -> new Item(new Item.Properties().food(
+            meat(5, 0.35F)).tab(FOOD_TAB).stacksTo(8)));
+    public static final RegistryObject<Item> CURED_PORK = ITEMS.register("cured_pork", () -> new Item(new Item.Properties().food(
             meat(5, 0.35F)).tab(FOOD_TAB).stacksTo(8)));
     public static final RegistryObject<Item> CURED_JELLYFISH = ITEMS.register("cured_jellyfish", () -> new FoodItem(48, new Item.Properties().food(
             meat(1, 0F)).tab(FOOD_TAB).stacksTo(8)));

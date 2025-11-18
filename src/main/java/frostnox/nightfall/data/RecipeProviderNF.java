@@ -154,6 +154,7 @@ public class RecipeProviderNF extends RecipeProvider {
         SingleRecipeBuilder.base(ItemsNF.COOKED_GAME.get(), 1).input(ItemsNF.RAW_GAME.get()).cookTime(60 * 20).requirement(EntriesNF.CAMPFIRE.getId()).saveCampfire(consumer);
         SingleRecipeBuilder.base(ItemsNF.COOKED_VENISON.get(), 1).input(ItemsNF.RAW_VENISON.get()).cookTime(60 * 20).requirement(EntriesNF.CAMPFIRE.getId()).saveCampfire(consumer);
         SingleRecipeBuilder.base(ItemsNF.COOKED_POULTRY.get(), 1).input(ItemsNF.RAW_POULTRY.get()).cookTime(60 * 20).requirement(EntriesNF.CAMPFIRE.getId()).saveCampfire(consumer);
+        SingleRecipeBuilder.base(ItemsNF.COOKED_PORK.get(), 1).input(ItemsNF.RAW_PORK.get()).cookTime(60 * 20).requirement(EntriesNF.CAMPFIRE.getId()).saveCampfire(consumer);
         SingleRecipeBuilder.base(ItemsNF.COOKED_PALE_FLESH.get(), 1).input(ItemsNF.RAW_PALE_FLESH.get()).cookTime(60 * 20).requirement(EntriesNF.CAMPFIRE.getId()).saveCampfire(consumer);
 
         MixtureRecipeBuilder.base(ItemsNF.MEAT_STEW.get())
@@ -349,6 +350,8 @@ public class RecipeProviderNF extends RecipeProvider {
         BarrelRecipeBuilder.base(ItemsNF.CURED_VENISON.get(), 1).input(ItemsNF.SALT.get()).input(ItemsNF.RAW_VENISON.get()).input(ItemsNF.SALT.get())
                 .soakTime(DAY_LENGTH * 2).fixedSoakTime().requirement(EntriesNF.CURING.getId()).save(consumer);
         BarrelRecipeBuilder.base(ItemsNF.CURED_POULTRY.get(), 1).input(ItemsNF.SALT.get()).input(ItemsNF.RAW_POULTRY.get()).input(ItemsNF.SALT.get())
+                .soakTime(DAY_LENGTH).fixedSoakTime().requirement(EntriesNF.CURING.getId()).save(consumer);
+        BarrelRecipeBuilder.base(ItemsNF.CURED_PORK.get(), 1).input(ItemsNF.SALT.get()).input(ItemsNF.RAW_PORK.get()).input(ItemsNF.SALT.get())
                 .soakTime(DAY_LENGTH).fixedSoakTime().requirement(EntriesNF.CURING.getId()).save(consumer);
         BarrelRecipeBuilder.base(ItemsNF.CURED_JELLYFISH.get(), 1).input(ItemsNF.SALT.get()).input(ItemsNF.RAW_JELLYFISH.get()).input(ItemsNF.SALT.get())
                 .soakTime(DAY_LENGTH / 2).fixedSoakTime().requirement(EntriesNF.CURING.getId()).save(consumer);

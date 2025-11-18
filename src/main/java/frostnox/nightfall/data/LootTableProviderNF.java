@@ -663,9 +663,9 @@ public class LootTableProviderNF extends LootTableProvider {
             add(EntitiesNF.DRAKEFOWL_HEN.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.RAW_POULTRY.get(), 2, 2)))
                     .withPool(pool(entry(ItemsNF.SCARLET_FEATHER.get(), 5, 6))));
             add(EntitiesNF.DRAKEFOWL_CHICK.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.RAW_POULTRY.get(), 1, 1))));
-            add(EntitiesNF.MERBOR_TUSKER.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.ROTTEN_FLESH.get(), 1, 2))));
-            add(EntitiesNF.MERBOR_SOW.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.ROTTEN_FLESH.get(), 1, 2))));
-            add(EntitiesNF.MERBOR_PIGLET.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.ROTTEN_FLESH.get(), 1, 2))));
+            add(EntitiesNF.MERBOR_TUSKER.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.RAW_PORK.get(), 3, 4))));
+            add(EntitiesNF.MERBOR_SOW.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.RAW_PORK.get(), 3, 4))));
+            add(EntitiesNF.MERBOR_PIGLET.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.RAW_PORK.get(), 1, 1))));
             add(EntitiesNF.HUSK.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.ROTTEN_FLESH.get(), 1, 2))));
             add(EntitiesNF.SKELETON.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.BONE_SHARD.get(), 1, 2)))
                     .withPool(pool(entry(ItemsNF.BONE_SHARD.get(), 1, 2, DamageTypeCondition.of(DamageType.STRIKING))))

@@ -241,14 +241,14 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
         tag(TagsNF.RAWHIDE_SMALL).add(ItemsNF.RAWHIDE.get());
         tag(TagsNF.FLETCHING).add(ItemsNF.SCARLET_FEATHER.get());
         tag(TagsNF.CAULDRON_FLUID_MEAL).add(ItemsNF.MEAT_STEW.get(), ItemsNF.VEGETABLE_STEW.get(), ItemsNF.HEARTY_STEW.get(), ItemsNF.SUSPICIOUS_STEW.get(), ItemsNF.BOILED_EGG.get());
-        tag(TagsNF.COOKED_MEAT).add(ItemsNF.COOKED_GAME.get(), ItemsNF.COOKED_POULTRY.get(), ItemsNF.COOKED_VENISON.get(), ItemsNF.COOKED_PALE_FLESH.get());
-        tag(TagsNF.CURED_MEAT).add(ItemsNF.CURED_GAME.get(), ItemsNF.CURED_POULTRY.get(), ItemsNF.CURED_VENISON.get(), ItemsNF.CURED_PALE_FLESH.get());
-        tag(TagsNF.CURABLE_FOOD).add(ItemsNF.RAW_GAME.get(), ItemsNF.RAW_VENISON.get(), ItemsNF.RAW_POULTRY.get(), ItemsNF.RAW_JELLYFISH.get(), ItemsNF.RAW_PALE_FLESH.get());
+        tag(TagsNF.COOKED_MEAT).add(ItemsNF.COOKED_GAME.get(), ItemsNF.COOKED_POULTRY.get(), ItemsNF.COOKED_PORK.get(), ItemsNF.COOKED_VENISON.get(), ItemsNF.COOKED_PALE_FLESH.get());
+        tag(TagsNF.CURED_MEAT).add(ItemsNF.CURED_GAME.get(), ItemsNF.CURED_POULTRY.get(), ItemsNF.CURED_PORK.get(), ItemsNF.CURED_VENISON.get(), ItemsNF.CURED_PALE_FLESH.get());
+        tag(TagsNF.CURABLE_FOOD).add(ItemsNF.RAW_GAME.get(), ItemsNF.RAW_VENISON.get(), ItemsNF.RAW_POULTRY.get(), ItemsNF.RAW_PORK.get(), ItemsNF.RAW_JELLYFISH.get(), ItemsNF.RAW_PALE_FLESH.get());
         tag(TagsNF.COOKED_VEGETABLE).add(ItemsNF.ROASTED_CARROT.get(), ItemsNF.ROASTED_POTATO.get());
         tag(ItemTags.ARROWS).add(ItemsNF.FLINT_ARROW.get(), ItemsNF.BONE_ARROW.get(), ItemsNF.RUSTED_ARROW.get());
         for(var arrow : ItemsNF.METAL_ARROWS.values()) tag(ItemTags.ARROWS).add(arrow.get());
         tag(Tags.Items.SEEDS).add(ItemsNF.CARROT_SEEDS.get(), ItemsNF.POTATO_SEEDS.get(), ItemsNF.YARROW_SEEDS.get());
-        tag(TagsNF.MEAT).add(ItemsNF.RAW_GAME.get(), ItemsNF.RAW_VENISON.get(), ItemsNF.RAW_POULTRY.get(), ItemsNF.RAW_PALE_FLESH.get());
+        tag(TagsNF.MEAT).add(ItemsNF.RAW_GAME.get(), ItemsNF.RAW_VENISON.get(), ItemsNF.RAW_POULTRY.get(), ItemsNF.RAW_PORK.get(), ItemsNF.RAW_PALE_FLESH.get());
         tag(TagsNF.MEAT).addTags(TagsNF.COOKED_MEAT, TagsNF.CURED_MEAT);
         tag(TagsNF.VEGETABLE).add(ItemsNF.POTATO.get(), ItemsNF.CARROT.get(), ItemsNF.ROASTED_POTATO.get(), ItemsNF.ROASTED_CARROT.get());
         tag(TagsNF.FRUIT).add(ItemsNF.BERRIES.get(), ItemsNF.APPLE.get(), ItemsNF.COCONUT_HALF.get(), ItemsNF.COCOA_POD.get());

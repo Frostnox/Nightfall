@@ -225,7 +225,7 @@ public class LevelData implements ILevelData {
 
     @Override
     public float getSeasonalTemperature(IChunkData chunkData, int x, int z) {
-        return Math.max(0, chunkData.getTemperature(x, z) + Season.getTemperatureInfluence(seasonTime));
+        return chunkData.getTemperature(x, z) + Season.getTemperatureInfluence(seasonTime);
     }
 
     @Override
