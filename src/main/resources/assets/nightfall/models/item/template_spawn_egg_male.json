@@ -1,0 +1,7 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "nightfall:item/spawn_egg_male",
+        "layer1": "nightfall:item/spawn_egg_male_overlay"
+    }
+}

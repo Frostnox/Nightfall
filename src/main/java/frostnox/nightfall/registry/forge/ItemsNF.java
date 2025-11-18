@@ -248,7 +248,7 @@ public class ItemsNF {
     public static final RegistryObject<Item> SUSPICIOUS_STEW = ITEMS.register("suspicious_stew", () -> new ChangeOnUseFinishItem(ItemsNF.WOODEN_BOWL,
             new Item.Properties().food(foodBuilder(3, 0.1F).effect(() -> new MobEffectInstance(EffectsNF.POISON.get(),
                     30 * 20, 0), 0.5F).build()).tab(FOOD_TAB).stacksTo(1)));
-    public static final RegistryObject<Item> BURNT_FOOD = ITEMS.register("burnt_food", () -> new Item(new Item.Properties().food(
+    public static final RegistryObject<Item> BURNT_FOOD = ITEMS.register("burnt_food", () -> new FoodItem(48, new Item.Properties().food(
             food(1, 0F)).tab(FOOD_TAB).stacksTo(4)));
     public static final RegistryObject<Item> DRAKEFOWL_EGG = ITEMS.register("drakefowl_egg", () -> new Item(food()
             .food(food(2, 0.2F)).stacksTo(4)));
@@ -312,11 +312,11 @@ public class ItemsNF {
     public static final RegistryObject<SpawnEggItem> DEER_SPAWN_EGG = register(EntitiesNF.DEER.getId().getPath() + "_spawn_egg",
             () -> new ForgeSpawnEggItem(EntitiesNF.DEER, 0xd6cec1, BEAST_COLOR, utility()));
     public static final RegistryObject<SpawnEggItem> DRAKEFOWL_ROOSTER_SPAWN_EGG = register(EntitiesNF.DRAKEFOWL_ROOSTER.getId().getPath() + "_spawn_egg",
-            () -> new ForgeSpawnEggItem(EntitiesNF.DRAKEFOWL_ROOSTER, 0xaa1928, 0xc25217, utility()));
+            () -> new ForgeSpawnEggItem(EntitiesNF.DRAKEFOWL_ROOSTER, 0xf7b22d, 0xc25217, utility()));
     public static final RegistryObject<SpawnEggItem> DRAKEFOWL_HEN_SPAWN_EGG = register(EntitiesNF.DRAKEFOWL_HEN.getId().getPath() + "_spawn_egg",
-            () -> new ForgeSpawnEggItem(EntitiesNF.DRAKEFOWL_HEN, 0xf49f31, 0xc25217, utility()));
+            () -> new ForgeSpawnEggItem(EntitiesNF.DRAKEFOWL_HEN, 0xf7b22d, 0xc25217, utility()));
     public static final RegistryObject<SpawnEggItem> DRAKEFOWL_CHICK_SPAWN_EGG = register(EntitiesNF.DRAKEFOWL_CHICK.getId().getPath() + "_spawn_egg",
-            () -> new ForgeSpawnEggItem(EntitiesNF.DRAKEFOWL_CHICK, 0xecbd47, 0xc25217, utility()));
+            () -> new ForgeSpawnEggItem(EntitiesNF.DRAKEFOWL_CHICK, 0xf7b22d, 0xc25217, utility()));
     public static final RegistryObject<SpawnEggItem> MERBOR_TUSKER_SPAWN_EGG = register(EntitiesNF.MERBOR_TUSKER.getId().getPath() + "_spawn_egg",
             () -> new ForgeSpawnEggItem(EntitiesNF.MERBOR_TUSKER, 0xe1dfc5, 0x7fabd0, utility()));
     public static final RegistryObject<SpawnEggItem> MERBOR_SOW_SPAWN_EGG = register(EntitiesNF.MERBOR_SOW.getId().getPath() + "_spawn_egg",

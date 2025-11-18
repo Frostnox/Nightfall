@@ -113,6 +113,10 @@ public class ItemModelProviderNF extends ModelProvider<AnimatedItemModelBuilder>
         withExistingParent(item.getRegistryName().getPath(), parent).texture("layer0", modLoc("item/" + item.getRegistryName().getPath()));
     }
 
+    protected void existingItem(Item item, ResourceLocation parent) {
+        withExistingParent(item.getRegistryName().getPath(), parent);
+    }
+
     protected void genericItem(Item item) {
         withExistingParent(item.getRegistryName().getPath(), modLoc("item/generated")).texture("layer0", modLoc("item/" + item.getRegistryName().getPath()));
     }
@@ -352,6 +356,13 @@ public class ItemModelProviderNF extends ModelProvider<AnimatedItemModelBuilder>
 
         genericBlockAsItem(ItemsNF.SPIDER_WEB.get());
         genericBlock(ItemsNF.DRAKEFOWL_NEST.get(), "_0");
+
+        existingItem(ItemsNF.DRAKEFOWL_ROOSTER_SPAWN_EGG.get(), modLoc("item/template_spawn_egg_male"));
+        existingItem(ItemsNF.DRAKEFOWL_HEN_SPAWN_EGG.get(), modLoc("item/template_spawn_egg_female"));
+        existingItem(ItemsNF.DRAKEFOWL_CHICK_SPAWN_EGG.get(), modLoc("item/template_spawn_egg_baby"));
+        existingItem(ItemsNF.MERBOR_TUSKER_SPAWN_EGG.get(), modLoc("item/template_spawn_egg_male"));
+        existingItem(ItemsNF.MERBOR_SOW_SPAWN_EGG.get(), modLoc("item/template_spawn_egg_female"));
+        existingItem(ItemsNF.MERBOR_PIGLET_SPAWN_EGG.get(), modLoc("item/template_spawn_egg_baby"));
 
         for(RegistryObject<? extends Item> item : ItemsNF.ITEMS.getEntries()) {
             ResourceLocation loc = extendWithFolder(ResourceLocation.fromNamespaceAndPath(modid, item.getId().getPath()));
