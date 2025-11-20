@@ -131,7 +131,7 @@ public class MerborBabyEntity extends BabyAnimalEntity implements IOrientedHitBo
 
     @Override
     protected void playStepSound(BlockPos pPos, BlockState pBlock) {
-
+        playSound(SoundsNF.MERBOR_BABY_STEP.get(), 0.05F, 1.0F);
     }
 
     @Override

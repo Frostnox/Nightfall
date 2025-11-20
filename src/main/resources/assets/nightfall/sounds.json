@@ -328,11 +328,11 @@
   },
   "entity.merbor.hurt": {
     "subtitle": "nightfall.entity.merbor.hurt",
-    "sounds": ["nightfall:entity/merbor/hurt_0", "nightfall:entity/merbor/hurt_1"]
+    "sounds": ["nightfall:entity/merbor/hurt_0", "nightfall:entity/merbor/hurt_1", "nightfall:entity/merbor/hurt_2"]
   },
   "entity.merbor.step": {
     "subtitle": "subtitles.block.generic.footsteps",
-    "sounds": ["mob/parrot/step1", "mob/parrot/step2", "mob/parrot/step3", "mob/parrot/step4", "mob/parrot/step5"]
+    "sounds": ["nightfall:entity/merbor/step_0", "nightfall:entity/merbor/step_1", "nightfall:entity/merbor/step_2", "nightfall:entity/merbor/step_3", "nightfall:entity/merbor/step_4"]
   },
   "entity.merbor.attack": {
     "subtitle": "nightfall.entity.merbor.attack",
@@ -340,7 +340,7 @@
   },
   "entity.merbor.eat": {
     "subtitle": "nightfall.entity.merbor.eat",
-    "sounds": ["nightfall:entity/merbor/eat_0", "nightfall:entity/merbor/eat_1", "nightfall:entity/merbor/eat_2"]
+    "sounds": ["nightfall:entity/merbor/eat_0", "nightfall:entity/merbor/eat_1"]
   },
   "entity.merbor_baby.ambient": {
     "subtitle": "nightfall.entity.merbor_baby.ambient",
@@ -348,15 +348,15 @@
   },
   "entity.merbor_baby.death": {
     "subtitle": "nightfall.entity.merbor_baby.death",
-    "sounds": ["nightfall:entity/merbor_baby/hurt_0", "nightfall:entity/merbor_baby/hurt_1"]
+    "sounds": ["nightfall:entity/merbor_baby/hurt_0", "nightfall:entity/merbor_baby/hurt_1", "nightfall:entity/merbor_baby/hurt_2"]
   },
   "entity.merbor_baby.hurt": {
     "subtitle": "nightfall.entity.merbor_baby.hurt",
-    "sounds": ["nightfall:entity/merbor_baby/hurt_0", "nightfall:entity/merbor_baby/hurt_1"]
+    "sounds": ["nightfall:entity/merbor_baby/hurt_0", "nightfall:entity/merbor_baby/hurt_1", "nightfall:entity/merbor_baby/hurt_2"]
   },
   "entity.merbor_baby.step": {
     "subtitle": "nightfall.entity.merbor_baby.step",
-    "sounds": ["nightfall:entity/merbor_baby/step_0", "nightfall:entity/merbor_baby/step_1"]
+    "sounds": ["nightfall:entity/merbor_baby/step_0", "nightfall:entity/merbor_baby/step_1", "nightfall:entity/merbor_baby/step_2", "nightfall:entity/merbor_baby/step_3", "nightfall:entity/merbor_baby/step_4"]
   },
   "entity.dreg.ambient": {
     "subtitle": "nightfall.entity.dreg.ambient",

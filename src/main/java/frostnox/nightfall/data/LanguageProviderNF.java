@@ -388,6 +388,14 @@ public class LanguageProviderNF extends LanguageProvider {
         addSound(SoundsNF.DRAKEFOWL_BABY_AMBIENT, "Drakefowl Chick chirps");
         addSound(SoundsNF.DRAKEFOWL_BABY_DEATH, "Drakefowl Chick dies");
         addSound(SoundsNF.DRAKEFOWL_BABY_HURT, "Drakefowl Chick cries");
+        addSound(SoundsNF.MERBOR_AMBIENT, "Merbor grunts");
+        addSound(SoundsNF.MERBOR_DEATH, "Merbor dies");
+        addSound(SoundsNF.MERBOR_HURT, "Merbor squeals");
+        addSound(SoundsNF.MERBOR_ATTACK, "Merbor roars");
+        addSound(SoundsNF.MERBOR_EAT, "Merbor eats");
+        addSound(SoundsNF.MERBOR_BABY_AMBIENT, "Merbor Piglet grunts");
+        addSound(SoundsNF.MERBOR_BABY_DEATH, "Merbor Piglet dies");
+        addSound(SoundsNF.MERBOR_BABY_HURT, "Merbor Piglet squeals");
         addSound(SoundsNF.DREG_AMBIENT, "Dreg breathes");
         addSound(SoundsNF.DREG_DEATH, "Dreg collapses");
         addSound(SoundsNF.DREG_HURT, "Dreg wheezes");

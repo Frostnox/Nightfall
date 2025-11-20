@@ -6,12 +6,15 @@ import frostnox.nightfall.entity.Sex;
 import frostnox.nightfall.entity.entity.Diet;
 import frostnox.nightfall.registry.forge.AttributesNF;
 import frostnox.nightfall.registry.forge.DataSerializersNF;
+import frostnox.nightfall.registry.forge.SoundsNF;
 import frostnox.nightfall.world.ContinentalWorldType;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -21,6 +24,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nullable;
 
@@ -98,6 +102,33 @@ public class MerborEntity extends TamableAnimalEntity {
             super(0F);
             this.type = type;
         }
+    }
+
+    @Override
+    public float getVoicePitch() {
+        if(sex == Sex.MALE) return super.getVoicePitch() * 0.96F;
+        else return super.getVoicePitch() * 1.04F;
+    }
+
+    @Override
+    protected SoundEvent getAmbientSound() {
+        if(getActionTracker().getActionID().equals(getCollapseAction())) return null;
+        else return SoundsNF.MERBOR_AMBIENT.get();
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource pDamageSource) {
+        return SoundsNF.MERBOR_HURT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return SoundsNF.MERBOR_DEATH.get();
+    }
+
+    @Override
+    protected void playStepSound(BlockPos pPos, BlockState pBlock) {
+        playSound(SoundsNF.MERBOR_STEP.get(), 0.15F, 1.0F);
     }
 
     @Override

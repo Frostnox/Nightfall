@@ -156,7 +156,7 @@ public class MerborModel extends AnimatedModel<MerborEntity> implements HeadedMo
     @Override
     public void animateStun(int frame, int duration, int dir, float mag, MerborEntity user, AnimationCalculator mCalc, Vector3f mVec, float partialTicks) {
         super.animateStun(frame, duration, dir, mag, user, mCalc, mVec, partialTicks);
-        AnimationUtil.stunPartToDefaultWithPause(head, head.animationData, frame, duration, partialTicks, -20F * mag, 1);
+        AnimationUtil.stunPartToDefaultWithPause(head, head.animationData, frame, duration, partialTicks, -12F * mag, 1);
     }
 
     @Override
