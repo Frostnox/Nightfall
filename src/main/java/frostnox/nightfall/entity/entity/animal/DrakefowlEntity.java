@@ -428,10 +428,10 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
     }
 
     @Override
-    public OBB[] getDefaultOBBs() {
-        return new OBB[] {
-                new OBB(2.5F/16F, 5.5F/16F, 2.5F/16F, 0, 1.5F/16F, 0),
-                new OBB(3.5F/16F, 3.5F/16F, 3.5F/16F, 0, 0.5F/16F, 0.5F/16F)
+    public OBB[][] getDefaultOBBs() {
+        return new OBB[][] {
+                new OBB[] { new OBB(2.5F/16F, 5.5F/16F, 2.5F/16F, 0, 1.5F/16F, 0)},
+                        new OBB[] { new OBB(3.5F/16F, 3.5F/16F, 3.5F/16F, 0, 0.5F/16F, 0.5F/16F)}
         };
     }
 

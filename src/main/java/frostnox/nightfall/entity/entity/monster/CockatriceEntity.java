@@ -3,7 +3,6 @@ package frostnox.nightfall.entity.entity.monster;
 import com.mojang.math.Vector3d;
 import com.mojang.math.Vector3f;
 import frostnox.nightfall.action.Poise;
-import frostnox.nightfall.block.IFoodBlock;
 import frostnox.nightfall.capability.ChunkData;
 import frostnox.nightfall.data.TagsNF;
 import frostnox.nightfall.entity.EntityPart;
@@ -36,7 +35,6 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -301,10 +299,11 @@ public class CockatriceEntity extends HungryMonsterEntity implements IOrientedHi
     }
 
     @Override
-    public OBB[] getDefaultOBBs() {
-        return new OBB[] {
-                new OBB(3.5F/16F, 10.5F/16F, 3.5F/16F, 0, 4F/16F, -0.5F/16F),
-                new OBB(4.5F/16F, 4.5F/16F, 6.5F/16F, 0, 2F/16F, 0.5F/16F)
+    public OBB[][] getDefaultOBBs() {
+        return new OBB[][] {
+                new OBB[] { new OBB(3.5F/16F, 10.5F/16F, 3.5F/16F, 0, 4F/16F, -0.5F/16F)},
+                new OBB[] { new OBB(4.5F/16F, 4.5F/16F, 6.5F/16F, 0, 2F/16F, 0.5F/16F),
+                        new OBB(2.5F/16F, 3.5F/16F, 3.5F/16F, 0, 1.5F/16F, 4.5F/16F + 0.5F/16F)}
         };
     }
 

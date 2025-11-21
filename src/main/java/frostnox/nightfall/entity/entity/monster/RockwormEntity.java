@@ -27,7 +27,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
@@ -259,10 +258,12 @@ public class RockwormEntity extends MonsterEntity implements IOrientedHitBoxes {
     }
 
     @Override
-    public OBB[] getDefaultOBBs() {
-        return new OBB[]{new OBB(6.5F/16F, 13.5F/16F, 6.5F/16F, 0, 6.5F/16F, 0),
-                new OBB(6.45F/16F, 12.45F/16F, 6.45F/16F, 0, 5.5F/16F, 0),
-                new OBB(6.4F/16F, 9.4F/16F, 6.4F/16F, 0, 1.5F/16F, 0)};
+    public OBB[][] getDefaultOBBs() {
+        return new OBB[][] {
+                new OBB[] { new OBB(6.5F/16F, 13.5F/16F, 6.5F/16F, 0, 6.5F/16F, 0)},
+                new OBB[] { new OBB(6.45F/16F, 12.45F/16F, 6.45F/16F, 0, 5.5F/16F, 0)},
+                new OBB[] { new OBB(6.4F/16F, 9.4F/16F, 6.4F/16F, 0, 1.5F/16F, 0)}
+        };
     }
 
     @Override

@@ -64,6 +64,7 @@ public class HurtSphere {
     public static final HurtSphere PIT_DEVIL_BITE = new HurtSphere(0.3D, 1, 0, 0, 0);
     public static final HurtSphere ECTOPLASM_CLUB = new HurtSphere(5D/16D, 1, 0, 0, 0);
     public static final HurtSphere DRAKEFOWL_CLAW = new HurtSphere(0.3D, 1, 0, 0, 0);
+    public static final HurtSphere MERBOR_TUSK = new HurtSphere(0.44D, 1, 0, 0, 0);
 
     public static final ImmutableMap<HurtSphere, HurtSphere> WEAPONS_TP;
     protected static void addTP(ImmutableMap.Builder<HurtSphere, HurtSphere> builder, HurtSphere hurtSphere) {

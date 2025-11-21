@@ -1,12 +1,18 @@
 package frostnox.nightfall.entity.entity.animal;
 
 import com.mojang.math.Vector3d;
+import com.mojang.math.Vector3f;
 import frostnox.nightfall.data.TagsNF;
+import frostnox.nightfall.entity.EntityPart;
+import frostnox.nightfall.entity.IOrientedHitBoxes;
 import frostnox.nightfall.entity.Sex;
 import frostnox.nightfall.entity.entity.Diet;
+import frostnox.nightfall.registry.ActionsNF;
 import frostnox.nightfall.registry.forge.AttributesNF;
 import frostnox.nightfall.registry.forge.DataSerializersNF;
 import frostnox.nightfall.registry.forge.SoundsNF;
+import frostnox.nightfall.util.animation.AnimationData;
+import frostnox.nightfall.util.math.OBB;
 import frostnox.nightfall.world.ContinentalWorldType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -25,13 +31,16 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 
 import javax.annotation.Nullable;
+import java.util.EnumMap;
 
-public class MerborEntity extends TamableAnimalEntity {
+public class MerborEntity extends TamableAnimalEntity implements IOrientedHitBoxes {
     public enum Type {
         BOG, BRINE, RIVER
     }
+    private static final EntityPart[] OBB_PARTS = new EntityPart[]{EntityPart.BODY, EntityPart.NECK, EntityPart.HEAD};
     protected static final EntityDataAccessor<Type> TYPE = SynchedEntityData.defineId(MerborEntity.class, DataSerializersNF.MERBOR_TYPE);
     public @Nullable Type fatherType;
 
@@ -58,6 +67,14 @@ public class MerborEntity extends TamableAnimalEntity {
                 .add(AttributesNF.HEARING_RANGE.get(), 15)
                 .add(AttributesNF.FIRE_DEFENSE.get(), 0.5)
                 .add(AttributesNF.ELECTRIC_DEFENSE.get(), -0.5);
+    }
+
+    public static EnumMap<EntityPart, AnimationData> getHeadAnimMap() {
+        EnumMap<EntityPart, AnimationData> map = getGenericAnimMap();
+        map.put(EntityPart.BODY, new AnimationData(new Vector3f(0F/16F, 0F/16F, -7F/16F)));
+        map.put(EntityPart.NECK, new AnimationData(new Vector3f(0F/16F, 0F/16F, 0F/16F)));
+        map.put(EntityPart.HEAD, new AnimationData(new Vector3f(0F/16F, 0F/16F, 0F/16F)));
+        return map;
     }
 
     public Type getMerborType() {
@@ -93,6 +110,16 @@ public class MerborEntity extends TamableAnimalEntity {
         getEntityData().set(TYPE, Type.values()[tag.getInt("type")]);
         if(tag.contains("fatherType")) fatherType = Type.values()[tag.getInt("fatherType")];
         updateGoals();
+    }
+
+    @Override
+    public @Nullable ResourceLocation getCollapseAction() {
+        return ActionsNF.MERBOR_COLLAPSE.getId();
+    }
+
+    @Override
+    public void aiStep() {
+        super.aiStep();
     }
 
     public static class GroupData extends AgeableMob.AgeableMobGroupData {
@@ -142,11 +169,6 @@ public class MerborEntity extends TamableAnimalEntity {
     }
 
     @Override
-    public EquipmentSlot getHitSlot(Vector3d hitPos, int boxIndex) {
-        return EquipmentSlot.CHEST;
-    }
-
-    @Override
     protected int getMaxSatiety() {
         return (int) ContinentalWorldType.DAY_LENGTH;
     }
@@ -173,6 +195,56 @@ public class MerborEntity extends TamableAnimalEntity {
 
     @Override
     public ResourceLocation getBreedAction() {
-        return null;
+        return ActionsNF.MERBOR_BREED.getId();
+    }
+
+    @Override
+    public boolean includeAABB() {
+        return true;
+    }
+
+    @Override
+    public float getModelScale() {
+        return sex == Sex.MALE ? 17F/16F : 1F;
+    }
+
+    @Override
+    public Vector3f getOBBTranslation() {
+        return new Vector3f(0, 10.5F/16F, 0);
+    }
+
+    @Override
+    public EnumMap<EntityPart, AnimationData> getDefaultAnimMap() {
+        EnumMap<EntityPart, AnimationData> map = getGenericAnimMap();
+        map.put(EntityPart.BODY, new AnimationData(new Vector3f(0F/16F, 0F/16F, -7F/16F), new Vector3f(0, 0, 0), new Vector3f(0, 13.5F, 0)));
+        map.put(EntityPart.NECK, new AnimationData(new Vector3f(0F/16F, 0F/16F, 0F/16F), new Vector3f(0, 0, 0), new Vector3f(0, 0F, -7F)));
+        map.put(EntityPart.HEAD, new AnimationData(new Vector3f(0F/16F, 0F/16F, 0F/16F), new Vector3f(0, 0, 0), new Vector3f(0, 0, 0)));
+        return map;
+    }
+
+    @Override
+    public EntityPart[] getOrderedOBBParts() {
+        return OBB_PARTS;
+    }
+
+    @Override
+    public OBB[][] getDefaultOBBs() {
+        return new OBB[][] {
+                new OBB[] {
+                        new OBB(8.5F/16F, 7.5F/16F, 5F/16F, 0, 0F/16F, 2.5F/16F),
+                        new OBB(4.5F/16F, 5.5F/16F, 5.5F/16F, 0, -1F/16F, 5/16F + 2.5F/16F)
+                }
+        };
+    }
+
+    @Override
+    public AABB getEnclosingAABB() {
+        AABB bb = getBoundingBox();
+        return new AABB(bb.minX - 0.7, bb.minY - 0.2, bb.minZ - 0.7, bb.maxX + 0.7, bb.maxY + 0.6, bb.maxZ + 0.7);
+    }
+
+    @Override
+    public EquipmentSlot getHitSlot(Vector3d hitPos, int boxIndex) {
+        return boxIndex >= 0 ? EquipmentSlot.HEAD : EquipmentSlot.CHEST;
     }
 }

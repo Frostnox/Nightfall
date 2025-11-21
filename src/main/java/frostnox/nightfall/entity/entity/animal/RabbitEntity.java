@@ -2,7 +2,6 @@ package frostnox.nightfall.entity.entity.animal;
 
 import com.mojang.math.Vector3d;
 import com.mojang.math.Vector3f;
-import frostnox.nightfall.block.IFoodBlock;
 import frostnox.nightfall.block.block.nest.NestBlockEntity;
 import frostnox.nightfall.capability.ChunkData;
 import frostnox.nightfall.capability.IChunkData;
@@ -34,7 +33,6 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -110,7 +108,7 @@ public class RabbitEntity extends AnimalEntity implements IOrientedHitBoxes, IHo
 
     @Override
     public EquipmentSlot getHitSlot(Vector3d hitPos, int boxIndex) {
-        return boxIndex == 0 ? EquipmentSlot.HEAD : EquipmentSlot.CHEST;
+        return boxIndex >= 0 ? EquipmentSlot.HEAD : EquipmentSlot.CHEST;
     }
 
     @Override
@@ -256,9 +254,10 @@ public class RabbitEntity extends AnimalEntity implements IOrientedHitBoxes, IHo
     }
 
     @Override
-    public OBB[] getDefaultOBBs() {
-        return new OBB[] {
-                new OBB(3.25F/16F, 3.25F/16F, 4.25F/16F, 0, 0.5F/16F, 1.5F/16F)
+    public OBB[][] getDefaultOBBs() {
+        return new OBB[][] {
+                new OBB[] { new OBB(3.25F/16F, 3.25F/16F, 3.25F/16F, 0, 0.5F/16F, 1F/16F),
+                        new OBB(3.25F/16F, 2.25F/16F, 1.25F/16F, 0, 0F/16F, 3F/16F)}
         };
     }
 

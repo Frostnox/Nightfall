@@ -32,7 +32,7 @@ public interface IOrientedHitBoxes {
 
     EntityPart[] getOrderedOBBParts();
 
-    OBB[] getDefaultOBBs();
+    OBB[][] getDefaultOBBs();
 
     AABB getEnclosingAABB();
 
@@ -53,20 +53,22 @@ public interface IOrientedHitBoxes {
                         action.getPitch(entity, partial), entity, transforms, mCalc);
             }
             EntityPart[] parts = getOrderedOBBParts();
-            OBB[] boxes = getDefaultOBBs();
+            OBB[][] group = getDefaultOBBs();
             if(scale != 1F) {
-                for(OBB box : boxes) {
-                    box.center.mul(scale);
-                    box.extents = box.extents.multiply(scale, scale, scale);
+                for(OBB[] boxes : group) {
+                    for(OBB box : boxes) {
+                        box.center.mul(scale);
+                        box.extents = box.extents.multiply(scale, scale, scale);
+                    }
                 }
             }
             float netHeadYaw = entity.getViewYRot(partial) - Mth.lerp(partial, entity.yBodyRotO, entity.yBodyRot);
             Quaternion bodyYaw = Vector3f.YP.rotationDegrees(-Mth.lerp(partial, entity.yBodyRotO, entity.yBodyRot) - mCalc.getTransformations().y());
-            int partOffset = parts.length - boxes.length;
-            for(int i = 0; i < boxes.length; i++) {
-                OBB box = boxes[i];
+            int partOffset = parts.length - group.length;
+            for(int i = 0; i < group.length; i++) {
+                OBB[] boxes = group[i];
                 EntityPart part = parts[i + partOffset];
-                box.rotation.mul(bodyYaw);
+                for(OBB box : boxes) box.rotation.mul(bodyYaw);
                 for(int j = i + partOffset; j >= 0; j--) {
                     AnimationData data = transforms.get(parts[j]);
                     Vector3f t = new Vector3f();
@@ -95,7 +97,7 @@ public interface IOrientedHitBoxes {
                     }
                     t.add(translations);
                     t.transform(bodyYaw);
-                    box.translation = box.translation.add(t.x(), t.y(), t.z());
+                    for(OBB box : boxes) box.translation = box.translation.add(t.x(), t.y(), t.z());
                 }
                 Quaternion r = new Quaternion(0, 0, 0, 1);
                 boolean rotatedHead = false;
@@ -110,13 +112,21 @@ public interface IOrientedHitBoxes {
                     r.mul(Vector3f.YP.rotationDegrees(-rotations.y()));
                     r.mul(Vector3f.XP.rotationDegrees(rotations.x()));
                 }
-                box.rotation.mul(r);
+                for(OBB box : boxes) box.rotation.mul(r);
                 //Can't really know when to apply pitch transform as actions are free to blend between model's default pose and their own animation
                 if(part == EntityPart.HEAD && (capA.isInactive() || capA.isStunned())) {
-                    box.rotation.mul(Vector3f.XP.rotationDegrees(entity.getViewXRot(partial)));
+                    for(OBB box : boxes) box.rotation.mul(Vector3f.XP.rotationDegrees(entity.getViewXRot(partial)));
                 }
             }
-            return boxes;
+            int size = 0;
+            for(OBB[] boxes : group) size += boxes.length;
+            OBB[] result = new OBB[size];
+            int i = 0;
+            for(OBB[] boxes : group) {
+                System.arraycopy(boxes, 0, result, i, boxes.length);
+                i += boxes.length;
+            }
+            return result;
         }
     }
 }

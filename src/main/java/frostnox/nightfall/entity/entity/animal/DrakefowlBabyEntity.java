@@ -168,9 +168,9 @@ public class DrakefowlBabyEntity extends BabyAnimalEntity implements IOrientedHi
     }
 
     @Override
-    public OBB[] getDefaultOBBs() {
-        return new OBB[] {
-                new OBB(2.25F/16F, 2.25F/16F, 2.25F/16F, 0, 0.5F/16F, 0.5F/16F)
+    public OBB[][] getDefaultOBBs() {
+        return new OBB[][] {
+                new OBB[] { new OBB(2.25F/16F, 2.25F/16F, 2.25F/16F, 0, 0.5F/16F, 0.5F/16F)}
         };
     }
 

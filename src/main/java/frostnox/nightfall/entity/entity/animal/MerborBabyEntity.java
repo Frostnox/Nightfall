@@ -141,15 +141,15 @@ public class MerborBabyEntity extends BabyAnimalEntity implements IOrientedHitBo
 
     @Override
     public Vector3f getOBBTranslation() {
-        return new Vector3f(0, 3.5F/16F, 0);
+        return new Vector3f(0, 4F/16F, 0);
     }
 
     @Override
     public EnumMap<EntityPart, AnimationData> getDefaultAnimMap() {
         EnumMap<EntityPart, AnimationData> map = getGenericAnimMap();
-        map.put(EntityPart.BODY, new AnimationData(new Vector3f(0F/16F, -1F/16F, -1.5F/16F)));
-        map.put(EntityPart.NECK, new AnimationData(new Vector3f(0F/16F, 0F/16F, 0F/16F)));
-        map.put(EntityPart.HEAD, new AnimationData(new Vector3f(0F/16F, 0F/16F, 0F/16F)));
+        map.put(EntityPart.BODY, new AnimationData(new Vector3f(0F/16F, -1.5F/16F, -3F/16F), new Vector3f(0, 0, 0), new Vector3f(0, 0F, 0)));
+        map.put(EntityPart.NECK, new AnimationData(new Vector3f(0F/16F, 0F/16F, 0F/16F), new Vector3f(0, 0, 0), new Vector3f(0, 0F, 0F)));
+        map.put(EntityPart.HEAD, new AnimationData(new Vector3f(0F/16F, 0F/16F, 0F/16F), new Vector3f(0, 0, 0), new Vector3f(0, 0, 0)));
         return map;
     }
 
@@ -159,9 +159,12 @@ public class MerborBabyEntity extends BabyAnimalEntity implements IOrientedHitBo
     }
 
     @Override
-    public OBB[] getDefaultOBBs() {
-        return new OBB[] {
-                new OBB(2.25F/16F, 2.25F/16F, 2.25F/16F, 0, 0.5F/16F, 0.5F/16F)
+    public OBB[][] getDefaultOBBs() {
+        return new OBB[][] {
+                new OBB[] {
+                        new OBB(3.25F/16F, 3.25F/16F, 3.25F/16F, 0, 0F/16F, 1F/16F),
+                        new OBB(2.25F/16F, 2.25F/16F, 1.25F/16F, 0, -0.5F/16F, 2/16F + 1F/16F)
+                }
         };
     }
 

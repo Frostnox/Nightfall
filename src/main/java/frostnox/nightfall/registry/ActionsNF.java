@@ -19,6 +19,9 @@ import frostnox.nightfall.action.npc.ectoplasm.EctoplasmExplode;
 import frostnox.nightfall.action.npc.husk.HuskLeftSwipe;
 import frostnox.nightfall.action.npc.husk.HuskOverhead;
 import frostnox.nightfall.action.npc.husk.HuskRightSwipe;
+import frostnox.nightfall.action.npc.merbor.MerborBreed;
+import frostnox.nightfall.action.npc.merbor.MerborCollapse;
+import frostnox.nightfall.action.npc.merbor.MerborGore;
 import frostnox.nightfall.action.npc.pit_devil.PitDevilBite;
 import frostnox.nightfall.action.npc.pit_devil.PitDevilGrowl;
 import frostnox.nightfall.action.npc.rockworm.RockwormBite;
@@ -413,6 +416,13 @@ public class ActionsNF {
                     new int[] {8, 4, 4}, new Action.Properties().setImpact(Impact.LOW).setSpecial()));
     public static final RegistryObject<DrakefowlSpit> DRAKEFOWL_SPIT = ACTIONS.register("drakefowl_spit", () ->
             new DrakefowlSpit(new Action.Properties().setSound(SoundsNF.DRAKEFOWL_SPIT), 12, 5, 8));
+
+    public static final RegistryObject<MerborBreed> MERBOR_BREED = ACTIONS.register("merbor_breed", () -> new MerborBreed(new Action.Properties(), 16, 20));
+    public static final RegistryObject<MerborCollapse> MERBOR_COLLAPSE = ACTIONS.register("merbor_collapse", () ->
+            new MerborCollapse(new Action.Properties().setChargeState(1), 12, 1, 14));
+    public static final RegistryObject<MerborGore> MERBOR_GORE = ACTIONS.register("merbor_gore", () ->
+            new MerborGore(28F, DamageType.PIERCING.asArray(), HurtSphere.MERBOR_TUSK, 2, CombatUtil.STUN_LONG,
+                    new int[] {9, 5, 8}, new Action.Properties().setImpact(Impact.HIGH).setKnockback(0.75F).setSound(SoundsNF.MERBOR_ATTACK), bleeding(1F)));
 
     public static final RegistryObject<HuskRightSwipe> HUSK_RIGHT_SWIPE_1 = ACTIONS.register("husk_right_swipe_1", () ->
             new HuskRightSwipe(10, DamageType.STRIKING.asArray(), HurtSphere.HUSK_ARM, 2, CombatUtil.STUN_SHORT, new int[] {7, 1, 6, 2, 7},

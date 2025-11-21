@@ -5,7 +5,6 @@ import com.mojang.math.Vector3f;
 import frostnox.nightfall.action.DamageTypeSource;
 import frostnox.nightfall.action.Impact;
 import frostnox.nightfall.action.Poise;
-import frostnox.nightfall.block.IFoodBlock;
 import frostnox.nightfall.capability.ActionTracker;
 import frostnox.nightfall.data.TagsNF;
 import frostnox.nightfall.entity.EntityPart;
@@ -34,7 +33,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -217,7 +215,7 @@ public class PitDevilEntity extends HungryMonsterEntity implements IOrientedHitB
 
     @Override
     public EquipmentSlot getHitSlot(Vector3d hitPos, int boxIndex) {
-        if(boxIndex == 0) return hitPos.y > 13F/16F ? EquipmentSlot.LEGS : EquipmentSlot.HEAD;
+        if(boxIndex >= 0) return hitPos.y > 13F/16F ? EquipmentSlot.LEGS : EquipmentSlot.HEAD;
         else return hitPos.y > 8F/16F ? EquipmentSlot.CHEST : EquipmentSlot.LEGS;
     }
 
@@ -259,9 +257,10 @@ public class PitDevilEntity extends HungryMonsterEntity implements IOrientedHitB
     }
 
     @Override
-    public OBB[] getDefaultOBBs() {
-        return new OBB[] {
-                new OBB(6.5F/16F, 5.5F/16F, 6.5F/16F, 0, 0.5F/16F, 3F/16F)
+    public OBB[][] getDefaultOBBs() {
+        return new OBB[][] {
+                new OBB[] { new OBB(6.5F/16F, 5.5F/16F, 5.5F/16F, 0, 0.5F/16F, 2F/16F),
+                        new OBB(4.5F/16F, 3.5F/16F, 2.5F/16F, 0, -0.5F/16F, 5.5F/16F)}
         };
     }
 
