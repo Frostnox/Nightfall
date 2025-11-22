@@ -2,6 +2,7 @@ package frostnox.nightfall.entity.entity.animal;
 
 import com.mojang.math.Vector3d;
 import com.mojang.math.Vector3f;
+import frostnox.nightfall.capability.ActionTracker;
 import frostnox.nightfall.data.TagsNF;
 import frostnox.nightfall.entity.EntityPart;
 import frostnox.nightfall.entity.IOrientedHitBoxes;
@@ -79,6 +80,11 @@ public class MerborEntity extends TamableAnimalEntity implements IOrientedHitBox
 
     public Type getMerborType() {
         return getEntityData().get(TYPE);
+    }
+
+    @Override
+    public int getMaxAirSupply() {
+        return 20 * 60;
     }
 
     @Override
@@ -165,7 +171,7 @@ public class MerborEntity extends TamableAnimalEntity implements IOrientedHitBox
 
     @Override
     public SoundEvent getEatSound() {
-        return null;
+        return SoundsNF.MERBOR_EAT.get();
     }
 
     @Override

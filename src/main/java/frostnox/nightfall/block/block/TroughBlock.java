@@ -129,7 +129,7 @@ public class TroughBlock extends WaterloggedBlock implements IFoodBlock, ICustom
         else return switch(diet) {
             case HERBIVORE -> state.getValue(FOOD_TYPE) == FoodType.HAY;
             case CARNIVORE -> state.getValue(FOOD_TYPE) == FoodType.MEAT;
-            case OMNIVORE -> true;
+            case OMNIVORE, OMNIVORE_SEEDS -> true;
         };
     }
 

@@ -38,6 +38,7 @@ public interface IHungerEntity extends IActionableEntity {
             case HERBIVORE -> itemEntity.getItem().is(TagsNF.HERBIVORE_FOOD);
             case CARNIVORE -> itemEntity.getItem().is(TagsNF.CARNIVORE_FOOD);
             case OMNIVORE -> itemEntity.getItem().is(TagsNF.OMNIVORE_FOOD);
+            case OMNIVORE_SEEDS -> itemEntity.getItem().is(TagsNF.OMNIVORE_SEEDS_FOOD);
         };
         else return false;
     }

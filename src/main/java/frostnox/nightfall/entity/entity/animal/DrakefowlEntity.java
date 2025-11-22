@@ -374,7 +374,7 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
 
     @Override
     public Diet getDiet() {
-        return Diet.OMNIVORE;
+        return Diet.OMNIVORE_SEEDS;
     }
 
     @Override

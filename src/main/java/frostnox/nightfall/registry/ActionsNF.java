@@ -417,7 +417,7 @@ public class ActionsNF {
     public static final RegistryObject<DrakefowlSpit> DRAKEFOWL_SPIT = ACTIONS.register("drakefowl_spit", () ->
             new DrakefowlSpit(new Action.Properties().setSound(SoundsNF.DRAKEFOWL_SPIT), 12, 5, 8));
 
-    public static final RegistryObject<MerborBreed> MERBOR_BREED = ACTIONS.register("merbor_breed", () -> new MerborBreed(new Action.Properties(), 16, 20));
+    public static final RegistryObject<MerborBreed> MERBOR_BREED = ACTIONS.register("merbor_breed", () -> new MerborBreed(new Action.Properties(), 12, 8));
     public static final RegistryObject<MerborCollapse> MERBOR_COLLAPSE = ACTIONS.register("merbor_collapse", () ->
             new MerborCollapse(new Action.Properties().setChargeState(1), 12, 1, 14));
     public static final RegistryObject<MerborGore> MERBOR_GORE = ACTIONS.register("merbor_gore", () ->

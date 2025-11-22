@@ -279,7 +279,7 @@ public class RabbitEntity extends AnimalEntity implements IOrientedHitBoxes, IHo
 
     @Override
     public Diet getDiet() {
-        return Diet.CARNIVORE;
+        return Diet.HERBIVORE;
     }
 
     @Override

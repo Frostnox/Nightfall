@@ -266,6 +266,7 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
         tag(TagsNF.CARNIVORE_FOOD).add(ItemsNF.CURED_JELLYFISH.get(), ItemsNF.BOILED_EGG.get(), ItemsNF.SOUFFLE.get());
         tag(TagsNF.OMNIVORE_FOOD).addTags(TagsNF.HERBIVORE_FOOD, TagsNF.CARNIVORE_FOOD);
         tag(TagsNF.OMNIVORE_FOOD).add(ItemsNF.FRUIT_SOUFFLE.get(), ItemsNF.SAVORY_SOUFFLE.get());
+        tag(TagsNF.OMNIVORE_SEEDS_FOOD).addTags(TagsNF.OMNIVORE_FOOD, Tags.Items.SEEDS);
 
         copy(TagsNF.HEAT_RESISTANT_1, TagsNF.HEAT_RESISTANT_ITEM_1);
         copy(TagsNF.HEAT_RESISTANT_2, TagsNF.HEAT_RESISTANT_ITEM_2);

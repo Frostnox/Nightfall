@@ -127,10 +127,28 @@ public class AnimationData {
         sCalc.setStaticVector(dScale);
     }
 
+    public void toDefault(Easing easing) {
+        rCalc.extend(dRotation, easing);
+        tCalc.extend(dTranslation, easing);
+        sCalc.extend(dScale, easing);
+    }
+
     public void toDefault() {
         toDefaultRotation();
         toDefaultTranslation();
         toDefaultScale();
+    }
+
+    public void toDefaultRotation(Easing easing) {
+        rCalc.extend(dRotation, easing);
+    }
+
+    public void toDefaultTranslation(Easing easing) {
+        tCalc.extend(dTranslation, easing);
+    }
+
+    public void toDefaultScale(Easing easing) {
+        sCalc.extend(dScale, easing);
     }
 
     public void toDefaultRotation() {

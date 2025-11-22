@@ -288,6 +288,7 @@ public class TagsNF {
     public static final TagKey<Item> HERBIVORE_FOOD = itemTag("herbivore_food");
     public static final TagKey<Item> CARNIVORE_FOOD = itemTag("carnivore_food");
     public static final TagKey<Item> OMNIVORE_FOOD = itemTag("omnivore_food");
+    public static final TagKey<Item> OMNIVORE_SEEDS_FOOD = itemTag("omnivore_seeds_food");
     //Block tag copies
     public static final TagKey<Item> HEAT_RESISTANT_ITEM_1 = itemTag(HEAT_RESISTANT_1);
     public static final TagKey<Item> HEAT_RESISTANT_ITEM_2 = itemTag(HEAT_RESISTANT_2);
