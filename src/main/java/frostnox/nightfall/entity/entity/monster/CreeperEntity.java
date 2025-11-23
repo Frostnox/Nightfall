@@ -140,6 +140,11 @@ public class CreeperEntity extends MonsterEntity {
     }
 
     @Override
+    public boolean shouldFleeFrom(LivingEntity target) {
+        return false;
+    }
+
+    @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         entityData.define(SWELLING, false);

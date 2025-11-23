@@ -34,12 +34,12 @@ public abstract class AnimatedMobRenderer<T extends ActionableEntity, M extends 
         this.model.young = entity.isBaby();
         float f = Mth.rotLerp(partialTick, entity.yBodyRotO, entity.yBodyRot);
         float f1 = Mth.rotLerp(partialTick, entity.yHeadRotO, entity.yHeadRot);
-        float f2 = f1 - f;
+        float netHeadYaw = f1 - f;
         if (shouldSit && entity.getVehicle() instanceof LivingEntity) {
             LivingEntity livingentity = (LivingEntity)entity.getVehicle();
             f = Mth.rotLerp(partialTick, livingentity.yBodyRotO, livingentity.yBodyRot);
-            f2 = f1 - f;
-            float f3 = Mth.wrapDegrees(f2);
+            netHeadYaw = f1 - f;
+            float f3 = Mth.wrapDegrees(netHeadYaw);
             if (f3 < -85.0F) {
                 f3 = -85.0F;
             }
@@ -53,10 +53,11 @@ public abstract class AnimatedMobRenderer<T extends ActionableEntity, M extends 
                 f += f3 * 0.2F;
             }
 
-            f2 = f1 - f;
+            netHeadYaw = f1 - f;
         }
+        netHeadYaw = Mth.wrapDegrees(netHeadYaw);
 
-        float f6 = Mth.lerp(partialTick, entity.xRotO, entity.getXRot());
+        float headPitch = Mth.lerp(partialTick, entity.xRotO, entity.getXRot());
         if (entity.getPose() == Pose.SLEEPING) {
             Direction direction = entity.getBedOrientation();
             if (direction != null) {
@@ -65,28 +66,28 @@ public abstract class AnimatedMobRenderer<T extends ActionableEntity, M extends 
             }
         }
 
-        float f7 = this.getBob(entity, partialTick);
-        this.setupRotations(entity, matrix, f7, f, partialTick);
+        float time = this.getBob(entity, partialTick);
+        this.setupRotations(entity, matrix, time, f, partialTick);
         matrix.scale(-1.0F, -1.0F, 1.0F);
         this.scale(entity, matrix, partialTick);
         matrix.translate(0.0D, (double)-1.501F, 0.0D);
-        float f8 = 0.0F;
-        float f5 = 0.0F;
+        float limbSwingAmount = 0.0F;
+        float limbSwing = 0.0F;
         if (!shouldSit && entity.isAlive()) {
             if(entity.animationSpeed == 1.5F) entity.animationSpeed = entity.animationSpeedOld;
-            f8 = Mth.lerp(partialTick, entity.animationSpeedOld, entity.animationSpeed);
-            f5 = entity.animationPosition - entity.animationSpeed * (1.0F - partialTick);
+            limbSwingAmount = Mth.lerp(partialTick, entity.animationSpeedOld, entity.animationSpeed);
+            limbSwing = entity.animationPosition - entity.animationSpeed * (1.0F - partialTick);
             if (entity.isBaby()) {
-                f5 *= 3.0F;
+                limbSwing *= 3.0F;
             }
 
-            if (f8 > 1.0F) {
-                f8 = 1.0F;
+            if (limbSwingAmount > 1.0F) {
+                limbSwingAmount = 1.0F;
             }
         }
 
-        this.model.prepareMobModel(entity, f5, f8, partialTick);
-        this.model.setupAnim(entity, f5, f8, f7, f2, f6);
+        this.model.prepareMobModel(entity, limbSwing, limbSwingAmount, partialTick);
+        this.model.setupAnim(entity, limbSwing, limbSwingAmount, time, netHeadYaw, headPitch);
         this.model.doCombatAnimations(entity, matrix);
         Minecraft minecraft = Minecraft.getInstance();
         float alpha = getAlpha(entity);
@@ -102,7 +103,7 @@ public abstract class AnimatedMobRenderer<T extends ActionableEntity, M extends 
 
         if(!entity.isSpectator()) {
             for(RenderLayer<T, M> layerrenderer : this.layers) {
-                layerrenderer.render(matrix, buffers, light, entity, f5, f8, partialTick, f7, f2, f6);
+                layerrenderer.render(matrix, buffers, light, entity, limbSwing, limbSwingAmount, partialTick, time, netHeadYaw, headPitch);
             }
         }
 

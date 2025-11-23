@@ -438,7 +438,7 @@ public abstract class ActionableEntity extends PathfinderMob {
     }
 
     public float getAttackYRot(float partial) {
-        return Mth.lerp(partial, yBodyRotO, yBodyRot);
+        return Mth.rotLerp(partial, yBodyRotO, yBodyRot);
     }
 
     public double getReducedAIThresholdSqr() {

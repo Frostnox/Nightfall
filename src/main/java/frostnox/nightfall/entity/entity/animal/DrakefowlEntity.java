@@ -168,7 +168,7 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
     @Override
     protected void onFeed() {
         super.onFeed();
-        gestationTime = (int) ContinentalWorldType.DAY_LENGTH;
+        if(sex == Sex.FEMALE) gestationTime = (int) ContinentalWorldType.DAY_LENGTH;
     }
 
     @Override

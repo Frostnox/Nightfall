@@ -36,7 +36,7 @@ public class MerborGore extends NPCAttack {
 
     @Override
     public double getMaxDistToStart(LivingEntity user) {
-        return 2;
+        return 1.5;
     }
 
     @Override
@@ -50,7 +50,7 @@ public class MerborGore extends NPCAttack {
             IActionTracker capA = ActionTracker.get(user);
             if(!capA.isStunned()) {
                 if(capA.getFrame() == getDuration(0, user) - 2 && capA.getState() == 0) {
-                    CombatUtil.addMovementTowardsTarget(1, 1, mob);
+                    CombatUtil.addMovementTowardsTarget(0.7, 1, mob);
                 }
             }
         }
@@ -108,12 +108,12 @@ public class MerborGore extends NPCAttack {
 
     @Override
     public Vector3f getTranslation(LivingEntity user) {
-        return new Vector3f(0F/16F, 10.5F/16F * 17F/16F, 8F/16F * 17F/16F);
+        return new Vector3f(0F/16F, 10.5F/16F * 17F/16F, 7F/16F * 17F/16F);
     }
 
     @Override
     public Vector3f getOffset(LivingEntity user) {
-        return new Vector3f(0F/16F, -1F/16F * 17F/16F, 5.5F/16F * 17F/16F);
+        return new Vector3f(0F/16F, -1F/16F * 17F/16F, 6F/16F * 17F/16F);
     }
 
     @Override

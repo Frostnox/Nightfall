@@ -164,6 +164,11 @@ public abstract class UndeadEntity extends MonsterEntity {
     }
 
     @Override
+    public boolean shouldFleeFrom(LivingEntity target) {
+        return false;
+    }
+
+    @Override
     public boolean removeWhenFarAway(double pDistanceToClosestPlayer) {
         return false;
     }

@@ -206,7 +206,7 @@ public class EctoplasmEntity extends MonsterEntity {
 
     @Override
     public float getAttackYRot(float partial) {
-        return getViewYRot(partial);
+        return Mth.rotLerp(partial, yHeadRotO, yHeadRot);
     }
 
     @Override

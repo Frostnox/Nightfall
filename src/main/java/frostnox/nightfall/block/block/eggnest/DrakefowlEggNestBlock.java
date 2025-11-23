@@ -1,6 +1,7 @@
 package frostnox.nightfall.block.block.eggnest;
 
 import frostnox.nightfall.entity.entity.animal.DrakefowlBabyEntity;
+import frostnox.nightfall.entity.entity.animal.DrakefowlEntity;
 import frostnox.nightfall.registry.forge.EntitiesNF;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -27,7 +28,7 @@ public class DrakefowlEggNestBlock extends EggNestBlock {
     protected LivingEntity hatchBaby(ServerLevel level, BlockPos pos, int data) {
         DrakefowlBabyEntity chick =  EntitiesNF.DRAKEFOWL_CHICK.get().create(level);
         chick.moveTo(pos, level.random.nextFloat() * 360, 0);
-        chick.finalizeSpawn(level, level.getCurrentDifficultyAt(pos), MobSpawnType.BREEDING, null, null);
+        chick.finalizeSpawn(level, level.getCurrentDifficultyAt(pos), MobSpawnType.BREEDING, new DrakefowlEntity.GroupData(DrakefowlEntity.Type.values()[data]), null);
         level.addFreshEntity(chick);
         return chick;
     }

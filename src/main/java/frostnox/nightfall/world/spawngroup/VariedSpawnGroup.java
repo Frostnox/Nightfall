@@ -23,10 +23,13 @@ public abstract class VariedSpawnGroup extends SpawnGroup {
         this.humidityMax = humidityMax;
     }
 
+    protected boolean checkClimate(float temperature, float humidity) {
+        return temperature >= tempMin && temperature <= tempMax && humidity >= humidityMin && humidity <= humidityMax;
+    }
+
     @Override
     public boolean canSpawnAt(ServerLevel level, BlockPos pos, BlockState block, int skyLight, float temperature, float humidity) {
-        return pos.getY() >= yMin && pos.getY() <= yMax && temperature >= tempMin && temperature <= tempMax && skyLight >= lightMin && skyLight <= lightMax &&
-                humidity >= humidityMin && humidity <= humidityMax;
+        return pos.getY() >= yMin && pos.getY() <= yMax && skyLight >= lightMin && skyLight <= lightMax && checkClimate(temperature, humidity);
     }
 
     @Override

@@ -421,8 +421,8 @@ public class ActionsNF {
     public static final RegistryObject<MerborCollapse> MERBOR_COLLAPSE = ACTIONS.register("merbor_collapse", () ->
             new MerborCollapse(new Action.Properties().setChargeState(1), 12, 1, 14));
     public static final RegistryObject<MerborGore> MERBOR_GORE = ACTIONS.register("merbor_gore", () ->
-            new MerborGore(28F, DamageType.PIERCING.asArray(), HurtSphere.MERBOR_TUSK, 2, CombatUtil.STUN_LONG,
-                    new int[] {9, 5, 8}, new Action.Properties().setImpact(Impact.HIGH).setKnockback(0.75F).setSound(SoundsNF.MERBOR_ATTACK), bleeding(1F)));
+            new MerborGore(30F, DamageType.PIERCING.asArray(), HurtSphere.MERBOR_TUSK, 2, CombatUtil.STUN_LONG,
+                    new int[] {9, 5, 8}, new Action.Properties().setImpact(Impact.HIGH).setKnockback(0.8F).setSound(SoundsNF.MERBOR_ATTACK), bleeding(1F)));
 
     public static final RegistryObject<HuskRightSwipe> HUSK_RIGHT_SWIPE_1 = ACTIONS.register("husk_right_swipe_1", () ->
             new HuskRightSwipe(10, DamageType.STRIKING.asArray(), HurtSphere.HUSK_ARM, 2, CombatUtil.STUN_SHORT, new int[] {7, 1, 6, 2, 7},

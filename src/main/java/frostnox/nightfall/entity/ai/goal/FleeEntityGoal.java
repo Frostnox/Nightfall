@@ -9,6 +9,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
@@ -25,7 +26,8 @@ public class FleeEntityGoal<T extends LivingEntity> extends Goal {
     protected @Nullable ReversePath path;
 
     public FleeEntityGoal(ActionableEntity mob, Class<T> fleeClass, double walkSpeedModifier, double sprintSpeedModifier) {
-        this(mob, fleeClass, walkSpeedModifier, sprintSpeedModifier, EntitySelector.NO_CREATIVE_OR_SPECTATOR::test);
+        this(mob, fleeClass, walkSpeedModifier, sprintSpeedModifier,
+                (entity) -> (!(entity instanceof Player) || !entity.isSpectator() && !((Player)entity).isCreative()) && !entity.isDeadOrDying());
     }
 
     public FleeEntityGoal(ActionableEntity mob, Class<T> fleeClass, double walkSpeedModifier, double sprintSpeedModifier, Predicate<LivingEntity> fleePredicate) {
@@ -33,7 +35,7 @@ public class FleeEntityGoal<T extends LivingEntity> extends Goal {
         this.fleeClass = fleeClass;
         this.walkSpeedModifier = walkSpeedModifier;
         this.sprintSpeedModifier = sprintSpeedModifier;
-        this.fleeConditions = TargetingConditions.forCombat().selector(fleePredicate);
+        this.fleeConditions = TargetingConditions.forCombat().selector(fleePredicate.and((entity) -> !entity.isDeadOrDying()));
         this.fleePredicate = fleePredicate;
         setFlags(EnumSet.of(Goal.Flag.MOVE));
     }

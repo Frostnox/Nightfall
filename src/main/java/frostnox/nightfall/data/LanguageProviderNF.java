@@ -73,6 +73,10 @@ public class LanguageProviderNF extends LanguageProvider {
         add("death.attack." + name, text);
     }
 
+    protected void addAttackPlayer(String name, String text) {
+        add("death.attack." + name + ".player", text);
+    }
+
     protected void addAttackItem(DamageType type, String text) {
         add("death.attack." + type.toString(), text);
         add("death.attack." + type.toString() + ".item", text + " using %3$s");
@@ -502,7 +506,9 @@ public class LanguageProviderNF extends LanguageProvider {
         addAttackItem(DamageType.ELECTRIC, "%1$s was electrocuted by %2$s");
         addAttackItem(DamageType.ABSOLUTE, "%1$s was slain by %2$s");
         addAttack(DamageTypeSource.BLEEDING.getMsgId(), "%1$s bled out");
+        addAttackPlayer(DamageTypeSource.BLEEDING.getMsgId(), "%1$s was bled out by %2$s");
         addAttack(DamageTypeSource.POISON.getMsgId(), "%1$s succumbed to poison");
+        addAttackPlayer(DamageTypeSource.POISON.getMsgId(), "%1$s was poisoned by %2$s");
         addAttack("explosion", "%1$s was blown up");
         addAttack("explosion.entity", "%1$s was blown up by %2$s");
         addAttack("projectile", "%1$s was shot by %2$s");

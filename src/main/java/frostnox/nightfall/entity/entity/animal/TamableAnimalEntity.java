@@ -159,7 +159,7 @@ public abstract class TamableAnimalEntity extends AnimalEntity implements ITamab
     protected void simulateTime(int timePassed) {
         super.simulateTime(timePassed);
         if(isAlive()) {
-
+            //TODO:
         }
     }
 

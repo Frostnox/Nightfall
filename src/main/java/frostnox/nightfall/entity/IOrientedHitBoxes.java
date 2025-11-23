@@ -62,8 +62,8 @@ public interface IOrientedHitBoxes {
                     }
                 }
             }
-            float netHeadYaw = entity.getViewYRot(partial) - Mth.lerp(partial, entity.yBodyRotO, entity.yBodyRot);
-            Quaternion bodyYaw = Vector3f.YP.rotationDegrees(-Mth.lerp(partial, entity.yBodyRotO, entity.yBodyRot) - mCalc.getTransformations().y());
+            float netHeadYaw = Mth.wrapDegrees(Mth.rotLerp(partial, entity.yHeadRotO, entity.yHeadRot) - Mth.rotLerp(partial, entity.yBodyRotO, entity.yBodyRot));
+            Quaternion bodyYaw = Vector3f.YP.rotationDegrees(-Mth.rotLerp(partial, entity.yBodyRotO, entity.yBodyRot) - mCalc.getTransformations().y());
             int partOffset = parts.length - group.length;
             for(int i = 0; i < group.length; i++) {
                 OBB[] boxes = group[i];

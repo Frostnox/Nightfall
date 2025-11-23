@@ -7,6 +7,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.ai.goal.MoveToBlockGoal;
 import net.minecraft.world.level.LevelReader;
 
+import java.util.EnumSet;
+
 public class EatBlockGoal extends MoveToBlockGoal {
     private final IHungerEntity hungerEntity;
 
@@ -17,6 +19,7 @@ public class EatBlockGoal extends MoveToBlockGoal {
     public EatBlockGoal(IHungerEntity hungerEntity, double pSpeedModifier, int pSearchRange, int pVerticalSearchRange) {
         super(hungerEntity.getEntity(), pSpeedModifier, pSearchRange, pVerticalSearchRange);
         this.hungerEntity = hungerEntity;
+        setFlags(EnumSet.of(Flag.MOVE, Flag.JUMP, Flag.LOOK));
     }
 
     @Override
@@ -38,6 +41,7 @@ public class EatBlockGoal extends MoveToBlockGoal {
     @Override
     public void stop() {
         mob.getNavigation().stop();
+        mob.getLookControl().setLookAt(mob.getEyePosition());
     }
 
     @Override

@@ -54,6 +54,7 @@ public class PursueTargetGoal extends Goal {
                 }
                 else return false;
             }
+            else if(mob.shouldFleeFrom(target)) return false;
             else {
                 path = mob.getNavigator().findPath(target, 0);
                 return path != null;
