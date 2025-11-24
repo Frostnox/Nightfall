@@ -79,8 +79,9 @@ public class MerborBabyModel extends AnimatedModel<MerborBabyEntity> implements 
     @Override
     public void setupAnim(MerborBabyEntity entity, float limbSwing, float limbSwingAmount, float time, float netHeadYaw, float headPitch) {
         resetPose();
-        float speed = 3.4F;
-        limbSwingAmount = Math.min(1F, limbSwingAmount * 2);
+        float speed = 2.8F;
+        float runAmount = Math.max(0, (limbSwingAmount - 0.4F) / 0.6F);
+        float walkAmount = Math.min(1F, limbSwingAmount * 2) * (1F - runAmount);
         //Look
         head.xRot += MathUtil.toRadians(headPitch);
         head.yRot += MathUtil.toRadians(netHeadYaw);
@@ -101,12 +102,35 @@ public class MerborBabyModel extends AnimatedModel<MerborBabyEntity> implements 
             }
         }
         //Walk
-        translateY(body, -0.1F, speed / 2, 0, 0, limbSwing, limbSwingAmount, Easing.inOutSine, true);
-        rotateX(tail, -8F, speed / 2, MathUtil.PI/6F, 0, limbSwing, limbSwingAmount, Easing.inOutSine, false);
-        rotateX(frontRightLeg, 60, 1 * speed, 0, 0, limbSwing, limbSwingAmount, Easing.inOutSine, true);
-        rotateX(frontLeftLeg, -60, 1 * speed, 0, 0, limbSwing, limbSwingAmount, Easing.inOutSine, true);
-        rotateX(hindRightLeg, -60, 1 * speed, MathUtil.PI/16F, 0, limbSwing, limbSwingAmount, Easing.inOutSine, true);
-        rotateX(hindLeftLeg, 60, 1 * speed, MathUtil.PI/16F, 0, limbSwing, limbSwingAmount, Easing.inOutSine, true);
+        if(walkAmount > 0) {
+            translateY(body, -0.1F, speed / 2, 0, 0, limbSwing, walkAmount, Easing.inOutSine, true);
+            rotateX(tail, -8F, speed / 2, MathUtil.PI/6F, 0, limbSwing, walkAmount, Easing.inOutSine, false);
+            rotateX(frontRightLeg, 60, 1 * speed, 0, 0, limbSwing, walkAmount, Easing.inOutSine, true);
+            rotateX(frontLeftLeg, -60, 1 * speed, 0, 0, limbSwing, walkAmount, Easing.inOutSine, true);
+            rotateX(hindRightLeg, -60, 1 * speed, MathUtil.PI/16F, 0, limbSwing, walkAmount, Easing.inOutSine, true);
+            rotateX(hindLeftLeg, 60, 1 * speed, MathUtil.PI/16F, 0, limbSwing, walkAmount, Easing.inOutSine, true);
+        }
+        //Run
+        if(runAmount > 0) {
+            rotateX(body, 4, 1 * speed, 0, 0, limbSwing, runAmount, Easing.inOutSine, true);
+            rotateX(head, -3, 1 * speed, 0, 0, limbSwing, runAmount, Easing.inOutSine, true);
+            for(AnimatedModelPart part : new AnimatedModelPart[] {body, frontRightLeg, frontLeftLeg, hindRightLeg, hindLeftLeg}) {
+                translateY(part, -0.7F, 1 * speed, MathUtil.PI, 0, limbSwing, runAmount, Easing.inOutSine, false);
+            }
+            frontRightLeg.xRot += MathUtil.toRadians(-5F) * runAmount;
+            frontLeftLeg.xRot += MathUtil.toRadians(-5F) * runAmount;
+            rotateX(frontRightLeg, 60, 1 * speed, 0, 0, limbSwing, runAmount, Easing.inOutCubic, true);
+            rotateX(frontLeftLeg, 60, 1 * speed, MathUtil.PI/16F, 0, limbSwing, runAmount, Easing.inOutCubic, true);
+            translateY(frontRightLeg, -0.5F, speed, MathUtil.PI/2F, 0F, limbSwing, runAmount, Easing.inOutSine, false);
+            translateY(frontLeftLeg, -0.5F, speed, MathUtil.PI/2F + MathUtil.PI/16F, 0F, limbSwing, runAmount, Easing.inOutSine, false);
+            hindRightLeg.xRot += MathUtil.toRadians(5F) * runAmount;
+            hindLeftLeg.xRot += MathUtil.toRadians(5F) * runAmount;
+            rotateX(hindLeftLeg, -60, 1 * speed, 0, 0, limbSwing, runAmount, Easing.inOutCubic, true);
+            rotateX(hindRightLeg, -60, 1 * speed, MathUtil.PI/16F, 0, limbSwing, runAmount, Easing.inOutCubic, true);
+            translateY(hindLeftLeg, -0.5F, speed, -MathUtil.PI/2F, 0F, limbSwing, runAmount, Easing.inOutSine, false);
+            translateY(hindRightLeg, -0.5F, speed, -MathUtil.PI/2F + MathUtil.PI/16F, 0F, limbSwing, runAmount, Easing.inOutSine, false);
+            rotateX(tail, -12F, speed, MathUtil.PI * 0.4F, 0, limbSwing, runAmount, Easing.inOutSine, true);
+        }
     }
 
     @Override

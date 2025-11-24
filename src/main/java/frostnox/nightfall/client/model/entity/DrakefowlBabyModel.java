@@ -68,10 +68,8 @@ public class DrakefowlBabyModel extends AnimatedModel<DrakefowlBabyEntity> imple
     @Override
     public void setupAnim(DrakefowlBabyEntity entity, float limbSwing, float limbSwingAmount, float time, float netHeadYaw, float headPitch) {
         resetPose();
-        float speed = 4.25F;
+        float speed = 2.8F;
         limbSwingAmount = Math.min(1F, limbSwingAmount * 2);
-//        limbSwing = time/3F;
-//        limbSwingAmount = 0.65F;
         //Look
         neck.xRot += MathUtil.toRadians(headPitch);
         neck.yRot += MathUtil.toRadians(netHeadYaw);
@@ -96,8 +94,8 @@ public class DrakefowlBabyModel extends AnimatedModel<DrakefowlBabyEntity> imple
         translateY(legRight, -0.5F, speed, -MathUtil.PI/8F, -0.5F, limbSwing, limbSwingAmount, Easing.inOutSine, false);
         translateZ(legLeft, 1F, speed, MathUtil.PI, -1F, limbSwing, limbSwingAmount, Easing.inOutSine, false);
         translateZ(legRight, 1F, speed, 0, -1F, limbSwing, limbSwingAmount, Easing.inOutSine, false);
-        rotateX(legLeft, 115, 1 * speed, MathUtil.PI, MathUtil.toRadians(-30), limbSwing, limbSwingAmount, Easing.inOutSine, false);
-        rotateX(legRight, 115, 1 * speed, 0, MathUtil.toRadians(-30), limbSwing, limbSwingAmount, Easing.inOutSine, false);
+        rotateX(legLeft, 100, 1 * speed, MathUtil.PI, MathUtil.toRadians(-30), limbSwing, limbSwingAmount, Easing.inOutSine, false);
+        rotateX(legRight, 100, 1 * speed, 0, MathUtil.toRadians(-30), limbSwing, limbSwingAmount, Easing.inOutSine, false);
     }
 
     @Override

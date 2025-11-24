@@ -75,11 +75,11 @@ public class MerborBabyEntity extends BabyAnimalEntity implements IOrientedHitBo
     protected void registerGoals() {
         goalSelector.addGoal(1, new FloatAtHeightGoal(this, 0.4D));
         goalSelector.addGoal(2, new FollowParentGoal(this, 1.1D));
-        goalSelector.addGoal(3, new FleeEntityGoal<>(this, LivingEntity.class, 1.15D, 1.15D, (entity) -> {
+        goalSelector.addGoal(3, new FleeEntityGoal<>(this, LivingEntity.class, 1.5D, 1.5D, (entity) -> {
             if(entity.isDeadOrDying()) return false;
             else return entity.getType().is(TagsNF.MERBOR_PREDATOR);
         }));
-        goalSelector.addGoal(4, new FleeDamageGoal(this, 1.15D));
+        goalSelector.addGoal(4, new FleeDamageGoal(this, 1.5D));
         goalSelector.addGoal(5, new RandomLookGoal(this, 0.02F));
         targetSelector.addGoal(1, new TrackNearestTargetGoal<>(this, MerborEntity.class, false, (entity) -> {
             if(entity.isDeadOrDying() || !(entity instanceof MerborEntity merbor)) return false;
