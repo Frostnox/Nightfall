@@ -2,6 +2,7 @@ package frostnox.nightfall.entity.entity.animal;
 
 import com.mojang.math.Vector3d;
 import com.mojang.math.Vector3f;
+import frostnox.nightfall.capability.ChunkData;
 import frostnox.nightfall.data.TagsNF;
 import frostnox.nightfall.entity.EntityPart;
 import frostnox.nightfall.entity.IOrientedHitBoxes;
@@ -22,14 +23,17 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
+import javax.annotation.Nullable;
 import java.util.EnumMap;
 
 public class DrakefowlBabyEntity extends BabyAnimalEntity implements IOrientedHitBoxes {
@@ -61,6 +65,7 @@ public class DrakefowlBabyEntity extends BabyAnimalEntity implements IOrientedHi
         DrakefowlEntity adult = random.nextBoolean() ? EntitiesNF.DRAKEFOWL_ROOSTER.get().create(level) : EntitiesNF.DRAKEFOWL_HEN.get().create(level);
         adult.finalizeSpawn((ServerLevel) level, level.getCurrentDifficultyAt(blockPosition()), MobSpawnType.CONVERSION, new DrakefowlEntity.GroupData(getDrakefowlType()), null);
         adult.getEntityData().set(TamableAnimalEntity.TAMED, true);
+        adult.getEntityData().set(DrakefowlEntity.SPECIAL, isSpecial());
         return adult;
     }
 
@@ -74,14 +79,31 @@ public class DrakefowlBabyEntity extends BabyAnimalEntity implements IOrientedHi
         }));
         goalSelector.addGoal(4, new FleeDamageGoal(this, 1.1D));
         goalSelector.addGoal(5, new RandomLookGoal(this, 0.02F));
-        targetSelector.addGoal(1, new TrackNearestTargetGoal<>(this, DrakefowlEntity.class, true, (entity) -> {
-            if(entity.isDeadOrDying()) return false;
-            else return ((DrakefowlEntity) entity).sex == Sex.FEMALE;
+        targetSelector.addGoal(1, new TrackNearestTargetGoal<>(this, DrakefowlEntity.class, false, (entity) -> {
+            if(entity.isDeadOrDying() || !(entity instanceof DrakefowlEntity drakefowl)) return false;
+            else return drakefowl.sex == Sex.FEMALE;
         }));
-        targetSelector.addGoal(2, new TrackNearestTargetGoal<>(this, DrakefowlEntity.class, true, (entity) -> {
-            if(entity.isDeadOrDying()) return false;
-            else return ((DrakefowlEntity) entity).sex == Sex.MALE;
+        targetSelector.addGoal(2, new TrackNearestTargetGoal<>(this, DrakefowlEntity.class, false, (entity) -> {
+            if(entity.isDeadOrDying() || !(entity instanceof DrakefowlEntity drakefowl)) return false;
+            else return drakefowl.sex == Sex.MALE;
         }));
+    }
+
+    @Override
+    @Nullable
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+        spawnDataIn = super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+        DrakefowlEntity.Type type;
+        if(spawnDataIn instanceof DrakefowlEntity.GroupData data) type = data.type;
+        else {
+            float temperature = ChunkData.get(worldIn.getLevel().getChunkAt(blockPosition())).getTemperature(blockPosition());
+            if(temperature > 0.7F) type = DrakefowlEntity.Type.EMERALD;
+            else type = DrakefowlEntity.Type.BRONZE;
+            spawnDataIn = new DrakefowlEntity.GroupData(type);
+        }
+        getEntityData().set(TYPE, type);
+        if(random.nextInt() % 512 == 0) getEntityData().set(SPECIAL, true);
+        return spawnDataIn;
     }
 
     @Override

@@ -2,7 +2,9 @@ package frostnox.nightfall.entity.entity.projectile;
 
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
@@ -53,6 +55,15 @@ public abstract class SpitEntity extends Projectile {
                         0, 0, 0);
             }
         }
+    }
+
+    @Override
+    protected boolean canHitEntity(Entity pTarget) {
+        if(super.canHitEntity(pTarget)) {
+            if(getOwner() instanceof LivingEntity entity && pTarget instanceof LivingEntity livingTarget && !entity.canAttack(livingTarget)) return false;
+            return true;
+        }
+        return false;
     }
 
     @Override

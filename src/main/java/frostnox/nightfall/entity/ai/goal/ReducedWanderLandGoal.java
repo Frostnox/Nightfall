@@ -2,27 +2,28 @@ package frostnox.nightfall.entity.ai.goal;
 
 import frostnox.nightfall.entity.entity.ActionableEntity;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.util.LandRandomPos;
+import net.minecraft.world.phys.Vec3;
 
-public class ReducedWanderLandGoal extends WaterAvoidingRandomStrollGoal {
-    protected final ActionableEntity entity;
-    protected final int randMod;
+import javax.annotation.Nullable;
 
+public class ReducedWanderLandGoal extends ReducedWanderGoal {
     public ReducedWanderLandGoal(ActionableEntity pMob, double pSpeedModifier, int randMod) {
-        super(pMob, pSpeedModifier);
-        entity = pMob;
-        this.randMod = randMod;
+        super(pMob, pSpeedModifier, randMod);
     }
 
-    public ReducedWanderLandGoal(ActionableEntity pMob, double pSpeedModifier, float pProbability, int randMod) {
-        super(pMob, pSpeedModifier, pProbability);
-        entity = pMob;
-        this.randMod = randMod;
+    public ReducedWanderLandGoal(ActionableEntity pMob, double pSpeedModifier, int timeoutTicks, int randMod) {
+        super(pMob, pSpeedModifier, timeoutTicks, randMod);
     }
 
     @Override
-    public boolean canUse() {
-        if(entity.reducedAI) return false;
-        else if(entity.level.random.nextInt(randMod) == 0) return super.canUse();
-        else return false;
+    protected @Nullable Vec3 getPosition() {
+        if(mob.isInWaterOrBubble()) {
+            Vec3 pos = LandRandomPos.getPos(mob, 15, 7);
+            return pos == null ? super.getPosition() : pos;
+        }
+        else {
+            return mob.getRandom().nextFloat() >= 0.001F ? LandRandomPos.getPos(mob, 10, 7) : super.getPosition();
+        }
     }
 }

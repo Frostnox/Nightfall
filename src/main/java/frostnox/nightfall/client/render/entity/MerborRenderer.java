@@ -13,6 +13,7 @@ public class MerborRenderer extends AnimatedMobRenderer<MerborEntity, MerborMode
     public static final ResourceLocation BOG = ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "textures/entity/merbor/bog.png");
     public static final ResourceLocation BRINE = ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "textures/entity/merbor/brine.png");
     public static final ResourceLocation RIVER = ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "textures/entity/merbor/river.png");
+    public static final ResourceLocation SPECIAL = ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "textures/entity/merbor/special.png");
 
     public MerborRenderer(EntityRendererProvider.Context renderer) {
         super(renderer, new MerborModel(renderer.bakeLayer(ModelRegistryNF.MERBOR)), 0.45F);
@@ -26,7 +27,8 @@ public class MerborRenderer extends AnimatedMobRenderer<MerborEntity, MerborMode
 
     @Override
     public ResourceLocation getTextureLocation(MerborEntity pEntity) {
-        return switch(pEntity.getMerborType()) {
+        if(pEntity.isSpecial()) return SPECIAL;
+        else return switch(pEntity.getMerborType()) {
             case BOG -> BOG;
             case BRINE -> BRINE;
             case RIVER -> RIVER;

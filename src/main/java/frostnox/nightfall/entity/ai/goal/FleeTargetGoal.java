@@ -64,6 +64,7 @@ public class FleeTargetGoal extends Goal {
         avoidPos = null;
         path = null;
         mob.lastTargetPos = null;
+        mob.setTarget(null);
     }
 
     @Override

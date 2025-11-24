@@ -169,7 +169,7 @@ public class EctoplasmEntity extends MonsterEntity {
     @Override
     protected void registerGoals() {
         goalSelector.addGoal(1, new FloatGoal(this));
-        goalSelector.addGoal(3, new WanderLandGoal(this, 0.5));
+        goalSelector.addGoal(3, new WanderLandGoal(this, 0.5, Integer.MAX_VALUE));
     }
 
     @Override

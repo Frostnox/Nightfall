@@ -15,7 +15,7 @@ public class SpawnGroupsNF {
     public static final DeferredRegister<SpawnGroup> GROUPS = DeferredRegister.create(RegistriesNF.SPAWN_GROUPS_KEY, Nightfall.MODID);
 
     public static final RegistryObject<SpawnGroup> COCKATRICE = GROUPS.register("cockatrice", () -> new LandSpawnGroup(
-            2, false, EntitiesNF.COCKATRICE.get(), SEA_LEVEL, Integer.MAX_VALUE, 1, 15, 1, 1,
+            1, false, EntitiesNF.COCKATRICE.get(), SEA_LEVEL, Integer.MAX_VALUE, 1, 15, 1, 1,
             0.45F, 1F, 0F, 1F, TagsNF.COCKATRICE_SPAWN_BLOCK));
     public static final RegistryObject<SpawnGroup> DEER = GROUPS.register("deer", () -> new LandSpawnGroup(
             7, true, EntitiesNF.DEER.get(), SEA_LEVEL, SEA_LEVEL + 208, 1, 15, 1, 4,

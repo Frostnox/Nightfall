@@ -11,6 +11,7 @@ import frostnox.nightfall.entity.IOrientedHitBoxes;
 import frostnox.nightfall.entity.Sex;
 import frostnox.nightfall.entity.ai.goal.*;
 import frostnox.nightfall.entity.ai.goal.target.TrackNearestTargetGoal;
+import frostnox.nightfall.entity.entity.ActionableEntity;
 import frostnox.nightfall.entity.entity.Diet;
 import frostnox.nightfall.entity.entity.monster.CockatriceEntity;
 import frostnox.nightfall.registry.ActionsNF;
@@ -53,10 +54,7 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
     }
     private static final EntityPart[] OBB_PARTS = new EntityPart[]{EntityPart.BODY, EntityPart.NECK, EntityPart.HEAD};
     protected static final EntityDataAccessor<DrakefowlEntity.Type> TYPE = SynchedEntityData.defineId(DrakefowlEntity.class, DataSerializersNF.DRAKEFOWL_TYPE);
-    private final Goal fleePlayerGoal = new FleeEntityGoal<>(this, Player.class, 1.2D, 1.3D, (entity) -> {
-        Player player = (Player) entity;
-        return !player.isDeadOrDying() && !player.isCrouching() && !player.isSpectator() && !player.isCreative();
-    });
+    private final Goal fleePlayerGoal = new FleeEntityGoal<>(this, Player.class, 1.3D, 1.4D).hearingOnly();
     private final Goal breedGoal = new BreedGoal(this, 0.8);
     private final Goal lureGoal = new LureGoal(this, 10, 0.9D);
     private final Goal eggGoal = new LayEggGoal(this, BlocksNF.DRAKEFOWL_NEST, 1) {
@@ -95,7 +93,7 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
     }
 
     public static AttributeSupplier.Builder getAttributeMap() {
-        return createAttributes().add(Attributes.MAX_HEALTH, 20D)
+        return createAttributes().add(Attributes.MAX_HEALTH, 30D)
                 .add(Attributes.MOVEMENT_SPEED, 0.275F)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0D)
                 .add(Attributes.ATTACK_DAMAGE, 1)
@@ -110,25 +108,6 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
 
     public DrakefowlEntity.Type getDrakefowlType() {
         return getEntityData().get(TYPE);
-    }
-
-    @Override
-    protected void updateGoals() {
-        if(!level.isClientSide) {
-            goalSelector.removeGoal(fleePlayerGoal);
-            goalSelector.removeGoal(breedGoal);
-            goalSelector.removeGoal(lureGoal);
-            goalSelector.removeGoal(eggGoal);
-            if(isTamed()) {
-                goalSelector.addGoal(6, breedGoal);
-                goalSelector.addGoal(7, lureGoal);
-                if(sex == Sex.FEMALE) goalSelector.addGoal(8, eggGoal);
-            }
-            else {
-                goalSelector.addGoal(4, fleePlayerGoal);
-                if(sex == Sex.FEMALE) goalSelector.addGoal(7, lureGoal);
-            }
-        }
     }
 
     @Override
@@ -178,7 +157,18 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
 
     @Override
     public boolean canAttack(LivingEntity target) {
-        return target.canBeSeenAsEnemy() && !(target instanceof DrakefowlEntity || target instanceof DrakefowlBabyEntity);
+        if(target instanceof CockatriceEntity) return false;
+        else return super.canAttack(target);
+    }
+
+    @Override
+    public boolean shouldFleeFrom(LivingEntity target) {
+        return target.getType().is(TagsNF.DRAKEFOWL_PREDATOR);
+    }
+
+    @Override
+    public boolean canReceiveAlert(ActionableEntity alerter) {
+        return alerter instanceof DrakefowlBabyEntity || (!isTamed() && alerter instanceof DrakefowlEntity);
     }
 
     @Override
@@ -189,25 +179,41 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
     }
 
     @Override
+    protected void updateGoals() {
+        if(!level.isClientSide) {
+            goalSelector.removeGoal(fleePlayerGoal);
+            goalSelector.removeGoal(breedGoal);
+            goalSelector.removeGoal(lureGoal);
+            goalSelector.removeGoal(eggGoal);
+            if(isTamed()) {
+                goalSelector.addGoal(6, breedGoal);
+                goalSelector.addGoal(7, lureGoal);
+                if(sex == Sex.FEMALE) goalSelector.addGoal(8, eggGoal);
+            }
+            else {
+                goalSelector.addGoal(4, fleePlayerGoal);
+                if(sex == Sex.FEMALE) goalSelector.addGoal(7, lureGoal);
+            }
+        }
+    }
+
+    @Override
     protected void registerGoals() {
         goalSelector.addGoal(1, new FloatAtHeightGoal(this, 0.4D));
-        goalSelector.addGoal(2, new FleeEntityGoal<>(this, LivingEntity.class, 1.2D, 1.3D, (entity) -> {
-            if(entity.isDeadOrDying()) return false;
-            else return entity.getType().is(TagsNF.DRAKEFOWL_PREDATOR);
-        }));
-        goalSelector.addGoal(5, new FleeDamageGoal(this, 1.3D));
+        goalSelector.addGoal(2, new FleeEntityGoal<>(this, LivingEntity.class, 1.3D, 1.4D, this::shouldFleeFrom));
+        goalSelector.addGoal(5, new FleeDamageGoal(this, 1.4D));
         goalSelector.addGoal(9, new EatEntityGoal(this, 1D, 15, 2));
         goalSelector.addGoal(10, new EatBlockGoal(this, 1D, 15, 2));
         goalSelector.addGoal(11, new ReducedWanderLandGoal(this, 0.8D, 2) {
             @Override
             protected @Nullable Vec3 getPosition() {
                 Vec3 pos = super.getPosition();
-                return pos != null && mob.level.getBlockState(new BlockPos(pos)).is(BlocksNF.DRAKEFOWL_NEST.get()) ? null : pos;
+                return (pos != null && mob.level.getBlockState(new BlockPos(pos)).is(BlocksNF.DRAKEFOWL_NEST.get())) ? null : pos;
             }
         });
         goalSelector.addGoal(12, new RandomLookGoal(this, 0.02F / 3));
         if(getType() == EntitiesNF.DRAKEFOWL_ROOSTER.get()) { //Function gets called mid-constructor so can't use sex
-            goalSelector.addGoal(3, new RushAttackGoal(this, 1.2D));
+            goalSelector.addGoal(3, new RushAttackGoal(this, 1.3D));
             targetSelector.addGoal(1, new HurtByTargetGoal(this));
             targetSelector.addGoal(2, new TrackNearestTargetGoal<>(this, LivingEntity.class, true, (entity) -> {
                 if(entity.isDeadOrDying()) return false;
@@ -215,7 +221,7 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
             }) {
                 @Override
                 protected double getFollowDistance() {
-                    return super.getFollowDistance() * 2F/3F;
+                    return super.getFollowDistance() * 0.5;
                 }
             });
         }

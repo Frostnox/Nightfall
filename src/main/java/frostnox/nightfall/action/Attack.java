@@ -68,11 +68,11 @@ public abstract class Attack extends Action {
     }
 
     public int getDamageStartFrame(int state) {
-        return 1;
+        return 2;
     }
 
     public int getDamageEndFrame(int state, LivingEntity user) {
-        return getDuration(state, user);
+        return getDuration(state, user) - 1;
     }
 
     public String getName(LivingEntity user) {

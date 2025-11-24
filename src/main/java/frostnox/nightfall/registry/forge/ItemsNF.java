@@ -173,6 +173,7 @@ public class ItemsNF {
             register(type.name().toLowerCase(Locale.ROOT) + "_deer_hide", () -> new Item(ingredient().stacksTo(16))));
     public static final Map<MerborEntity.Type, RegistryObject<Item>> MERBOR_HIDES = DataUtil.mapEnum(MerborEntity.Type.class, type ->
             register(type.name().toLowerCase(Locale.ROOT) + "_merbor_hide", () -> new Item(ingredient().stacksTo(16))));
+    public static final RegistryObject<Item> GOLDEN_MERBOR_HIDE = register("golden_merbor_hide", 16, INGREDIENTS_TAB);
     public static final Map<CockatriceEntity.Type, RegistryObject<Item>> COCKATRICE_SKINS = DataUtil.mapEnum(CockatriceEntity.Type.class, type ->
             register(type.name().toLowerCase(Locale.ROOT) + "_cockatrice_skin", () -> new Item(ingredient().stacksTo(16))));
     public static final RegistryObject<MeleeWeaponItem> RUSTED_MAUL = register("rusted_maul", () -> new MeleeWeaponItem(TieredItemMaterial.METEORITE,
@@ -189,6 +190,7 @@ public class ItemsNF {
     public static final RegistryObject<Item> BONE = ITEMS.register("bone", () -> new Item(ingredient()));
     public static final RegistryObject<Item> ECTOPLASM = ITEMS.register("ectoplasm", () -> new Item(ingredient()));
     public static final RegistryObject<Item> SKARA_SHELLS = ITEMS.register("skara_shells", () -> new Item(ingredient()));
+    public static final RegistryObject<Item> MERBOR_TUSK = ITEMS.register("merbor_tusk", () -> new Item(ingredient().stacksTo(32)));
     //Food
     public static final RegistryObject<Item> POTATO = ITEMS.register("potato", () -> new Item(new Item.Properties().food(
             food(2, 0F)).tab(FOOD_TAB).stacksTo(4)));

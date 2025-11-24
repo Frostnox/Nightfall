@@ -3,6 +3,7 @@ package frostnox.nightfall.entity.entity.animal;
 import frostnox.nightfall.capability.PlayerData;
 import frostnox.nightfall.entity.ITamable;
 import frostnox.nightfall.entity.Sex;
+import frostnox.nightfall.entity.entity.ActionableEntity;
 import frostnox.nightfall.network.NetworkHandler;
 import frostnox.nightfall.network.message.GenericEntityToClient;
 import frostnox.nightfall.network.message.entity.EatItemToClient;
@@ -14,10 +15,16 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.WrappedGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
+
+import java.util.Iterator;
 
 public abstract class TamableAnimalEntity extends AnimalEntity implements ITamable {
     protected static final EntityDataAccessor<Boolean> SPECIAL = SynchedEntityData.defineId(TamableAnimalEntity.class, EntityDataSerializers.BOOLEAN);
@@ -97,6 +104,15 @@ public abstract class TamableAnimalEntity extends AnimalEntity implements ITamab
     }
 
     @Override
+    public boolean canAttack(LivingEntity target) {
+        return target.canBeSeenAsEnemy() && !(target instanceof TamableAnimalEntity || target instanceof BabyAnimalEntity);
+    }
+
+    protected double getHurtAlertRange() {
+        return 10;
+    }
+
+    @Override
     public void aiStep() {
         super.aiStep();
         if(isAlive()) {
@@ -126,12 +142,18 @@ public abstract class TamableAnimalEntity extends AnimalEntity implements ITamab
                         NetworkHandler.toAllTracking(this, new EatItemToClient(item.copy(), getId()));
                         item.shrink(1);
                         getEntityData().set(TAMED, true);
+                        setLastHurtByMob(null);
                         setTarget(null);
                         lastTargetPos = null;
                         setAggressive(false);
                         noDespawnTicks = -1;
                         satiety = getMaxSatiety();
+                        reactToDamage = false;
                         updateGoals();
+                        for(Iterator<WrappedGoal> it = targetSelector.getRunningGoals().iterator(); it.hasNext();) {
+                            var goal = it.next();
+                            goal.stop();
+                        }
                         if(getCollapseAction() != null && getActionTracker().getActionID().equals(getCollapseAction()) && getActionTracker().isCharging()) {
                             getActionTracker().queue();
                             NetworkHandler.toAllTracking(this, new GenericEntityToClient(NetworkHandler.Type.QUEUE_ACTION_TRACKER, getId()));

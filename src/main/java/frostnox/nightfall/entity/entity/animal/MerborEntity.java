@@ -2,6 +2,7 @@ package frostnox.nightfall.entity.entity.animal;
 
 import com.mojang.math.Vector3d;
 import com.mojang.math.Vector3f;
+import frostnox.nightfall.action.Poise;
 import frostnox.nightfall.capability.ChunkData;
 import frostnox.nightfall.capability.IChunkData;
 import frostnox.nightfall.capability.LevelData;
@@ -10,6 +11,7 @@ import frostnox.nightfall.entity.EntityPart;
 import frostnox.nightfall.entity.IOrientedHitBoxes;
 import frostnox.nightfall.entity.Sex;
 import frostnox.nightfall.entity.ai.goal.*;
+import frostnox.nightfall.entity.entity.ActionableEntity;
 import frostnox.nightfall.entity.entity.Diet;
 import frostnox.nightfall.registry.ActionsNF;
 import frostnox.nightfall.registry.forge.AttributesNF;
@@ -76,7 +78,8 @@ public class MerborEntity extends TamableAnimalEntity implements IOrientedHitBox
                 .add(Attributes.FOLLOW_RANGE, 20)
                 .add(AttributesNF.HEARING_RANGE.get(), 15)
                 .add(AttributesNF.FIRE_DEFENSE.get(), 0.5)
-                .add(AttributesNF.ELECTRIC_DEFENSE.get(), -0.5);
+                .add(AttributesNF.ELECTRIC_DEFENSE.get(), -0.5)
+                .add(AttributesNF.POISE.get(), Poise.LOW.ordinal());
     }
 
     public static EnumMap<EntityPart, AnimationData> getHeadAnimMap() {
@@ -102,16 +105,16 @@ public class MerborEntity extends TamableAnimalEntity implements IOrientedHitBox
     }
 
     @Override
-    public void push(Entity pEntity) {
-        super.push(pEntity);
-        if(!isTamed() && pEntity instanceof Player player && canAttack(player)) {
-            setTarget(player);
-        }
+    public float getVisionAngle() {
+        return 115F;
     }
 
     @Override
-    public boolean canAttack(LivingEntity target) {
-        return target.canBeSeenAsEnemy() && !(target instanceof MerborEntity || target instanceof MerborBabyEntity);
+    public void push(Entity pEntity) {
+        super.push(pEntity);
+        if(!isTamed() && pEntity instanceof Player player && canAttack(player)) {
+            setLastHurtByMob(player);
+        }
     }
 
     @Override
@@ -173,7 +176,7 @@ public class MerborEntity extends TamableAnimalEntity implements IOrientedHitBox
             spawnDataIn = new GroupData(type);
         }
         getEntityData().set(TYPE, type);
-        if(sex == Sex.MALE && random.nextInt() % 1024 == 0) getEntityData().set(SPECIAL, true);
+        if(random.nextInt() % 2048 == 0) getEntityData().set(SPECIAL, true);
         updateGoals();
         return spawnDataIn;
     }
@@ -208,8 +211,13 @@ public class MerborEntity extends TamableAnimalEntity implements IOrientedHitBox
     @Override
     public boolean shouldFleeFrom(LivingEntity target) {
         if(target.getType().is(TagsNF.MERBOR_PREDATOR)) return true;
-        else if(target instanceof Player player && !player.isCreative() && !player.isSpectator()) return super.shouldFleeFrom(target);
+        else if(target instanceof Player player && !player.isCreative() && !player.isSpectator()) return (sex == Sex.FEMALE && target == getTarget()) || super.shouldFleeFrom(target);
         else return false;
+    }
+
+    @Override
+    public boolean canReceiveAlert(ActionableEntity alerter) {
+        return alerter instanceof MerborBabyEntity || (!isTamed() && alerter instanceof MerborEntity);
     }
 
     @Override
@@ -223,9 +231,9 @@ public class MerborEntity extends TamableAnimalEntity implements IOrientedHitBox
     @Override
     protected void registerGoals() {
         goalSelector.addGoal(1, new FloatAtHeightGoal(this, 0.7D));
-        goalSelector.addGoal(2, new FleeTargetGoal(this, 1.25D, 1.35D));
-        goalSelector.addGoal(3, new FleeEntityGoal<>(this, LivingEntity.class, 1.25D, 1.35D, this::shouldFleeFrom));
-        goalSelector.addGoal(5, new FleeDamageGoal(this, 1.35D));
+        goalSelector.addGoal(2, new StepUpFleeTargetGoal(this, 1.25D, 1.35D));
+        goalSelector.addGoal(3, new StepUpFleeEntityGoal<>(this, LivingEntity.class, 1.25D, 1.35D, this::shouldFleeFrom));
+        goalSelector.addGoal(5, new StepUpFleeDamageGoal(this, 1.35D));
         goalSelector.addGoal(7, new LureGoal(this, 10, 0.9D));
         goalSelector.addGoal(9, new EatEntityGoal(this, 1D, 15, 2));
         goalSelector.addGoal(10, new EatBlockGoal(this, 1D, 15, 2));
@@ -233,7 +241,7 @@ public class MerborEntity extends TamableAnimalEntity implements IOrientedHitBox
         goalSelector.addGoal(12, new RandomLookGoal(this, 0.02F / 4));
         targetSelector.addGoal(1, new HurtByTargetGoal(this));
         if(getType() == EntitiesNF.MERBOR_TUSKER.get()) { //Function gets called mid-constructor so can't use sex
-            goalSelector.addGoal(4, new RushAttackGoal(this, 1.3D));
+            goalSelector.addGoal(4, new StepUpRushAttackGoal(this, 1.25D));
         }
     }
 
@@ -269,14 +277,14 @@ public class MerborEntity extends TamableAnimalEntity implements IOrientedHitBox
     protected void breedWith(TamableAnimalEntity other) {
         if(sex == Sex.FEMALE) {
             fatherType = ((MerborEntity) other).getMerborType();
-            gestationTime = 60; //TODO: 5 days
+            gestationTime = (int) ContinentalWorldType.DAY_LENGTH * 5;
         }
     }
 
     @Override
     protected void onGestationEnd() {
         if(!level.isClientSide) {
-            for(int i = 0; i < 1; i++) {
+            for(int i = 0; i < (random.nextBoolean() ? 2 : 1); i++) {
                 MerborBabyEntity piglet =  EntitiesNF.MERBOR_PIGLET.get().create(level);
                 piglet.moveTo(getX(), getY(), getZ(), level.random.nextFloat() * 360, 0);
                 piglet.finalizeSpawn((ServerLevel) level, level.getCurrentDifficultyAt(blockPosition()), MobSpawnType.BREEDING, new GroupData(fatherType), null);

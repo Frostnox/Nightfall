@@ -129,4 +129,9 @@ public class VerticalSwing extends PlayerAttack implements IClientAction {
     public boolean isStateDamaging(int state) {
         return state == 1;
     }
+
+    @Override
+    public int getDamageEndFrame(int state, LivingEntity user) {
+        return getDuration(state, user) - 2;
+    }
 }

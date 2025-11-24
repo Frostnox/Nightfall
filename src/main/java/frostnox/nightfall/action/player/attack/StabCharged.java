@@ -145,6 +145,11 @@ public class StabCharged extends PlayerAttack implements IClientAction {
     }
 
     @Override
+    public int getDamageStartFrame(int state) {
+        return 1;
+    }
+
+    @Override
     public boolean isStateDamaging(int state) {
         return state == 2;
     }

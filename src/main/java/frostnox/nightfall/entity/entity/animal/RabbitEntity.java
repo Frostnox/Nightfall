@@ -83,7 +83,7 @@ public class RabbitEntity extends AnimalEntity implements IOrientedHitBoxes, IHo
     @Override
     protected void registerGoals() {
         goalSelector.addGoal(1, new FloatGoal(this));
-        goalSelector.addGoal(2, new StepUpFleeEntityOrHomeGoal<>(this, LivingEntity.class, 1.6D, 1.8D, (entity) -> {
+        goalSelector.addGoal(2, new StepUpLandFleeEntityOrHomeGoal<>(this, LivingEntity.class, 1.6D, 1.8D, (entity) -> {
             if(entity.isDeadOrDying()) return false;
             else if(entity instanceof Player player) return !player.isCreative() && !player.isSpectator();
             else return entity.getType().is(TagsNF.RABBIT_PREDATOR);

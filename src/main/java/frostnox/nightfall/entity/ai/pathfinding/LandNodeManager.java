@@ -228,7 +228,7 @@ public class LandNodeManager extends NodeManager {
             //Try to choose from the highest walkable position, if one exists
             for(BlockPos.MutableBlockPos cPos : positions) {
                 if(isWalkable(cPos)) {
-                    bestPos = cPos;
+                    bestPos = cPos.immutable();
                     node = typeAndGetNode(bestPos);
                     if(canReachWithoutCollision(entity, new Vec2f(node.pathX, node.pathZ))) {
                         break;
@@ -238,7 +238,7 @@ public class LandNodeManager extends NodeManager {
                     cPos.setY(cPos.getY() - 1);
                     if(cPos.getY() <= bestPos.getY()) break;
                     else if(isWalkable(cPos)) {
-                        bestPos = cPos;
+                        bestPos = cPos.immutable();
                         node = typeAndGetNode(bestPos);
                         if(canReachWithoutCollision(entity, new Vec2f(node.pathX, node.pathZ))) {
                             break;
@@ -311,7 +311,8 @@ public class LandNodeManager extends NodeManager {
                 jumpHeights.put(jumpFactor, jumpHeight);
             }
             else jumpHeight = jumpHeights.get(jumpFactor);
-            jumpSteps = Mth.floor(floor % 1F + Math.max(jumpHeight, entityStepHeight));
+            jumpHeight = Math.max(jumpHeight, entityStepHeight);
+            jumpSteps = Mth.floor(floor % 1F + jumpHeight);
         }
 
         //Octal directions

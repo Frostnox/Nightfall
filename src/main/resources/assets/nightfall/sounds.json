@@ -355,7 +355,7 @@
     "sounds": ["nightfall:entity/merbor_baby/hurt_0", "nightfall:entity/merbor_baby/hurt_1", "nightfall:entity/merbor_baby/hurt_2"]
   },
   "entity.merbor_baby.step": {
-    "subtitle": "nightfall.entity.merbor_baby.step",
+    "subtitle": "subtitles.block.generic.footsteps",
     "sounds": ["nightfall:entity/merbor_baby/step_0", "nightfall:entity/merbor_baby/step_1", "nightfall:entity/merbor_baby/step_2", "nightfall:entity/merbor_baby/step_3", "nightfall:entity/merbor_baby/step_4"]
   },
   "entity.dreg.ambient": {

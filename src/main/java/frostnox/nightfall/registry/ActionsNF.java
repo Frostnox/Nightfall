@@ -408,7 +408,7 @@ public class ActionsNF {
     public static final RegistryObject<DeerGraze> DEER_GRAZE = ACTIONS.register("deer_graze", () ->
             new DeerGraze(new Action.Properties().setChargeState(1), 8, 1, 10));
 
-    public static final RegistryObject<Action> DRAKEFOWL_BREED = ACTIONS.register("drakefowl_breed", () -> new Action(new Action.Properties().setSpecial(), 30));
+    public static final RegistryObject<Action> DRAKEFOWL_BREED = ACTIONS.register("drakefowl_breed", () -> new Action(new Action.Properties().setSpecial(), 20));
     public static final RegistryObject<DrakefowlCollapse> DRAKEFOWL_COLLAPSE = ACTIONS.register("drakefowl_collapse", () ->
             new DrakefowlCollapse(new Action.Properties().setChargeState(1), 9, 1, 12));
     public static final RegistryObject<DrakefowlClaw> DRAKEFOWL_CLAW = ACTIONS.register("drakefowl_claw", () ->
@@ -421,8 +421,8 @@ public class ActionsNF {
     public static final RegistryObject<MerborCollapse> MERBOR_COLLAPSE = ACTIONS.register("merbor_collapse", () ->
             new MerborCollapse(new Action.Properties().setChargeState(1), 12, 1, 14));
     public static final RegistryObject<MerborGore> MERBOR_GORE = ACTIONS.register("merbor_gore", () ->
-            new MerborGore(30F, DamageType.PIERCING.asArray(), HurtSphere.MERBOR_TUSK, 2, CombatUtil.STUN_LONG,
-                    new int[] {9, 5, 8}, new Action.Properties().setImpact(Impact.HIGH).setKnockback(0.8F).setSound(SoundsNF.MERBOR_ATTACK), bleeding(1F)));
+            new MerborGore(28F, DamageType.PIERCING.asArray(), HurtSphere.MERBOR_TUSK, 2, CombatUtil.STUN_LONG,
+                    new int[] {9, 5, 8}, new Action.Properties().setImpact(Impact.HIGH).setKnockback(0.7F).setSound(SoundsNF.MERBOR_ATTACK), bleeding(1F)));
 
     public static final RegistryObject<HuskRightSwipe> HUSK_RIGHT_SWIPE_1 = ACTIONS.register("husk_right_swipe_1", () ->
             new HuskRightSwipe(10, DamageType.STRIKING.asArray(), HurtSphere.HUSK_ARM, 2, CombatUtil.STUN_SHORT, new int[] {7, 1, 6, 2, 7},

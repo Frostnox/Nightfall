@@ -665,13 +665,16 @@ public class LootTableProviderNF extends LootTableProvider {
                     .withPool(pool(entry(ItemsNF.SCARLET_FEATHER.get(), 5, 6))));
             add(EntitiesNF.DRAKEFOWL_CHICK.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.RAW_POULTRY.get(), 1, 1))));
             add(EntitiesNF.MERBOR_TUSKER.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.RAW_PORK.get(), 3, 4)))
+                    .withPool(pool(entry(ItemsNF.MERBOR_TUSK.get(), 1, 1, List.of(PerceptionCheckFunction.with(0.5F, 0.025F)))))
                     .withPool(pool(entry(ItemsNF.MERBOR_HIDES.get(MerborEntity.Type.BOG).get(), 1F, 1F, LootItemEntityCondition.of(LootItemEntityCondition.Test.MERBOR_BOG))))
                     .withPool(pool(entry(ItemsNF.MERBOR_HIDES.get(MerborEntity.Type.BRINE).get(), 1F, 1F, LootItemEntityCondition.of(LootItemEntityCondition.Test.MERBOR_BRINE))))
-                    .withPool(pool(entry(ItemsNF.MERBOR_HIDES.get(MerborEntity.Type.RIVER).get(), 1F, 1F, LootItemEntityCondition.of(LootItemEntityCondition.Test.MERBOR_RIVER)))));
+                    .withPool(pool(entry(ItemsNF.MERBOR_HIDES.get(MerborEntity.Type.RIVER).get(), 1F, 1F, LootItemEntityCondition.of(LootItemEntityCondition.Test.MERBOR_RIVER))))
+                    .withPool(pool(entry(ItemsNF.GOLDEN_MERBOR_HIDE.get(), 1F, 1F, LootItemEntityCondition.of(LootItemEntityCondition.Test.MERBOR_SPECIAL)))));
             add(EntitiesNF.MERBOR_SOW.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.RAW_PORK.get(), 3, 4)))
                     .withPool(pool(entry(ItemsNF.MERBOR_HIDES.get(MerborEntity.Type.BOG).get(), 1F, 1F, LootItemEntityCondition.of(LootItemEntityCondition.Test.MERBOR_BOG))))
                     .withPool(pool(entry(ItemsNF.MERBOR_HIDES.get(MerborEntity.Type.BRINE).get(), 1F, 1F, LootItemEntityCondition.of(LootItemEntityCondition.Test.MERBOR_BRINE))))
-                    .withPool(pool(entry(ItemsNF.MERBOR_HIDES.get(MerborEntity.Type.RIVER).get(), 1F, 1F, LootItemEntityCondition.of(LootItemEntityCondition.Test.MERBOR_RIVER)))));
+                    .withPool(pool(entry(ItemsNF.MERBOR_HIDES.get(MerborEntity.Type.RIVER).get(), 1F, 1F, LootItemEntityCondition.of(LootItemEntityCondition.Test.MERBOR_RIVER))))
+                    .withPool(pool(entry(ItemsNF.GOLDEN_MERBOR_HIDE.get(), 1F, 1F, LootItemEntityCondition.of(LootItemEntityCondition.Test.MERBOR_SPECIAL)))));
             add(EntitiesNF.MERBOR_PIGLET.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.RAW_PORK.get(), 1, 1))));
             add(EntitiesNF.HUSK.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.ROTTEN_FLESH.get(), 1, 2))));
             add(EntitiesNF.SKELETON.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.BONE_SHARD.get(), 1, 2)))

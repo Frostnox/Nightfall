@@ -9,14 +9,11 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.PathNavigationRegion;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.NodeEvaluator;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.level.pathfinder.PathFinder;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
 import java.util.Set;
@@ -31,6 +28,7 @@ public abstract class EntityNavigator extends PathNavigation {
     protected @Nullable Entity cachedTarget; //Only present when a path is being calculated
     protected double lastActiveX, lastActiveZ;
     protected int stuckTicks = 0;
+    protected int ticksOnCurrentNode = 0;
 
     public EntityNavigator(NodeManager nodeManager, Level level) {
         super(nodeManager.entity, level);
@@ -50,12 +48,18 @@ public abstract class EntityNavigator extends PathNavigation {
         return activePath;
     }
 
+    public float getAdjustedTicksOnCurrentNode() {
+        if(activePath == null || !activePath.isActive()) return ticksOnCurrentNode;
+        else return ticksOnCurrentNode / (1 + Math.max(0, activePath.getCurrentNode().terrainCost));
+    }
+
     @Override
     public void tick() {
         tick++;
         if(hasDelayedRecomputation) recomputePath();
 
         if(!isDone()) {
+            ticksOnCurrentNode++;
             if(canUpdatePath()) updatePath();
             if(!isDone()) {
                 Vec3 pathPos = activePath.getCurrentNode().getPathPos();
@@ -65,6 +69,7 @@ public abstract class EntityNavigator extends PathNavigation {
             }
         }
         else {
+            ticksOnCurrentNode = 0;
             stuckTicks = 0;
         }
     }
@@ -118,7 +123,10 @@ public abstract class EntityNavigator extends PathNavigation {
         if(mobPos.y > node.pathY || Math.abs(mobPos.y - node.pathY) < mob.getStepHeight()) {
             double dX = Math.abs(mobPos.x - node.pathX);
             double dZ = Math.abs(mobPos.z - node.pathZ);
-            if(dX <= maxDistanceToWaypoint && dZ <= maxDistanceToWaypoint) activePath.advanceIndex();
+            if(dX <= maxDistanceToWaypoint && dZ <= maxDistanceToWaypoint) {
+                activePath.advanceIndex();
+                ticksOnCurrentNode = 0;
+            }
         }
     }
 

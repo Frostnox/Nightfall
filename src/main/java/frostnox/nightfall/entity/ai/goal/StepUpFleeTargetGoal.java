@@ -1,24 +1,18 @@
 package frostnox.nightfall.entity.ai.goal;
 
 import frostnox.nightfall.entity.entity.ActionableEntity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraftforge.common.ForgeMod;
 
 import java.util.UUID;
-import java.util.function.Predicate;
 
-public class StepUpFleeEntityGoal<T extends LivingEntity> extends FleeEntityGoal<T> {
-    private static final AttributeModifier FLEE_STEP_MODIFIER = new AttributeModifier(UUID.fromString("ea9f0510-9330-412a-9626-8e179c9ca2fc"),
+public class StepUpFleeTargetGoal extends FleeTargetGoal {
+    private static final AttributeModifier FLEE_STEP_MODIFIER = new AttributeModifier(UUID.fromString("f269eb89-d078-4f00-b2ae-6f2a5ee4ddaf"),
             "Flee step height bonus", 0.4D, AttributeModifier.Operation.ADDITION);
 
-    public StepUpFleeEntityGoal(ActionableEntity mob, Class<T> fleeClass, double walkSpeedModifier, double sprintSpeedModifier) {
-        super(mob, fleeClass, walkSpeedModifier, sprintSpeedModifier);
-    }
-
-    public StepUpFleeEntityGoal(ActionableEntity mob, Class<T> fleeClass, double walkSpeedModifier, double sprintSpeedModifier, Predicate<LivingEntity> fleePredicate) {
-        super(mob, fleeClass, walkSpeedModifier, sprintSpeedModifier, fleePredicate);
+    public StepUpFleeTargetGoal(ActionableEntity mob, double walkSpeedModifier, double sprintSpeedModifier) {
+        super(mob, walkSpeedModifier, sprintSpeedModifier);
     }
 
     @Override

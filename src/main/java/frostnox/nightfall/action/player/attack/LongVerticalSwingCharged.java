@@ -131,4 +131,14 @@ public class LongVerticalSwingCharged extends PlayerAttack {
     public boolean isStateDamaging(int state) {
         return state == 1;
     }
+
+    @Override
+    public int getDamageStartFrame(int state) {
+        return 1;
+    }
+
+    @Override
+    public int getDamageEndFrame(int state, LivingEntity user) {
+        return getDuration(state, user) - 2;
+    }
 }

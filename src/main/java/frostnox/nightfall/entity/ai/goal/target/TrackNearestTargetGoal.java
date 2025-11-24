@@ -73,7 +73,7 @@ public class TrackNearestTargetGoal<T extends LivingEntity> extends NearestAttac
         double distSqrMin = Double.MAX_VALUE;
         target = null;
         for(Entity entity : actionableMob.getAudioSensing().getHeardEntities()) {
-            if(!(entity instanceof LivingEntity livingEntity)) continue;
+            if(!(entity instanceof LivingEntity livingEntity) || (selector != null && !selector.test(livingEntity))) continue;
             double distSqr = mob.distanceToSqr(entity);
             if(distSqr < distSqrMin) {
                 distSqrMin = distSqr;

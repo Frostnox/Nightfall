@@ -3,7 +3,6 @@ package frostnox.nightfall.entity.entity.projectile;
 import frostnox.nightfall.action.DamageType;
 import frostnox.nightfall.action.DamageTypeSource;
 import frostnox.nightfall.registry.forge.EntitiesNF;
-import frostnox.nightfall.registry.forge.ParticleTypesNF;
 import frostnox.nightfall.registry.forge.SoundsNF;
 import frostnox.nightfall.util.MathUtil;
 import net.minecraft.core.particles.ParticleOptions;

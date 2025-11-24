@@ -3,7 +3,6 @@ package frostnox.nightfall.entity.ai.goal;
 import frostnox.nightfall.entity.ai.pathfinding.ReversePath;
 import frostnox.nightfall.entity.entity.ActionableEntity;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -24,6 +23,7 @@ public class FleeEntityGoal<T extends LivingEntity> extends Goal {
     protected final Predicate<LivingEntity> fleePredicate;
     protected @Nullable Vec3 avoidPos;
     protected @Nullable ReversePath path;
+    protected boolean hearingOnly;
 
     public FleeEntityGoal(ActionableEntity mob, Class<T> fleeClass, double walkSpeedModifier, double sprintSpeedModifier) {
         this(mob, fleeClass, walkSpeedModifier, sprintSpeedModifier,
@@ -38,6 +38,11 @@ public class FleeEntityGoal<T extends LivingEntity> extends Goal {
         this.fleeConditions = TargetingConditions.forCombat().selector(fleePredicate.and((entity) -> !entity.isDeadOrDying()));
         this.fleePredicate = fleePredicate;
         setFlags(EnumSet.of(Goal.Flag.MOVE));
+    }
+
+    public FleeEntityGoal<T> hearingOnly() {
+        this.hearingOnly = true;
+        return this;
     }
 
     protected boolean checkHeardEntities() {
@@ -77,11 +82,13 @@ public class FleeEntityGoal<T extends LivingEntity> extends Goal {
 
     @Override
     public boolean canUse() {
-        int range = (int) mob.getAttributeValue(Attributes.FOLLOW_RANGE);
-        fleeConditions.range(range);
-        LivingEntity nearestEntity = mob.level.getNearestEntity(mob.level.getEntitiesOfClass(fleeClass,
-                mob.getBoundingBox().inflate(range, range/2, range), (entity) -> true), fleeConditions, mob, mob.getX(), mob.getY(), mob.getZ());
-        if(nearestEntity != null) avoidPos = nearestEntity.position();
+        if(!hearingOnly) {
+            int range = (int) mob.getAttributeValue(Attributes.FOLLOW_RANGE);
+            fleeConditions.range(range);
+            LivingEntity nearestEntity = mob.level.getNearestEntity(mob.level.getEntitiesOfClass(fleeClass,
+                    mob.getBoundingBox().inflate(range, range/2, range), (entity) -> true), fleeConditions, mob, mob.getX(), mob.getY(), mob.getZ());
+            if(nearestEntity != null) avoidPos = nearestEntity.position();
+        }
         checkHeardEntities();
         return updatePath();
     }

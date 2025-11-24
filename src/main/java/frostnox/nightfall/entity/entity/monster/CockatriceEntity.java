@@ -11,6 +11,8 @@ import frostnox.nightfall.entity.IOrientedHitBoxes;
 import frostnox.nightfall.entity.ai.goal.*;
 import frostnox.nightfall.entity.ai.goal.target.TrackNearestTargetGoal;
 import frostnox.nightfall.entity.entity.Diet;
+import frostnox.nightfall.entity.entity.animal.DrakefowlBabyEntity;
+import frostnox.nightfall.entity.entity.animal.DrakefowlEntity;
 import frostnox.nightfall.network.NetworkHandler;
 import frostnox.nightfall.network.message.GenericEntityToClient;
 import frostnox.nightfall.registry.ActionsNF;
@@ -92,7 +94,7 @@ public class CockatriceEntity extends HungryMonsterEntity implements IOrientedHi
     @Override
     protected void registerGoals() {
         goalSelector.addGoal(1, new FloatAtHeightGoal(this, 0.8D));
-        goalSelector.addGoal(2, new StepUpFleeEntityGoal<>(this, LivingEntity.class, 1.6D, 1.8D, (entity) -> {
+        goalSelector.addGoal(2, new StepUpLandFleeEntityGoal<>(this, LivingEntity.class, 1.6D, 1.8D, (entity) -> {
             if(entity.isDeadOrDying()) return false;
             else return entity.getType().is(TagsNF.COCKATRICE_PREDATOR);
         }));
@@ -141,7 +143,7 @@ public class CockatriceEntity extends HungryMonsterEntity implements IOrientedHi
 
     @Override
     public boolean canAttack(LivingEntity target) {
-        return target.canBeSeenAsEnemy() && !(target instanceof CockatriceEntity);
+        return target.canBeSeenAsEnemy() && !(target instanceof CockatriceEntity || target instanceof DrakefowlEntity || target instanceof DrakefowlBabyEntity);
     }
 
     @Override

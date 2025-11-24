@@ -82,7 +82,7 @@ public class BreedGoal extends Goal {
          entity.getLookControl().setLookAt(partner, entity.getMaxYRotPerTick(), entity.getMaxXRotPerTick());
          if(MathUtil.getShortestDistanceSqrBoxToBox(entity.getBoundingBox(), partner.getBoundingBox()) < 0.5 * 0.5) {
             breedTimer++;
-            if(breedTimer > 30) entity.breedPair(partner);
+            if(breedTimer > 20) entity.breedPair(partner);
             else entity.startAction(entity.getBreedAction());
          }
          else {

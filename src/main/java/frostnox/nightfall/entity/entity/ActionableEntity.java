@@ -67,6 +67,7 @@ import net.minecraft.world.level.gameevent.*;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
@@ -656,6 +657,31 @@ public abstract class ActionableEntity extends PathfinderMob {
         }
     }
 
+    public boolean canReceiveAlert(ActionableEntity alerter) {
+        return false;
+    }
+
+    protected double getHurtAlertRange() {
+        return 0;
+    }
+
+    @Override
+    public boolean hurt(DamageSource pSource, float pAmount) {
+        if(super.hurt(pSource, pAmount)) {
+            if(!level.isClientSide) {
+                double alertRange = getHurtAlertRange();
+                if(alertRange > 0 && getLastHurtByMob() != null) {
+                    for(ActionableEntity ally : level.getEntitiesOfClass(ActionableEntity.class, AABB.unitCubeFromLowerCorner(getEyePosition()).inflate(alertRange, alertRange, alertRange),
+                            (ally) -> ally.canReceiveAlert(this) && ally.getTarget() == null && ally.canAttack(getLastHurtByMob()))) {
+                        ally.setTarget(getLastHurtByMob());
+                    }
+                }
+            }
+            return true;
+        }
+        else return false;
+    }
+
     @Override
     public boolean isInWall() {
         if(level.isClientSide) return false;
@@ -672,6 +698,7 @@ public abstract class ActionableEntity extends PathfinderMob {
                 ((ServerLevel)level).getChunkSource().broadcast(this, new ClientboundSetEntityLinkPacket(this, (Entity)null));
             }
         }
+        clearRestriction();
     }
 
     @Override

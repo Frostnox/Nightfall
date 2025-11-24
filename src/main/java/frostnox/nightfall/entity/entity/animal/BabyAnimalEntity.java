@@ -49,6 +49,11 @@ public abstract class BabyAnimalEntity extends ActionableEntity {
     }
 
     @Override
+    protected double getHurtAlertRange() {
+        return 10;
+    }
+
+    @Override
     public boolean canBeLeashed(Player pPlayer) {
         return !isLeashed();
     }

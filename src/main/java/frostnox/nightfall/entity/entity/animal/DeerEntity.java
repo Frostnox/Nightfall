@@ -85,7 +85,7 @@ public class DeerEntity extends AnimalEntity implements IOrientedHitBoxes {
     @Override
     protected void registerGoals() {
         goalSelector.addGoal(1, new FloatAtHeightGoal(this, 0.9D));
-        goalSelector.addGoal(2, new StepUpFleeEntityGoal<>(this, LivingEntity.class, 1.6D, 1.8D, (entity) -> {
+        goalSelector.addGoal(2, new StepUpLandFleeEntityGoal<>(this, LivingEntity.class, 1.6D, 1.8D, (entity) -> {
             if(entity.isDeadOrDying()) return false;
             else if(entity instanceof Player player) return !player.isCreative() && !player.isSpectator();
             else return entity.getType().is(TagsNF.DEER_PREDATOR);

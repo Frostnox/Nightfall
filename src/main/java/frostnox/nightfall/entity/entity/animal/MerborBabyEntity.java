@@ -2,6 +2,7 @@ package frostnox.nightfall.entity.entity.animal;
 
 import com.mojang.math.Vector3d;
 import com.mojang.math.Vector3f;
+import frostnox.nightfall.capability.ChunkData;
 import frostnox.nightfall.data.TagsNF;
 import frostnox.nightfall.entity.EntityPart;
 import frostnox.nightfall.entity.IOrientedHitBoxes;
@@ -16,20 +17,24 @@ import frostnox.nightfall.registry.forge.SoundsNF;
 import frostnox.nightfall.util.animation.AnimationData;
 import frostnox.nightfall.util.math.OBB;
 import frostnox.nightfall.world.ContinentalWorldType;
+import frostnox.nightfall.world.generation.ContinentalChunkGenerator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
+import javax.annotation.Nullable;
 import java.util.EnumMap;
 
 public class MerborBabyEntity extends BabyAnimalEntity implements IOrientedHitBoxes {
@@ -37,7 +42,7 @@ public class MerborBabyEntity extends BabyAnimalEntity implements IOrientedHitBo
     protected static final EntityDataAccessor<MerborEntity.Type> TYPE = SynchedEntityData.defineId(MerborEntity.class, DataSerializersNF.MERBOR_TYPE);
 
     public MerborBabyEntity(EntityType<? extends ActionableEntity> type, Level level) {
-        super(type, level, (int) ContinentalWorldType.DAY_LENGTH * 3);
+        super(type, level, (int) ContinentalWorldType.DAY_LENGTH * 5);
     }
 
     public static AttributeSupplier.Builder getAttributeMap() {
@@ -62,6 +67,7 @@ public class MerborBabyEntity extends BabyAnimalEntity implements IOrientedHitBo
         MerborEntity adult = random.nextBoolean() ? EntitiesNF.MERBOR_TUSKER.get().create(level) : EntitiesNF.MERBOR_SOW.get().create(level);
         adult.finalizeSpawn((ServerLevel) level, level.getCurrentDifficultyAt(blockPosition()), MobSpawnType.CONVERSION, new MerborEntity.GroupData(getMerborType()), null);
         adult.getEntityData().set(TamableAnimalEntity.TAMED, true);
+        adult.getEntityData().set(MerborEntity.SPECIAL, isSpecial());
         return adult;
     }
 
@@ -69,25 +75,48 @@ public class MerborBabyEntity extends BabyAnimalEntity implements IOrientedHitBo
     protected void registerGoals() {
         goalSelector.addGoal(1, new FloatAtHeightGoal(this, 0.4D));
         goalSelector.addGoal(2, new FollowParentGoal(this, 1.1D));
-        goalSelector.addGoal(3, new FleeEntityGoal<>(this, LivingEntity.class, 1.1D, 1.1D, (entity) -> {
+        goalSelector.addGoal(3, new FleeEntityGoal<>(this, LivingEntity.class, 1.15D, 1.15D, (entity) -> {
             if(entity.isDeadOrDying()) return false;
             else return entity.getType().is(TagsNF.MERBOR_PREDATOR);
         }));
-        goalSelector.addGoal(4, new FleeDamageGoal(this, 1.1D));
+        goalSelector.addGoal(4, new FleeDamageGoal(this, 1.15D));
         goalSelector.addGoal(5, new RandomLookGoal(this, 0.02F));
-        targetSelector.addGoal(1, new TrackNearestTargetGoal<>(this, MerborEntity.class, true, (entity) -> {
-            if(entity.isDeadOrDying()) return false;
-            else return ((MerborEntity) entity).sex == Sex.FEMALE;
+        targetSelector.addGoal(1, new TrackNearestTargetGoal<>(this, MerborEntity.class, false, (entity) -> {
+            if(entity.isDeadOrDying() || !(entity instanceof MerborEntity merbor)) return false;
+            else return merbor.sex == Sex.FEMALE;
         }));
-        targetSelector.addGoal(2, new TrackNearestTargetGoal<>(this, MerborEntity.class, true, (entity) -> {
-            if(entity.isDeadOrDying()) return false;
-            else return ((MerborEntity) entity).sex == Sex.MALE;
+        targetSelector.addGoal(2, new TrackNearestTargetGoal<>(this, MerborEntity.class, false, (entity) -> {
+            if(entity.isDeadOrDying()|| !(entity instanceof MerborEntity merbor)) return false;
+            else return merbor.sex == Sex.MALE;
         }));
     }
 
     @Override
+    @Nullable
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+        spawnDataIn = super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+        MerborEntity.Type type = null;
+        if(spawnDataIn instanceof MerborEntity.GroupData data) type = data.type;
+        else {
+            if(worldIn.getLevel().getChunkSource().getGenerator() instanceof ContinentalChunkGenerator gen) {
+                float elevation = gen.getElevation(getBlockX(), getBlockZ());
+                if(elevation > -0.6F && elevation < 0.295F) type = MerborEntity.Type.BRINE;
+            }
+            if(type == null) {
+                float temperature = ChunkData.get(worldIn.getLevel().getChunkAt(blockPosition())).getTemperature(blockPosition());
+                if(temperature > 0.7F) type = MerborEntity.Type.BOG;
+                else type = MerborEntity.Type.RIVER;
+            }
+            spawnDataIn = new MerborEntity.GroupData(type);
+        }
+        getEntityData().set(TYPE, type);
+        if(random.nextInt() % 2048 == 0) getEntityData().set(SPECIAL, true);
+        return spawnDataIn;
+    }
+
+    @Override
     public float getVisionAngle() {
-        return 100F;
+        return 115F;
     }
 
     @Override

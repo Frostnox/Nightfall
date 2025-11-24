@@ -146,7 +146,7 @@ public class WideSwingLeft extends PlayerAttack implements IClientAction {
 
     @Override
     public int getDamageEndFrame(int state, LivingEntity user) {
-        return getDuration(state, user) - 2;
+        return getDuration(state, user) - 3;
     }
 
     @Override

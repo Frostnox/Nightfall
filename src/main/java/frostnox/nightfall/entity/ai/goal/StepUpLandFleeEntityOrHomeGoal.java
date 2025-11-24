@@ -9,12 +9,12 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.function.Predicate;
 
-public class StepUpFleeEntityOrHomeGoal<T extends LivingEntity> extends StepUpFleeEntityGoal<T> {
-    public StepUpFleeEntityOrHomeGoal(ActionableEntity mob, Class<T> fleeClass, double walkSpeedModifier, double sprintSpeedModifier) {
+public class StepUpLandFleeEntityOrHomeGoal<T extends LivingEntity> extends StepUpLandFleeEntityGoal<T> {
+    public StepUpLandFleeEntityOrHomeGoal(ActionableEntity mob, Class<T> fleeClass, double walkSpeedModifier, double sprintSpeedModifier) {
         super(mob, fleeClass, walkSpeedModifier, sprintSpeedModifier);
     }
 
-    public StepUpFleeEntityOrHomeGoal(ActionableEntity mob, Class<T> fleeClass, double walkSpeedModifier, double sprintSpeedModifier, Predicate<LivingEntity> fleePredicate) {
+    public StepUpLandFleeEntityOrHomeGoal(ActionableEntity mob, Class<T> fleeClass, double walkSpeedModifier, double sprintSpeedModifier, Predicate<LivingEntity> fleePredicate) {
         super(mob, fleeClass, walkSpeedModifier, sprintSpeedModifier, fleePredicate);
     }
 

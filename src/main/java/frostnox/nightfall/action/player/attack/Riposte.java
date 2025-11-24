@@ -145,4 +145,14 @@ public class Riposte extends PlayerAttack {
     public int getBlockHitFrame(int state, LivingEntity user) {
         return Math.max(1, super.getBlockHitFrame(state, user) - 2);
     }
+
+    @Override
+    public int getDamageStartFrame(int state) {
+        return 1;
+    }
+
+    @Override
+    public int getDamageEndFrame(int state, LivingEntity user) {
+        return getDuration(state, user) - 2;
+    }
 }
