@@ -187,7 +187,7 @@ public abstract class EggNestBlock extends BaseEntityBlock implements ITimeSimul
     @Override
     public void simulateTime(ServerLevel level, LevelChunk chunk, IChunkData chunkData, BlockPos pos, BlockState state, long elapsedTime, long gameTime, long dayTime, long seasonTime, float seasonalTemp, double randomTickChance, Random random) {
         if(level.getBlockEntity(pos) instanceof EggNestBlockEntity nest) {
-
+            //TODO:
         }
     }
 }

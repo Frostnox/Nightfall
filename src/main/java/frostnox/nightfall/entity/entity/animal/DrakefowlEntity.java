@@ -11,6 +11,7 @@ import frostnox.nightfall.entity.IOrientedHitBoxes;
 import frostnox.nightfall.entity.Sex;
 import frostnox.nightfall.entity.ai.goal.*;
 import frostnox.nightfall.entity.ai.goal.target.TrackNearestTargetGoal;
+import frostnox.nightfall.entity.ai.pathfinding.ReversePath;
 import frostnox.nightfall.entity.entity.ActionableEntity;
 import frostnox.nightfall.entity.entity.Diet;
 import frostnox.nightfall.entity.entity.monster.CockatriceEntity;
@@ -57,24 +58,7 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
     private final Goal fleePlayerGoal = new FleeEntityGoal<>(this, Player.class, 1.3D, 1.4D).hearingOnly();
     private final Goal breedGoal = new BreedGoal(this, 0.8);
     private final Goal lureGoal = new LureGoal(this, 10, 0.9D);
-    private final Goal eggGoal = new LayEggGoal(this, BlocksNF.DRAKEFOWL_NEST, 1) {
-        @Override
-        protected boolean isNestSpotValid(BlockPos pos) {
-            return super.isNestSpotValid(pos) && mob.level.getBlockState(pos.below()).is(TagsNF.DRAKEFOWL_NEST_BLOCK);
-        }
-
-        @Override
-        public boolean canUse() {
-            if(LevelUtil.isDayTimeWithin(mob.level, LevelUtil.MORNING_TIME, LevelUtil.NIGHT_TIME)) return false;
-            else return super.canUse();
-        }
-
-        @Override
-        public boolean canContinueToUse() {
-            if(LevelUtil.isDayTimeWithin(mob.level, LevelUtil.MORNING_TIME, LevelUtil.NIGHT_TIME)) return false;
-            else return super.canContinueToUse();
-        }
-    };
+    private final Goal eggGoal = new LayEggGoal(this, BlocksNF.DRAKEFOWL_NEST, 0.8);
     public float flap, flapSpeed, oFlapSpeed, oFlap, flapping = 1.0F, nextFlap = 1.0F;
     protected int ticksOffGround = 0;
     public @Nullable Type fatherType;
@@ -108,6 +92,11 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
 
     public DrakefowlEntity.Type getDrakefowlType() {
         return getEntityData().get(TYPE);
+    }
+
+    @Override
+    public boolean canBreed() {
+        return breedTime > 0 && comfortable;
     }
 
     @Override
@@ -208,7 +197,10 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
             @Override
             protected @Nullable Vec3 getPosition() {
                 Vec3 pos = super.getPosition();
-                return (pos != null && mob.level.getBlockState(new BlockPos(pos)).is(BlocksNF.DRAKEFOWL_NEST.get())) ? null : pos;
+                if(pos == null) return null;
+                ReversePath path = entity.getNavigator().findPath(pos.x, pos.y, pos.z, 1);
+                if(path == null) return null;
+                return mob.level.getBlockState(path.getEndNode().getBlockPos()).is(BlocksNF.DRAKEFOWL_NEST.get()) ? null : pos;
             }
         });
         goalSelector.addGoal(12, new RandomLookGoal(this, 0.02F / 3));

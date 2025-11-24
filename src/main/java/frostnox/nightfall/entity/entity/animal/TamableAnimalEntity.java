@@ -3,7 +3,6 @@ package frostnox.nightfall.entity.entity.animal;
 import frostnox.nightfall.capability.PlayerData;
 import frostnox.nightfall.entity.ITamable;
 import frostnox.nightfall.entity.Sex;
-import frostnox.nightfall.entity.entity.ActionableEntity;
 import frostnox.nightfall.network.NetworkHandler;
 import frostnox.nightfall.network.message.GenericEntityToClient;
 import frostnox.nightfall.network.message.entity.EatItemToClient;
@@ -15,14 +14,12 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.WrappedGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
 
 import java.util.Iterator;
 
@@ -85,7 +82,7 @@ public abstract class TamableAnimalEntity extends AnimalEntity implements ITamab
     }
 
     protected void onFeed() {
-        breedTime = 20 * 20;
+        breedTime = 20 * 15;
     }
 
     public abstract boolean canBreedWith(TamableAnimalEntity other);
@@ -180,8 +177,15 @@ public abstract class TamableAnimalEntity extends AnimalEntity implements ITamab
     @Override
     protected void simulateTime(int timePassed) {
         super.simulateTime(timePassed);
-        if(isAlive()) {
-            //TODO:
+        if(isAlive() && !isRemoved()) {
+            breedTime = Math.max(0, breedTime - timePassed);
+            if(gestationTime > 0) {
+                gestationTime -= timePassed;
+                if(gestationTime <= 0) {
+                    onGestationEnd();
+                    gestationTime = 0;
+                }
+            }
         }
     }
 

@@ -284,11 +284,13 @@ public class MerborEntity extends TamableAnimalEntity implements IOrientedHitBox
     @Override
     protected void onGestationEnd() {
         if(!level.isClientSide) {
+            int age = Math.abs(gestationTime); //Age will be negative overflow from time simulation
             for(int i = 0; i < (random.nextBoolean() ? 2 : 1); i++) {
                 MerborBabyEntity piglet =  EntitiesNF.MERBOR_PIGLET.get().create(level);
                 piglet.moveTo(getX(), getY(), getZ(), level.random.nextFloat() * 360, 0);
                 piglet.finalizeSpawn((ServerLevel) level, level.getCurrentDifficultyAt(blockPosition()), MobSpawnType.BREEDING, new GroupData(fatherType), null);
                 level.addFreshEntity(piglet);
+                piglet.setAge(age);
             }
         }
         fatherType = null;

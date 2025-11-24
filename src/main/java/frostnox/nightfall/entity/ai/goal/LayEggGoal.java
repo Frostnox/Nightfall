@@ -2,6 +2,7 @@ package frostnox.nightfall.entity.ai.goal;
 
 import frostnox.nightfall.block.block.eggnest.EggNestBlock;
 import frostnox.nightfall.block.block.eggnest.EggNestBlockEntity;
+import frostnox.nightfall.data.TagsNF;
 import frostnox.nightfall.entity.ai.pathfinding.ReversePath;
 import frostnox.nightfall.entity.entity.animal.DrakefowlEntity;
 import frostnox.nightfall.util.LevelUtil;
@@ -36,35 +37,38 @@ public class LayEggGoal extends Goal {
     }
 
     protected boolean isNestSpotValid(BlockPos pos) {
-        return !LevelUtil.isSkyUnobstructed(mob.level, pos);
+        return !LevelUtil.isSkyUnobstructed(mob.level, pos) && mob.level.getBlockState(pos.below()).is(TagsNF.DRAKEFOWL_NEST_BLOCK);
     }
 
     @Override
     public boolean canUse() {
+        if(mob.getBreedTime() > 0) return false;
         pos = null;
         blockPos = null;
-        List<BlockEntity> nests = LevelUtil.getBlockEntities(mob.level, mob.blockPosition(), 16, (entity) -> entity instanceof EggNestBlockEntity);
-        nests.sort(Comparator.comparingDouble(entity -> {
-            BlockPos pos = entity.getBlockPos();
-            return mob.distanceToSqr(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
-        }));
-        for(BlockEntity entity : nests) {
-            EggNestBlockEntity nest = (EggNestBlockEntity) entity;
-            if(!nest.occupied) {
-                BlockPos nestPos = nest.getBlockPos();
-                if(!LevelUtil.isSkyUnobstructed(mob.level, nestPos)) {
-                    if(mob.distanceToSqr(nestPos.getX() + 0.5, nestPos.getY(), nestPos.getZ() + 0.5) < 0.5 * 0.5) {
-                        pos = new Vec3(nestPos.getX() + 0.5, nestPos.getY(), nestPos.getZ() + 0.5);
-                        blockPos = new BlockPos(pos);
-                        break;
-                    }
-                    else {
-                        path = mob.getNavigator().findPath(nestPos, 0);
-                        if(path != null && path.reachesGoal()) {
+        if(mob.getGestationTime() > 0 || LevelUtil.isDayTimeWithin(mob.level, LevelUtil.NIGHT_TIME, LevelUtil.MORNING_TIME)) {
+            List<BlockEntity> nests = LevelUtil.getBlockEntities(mob.level, mob.blockPosition(), 16, (entity) -> entity instanceof EggNestBlockEntity);
+            nests.sort(Comparator.comparingDouble(entity -> {
+                BlockPos pos = entity.getBlockPos();
+                return mob.distanceToSqr(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
+            }));
+            for(BlockEntity entity : nests) {
+                EggNestBlockEntity nest = (EggNestBlockEntity) entity;
+                if(!nest.occupied && (mob.getGestationTime() <= 0 || nest.getBlockState().getValue(EggNestBlock.EGGS) < 4)) {
+                    BlockPos nestPos = nest.getBlockPos();
+                    if(!LevelUtil.isSkyUnobstructed(mob.level, nestPos)) {
+                        if(mob.distanceToSqr(nestPos.getX() + 0.5, nestPos.getY(), nestPos.getZ() + 0.5) < 0.5 * 0.5) {
                             pos = new Vec3(nestPos.getX() + 0.5, nestPos.getY(), nestPos.getZ() + 0.5);
                             blockPos = new BlockPos(pos);
-                            nest.occupied = true;
                             break;
+                        }
+                        else {
+                            path = mob.getNavigator().findPath(nestPos, 0);
+                            if(path != null && path.reachesGoal()) {
+                                pos = new Vec3(nestPos.getX() + 0.5, nestPos.getY(), nestPos.getZ() + 0.5);
+                                blockPos = new BlockPos(pos);
+                                nest.occupied = true;
+                                break;
+                            }
                         }
                     }
                 }
@@ -105,7 +109,10 @@ public class LayEggGoal extends Goal {
 
     @Override
     public boolean canContinueToUse() {
-         return !mob.getNavigator().isDone() || mob.level.getBlockEntity(blockPos) instanceof EggNestBlockEntity || isNestSpotValid(blockPos);
+        if(mob.getBreedTime() > 0) return false;
+        else if(LevelUtil.isDayTimeWithin(mob.level, LevelUtil.MORNING_TIME, LevelUtil.NIGHT_TIME) && mob.getGestationTime() <= 0) return false;
+        else if(mob.level.getBlockEntity(blockPos) instanceof EggNestBlockEntity nest) return mob.getGestationTime() <= 0 || nest.getBlockState().getValue(EggNestBlock.EGGS) < 4;
+        else return !mob.getNavigator().isDone() || isNestSpotValid(blockPos);
     }
 
     @Override
@@ -139,7 +146,7 @@ public class LayEggGoal extends Goal {
                 }
             }
             mob.getLookControl().setLookAt(mob.getX() + lookX, mob.getEyeY(), mob.getZ() + lookZ);
-            if(mob.getGestationTime() > 0 && mob.isComfortable() && mob.getRandom().nextInt(20 * 80) == 0) {
+            if(mob.getGestationTime() > 0 && mob.isComfortable() && mob.getRandom().nextInt(20) == 0) {
                 if(mob.level.getBlockEntity(blockPos) instanceof EggNestBlockEntity nest) {
                     for(int i = 0; i < nest.hatchTimes.length; i++) {
                         if(nest.hatchTimes[i] == 0) {
