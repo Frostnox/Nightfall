@@ -37,7 +37,7 @@ repositories {
 }
 
 
-version = '1.11.0b'
+version = '1.12.0b'
 group = 'frostnox.nightfall' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'nightfall'
 

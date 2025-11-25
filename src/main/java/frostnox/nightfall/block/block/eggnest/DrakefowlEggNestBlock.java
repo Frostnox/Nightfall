@@ -25,11 +25,12 @@ public class DrakefowlEggNestBlock extends EggNestBlock {
     }
 
     @Override
-    protected LivingEntity hatchBaby(ServerLevel level, BlockPos pos, int data) {
+    protected LivingEntity hatchBaby(ServerLevel level, BlockPos pos, int data, int age) {
         DrakefowlBabyEntity chick =  EntitiesNF.DRAKEFOWL_CHICK.get().create(level);
         chick.moveTo(pos, level.random.nextFloat() * 360, 0);
         chick.finalizeSpawn(level, level.getCurrentDifficultyAt(pos), MobSpawnType.BREEDING, new DrakefowlEntity.GroupData(DrakefowlEntity.Type.values()[data]), null);
         level.addFreshEntity(chick);
+        chick.setAge(age);
         return chick;
     }
 

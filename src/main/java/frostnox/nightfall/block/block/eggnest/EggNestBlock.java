@@ -10,6 +10,8 @@ import frostnox.nightfall.capability.LevelData;
 import frostnox.nightfall.entity.entity.Diet;
 import frostnox.nightfall.registry.forge.BlockEntitiesNF;
 import frostnox.nightfall.util.LevelUtil;
+import frostnox.nightfall.world.Season;
+import it.unimi.dsi.fastutil.longs.LongLongPair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -55,7 +57,7 @@ public abstract class EggNestBlock extends BaseEntityBlock implements ITimeSimul
         registerDefaultState(defaultBlockState().setValue(EGGS, 0));
     }
 
-    protected abstract LivingEntity hatchBaby(ServerLevel level, BlockPos pos, int data);
+    protected abstract LivingEntity hatchBaby(ServerLevel level, BlockPos pos, int data, int age);
 
     @Nullable
     @Override
@@ -110,9 +112,9 @@ public abstract class EggNestBlock extends BaseEntityBlock implements ITimeSimul
                     if(nest.hatchTimes[i] > 0) {
                         nest.hatchTimes[i] -= passedTicks;
                         if(nest.hatchTimes[i] <= 0) {
+                            hatchBaby(level, pos, nest.eggData[i], Math.abs(nest.hatchTimes[i]));
                             nest.hatchTimes[i] = 0;
                             eggs--;
-                            hatchBaby(level, pos, nest.eggData[i]);
                         }
                     }
                 }
@@ -124,9 +126,9 @@ public abstract class EggNestBlock extends BaseEntityBlock implements ITimeSimul
                 if(nest.hatchTimes[i] > 0) {
                     nest.hatchTimes[i] -= passedTicks;
                     if(nest.hatchTimes[i] <= 0) {
+                        hatchBaby(level, pos, nest.eggData[i], Math.abs(nest.hatchTimes[i]));
                         nest.hatchTimes[i] = 0;
                         eggs--;
-                        hatchBaby(level, pos, nest.eggData[i]);
                     }
                 }
             }
@@ -187,7 +189,47 @@ public abstract class EggNestBlock extends BaseEntityBlock implements ITimeSimul
     @Override
     public void simulateTime(ServerLevel level, LevelChunk chunk, IChunkData chunkData, BlockPos pos, BlockState state, long elapsedTime, long gameTime, long dayTime, long seasonTime, float seasonalTemp, double randomTickChance, Random random) {
         if(level.getBlockEntity(pos) instanceof EggNestBlockEntity nest) {
-            //TODO:
+            int eggs = state.getValue(EGGS);
+            elapsedTime = (gameTime - nest.lastProcessedTick) % (Season.YEAR_LENGTH + 1L); //Use time from nest, not chunk
+            float temperature = chunkData.getTemperature(pos);
+            float seasonalFreezeTemp = minTemp - temperature;
+            LongLongPair freezeWindow = Season.getTimesAtTemperatureInfluence(seasonalFreezeTemp);
+
+            long preFreezeTicks = Season.getTimePassedWithin(seasonTime, elapsedTime, (seasonTime - elapsedTime) % Season.YEAR_LENGTH, freezeWindow.firstLong());
+            for(int i = 0; i < nest.hatchTimes.length; i++) {
+                if(nest.hatchTimes[i] > 0) {
+                    int hatchTime = nest.hatchTimes[i];
+                    nest.hatchTimes[i] -= preFreezeTicks > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) preFreezeTicks;
+                    if(nest.hatchTimes[i] <= 0) {
+                        hatchBaby(level, pos, nest.eggData[i], (int) elapsedTime - hatchTime);
+                        nest.hatchTimes[i] = 0;
+                        eggs--;
+                    }
+                }
+            }
+            long freezeTicks = Season.getTimePassedWithin(seasonTime, elapsedTime, freezeWindow.firstLong(), freezeWindow.secondLong());
+            if(freezeTicks > 0) {
+                for(int i = 0; i < nest.hatchTimes.length; i++) {
+                    if(nest.hatchTimes[i] > 0) nest.hatchTimes[i] = -1; //Eggs died
+                }
+            }
+            else {
+                long postFreezeTicks = elapsedTime - preFreezeTicks - freezeTicks;
+                for(int i = 0; i < nest.hatchTimes.length; i++) {
+                    if(nest.hatchTimes[i] > 0) {
+                        int hatchTime = nest.hatchTimes[i];
+                        nest.hatchTimes[i] -= postFreezeTicks > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) postFreezeTicks;
+                        if(nest.hatchTimes[i] <= 0) {
+                            hatchBaby(level, pos, nest.eggData[i], (int) elapsedTime - hatchTime);
+                            nest.hatchTimes[i] = 0;
+                            eggs--;
+                        }
+                    }
+                }
+            }
+
+            nest.lastProcessedTick = level.getGameTime();
+            if(eggs != state.getValue(EGGS)) level.setBlock(pos, state.setValue(EGGS, eggs), 3);
         }
     }
 }
