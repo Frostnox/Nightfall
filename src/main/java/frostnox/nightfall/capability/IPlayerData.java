@@ -191,6 +191,14 @@ public interface IPlayerData {
 
     void setUndeadKilledThisNight(int value);
 
+    float getTemperature();
+
+    void setTemperature(float temperature);
+
+    float getCachedHeatTemperature();
+
+    void setCachedHeatTemperature(float temperature);
+
     void advanceStage(ResourceLocation id);
 
     void unlockEntry(ResourceLocation id);

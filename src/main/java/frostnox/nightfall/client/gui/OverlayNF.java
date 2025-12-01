@@ -2,7 +2,7 @@ package frostnox.nightfall.client.gui;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.*;
 import frostnox.nightfall.Nightfall;
 import frostnox.nightfall.capability.PlayerData;
 import frostnox.nightfall.client.ClientEngine;
@@ -35,6 +35,8 @@ import java.util.Random;
 
 public abstract class OverlayNF extends GuiComponent {
     public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "textures/gui/overlay.png");
+    public static final ResourceLocation HOT_VIGNETTE = ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "textures/gui/hot_vignette.png");
+    public static final ResourceLocation COLD_VIGNETTE = ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "textures/gui/cold_vignette.png");
     private static boolean registered = false;
     protected final static Random random = new Random();
     private static int lastHealth, displayHealth;
@@ -93,6 +95,18 @@ public abstract class OverlayNF extends GuiComponent {
                             }
                         }
                     });
+            OverlayRegistry.registerOverlayAbove(ForgeIngameGui.FROSTBITE_ELEMENT, "TemperatureVignette", (gui, mStack, partialTicks, screenWidth, screenHeight) -> {
+                if(mc.player != null && !mc.player.isSpectator()) {
+                    gui.setupOverlayRenderState(true, false);
+                    float temperature = PlayerData.get(mc.player).getTemperature();
+                    if(temperature < 0.25) {
+                        renderTextureOverlay(COLD_VIGNETTE, temperature < 0 ? 1 : (1F - (temperature / 0.25F)));
+                    }
+                    else if(temperature > 1) {
+                        renderTextureOverlay(HOT_VIGNETTE, Math.min((temperature - 1) / 0.25F, 1));
+                    }
+                }
+            });
             OverlayRegistry.enableOverlay(ForgeIngameGui.AIR_LEVEL_ELEMENT, false);
             OverlayRegistry.enableOverlay(ForgeIngameGui.ARMOR_LEVEL_ELEMENT, false);
             OverlayRegistry.enableOverlay(ForgeIngameGui.PLAYER_HEALTH_ELEMENT, false);
@@ -259,6 +273,28 @@ public abstract class OverlayNF extends GuiComponent {
 
         RenderSystem.disableBlend();
         RenderSystem.setShaderTexture(0, GUI_ICONS_LOCATION);
+    }
+
+    protected static void renderTextureOverlay(ResourceLocation texture, float alpha) {
+        RenderSystem.disableDepthTest();
+        RenderSystem.depthMask(false);
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, alpha);
+        RenderSystem.setShaderTexture(0, texture);
+        Tesselator tesselator = Tesselator.getInstance();
+        BufferBuilder bufferbuilder = tesselator.getBuilder();
+        bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+        int width = Minecraft.getInstance().getWindow().getGuiScaledWidth();
+        int height = Minecraft.getInstance().getWindow().getGuiScaledHeight();
+        bufferbuilder.vertex(0.0D, height, -90.0D).uv(0.0F, 1.0F).endVertex();
+        bufferbuilder.vertex(width, height, -90.0D).uv(1.0F, 1.0F).endVertex();
+        bufferbuilder.vertex(width, 0.0D, -90.0D).uv(1.0F, 0.0F).endVertex();
+        bufferbuilder.vertex(0.0D, 0.0D, -90.0D).uv(0.0F, 0.0F).endVertex();
+        tesselator.end();
+        RenderSystem.depthMask(true);
+        RenderSystem.enableDepthTest();
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
     //Simpler crosshair rendering, removes the debug axes & attack cooldown logic

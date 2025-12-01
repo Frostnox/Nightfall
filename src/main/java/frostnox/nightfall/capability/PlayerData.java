@@ -31,6 +31,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -97,7 +98,8 @@ public class PlayerData implements IPlayerData {
     private boolean godmode = false; //Makes player invulnerable to damage
     private boolean needsAttributeSelection = true; //Permits access to attribute selection screen
     private final EnumMap<PlayerAttribute, Integer> attributePoints = new EnumMap<>(PlayerAttribute.class); //+/- points for each attribute
-    private int undeadKilled = 0, undeadPursuers = 0;
+    private int undeadKilled = 0;
+    private float temperature = 0.5F, cachedHeatTemp = -1;
     //Stamina
     private double stamina;
     private double lastStamina; //Last seen stamina value
@@ -679,6 +681,26 @@ public class PlayerData implements IPlayerData {
     }
 
     @Override
+    public float getTemperature() {
+        return temperature;
+    }
+
+    @Override
+    public void setTemperature(float temperature) {
+        this.temperature = Mth.clamp(temperature, -0.25F, 1.25F);
+    }
+
+    @Override
+    public float getCachedHeatTemperature() {
+        return cachedHeatTemp;
+    }
+
+    @Override
+    public void setCachedHeatTemperature(float temperature) {
+        cachedHeatTemp = temperature;
+    }
+
+    @Override
     public String getMainUUID() {
         return mainUUID;
     }
@@ -935,6 +957,7 @@ public class PlayerData implements IPlayerData {
         tag.put("accessoryInventory", accessoryInventory.save());
         tag.putInt("lastInventoryCapacity", lastInventoryCapacity);
         tag.putInt("undeadKilled", undeadKilled);
+        tag.putFloat("temperature", temperature);
         tag.putBoolean("godmode", godmode);
         tag.putBoolean("needsAttributeSelection", needsAttributeSelection);
         for(PlayerAttribute key : attributePoints.keySet()) {
@@ -973,6 +996,7 @@ public class PlayerData implements IPlayerData {
         accessoryInventory.load(tag.getList("accessoryInventory", 10));
         lastInventoryCapacity = tag.getInt("lastInventoryCapacity");
         undeadKilled = tag.getInt("undeadKilled");
+        temperature = tag.getFloat("temperature");
         godmode = tag.getBoolean("godmode");
         if(tag.contains("needsAttributeSelection")) needsAttributeSelection = tag.getBoolean("needsAttributeSelection");
         for(PlayerAttribute key : attributePoints.keySet()) {

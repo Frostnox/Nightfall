@@ -222,6 +222,7 @@ public class TagsNF {
     public static final TagKey<Item> CRUSHABLE_TO_LIME = itemTag("crushable_to_lime");
     public static final TagKey<Item> CRUSHABLE_TO_BONE_SHARD = itemTag("crushable_to_bone_shard");
     public static final TagKey<Item> FLETCHING = itemTag("fletching");
+    public static final TagKey<Item> WARMING_ITEM = itemTag("warming_item");
     public static final TagKey<Item> CAULDRON_FLUID_MEAL = itemTag("cauldron_fluid_meal");
     public static final TagKey<Item> COOKED_MEAT = itemTag("cooked_meat");
     public static final TagKey<Item> CURED_MEAT = itemTag("cured_meat");

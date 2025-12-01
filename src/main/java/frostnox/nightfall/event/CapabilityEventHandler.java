@@ -309,6 +309,7 @@ public class CapabilityEventHandler {
         capP.setClimbing(false);
         capP.setLastMainItem();
         capP.setLastOffItem();
+        capP.setTemperature(0.5F);
         NetworkHandler.toClient((ServerPlayer) p, new ActionTrackerToClient(capA.writeNBT(), p.getId()));
         NetworkHandler.toClient((ServerPlayer) p, new PlayerDataToClient(capP.writeNBT(), p.getId()));
     }
@@ -388,6 +389,7 @@ public class CapabilityEventHandler {
         cCapP.setClimbing(false);
         cCapP.setLastMainItem();
         cCapP.setLastOffItem();
+        cCapP.setTemperature(0.5F);
         cCapP.setNeedsAttributeSelection(oCapP.needsAttributeSelection());
         for(PlayerAttribute attribute : PlayerAttribute.values()) {
             cCapP.setAttributePoints(attribute, oCapP.getAttributePoints(attribute));

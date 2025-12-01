@@ -7,10 +7,7 @@ import frostnox.nightfall.action.Action;
 import frostnox.nightfall.action.DamageType;
 import frostnox.nightfall.action.DamageTypeSource;
 import frostnox.nightfall.action.Poise;
-import frostnox.nightfall.block.IHoldable;
-import frostnox.nightfall.block.IMetal;
-import frostnox.nightfall.block.IMicroGrid;
-import frostnox.nightfall.block.TieredHeat;
+import frostnox.nightfall.block.*;
 import frostnox.nightfall.block.block.crucible.CrucibleContainer;
 import frostnox.nightfall.block.block.tree.TreeStemBlock;
 import frostnox.nightfall.block.fluid.MetalFluid;
@@ -43,6 +40,7 @@ import frostnox.nightfall.registry.vanilla.GameEventsNF;
 import frostnox.nightfall.util.*;
 import frostnox.nightfall.world.ILightSource;
 import frostnox.nightfall.world.MoonPhase;
+import frostnox.nightfall.world.Weather;
 import frostnox.nightfall.world.generation.ContinentalChunkGenerator;
 import frostnox.nightfall.world.inventory.AccessoryInventory;
 import frostnox.nightfall.world.inventory.AccessorySlot;
@@ -810,6 +808,62 @@ public class CommonEventHandler {
             if(action.getSound() != null && capA.getFrame() == 1 && !capA.hasHitPause() && capA.isDamaging() && player.getItemInHand(capP.getActiveHand()).getItem() instanceof IActionableItem) {
                 player.playSound(action.isChargeable() && capA.getCharge() >=  Math.round(action.getMaxCharge() * 0.75F) ? action.getExtraSound().get() : action.getSound().get(), 1F, 1F + level.random.nextFloat(-0.03F, 0.03F));
                 player.gameEvent(GameEventsNF.ACTION_SOUND);
+            }
+            //Update temperature
+            if(!level.isClientSide || ClientEngine.get().getPlayer() == player) {
+                float bodyTemp = capP.getTemperature();
+                ILevelData levelData = LevelData.isPresent(level) ? LevelData.get(level) : null;
+                IChunkData chunkData = levelData != null ? ChunkData.get(level.getChunkAt(player.blockPosition())) : null;
+                float temp = levelData != null ? levelData.getSeasonalTemperature(chunkData, player.blockPosition()) : 0.5F;
+                BlockPos eyePos = player.eyeBlockPosition();
+                if(level.canSeeSky(eyePos)) {
+                    if(LevelUtil.isDayTimeWithin(level, LevelUtil.MORNING_TIME, LevelUtil.NIGHT_TIME)) {
+                        if(levelData != null) {
+                            temp += switch(levelData.getWeather(chunkData, eyePos)) {
+                                case CLEAR -> 0.1F;
+                                case CLOUDS -> 0.05F;
+                                case RAIN -> -0.25F;
+                                case SNOW -> -0.1F;
+                                case FOG -> 0F;
+                            };
+                        }
+                        else if(level.isRainingAt(eyePos)) temp -= 0.2F;
+                    }
+                }
+                float heatTemp = capP.getCachedHeatTemperature();
+                if(player.tickCount % 20 == 0 || heatTemp < 0) {
+                    BlockPos feetPos = player.blockPosition();
+                    AABB playerBox = player.getBoundingBox();
+                    float minDistSqr = 2F * 2F;
+                    BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(feetPos.getX() - 2, feetPos.getY() - 1, feetPos.getZ() - 2);
+                    int ySize = (feetPos.getY() == eyePos.getY() ? 2 : 3);
+                    for(int i = 0; i < 5; i++) {
+                        for(int j = 0; j < 5; j++) {
+                            LevelChunk chunk = level.getChunkAt(pos);
+                            for(int k = 0; k < ySize; k++) {
+                                if(chunk.getBlockState(pos).getBlock() instanceof IHeatSource) {
+                                    float distSqr = MathUtil.getShortestDistanceSqrPointToBox(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, playerBox);
+                                    if(distSqr < minDistSqr) {
+                                        minDistSqr = distSqr;
+                                        heatTemp = 0.4F * (1F - (distSqr / (2 * 2)));
+                                    }
+                                }
+                                pos.setY(pos.getY() + 1);
+                            }
+                            pos.setZ(pos.getZ() + 1);
+                        }
+                        pos.setX(pos.getX() + 1);
+                    }
+                    capP.setCachedHeatTemperature(Math.max(0, heatTemp));
+                }
+                if(heatTemp < 0.05F && player.isHolding((stack) -> stack.is(TagsNF.WARMING_ITEM))) heatTemp = 0.05F;
+                temp += heatTemp;
+                if(player.isOnFire()) temp += 1F;
+                if(player.isInWater()) temp -= 0.25F;
+                float tempChange = Mth.clamp(Math.abs(temp - bodyTemp) / 1000, 0.0001F, 0.0005F);
+                bodyTemp = temp > bodyTemp ? Math.min(bodyTemp + tempChange, temp) : Math.max(bodyTemp - tempChange, temp);
+                Nightfall.LOGGER.info(bodyTemp);
+                capP.setTemperature(bodyTemp);
             }
             //Update accessories
             if(!level.isClientSide()) {

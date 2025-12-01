@@ -242,6 +242,7 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
         }
         tag(TagsNF.RAWHIDE_SMALL).add(ItemsNF.RAWHIDE.get());
         tag(TagsNF.FLETCHING).add(ItemsNF.SCARLET_FEATHER.get());
+        tag(TagsNF.WARMING_ITEM).add(ItemsNF.TORCH.get());
         tag(TagsNF.CAULDRON_FLUID_MEAL).add(ItemsNF.MEAT_STEW.get(), ItemsNF.VEGETABLE_STEW.get(), ItemsNF.HEARTY_STEW.get(), ItemsNF.HAM_ROAST.get(), ItemsNF.SUSPICIOUS_STEW.get(), ItemsNF.BOILED_EGG.get());
         tag(TagsNF.COOKED_MEAT).add(ItemsNF.COOKED_GAME.get(), ItemsNF.COOKED_POULTRY.get(), ItemsNF.COOKED_PORK.get(), ItemsNF.COOKED_VENISON.get(), ItemsNF.COOKED_PALE_FLESH.get());
         tag(TagsNF.CURED_MEAT).add(ItemsNF.CURED_GAME.get(), ItemsNF.CURED_POULTRY.get(), ItemsNF.CURED_PORK.get(), ItemsNF.CURED_VENISON.get(), ItemsNF.CURED_PALE_FLESH.get());
