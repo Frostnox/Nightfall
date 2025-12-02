@@ -361,6 +361,10 @@ public class RenderEventHandler {
                 else vec = calc.getTransformations();
                 stack.translate(vec.x(), vec.y(), vec.z());
             }
+            //Shivering
+            if(capP.isShivering()) {
+                stack.mulPose(Vector3f.YP.rotationDegrees((Mth.cos(player.tickCount * 3.25F) * MathUtil.PI * 0.03F)));
+            }
         }
     }
 

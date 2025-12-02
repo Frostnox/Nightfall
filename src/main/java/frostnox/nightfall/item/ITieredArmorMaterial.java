@@ -42,6 +42,8 @@ public interface ITieredArmorMaterial {
 
     Poise getPoise();
 
+    float getInsulation(EquipmentSlot slot);
+
     /**
      * @return percentage weight of slot, sum of all slots should be 1
      */

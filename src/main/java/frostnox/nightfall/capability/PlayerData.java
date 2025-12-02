@@ -100,6 +100,7 @@ public class PlayerData implements IPlayerData {
     private final EnumMap<PlayerAttribute, Integer> attributePoints = new EnumMap<>(PlayerAttribute.class); //+/- points for each attribute
     private int undeadKilled = 0;
     private float temperature = 0.5F, cachedHeatTemp = -1;
+    private boolean shivering = false;
     //Stamina
     private double stamina;
     private double lastStamina; //Last seen stamina value
@@ -701,6 +702,16 @@ public class PlayerData implements IPlayerData {
     }
 
     @Override
+    public boolean isShivering() {
+        return shivering;
+    }
+
+    @Override
+    public void setShivering(boolean shivering) {
+        this.shivering = shivering;
+    }
+
+    @Override
     public String getMainUUID() {
         return mainUUID;
     }
@@ -958,6 +969,7 @@ public class PlayerData implements IPlayerData {
         tag.putInt("lastInventoryCapacity", lastInventoryCapacity);
         tag.putInt("undeadKilled", undeadKilled);
         tag.putFloat("temperature", temperature);
+        tag.putBoolean("shivering", shivering);
         tag.putBoolean("godmode", godmode);
         tag.putBoolean("needsAttributeSelection", needsAttributeSelection);
         for(PlayerAttribute key : attributePoints.keySet()) {
@@ -997,6 +1009,7 @@ public class PlayerData implements IPlayerData {
         lastInventoryCapacity = tag.getInt("lastInventoryCapacity");
         undeadKilled = tag.getInt("undeadKilled");
         temperature = tag.getFloat("temperature");
+        shivering = tag.getBoolean("shivering");
         godmode = tag.getBoolean("godmode");
         if(tag.contains("needsAttributeSelection")) needsAttributeSelection = tag.getBoolean("needsAttributeSelection");
         for(PlayerAttribute key : attributePoints.keySet()) {

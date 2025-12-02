@@ -19,6 +19,7 @@ import frostnox.nightfall.data.recipe.MixtureRecipe;
 import frostnox.nightfall.entity.ITamable;
 import frostnox.nightfall.entity.entity.ActionableEntity;
 import frostnox.nightfall.item.IActionableItem;
+import frostnox.nightfall.item.IInsulator;
 import frostnox.nightfall.item.IWeaponItem;
 import frostnox.nightfall.item.item.AttributeAccessoryItem;
 import frostnox.nightfall.item.item.MeleeWeaponItem;
@@ -26,6 +27,7 @@ import frostnox.nightfall.item.item.TieredArmorItem;
 import frostnox.nightfall.network.NetworkHandler;
 import frostnox.nightfall.network.message.capability.LevelDataToClient;
 import frostnox.nightfall.network.message.capability.SetAccessoriesToClient;
+import frostnox.nightfall.network.message.capability.ShiveringToClient;
 import frostnox.nightfall.network.message.capability.StatusToClient;
 import frostnox.nightfall.network.message.entity.HurtDirToClient;
 import frostnox.nightfall.network.message.world.ChunkClimateToServer;
@@ -49,6 +51,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.*;
 import net.minecraft.server.level.ServerLevel;
@@ -347,7 +350,7 @@ public class CommonEventHandler {
                 if(item.getItem() instanceof TieredArmorItem armor) {
                     if(armor.getAttributeModifiers(armor.slot, item).isEmpty()) tooltip.add(getTooltipIndex(tooltip), new TranslatableComponent("item.modifiers." + armor.slot.getName()).withStyle(ChatFormatting.GRAY));
                     if(armor.material.getPoise() != Poise.NONE) {
-                        tooltip.add(new TranslatableComponent("poise." + armor.material.getPoise().getSerializedName()).withStyle(ChatFormatting.DARK_GREEN)
+                        tooltip.add(getTooltipIndex(tooltip), new TranslatableComponent("poise." + armor.material.getPoise().getSerializedName()).withStyle(ChatFormatting.DARK_GREEN)
                                 .append(" ").append(new TranslatableComponent(AttributesNF.POISE.get().getDescriptionId()).withStyle(ChatFormatting.BLUE)));
                     }
                     //Special replacements for style effects
@@ -389,6 +392,16 @@ public class CommonEventHandler {
                                 .append(RenderUtil.getDamageTypeText(DamageType.values()[i]).append(" ").append(new TranslatableComponent("item.armor.defense"))
                                         .withStyle(ChatFormatting.BLUE)));
                     }
+                }
+                if(item.getItem() instanceof IInsulator insulator) {
+                    float insulation = insulator.getInsulation();
+                    DecimalFormat format = new DecimalFormat("#.###");
+                    int index = getTooltipIndex(tooltip);
+                    if(item.getItem() instanceof TieredArmorItem) index -= 6;
+                    if(insulation > 0) tooltip.add(index, new TextComponent("+" + format.format(insulation) + " ").withStyle(ChatFormatting.DARK_GREEN)
+                            .append(new TranslatableComponent("item.insulation").withStyle(ChatFormatting.BLUE)));
+                    else if(insulation < 0) tooltip.add(index, new TextComponent(format.format(insulation) + " ").withStyle(ChatFormatting.DARK_RED)
+                            .append(new TranslatableComponent("item.insulation").withStyle(ChatFormatting.BLUE)));
                 }
                 if(item.getItem() instanceof ILightSource) {
                     tooltip.add(getTooltipIndex(tooltip), new TranslatableComponent("item.emits_light").withStyle(ChatFormatting.BLUE));
@@ -809,6 +822,29 @@ public class CommonEventHandler {
                 player.playSound(action.isChargeable() && capA.getCharge() >=  Math.round(action.getMaxCharge() * 0.75F) ? action.getExtraSound().get() : action.getSound().get(), 1F, 1F + level.random.nextFloat(-0.03F, 0.03F));
                 player.gameEvent(GameEventsNF.ACTION_SOUND);
             }
+            //Update accessories
+            if(!level.isClientSide()) {
+                AccessoryInventory accessories = capP.getAccessoryInventory();
+                List<Pair<AccessorySlot, ItemStack>> dirtyAccessories = new ObjectArrayList<>(0);
+                for(AccessorySlot slot : AccessorySlot.values()) {
+                    ItemStack oldItem = capP.getLastAccessory(slot);
+                    ItemStack newItem = accessories.getItem(slot);
+                    if(!ItemStack.matches(oldItem, newItem)) {
+                        if(oldItem.getItem() instanceof AttributeAccessoryItem attributeItem) {
+                            player.getAttributes().removeAttributeModifiers(attributeItem.getAttributeModifiers(slot, oldItem));
+                        }
+                        if(newItem.getItem() instanceof AttributeAccessoryItem attributeItem) {
+                            player.getAttributes().addTransientAttributeModifiers(attributeItem.getAttributeModifiers(slot, newItem));
+                        }
+                        ItemStack copiedItem = newItem.copy();
+                        capP.setLastAccessory(slot, copiedItem);
+                        dirtyAccessories.add(Pair.of(slot, copiedItem));
+                    }
+                }
+                if(!dirtyAccessories.isEmpty()) {
+                    NetworkHandler.toAllTracking(player, new SetAccessoriesToClient(dirtyAccessories, player.getId()));
+                }
+            }
             //Update temperature
             if(!level.isClientSide || ClientEngine.get().getPlayer() == player) {
                 float bodyTemp = capP.getTemperature();
@@ -860,35 +896,43 @@ public class CommonEventHandler {
                 temp += heatTemp;
                 if(player.isOnFire()) temp += 1F;
                 if(player.isInWater()) temp -= 0.25F;
+                for(ItemStack equipment : player.getInventory().armor) {
+                    if(equipment.getItem() instanceof IInsulator insulator) temp += insulator.getInsulation();
+                }
+                for(ItemStack accessory : capP.getAccessoryInventory().items) {
+                    if(accessory.getItem() instanceof IInsulator insulator) temp += insulator.getInsulation();
+                }
                 float tempChange = Mth.clamp(Math.abs(temp - bodyTemp) / 1000, 0.0001F, 0.0005F);
                 bodyTemp = temp > bodyTemp ? Math.min(bodyTemp + tempChange, temp) : Math.max(bodyTemp - tempChange, temp);
-                Nightfall.LOGGER.info(bodyTemp);
+//                Nightfall.LOGGER.info(bodyTemp);
+//                bodyTemp = 0.1F;
                 capP.setTemperature(bodyTemp);
-            }
-            //Update accessories
-            if(!level.isClientSide()) {
-                AccessoryInventory accessories = capP.getAccessoryInventory();
-                List<Pair<AccessorySlot, ItemStack>> dirtyAccessories = new ObjectArrayList<>(0);
-                for(AccessorySlot slot : AccessorySlot.values()) {
-                    ItemStack oldItem = capP.getLastAccessory(slot);
-                    ItemStack newItem = accessories.getItem(slot);
-                    if(!ItemStack.matches(oldItem, newItem)) {
-                        if(oldItem.getItem() instanceof AttributeAccessoryItem attributeItem) {
-                            player.getAttributes().removeAttributeModifiers(attributeItem.getAttributeModifiers(slot, oldItem));
-                        }
-                        if(newItem.getItem() instanceof AttributeAccessoryItem attributeItem) {
-                            player.getAttributes().addTransientAttributeModifiers(attributeItem.getAttributeModifiers(slot, newItem));
-                        }
-                        ItemStack copiedItem = newItem.copy();
-                        capP.setLastAccessory(slot, copiedItem);
-                        dirtyAccessories.add(Pair.of(slot, copiedItem));
-                    }
-                }
-                if(!dirtyAccessories.isEmpty()) {
-                    NetworkHandler.toAllTracking(player, new SetAccessoriesToClient(dirtyAccessories, player.getId()));
+                boolean shouldShiver = bodyTemp < 0.25F;
+                if(capP.isShivering() != shouldShiver) {
+                    capP.setShivering(shouldShiver);
+                    if(!level.isClientSide) NetworkHandler.toAllTracking(player, new ShiveringToClient(shouldShiver, player.getId()));
                 }
             }
             capA.tick();
+            //Knowledge triggers
+            if(!level.isClientSide) {
+                if(LevelUtil.isNight(level)) {
+                    MoonPhase moonPhase = MoonPhase.get(level);
+                    if(moonPhase != MoonPhase.NEW) capP.addRevelatoryKnowledge(KnowledgeNF.UNDEAD_PRESENCE.getId());
+                    if(moonPhase == MoonPhase.FULL) capP.addRevelatoryKnowledge(KnowledgeNF.ESSENCE.getId());
+                }
+                if(player.containerMenu instanceof CrucibleContainer crucibleContainer) {
+                    for(FluidStack fluid : crucibleContainer.entity.fluids) {
+                        if(fluid.getFluid() instanceof MetalFluid metalFluid) {
+                            if(metalFluid.metal.getCategory() == IMetal.Category.HARD) capP.addKnowledge(KnowledgeNF.MELTED_HARD_METAL.getId());
+                            if(metalFluid.metal.getCategory() == IMetal.Category.HARD || metalFluid.metal.getCategory() == IMetal.Category.MYSTIC) {
+                                capP.addKnowledge(KnowledgeNF.MELTED_CASTABLE_METAL.getId());
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
             return;
         }
         if(!level.isClientSide() && player.isInWater()) LightData.get(player).inWaterTickServer();
@@ -1034,25 +1078,6 @@ public class CommonEventHandler {
         }
         else if(capP.isClimbing() || player.onClimbable()) CombatUtil.alignBodyRotWithHead(player, capP);
         capA.setLastPosition(player.position());
-        //Knowledge triggers
-        if(!level.isClientSide) {
-            if(LevelUtil.isNight(level)) {
-                MoonPhase moonPhase = MoonPhase.get(level);
-                if(moonPhase != MoonPhase.NEW) capP.addRevelatoryKnowledge(KnowledgeNF.UNDEAD_PRESENCE.getId());
-                if(moonPhase == MoonPhase.FULL) capP.addRevelatoryKnowledge(KnowledgeNF.ESSENCE.getId());
-            }
-            if(player.containerMenu instanceof CrucibleContainer crucibleContainer) {
-                for(FluidStack fluid : crucibleContainer.entity.fluids) {
-                    if(fluid.getFluid() instanceof MetalFluid metalFluid) {
-                        if(metalFluid.metal.getCategory() == IMetal.Category.HARD) capP.addKnowledge(KnowledgeNF.MELTED_HARD_METAL.getId());
-                        if(metalFluid.metal.getCategory() == IMetal.Category.HARD || metalFluid.metal.getCategory() == IMetal.Category.MYSTIC) {
-                            capP.addKnowledge(KnowledgeNF.MELTED_CASTABLE_METAL.getId());
-                        }
-                        break;
-                    }
-                }
-            }
-        }
     }
 
     @SubscribeEvent
@@ -1133,7 +1158,6 @@ public class CommonEventHandler {
         if(!rider.level.isClientSide) {
             if(event.isMounting()) {
                 if(rider instanceof Player player) {
-                    Nightfall.LOGGER.info(player.tickCount + ", " + rider.fallDistance);
                     if(!player.isCreative() && !rider.isOnGround() && !rider.isInWater() && !rider.isInLava()) event.setCanceled(true);
                 }
                 else if(event.getEntityBeingMounted() instanceof Boat) {

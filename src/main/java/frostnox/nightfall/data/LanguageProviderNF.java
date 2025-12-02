@@ -278,6 +278,7 @@ public class LanguageProviderNF extends LanguageProvider {
         add(ClientEngine.get().keyModify.getName(), "Modify Item Behavior");
         add(ClientEngine.get().WYLDERY.name(), "Wyldery");
         add(ClientEngine.get().METALLURGY.name(), "Metallurgy");
+        add("item.insulation", "Insulation");
         add("item.emits_light", "Emits light");
         for(EquipmentSlot slot : EquipmentSlot.values()) {
             add(slot.getName(), WordUtils.capitalize(slot.getName()));

@@ -2,6 +2,7 @@ package frostnox.nightfall.item.item;
 
 import com.google.common.collect.ImmutableMultimap;
 import frostnox.nightfall.action.Poise;
+import frostnox.nightfall.item.IInsulator;
 import frostnox.nightfall.item.ITieredArmorMaterial;
 import frostnox.nightfall.item.Style;
 import frostnox.nightfall.registry.forge.AttributesNF;
@@ -24,7 +25,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.Supplier;
 
-public class TieredArmorItem extends AttributeEquipmentItem {
+public class TieredArmorItem extends AttributeEquipmentItem implements IInsulator {
     public final ITieredArmorMaterial material;
 
     protected static final UUID[] MODIFIER_UUID_PER_SLOT = new UUID[]{UUID.fromString("d52b28b7-ce27-4dd0-9bc4-f46fa14b97ca"),
@@ -65,5 +66,10 @@ public class TieredArmorItem extends AttributeEquipmentItem {
             DecimalFormat format = new DecimalFormat("0.0");
             tooltips.add(new TranslatableComponent("item.durability_penalty", format.format(durabilityPenalty * 100)).withStyle(ChatFormatting.DARK_RED));
         }
+    }
+
+    @Override
+    public float getInsulation() {
+        return material.getInsulation(slot);
     }
 }

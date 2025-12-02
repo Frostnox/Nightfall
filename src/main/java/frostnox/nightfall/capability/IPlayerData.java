@@ -199,6 +199,10 @@ public interface IPlayerData {
 
     void setCachedHeatTemperature(float temperature);
 
+    boolean isShivering();
+
+    void setShivering(boolean shivering);
+
     void advanceStage(ResourceLocation id);
 
     void unlockEntry(ResourceLocation id);

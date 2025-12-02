@@ -238,6 +238,11 @@ public class PlayerRendererNF extends PlayerRenderer {
     }
 
     @Override
+    protected boolean isShaking(AbstractClientPlayer pEntity) {
+        return PlayerData.get(pEntity).isShivering();
+    }
+
+    @Override
     protected boolean shouldShowName(AbstractClientPlayer pEntity) {
         if(PlayerData.get(pEntity).getAccessoryInventory().getItem(AccessorySlot.FACE).is(ItemsNF.MASK.get())) return false;
         else return super.shouldShowName(pEntity);

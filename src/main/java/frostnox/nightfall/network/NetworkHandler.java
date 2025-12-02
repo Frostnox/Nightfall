@@ -67,6 +67,7 @@ public class NetworkHandler {
         INSTANCE.registerMessage(ID++, GenericToServer.class, GenericToServer::write, GenericToServer::read, GenericToServer::handle, Optional.of(PLAY_TO_SERVER));
         INSTANCE.registerMessage(ID++, StartSmithingToServer.class, StartSmithingToServer::write, StartSmithingToServer::read, StartSmithingToServer::handle, Optional.of(PLAY_TO_SERVER));
         INSTANCE.registerMessage(ID++, StaminaChangedToClient.class, StaminaChangedToClient::write, StaminaChangedToClient::read, StaminaChangedToClient::handle, Optional.of(PLAY_TO_CLIENT));
+        INSTANCE.registerMessage(ID++, ShiveringToClient.class, ShiveringToClient::write, ShiveringToClient::read, ShiveringToClient::handle, Optional.of(PLAY_TO_CLIENT));
         INSTANCE.registerMessage(ID++, StatusToClient.class, StatusToClient::write, StatusToClient::read, StatusToClient::handle, Optional.of(PLAY_TO_CLIENT));
         INSTANCE.registerMessage(ID++, DamageFailToClient.class, DamageFailToClient::write, DamageFailToClient::read, DamageFailToClient::handle, Optional.of(PLAY_TO_CLIENT));
         INSTANCE.registerMessage(ID++, HeadYRotToClient.class, HeadYRotToClient::write, HeadYRotToClient::read, HeadYRotToClient::handle, Optional.of(PLAY_TO_CLIENT));
