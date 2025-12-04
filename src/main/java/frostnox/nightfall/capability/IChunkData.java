@@ -20,7 +20,7 @@ public interface IChunkData {
 
     float getTemperature(BlockPos pos);
 
-    float getTemperature(int x, int z);
+    float getBaseTemperature(int x, int z);
 
     float getHumidity(BlockPos pos);
 

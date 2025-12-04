@@ -4,6 +4,7 @@ import frostnox.nightfall.util.MathUtil;
 import frostnox.nightfall.util.math.noise.FractalSimplexNoiseFast;
 import frostnox.nightfall.world.Season;
 import frostnox.nightfall.world.Weather;
+import frostnox.nightfall.world.generation.ContinentalChunkGenerator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.*;
@@ -220,12 +221,11 @@ public class LevelData implements ILevelData {
 
     @Override
     public float getSeasonalTemperature(IChunkData chunkData, BlockPos pos) {
-        return getSeasonalTemperature(chunkData, pos.getX(), pos.getZ());
-    }
-
-    @Override
-    public float getSeasonalTemperature(IChunkData chunkData, int x, int z) {
-        return chunkData.getTemperature(x, z) + Season.getTemperatureInfluence(seasonTime);
+        if(pos.getY() < ContinentalChunkGenerator.SEA_LEVEL - 64) return 0.5F;
+        else if(pos.getY() < ContinentalChunkGenerator.SEA_LEVEL - 32) {
+            return chunkData.getTemperature(pos) + Mth.lerp(Math.abs(pos.getY() - (ContinentalChunkGenerator.SEA_LEVEL - 32)) / 32F, Season.getTemperatureInfluence(seasonTime), 0F);
+        }
+        else return chunkData.getTemperature(pos) + Season.getTemperatureInfluence(seasonTime);
     }
 
     @Override

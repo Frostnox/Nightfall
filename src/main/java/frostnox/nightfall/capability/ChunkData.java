@@ -17,6 +17,7 @@ import frostnox.nightfall.util.data.WrappedBool;
 import frostnox.nightfall.world.ContinentalWorldType;
 import frostnox.nightfall.world.Season;
 import frostnox.nightfall.world.Weather;
+import frostnox.nightfall.world.generation.ContinentalChunkGenerator;
 import frostnox.nightfall.world.spawngroup.SpawnGroup;
 import it.unimi.dsi.fastutil.Hash;
 import it.unimi.dsi.fastutil.ints.IntLongPair;
@@ -119,8 +120,8 @@ public class ChunkData implements IChunkData {
                 if(x % 5 == 0 && z % 5 == 0) continue;
                 int minX = (x / 5) * 5, maxX = Math.min(15, minX + 5), minZ = (z / 5) * 5, maxZ = Math.min(15, minZ + 5);
                 float xAmount = (x % 5) / 5F, zAmount = (z % 5) / 5F;
-                setTemperature(x, z, MathUtil.lerp2D(xAmount, zAmount, getTemperature(minX, minZ),
-                        getTemperature(maxX, minZ), getTemperature(minX, maxZ), getTemperature(maxX, maxZ)));
+                setTemperature(x, z, MathUtil.lerp2D(xAmount, zAmount, getBaseTemperature(minX, minZ),
+                        getBaseTemperature(maxX, minZ), getBaseTemperature(minX, maxZ), getBaseTemperature(maxX, maxZ)));
                 setHumidity(x, z, MathUtil.lerp2D(xAmount, zAmount, getHumidity(minX, minZ),
                         getHumidity(maxX, minZ), getHumidity(minX, maxZ), getHumidity(maxX, maxZ)));
             }
@@ -161,11 +162,15 @@ public class ChunkData implements IChunkData {
 
     @Override
     public float getTemperature(BlockPos pos) {
-        return getTemperature(pos.getX(), pos.getZ());
+        if(pos.getY() < ContinentalChunkGenerator.SEA_LEVEL - 64) return 0.5F;
+        float temp = getBaseTemperature(pos.getX(), pos.getZ());
+        if(pos.getY() > 624) return temp - Math.min((pos.getY() - 624) / 208F * 0.3F, 0.3F);
+        else if(pos.getY() < ContinentalChunkGenerator.SEA_LEVEL - 32) return Mth.lerp(Math.abs(pos.getY() - (ContinentalChunkGenerator.SEA_LEVEL - 32)) / 32F, temp, 0.5F);
+        else return temp;
     }
 
     @Override
-    public float getTemperature(int x, int z) {
+    public float getBaseTemperature(int x, int z) {
         return temperature[((x < 0 ? ((x % 16) + 16) : x) % 16) * 16 + ((z < 0 ? ((z % 16) + 16) : z) % 16)];
     }
 

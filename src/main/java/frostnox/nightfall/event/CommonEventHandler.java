@@ -90,6 +90,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -852,7 +853,16 @@ public class CommonEventHandler {
                 IChunkData chunkData = levelData != null ? ChunkData.get(level.getChunkAt(player.blockPosition())) : null;
                 float temp = levelData != null ? levelData.getSeasonalTemperature(chunkData, player.blockPosition()) : 0.5F;
                 BlockPos eyePos = player.eyeBlockPosition();
-                if(level.canSeeSky(eyePos)) {
+                //Structure
+                if(level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, eyePos.getX(), eyePos.getZ()) > eyePos.getY() + 1 &&
+                        level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, eyePos.getX() - 1, eyePos.getZ()) > eyePos.getY() &&
+                        level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, eyePos.getX() + 1, eyePos.getZ()) > eyePos.getY() &&
+                        level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, eyePos.getX(), eyePos.getZ() - 1) > eyePos.getY() &&
+                        level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, eyePos.getX(), eyePos.getZ() + 1) > eyePos.getY()) {
+                    temp = temp + (0.5F - temp) / 3F;
+                }
+                //Weather
+                if(level.getHeight(Heightmap.Types.MOTION_BLOCKING, eyePos.getX(), eyePos.getZ()) <= player.getBoundingBox().maxY) {
                     if(LevelUtil.isDayTimeWithin(level, LevelUtil.MORNING_TIME, LevelUtil.NIGHT_TIME)) {
                         if(levelData != null) {
                             temp += switch(levelData.getWeather(chunkData, eyePos)) {
@@ -866,13 +876,15 @@ public class CommonEventHandler {
                         else if(level.isRainingAt(eyePos)) temp -= 0.2F;
                     }
                 }
+                //Heat sources
                 float heatTemp = capP.getCachedHeatTemperature();
                 if(player.tickCount % 20 == 0 || heatTemp < 0) {
                     BlockPos feetPos = player.blockPosition();
                     AABB playerBox = player.getBoundingBox();
-                    float minDistSqr = 2F * 2F;
+                    float minDistSqr = 2.25F * 2.25F;
                     BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(feetPos.getX() - 2, feetPos.getY() - 1, feetPos.getZ() - 2);
                     int ySize = (feetPos.getY() == eyePos.getY() ? 2 : 3);
+                    boolean noHeat = true;
                     for(int i = 0; i < 5; i++) {
                         for(int j = 0; j < 5; j++) {
                             LevelChunk chunk = level.getChunkAt(pos);
@@ -880,20 +892,24 @@ public class CommonEventHandler {
                                 if(chunk.getBlockState(pos).getBlock() instanceof IHeatSource) {
                                     float distSqr = MathUtil.getShortestDistanceSqrPointToBox(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, playerBox);
                                     if(distSqr < minDistSqr) {
+                                        noHeat = false;
                                         minDistSqr = distSqr;
-                                        heatTemp = 0.4F * (1F - (distSqr / (2 * 2)));
+                                        heatTemp = 0.4F * (1F - (distSqr / (2.25F * 2.25F)));
                                     }
                                 }
                                 pos.setY(pos.getY() + 1);
                             }
                             pos.setZ(pos.getZ() + 1);
+                            pos.setY(feetPos.getY() - 1);
                         }
                         pos.setX(pos.getX() + 1);
+                        pos.setZ(feetPos.getZ() - 2);
                     }
+                    if(noHeat) heatTemp = 0;
                     capP.setCachedHeatTemperature(Math.max(0, heatTemp));
                 }
-                if(heatTemp < 0.05F && player.isHolding((stack) -> stack.is(TagsNF.WARMING_ITEM))) heatTemp = 0.05F;
                 temp += heatTemp;
+
                 if(player.isOnFire()) temp += 1F;
                 if(player.isInWater()) temp -= 0.25F;
                 for(ItemStack equipment : player.getInventory().armor) {
@@ -902,10 +918,10 @@ public class CommonEventHandler {
                 for(ItemStack accessory : capP.getAccessoryInventory().items) {
                     if(accessory.getItem() instanceof IInsulator insulator) temp += insulator.getInsulation();
                 }
+
                 float tempChange = Mth.clamp(Math.abs(temp - bodyTemp) / 1000, 0.0001F, 0.0005F);
                 bodyTemp = temp > bodyTemp ? Math.min(bodyTemp + tempChange, temp) : Math.max(bodyTemp - tempChange, temp);
-//                Nightfall.LOGGER.info(bodyTemp);
-//                bodyTemp = 0.1F;
+                //bodyTemp = 1.25F;
                 capP.setTemperature(bodyTemp);
                 boolean shouldShiver = bodyTemp < 0.25F;
                 if(capP.isShivering() != shouldShiver) {

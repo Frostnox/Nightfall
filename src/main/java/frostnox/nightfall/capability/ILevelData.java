@@ -36,8 +36,6 @@ public interface ILevelData {
 
     float getSeasonalTemperature(IChunkData chunkData, BlockPos pos);
 
-    float getSeasonalTemperature(IChunkData chunkData, int x, int z);
-
     boolean isWaterFrozen(IChunkData chunkData, BlockPos pos);
 
     float getGlobalWeatherIntensity();
