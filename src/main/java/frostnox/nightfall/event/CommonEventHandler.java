@@ -446,9 +446,17 @@ public class CommonEventHandler {
             if(food != null) {
                 float saturation = food.getSaturationModifier();
                 tooltip.add(getTooltipIndex(tooltip), new TranslatableComponent("item.nutrition", food.getNutrition()).withStyle(ChatFormatting.DARK_GREEN));
-                if(saturation < 0.2F) tooltip.add(getTooltipIndex(tooltip), new TranslatableComponent("item.low_saturation").withStyle(ChatFormatting.DARK_GREEN));
-                else if(saturation < 0.4F) tooltip.add(getTooltipIndex(tooltip), new TranslatableComponent("item.medium_saturation").withStyle(ChatFormatting.DARK_GREEN));
-                else tooltip.add(getTooltipIndex(tooltip), new TranslatableComponent("item.high_saturation").withStyle(ChatFormatting.DARK_GREEN));
+                ChatFormatting style = ChatFormatting.DARK_GREEN;
+                if(event.getPlayer() != null) {
+                    float temp = PlayerData.get(event.getPlayer()).getTemperature();
+                    if(temp > 1F) {
+                        saturation *= 1F - Math.min(1F, (temp - 1) * 4);
+                        style = ChatFormatting.DARK_RED;
+                    }
+                }
+                if(saturation < 0.2F) tooltip.add(getTooltipIndex(tooltip), new TranslatableComponent("item.low_saturation").withStyle(style));
+                else if(saturation < 0.4F) tooltip.add(getTooltipIndex(tooltip), new TranslatableComponent("item.medium_saturation").withStyle(style));
+                else tooltip.add(getTooltipIndex(tooltip), new TranslatableComponent("item.high_saturation").withStyle(style));
 
                 for(var pair : food.getEffects()) {
                     if(pair.getSecond() < 1F) continue;
@@ -500,7 +508,7 @@ public class CommonEventHandler {
                 }
             }
         }
-        else if(effect.getEffect() == EffectsNF.PARALYSIS.get()) {
+        else if(effect.getEffect() == EffectsNF.PARALYSIS.get() || effect.getEffect() == EffectsNF.FROSTBITE.get()) {
             MobEffectInstance oldEffect = event.getOldPotionEffect();
             if(oldEffect != null) {
                 effect.update(new MobEffectInstance(effect.getEffect(), Math.max(oldEffect.getDuration(), effect.getDuration()),
@@ -783,6 +791,14 @@ public class CommonEventHandler {
     }
 
     @SubscribeEvent
+    public static void onLivingEntityUseItemStartEvent(LivingEntityUseItemEvent.Start event) {
+        if(event.getItem().isEdible() && event.getEntityLiving() instanceof Player player && PlayerData.isPresent(player)) {
+            float temp = PlayerData.get(player).getTemperature();
+            if(temp > 1F) event.setDuration(Math.round(event.getDuration() * (1F + Math.min(1F, (temp - 1) * 4F))));
+        }
+    }
+
+    @SubscribeEvent
     public static void onPlayerTickEvent(TickEvent.PlayerTickEvent event) {
         Player player = event.player;
         if(player == null) return;
@@ -849,84 +865,98 @@ public class CommonEventHandler {
             //Update temperature
             if(!level.isClientSide || ClientEngine.get().getPlayer() == player) {
                 float bodyTemp = capP.getTemperature();
-                ILevelData levelData = LevelData.isPresent(level) ? LevelData.get(level) : null;
-                IChunkData chunkData = levelData != null ? ChunkData.get(level.getChunkAt(player.blockPosition())) : null;
-                float temp = levelData != null ? levelData.getSeasonalTemperature(chunkData, player.blockPosition()) : 0.5F;
-                BlockPos eyePos = player.eyeBlockPosition();
-                //Structure
-                if(level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, eyePos.getX(), eyePos.getZ()) > eyePos.getY() + 1 &&
-                        level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, eyePos.getX() - 1, eyePos.getZ()) > eyePos.getY() &&
-                        level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, eyePos.getX() + 1, eyePos.getZ()) > eyePos.getY() &&
-                        level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, eyePos.getX(), eyePos.getZ() - 1) > eyePos.getY() &&
-                        level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, eyePos.getX(), eyePos.getZ() + 1) > eyePos.getY()) {
-                    temp = temp + (0.5F - temp) / 3F;
-                }
-                //Weather
-                if(level.getHeight(Heightmap.Types.MOTION_BLOCKING, eyePos.getX(), eyePos.getZ()) <= player.getBoundingBox().maxY) {
-                    if(LevelUtil.isDayTimeWithin(level, LevelUtil.MORNING_TIME, LevelUtil.NIGHT_TIME)) {
-                        if(levelData != null) {
-                            temp += switch(levelData.getWeather(chunkData, eyePos)) {
-                                case CLEAR -> 0.1F;
-                                case CLOUDS -> 0.05F;
-                                case RAIN -> -0.25F;
-                                case SNOW -> -0.1F;
-                                case FOG -> 0F;
-                            };
-                        }
-                        else if(level.isRainingAt(eyePos)) temp -= 0.2F;
+                if(player.isCreative() || player.isSpectator()) bodyTemp = 0.5F;
+                else {
+                    ILevelData levelData = LevelData.isPresent(level) ? LevelData.get(level) : null;
+                    IChunkData chunkData = levelData != null ? ChunkData.get(level.getChunkAt(player.blockPosition())) : null;
+                    float temp = levelData != null ? levelData.getSeasonalTemperature(chunkData, player.blockPosition()) : 0.5F;
+                    BlockPos eyePos = player.eyeBlockPosition();
+                    //Structure
+                    if(level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, eyePos.getX(), eyePos.getZ()) > eyePos.getY() + 1 &&
+                            level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, eyePos.getX() - 1, eyePos.getZ()) > eyePos.getY() &&
+                            level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, eyePos.getX() + 1, eyePos.getZ()) > eyePos.getY() &&
+                            level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, eyePos.getX(), eyePos.getZ() - 1) > eyePos.getY() &&
+                            level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, eyePos.getX(), eyePos.getZ() + 1) > eyePos.getY()) {
+                        temp = temp + (0.5F - temp) / 3F;
                     }
-                }
-                //Heat sources
-                float heatTemp = capP.getCachedHeatTemperature();
-                if(player.tickCount % 20 == 0 || heatTemp < 0) {
-                    BlockPos feetPos = player.blockPosition();
-                    AABB playerBox = player.getBoundingBox();
-                    float minDistSqr = 2.25F * 2.25F;
-                    BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(feetPos.getX() - 2, feetPos.getY() - 1, feetPos.getZ() - 2);
-                    int ySize = (feetPos.getY() == eyePos.getY() ? 2 : 3);
-                    boolean noHeat = true;
-                    for(int i = 0; i < 5; i++) {
-                        for(int j = 0; j < 5; j++) {
-                            LevelChunk chunk = level.getChunkAt(pos);
-                            for(int k = 0; k < ySize; k++) {
-                                if(chunk.getBlockState(pos).getBlock() instanceof IHeatSource) {
-                                    float distSqr = MathUtil.getShortestDistanceSqrPointToBox(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, playerBox);
-                                    if(distSqr < minDistSqr) {
-                                        noHeat = false;
-                                        minDistSqr = distSqr;
-                                        heatTemp = 0.4F * (1F - (distSqr / (2.25F * 2.25F)));
-                                    }
-                                }
-                                pos.setY(pos.getY() + 1);
+                    //Weather
+                    if(level.getHeight(Heightmap.Types.MOTION_BLOCKING, eyePos.getX(), eyePos.getZ()) <= player.getBoundingBox().maxY) {
+                        if(LevelUtil.isDayTimeWithin(level, LevelUtil.MORNING_TIME, LevelUtil.NIGHT_TIME)) {
+                            if(levelData != null) {
+                                temp += switch(levelData.getWeather(chunkData, eyePos)) {
+                                    case CLEAR -> 0.1F;
+                                    case CLOUDS -> 0.05F;
+                                    case RAIN -> -0.25F;
+                                    case SNOW -> -0.1F;
+                                    case FOG -> 0F;
+                                };
                             }
-                            pos.setZ(pos.getZ() + 1);
-                            pos.setY(feetPos.getY() - 1);
+                            else if(level.isRainingAt(eyePos)) temp -= 0.2F;
                         }
-                        pos.setX(pos.getX() + 1);
-                        pos.setZ(feetPos.getZ() - 2);
                     }
-                    if(noHeat) heatTemp = 0;
-                    capP.setCachedHeatTemperature(Math.max(0, heatTemp));
-                }
-                temp += heatTemp;
+                    //Heat sources
+                    float heatTemp = capP.getCachedHeatTemperature();
+                    if(player.tickCount % 20 == 0 || heatTemp < 0) {
+                        BlockPos feetPos = player.blockPosition();
+                        AABB playerBox = player.getBoundingBox();
+                        float minDistSqr = 2.25F * 2.25F;
+                        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(feetPos.getX() - 2, feetPos.getY() - 1, feetPos.getZ() - 2);
+                        int ySize = (feetPos.getY() == eyePos.getY() ? 2 : 3);
+                        boolean noHeat = true;
+                        for(int i = 0; i < 5; i++) {
+                            for(int j = 0; j < 5; j++) {
+                                LevelChunk chunk = level.getChunkAt(pos);
+                                for(int k = 0; k < ySize; k++) {
+                                    if(chunk.getBlockState(pos).getBlock() instanceof IHeatSource) {
+                                        float distSqr = MathUtil.getShortestDistanceSqrPointToBox(pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F, playerBox);
+                                        if(distSqr < minDistSqr) {
+                                            noHeat = false;
+                                            minDistSqr = distSqr;
+                                            heatTemp = 0.4F * (1F - (distSqr / (2.25F * 2.25F)));
+                                        }
+                                    }
+                                    pos.setY(pos.getY() + 1);
+                                }
+                                pos.setZ(pos.getZ() + 1);
+                                pos.setY(feetPos.getY() - 1);
+                            }
+                            pos.setX(pos.getX() + 1);
+                            pos.setZ(feetPos.getZ() - 2);
+                        }
+                        if(noHeat) heatTemp = 0;
+                        capP.setCachedHeatTemperature(Math.max(0, heatTemp));
+                    }
+                    temp += heatTemp;
 
-                if(player.isOnFire()) temp += 1F;
-                if(player.isInWater()) temp -= 0.25F;
-                for(ItemStack equipment : player.getInventory().armor) {
-                    if(equipment.getItem() instanceof IInsulator insulator) temp += insulator.getInsulation();
-                }
-                for(ItemStack accessory : capP.getAccessoryInventory().items) {
-                    if(accessory.getItem() instanceof IInsulator insulator) temp += insulator.getInsulation();
-                }
+                    if(player.isOnFire()) temp += 1F;
+                    if(player.isInWater()) temp -= 0.25F;
+                    for(ItemStack equipment : player.getInventory().armor) {
+                        if(equipment.getItem() instanceof IInsulator insulator) temp += insulator.getInsulation();
+                    }
+                    for(ItemStack accessory : capP.getAccessoryInventory().items) {
+                        if(accessory.getItem() instanceof IInsulator insulator) temp += insulator.getInsulation();
+                    }
 
-                float tempChange = Mth.clamp(Math.abs(temp - bodyTemp) / 1000, 0.0001F, 0.0005F);
-                bodyTemp = temp > bodyTemp ? Math.min(bodyTemp + tempChange, temp) : Math.max(bodyTemp - tempChange, temp);
-                //bodyTemp = 1.25F;
+                    float tempChange = Mth.clamp(Math.abs(temp - bodyTemp) / 1000, 0.0001F, 0.0005F);
+                    bodyTemp = temp > bodyTemp ? Math.min(bodyTemp + tempChange, temp) : Math.max(bodyTemp - tempChange, temp);
+                }
                 capP.setTemperature(bodyTemp);
+
                 boolean shouldShiver = bodyTemp < 0.25F;
                 if(capP.isShivering() != shouldShiver) {
                     capP.setShivering(shouldShiver);
                     if(!level.isClientSide) NetworkHandler.toAllTracking(player, new ShiveringToClient(shouldShiver, player.getId()));
+                }
+                if(!level.isClientSide) {
+                    if(shouldShiver) {
+                        float freeze = 1F - Math.max(0, bodyTemp / 0.25F);
+                        CombatUtil.addTransientMultiplier(player, player.getAttribute(Attributes.MOVEMENT_SPEED), -0.25F * freeze, CombatUtil.FREEZE_SLOW_ID, "freeze_slow");
+                        if(bodyTemp < 0 && player.tickCount % 20 == 0 && level.random.nextFloat() < (Math.abs(bodyTemp) / 12)) {
+                            player.addEffect(new MobEffectInstance(EffectsNF.FROSTBITE.get(), 20 * 60 * 60));
+                            level.playSound(null, player, SoundsNF.FROSTBITE.get(), SoundSource.PLAYERS, 0.5F, 1F);
+                        }
+                    }
+                    else CombatUtil.removeTransientModifier(player, player.getAttribute(Attributes.MOVEMENT_SPEED), CombatUtil.FREEZE_SLOW_ID);
                 }
             }
             capA.tick();

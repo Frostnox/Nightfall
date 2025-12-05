@@ -10,6 +10,7 @@ import frostnox.nightfall.capability.IActionTracker;
 import frostnox.nightfall.capability.PlayerData;
 import frostnox.nightfall.entity.entity.projectile.ThrownWeaponEntity;
 import frostnox.nightfall.item.IWeaponItem;
+import frostnox.nightfall.util.CombatUtil;
 import frostnox.nightfall.util.RenderUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -53,7 +54,8 @@ public abstract class ThrowTechnique extends PlayerAttack {
             ItemStack item = user.getItemInHand(user instanceof Player player ? PlayerData.get(player).getActiveHand() : InteractionHand.MAIN_HAND);
             if(item.isEmpty()) return;
             ThrownWeaponEntity thrownWeapon = new ThrownWeaponEntity(level, user, item, capA.getActionID());
-            thrownWeapon.shootFromRotation(user, user.getXRot(), user.getYRot(), 0.0F, Math.min((float) capA.getCharge() / (float) getDuration(getChargeState(), user) * throwVelocity, throwVelocity), 1.0F);
+            thrownWeapon.shootFromRotation(user, user.getXRot(), user.getYRot(), 0.0F, Math.min((float) capA.getCharge() / (float) getDuration(getChargeState(), user) * throwVelocity, throwVelocity),
+                    user instanceof Player player ? CombatUtil.modifyProjectileAccuracy(player, 1F) : 1.0F);
             if(user instanceof Player player) {
                 if(player.getAbilities().instabuild) thrownWeapon.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
                 else player.getInventory().removeItem(item);

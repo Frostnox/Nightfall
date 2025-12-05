@@ -261,5 +261,9 @@ public class DamageEventHandler {
         if(event.getEntityLiving().hasEffect(EffectsNF.BLEEDING.get())) {
             event.setAmount(event.getAmount() / 2F);
         }
+        if(event.getEntityLiving() instanceof Player player) {
+            float temp = PlayerData.get(player).getTemperature();
+            if(temp < 0.25F) event.setAmount(event.getAmount() * Math.max(0, temp / 0.25F));
+        }
     }
 }

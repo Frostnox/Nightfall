@@ -2,7 +2,7 @@ package frostnox.nightfall.item.item;
 
 import net.minecraft.world.item.ItemStack;
 
-public class FoodItem extends ItemNF{
+public class FoodItem extends ItemNF {
     public final int eatTicks;
 
     public FoodItem(int eatTicks, Properties properties) {

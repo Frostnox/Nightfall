@@ -6,6 +6,7 @@ import frostnox.nightfall.data.TagsNF;
 import frostnox.nightfall.entity.entity.projectile.ThrownRockEntity;
 import frostnox.nightfall.registry.forge.AttributesNF;
 import frostnox.nightfall.registry.forge.ItemsNF;
+import frostnox.nightfall.util.CombatUtil;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
@@ -27,7 +28,7 @@ public class SlingItem extends ProjectileLauncherItem {
         ThrownRockEntity projectile = new ThrownRockEntity(user.level, user);
         projectile.setItem(ammoItem);
         projectile.setBaseDamage((ammoItem.is(TagsNF.IGNEOUS) ? 15F : (ammoItem.is(TagsNF.METAMORPHIC) ? 12.5F : 10F)) * AttributesNF.getStrengthMultiplier(user));
-        projectile.shootFromRotation(user, user.getXRot(), user.getYRot(), 0.0F, velocity, inaccuracy);
+        projectile.shootFromRotation(user, user.getXRot(), user.getYRot(), 0.0F, velocity, CombatUtil.modifyProjectileAccuracy(user, inaccuracy));
         return projectile;
     }
 

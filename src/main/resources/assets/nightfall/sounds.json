@@ -582,6 +582,10 @@
     "subtitle": "nightfall.entity.essence_explode",
     "sounds": ["nightfall:entity/essence_explode"]
   },
+  "entity.frostbite": {
+    "subtitle": "nightfall.entity.frostbite",
+    "sounds": ["nightfall:entity/frostbite_0", "nightfall:entity/frostbite_1"]
+  },
   "environment.log_fall": {
     "subtitle": "nightfall.environment.log_fall",
     "sounds": ["nightfall:environment/log_fall_0", "nightfall:environment/log_fall_1"]

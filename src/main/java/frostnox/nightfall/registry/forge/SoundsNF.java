@@ -158,6 +158,7 @@ public class SoundsNF {
     public static final RegistryObject<SoundEvent> ENTITY_WARP = generic("entity.warp");
     public static final RegistryObject<SoundEvent> UNDEAD_WARP = generic("entity.undead_warp");
     public static final RegistryObject<SoundEvent> ESSENCE_EXPLODE = generic("entity.essence_explode");
+    public static final RegistryObject<SoundEvent> FROSTBITE = generic("entity.frostbite");
     public static final RegistryObject<SoundEvent> LOG_FALL = generic("environment.log_fall");
     public static final RegistryObject<SoundEvent> BIG_TREE_FALL = generic("environment.big_tree_fall");
     public static final RegistryObject<SoundEvent> SMALL_TREE_FALL = generic("environment.small_tree_fall");

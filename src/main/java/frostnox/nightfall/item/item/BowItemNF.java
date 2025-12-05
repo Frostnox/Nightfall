@@ -5,6 +5,7 @@ import frostnox.nightfall.entity.entity.projectile.ArrowEntity;
 import frostnox.nightfall.item.IProjectileItem;
 import frostnox.nightfall.registry.forge.AttributesNF;
 import frostnox.nightfall.registry.forge.ItemsNF;
+import frostnox.nightfall.util.CombatUtil;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
@@ -26,7 +27,7 @@ public class BowItemNF extends ProjectileLauncherItem {
         entity.setBaseDamage(projectile.getProjectileDamage() * AttributesNF.getStrengthMultiplier(user));
         if(user.getAbilities().instabuild) entity.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
         entity.shootFromRotation(user, user.getXRot(), user.getYRot(), 0.0F,
-                velocity * projectile.getProjectileVelocityScalar(), projectile.getProjectileInaccuracy());
+                velocity * projectile.getProjectileVelocityScalar(), CombatUtil.modifyProjectileAccuracy(user, projectile.getProjectileInaccuracy()));
         return entity;
     }
 

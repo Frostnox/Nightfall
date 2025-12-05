@@ -4,6 +4,7 @@ import frostnox.nightfall.Nightfall;
 import frostnox.nightfall.action.DamageType;
 import frostnox.nightfall.action.Impact;
 import frostnox.nightfall.action.Poise;
+import frostnox.nightfall.capability.PlayerData;
 import frostnox.nightfall.entity.PlayerAttribute;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.*;
@@ -121,7 +122,10 @@ public class AttributesNF {
     }
 
     public static double getStaminaRegenMultiplier(Player player) {
-        return 1D + (player.getAttribute(ENDURANCE.get()).getValue() - ENDURANCE.get().getDefaultValue()) * 0.05D;
+        double regen = 1D + (player.getAttribute(ENDURANCE.get()).getValue() - ENDURANCE.get().getDefaultValue()) * 0.05D;
+        float temp = PlayerData.get(player).getTemperature();
+        if(temp > 1F) regen *= 1F - Math.min(1F, (temp - 1) * 4);
+        return regen;
     }
 
     public static float getStrengthMultiplier(LivingEntity entity) {

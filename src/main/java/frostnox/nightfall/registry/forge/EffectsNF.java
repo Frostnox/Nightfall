@@ -93,7 +93,7 @@ public class EffectsNF {
             return duration % 90 == 0;
         }
     });
-    public static final RegistryObject<MobEffect> MOON_BLESSING = EFFECTS.register("moon_blessing", () -> new DamageEffect(MobEffectCategory.BENEFICIAL)
+    public static final RegistryObject<MobEffect> MOON_BLESSING = EFFECTS.register("moon_blessing", () -> new MobEffect(MobEffectCategory.BENEFICIAL, 0){}
             .addAttributeModifier(Attributes.MOVEMENT_SPEED, "07485be1-69a1-4313-9012-c54a7133957b", 0.1D, AttributeModifier.Operation.MULTIPLY_TOTAL)
             .addAttributeModifier(AttributesNF.STRENGTH.get(), "09d6a029-e15f-4731-99e8-d546f22977ed", 0.2D, AttributeModifier.Operation.MULTIPLY_TOTAL)
             .addAttributeModifier(AttributesNF.STRIKING_DEFENSE.get(), "eb96b12a-6a7e-4c33-a0a0-055e8c9380dc", 0.2D, AttributeModifier.Operation.ADDITION)
@@ -102,7 +102,7 @@ public class EffectsNF {
             .addAttributeModifier(AttributesNF.FIRE_DEFENSE.get(), "29130a79-b037-4bc7-8278-608e4918d707", 0.2D, AttributeModifier.Operation.ADDITION)
             .addAttributeModifier(AttributesNF.FROST_DEFENSE.get(), "5abe03c1-9448-48cf-aa59-10c617cbb504", 0.2D, AttributeModifier.Operation.ADDITION)
             .addAttributeModifier(AttributesNF.ELECTRIC_DEFENSE.get(), "cf58f418-c961-44ea-9bb2-f02b0bdb6176", 0.2D, AttributeModifier.Operation.ADDITION));
-    public static final RegistryObject<MobEffect> PARALYSIS = EFFECTS.register("paralysis", () -> new DamageEffect(MobEffectCategory.HARMFUL)
+    public static final RegistryObject<MobEffect> PARALYSIS = EFFECTS.register("paralysis", () -> new MobEffect(MobEffectCategory.HARMFUL, 0){}
             .addAttributeModifier(Attributes.MOVEMENT_SPEED, "5e59ad86-9311-4fbd-8e70-db765be34d30", -0.2D, AttributeModifier.Operation.MULTIPLY_TOTAL)
             .addAttributeModifier(ForgeMod.SWIM_SPEED.get(), "728607eb-2232-457d-a9ac-f61d42fa91f3", -0.2D, AttributeModifier.Operation.MULTIPLY_TOTAL)
             .addAttributeModifier(AttributesNF.ENDURANCE.get(), "47a84663-d865-4df0-8672-01608ce5d124", -2D, AttributeModifier.Operation.ADDITION));
@@ -134,6 +134,8 @@ public class EffectsNF {
             return false;
         }
     });
+    public static final RegistryObject<MobEffect> FROSTBITE = EFFECTS.register("frostbite", () -> new MobEffect(MobEffectCategory.HARMFUL, 0){}
+            .addAttributeModifier(Attributes.MAX_HEALTH, "cd021c0b-fe14-4a18-a26c-ce2a4618d3ed", -10, AttributeModifier.Operation.ADDITION));
 
     public static void register() {
         EFFECTS.register(Nightfall.MOD_EVENT_BUS);

@@ -7,6 +7,7 @@ import frostnox.nightfall.action.DamageTypeSource;
 import frostnox.nightfall.action.Poise;
 import frostnox.nightfall.capability.IActionTracker;
 import frostnox.nightfall.capability.IPlayerData;
+import frostnox.nightfall.capability.PlayerData;
 import frostnox.nightfall.entity.entity.ActionableEntity;
 import frostnox.nightfall.entity.entity.ArmorStandDummyEntity;
 import frostnox.nightfall.item.item.TieredArmorItem;
@@ -52,6 +53,7 @@ public class CombatUtil {
     public static final UUID STUN_SLOW_ID = UUID.fromString("06dbd56c-1fe0-4183-81a2-15fada3c0f8b");
     public static final UUID ACTION_SLOW_ID = UUID.fromString("cecd39e8-0308-4403-ac3c-faa9463acf9f");
     public static final UUID ACTION_SPEED_ID = UUID.fromString("f543633f-f272-4504-9940-a2fe3aee3698");
+    public static final UUID FREEZE_SLOW_ID = UUID.fromString("a5e760ab-439b-4bfb-b096-2455bcfd8bc8");
     public static final int STUN_SHORT = 8;
     public static final int STUN_MEDIUM = 12;
     public static final int STUN_LONG = 16;
@@ -191,6 +193,12 @@ public class CombatUtil {
                 }
             }
         }
+    }
+
+    public static float modifyProjectileAccuracy(Player player, float accuracy) {
+        float temp = PlayerData.get(player).getTemperature();
+        if(temp < 0.25F) return accuracy * (2F - Math.max(0, temp * 4));
+        else return accuracy;
     }
 
     public static List<Entity> getAttackableEntitiesNearby(AABB box, LivingEntity user, Level world) {

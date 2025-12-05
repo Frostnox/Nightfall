@@ -45,7 +45,7 @@ public abstract class OverlayNF extends GuiComponent {
     public static void register() {
         Minecraft mc = Minecraft.getInstance();
         if(!registered) {
-            IIngameOverlay healthOverlay = OverlayRegistry.registerOverlayBottom("Health",
+            IIngameOverlay healthOverlay = OverlayRegistry.registerOverlayAbove(ForgeIngameGui.PLAYER_HEALTH_ELEMENT, "Health",
                     (gui, mStack, partialTicks, screenWidth, screenHeight) -> {
                         if(!mc.options.hideGui && gui.shouldDrawSurvivalElements()) {
                             if(mc.player != null) {
@@ -54,7 +54,7 @@ public abstract class OverlayNF extends GuiComponent {
                             }
                         }
                     });
-            IIngameOverlay foodOverlay = OverlayRegistry.registerOverlayBottom("Food",
+            IIngameOverlay foodOverlay = OverlayRegistry.registerOverlayAbove(ForgeIngameGui.FOOD_LEVEL_ELEMENT, "Food",
                     (gui, mStack, partialTicks, screenWidth, screenHeight) -> {
                         if(!mc.options.hideGui && gui.shouldDrawSurvivalElements()) {
                             if(mc.player != null) {
@@ -63,7 +63,7 @@ public abstract class OverlayNF extends GuiComponent {
                             }
                         }
                     });
-            IIngameOverlay staminaOverlay = OverlayRegistry.registerOverlayBottom("Stamina",
+            IIngameOverlay staminaOverlay = OverlayRegistry.registerOverlayAbove(ForgeIngameGui.FOOD_LEVEL_ELEMENT, "Stamina",
                     (gui, mStack, partialTicks, screenWidth, screenHeight) -> {
                         if(!mc.options.hideGui && gui.shouldDrawSurvivalElements()) {
                             if(mc.player != null && !mc.player.isRidingJumpable()) {
@@ -72,7 +72,7 @@ public abstract class OverlayNF extends GuiComponent {
                             }
                         }
                     });
-            IIngameOverlay airOverlay = OverlayRegistry.registerOverlayBottom("Air",
+            IIngameOverlay airOverlay = OverlayRegistry.registerOverlayAbove(ForgeIngameGui.AIR_LEVEL_ELEMENT, "Air",
                     (gui, mStack, partialTicks, screenWidth, screenHeight) -> {
                         if(!mc.options.hideGui && gui.shouldDrawSurvivalElements()) {
                             gui.setupOverlayRenderState(true, false);

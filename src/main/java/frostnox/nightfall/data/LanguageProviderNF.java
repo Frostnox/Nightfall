@@ -452,6 +452,7 @@ public class LanguageProviderNF extends LanguageProvider {
         addSound(SoundsNF.ENTITY_WARP, "Something warps");
         addSound(SoundsNF.UNDEAD_WARP, "Undead warps");
         addSound(SoundsNF.ESSENCE_EXPLODE, "Something warps explosively");
+        addSound(SoundsNF.FROSTBITE, "Frostbite sets in");
         addSound(SoundsNF.LOG_FALL, "Log falls");
         addSound(SoundsNF.BIG_TREE_FALL, "Big tree falls");
         addSound(SoundsNF.SMALL_TREE_FALL, "Small tree falls");

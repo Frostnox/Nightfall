@@ -42,7 +42,8 @@
     "OptionsScreenMixin",
     "CreateWorldScreenMixin",
     "MinecraftMixin",
-    "ClientPacketListenerMixin"
+    "ClientPacketListenerMixin",
+    "ItemInHandRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
