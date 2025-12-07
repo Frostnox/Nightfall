@@ -659,6 +659,10 @@ public class LootTableProviderNF extends LootTableProvider {
                     .withPool(pool(entry(ItemsNF.DEER_HIDES.get(DeerEntity.Type.BRIAR).get(), 1F, 1F, LootItemEntityCondition.of(LootItemEntityCondition.Test.DEER_BRIAR))))
                     .withPool(pool(entry(ItemsNF.DEER_HIDES.get(DeerEntity.Type.RED).get(), 1F, 1F, LootItemEntityCondition.of(LootItemEntityCondition.Test.DEER_RED))))
                     .withPool(pool(entry(ItemsNF.DEER_HIDES.get(DeerEntity.Type.SPOTTED).get(), 1F, 1F, LootItemEntityCondition.of(LootItemEntityCondition.Test.DEER_SPOTTED)))));
+            add(EntitiesNF.WOLF.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.RAW_GAME.get(), 3, 4)))
+                    .withPool(pool(entry(ItemsNF.DEER_HIDES.get(DeerEntity.Type.BRIAR).get(), 1F, 1F, LootItemEntityCondition.of(LootItemEntityCondition.Test.DEER_BRIAR))))
+                    .withPool(pool(entry(ItemsNF.DEER_HIDES.get(DeerEntity.Type.RED).get(), 1F, 1F, LootItemEntityCondition.of(LootItemEntityCondition.Test.DEER_RED))))
+                    .withPool(pool(entry(ItemsNF.DEER_HIDES.get(DeerEntity.Type.SPOTTED).get(), 1F, 1F, LootItemEntityCondition.of(LootItemEntityCondition.Test.DEER_SPOTTED)))));
             add(EntitiesNF.DRAKEFOWL_ROOSTER.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.RAW_POULTRY.get(), 2, 2)))
                     .withPool(pool(entry(ItemsNF.SCARLET_FEATHER.get(), 5, 6))));
             add(EntitiesNF.DRAKEFOWL_HEN.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.RAW_POULTRY.get(), 2, 2)))

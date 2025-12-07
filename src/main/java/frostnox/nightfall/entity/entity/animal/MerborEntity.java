@@ -210,7 +210,7 @@ public class MerborEntity extends TamableAnimalEntity implements IOrientedHitBox
 
     @Override
     public boolean shouldFleeFrom(LivingEntity target) {
-        if(target.getType().is(TagsNF.MERBOR_PREDATOR)) return true;
+        if(target.getType().is(TagsNF.MERBOR_PREDATOR)) return sex == Sex.FEMALE || target != getTarget() || super.shouldFleeFrom(target);
         else if(target instanceof Player player && !player.isCreative() && !player.isSpectator()) return (sex == Sex.FEMALE && target == getTarget()) || super.shouldFleeFrom(target);
         else return false;
     }
@@ -232,7 +232,7 @@ public class MerborEntity extends TamableAnimalEntity implements IOrientedHitBox
     protected void registerGoals() {
         goalSelector.addGoal(1, new FloatAtHeightGoal(this, 0.7D));
         goalSelector.addGoal(2, new StepUpFleeTargetGoal(this, 1.25D, 1.35D));
-        goalSelector.addGoal(3, new StepUpFleeEntityGoal<>(this, LivingEntity.class, 1.25D, 1.35D, this::shouldFleeFrom));
+        goalSelector.addGoal(4, new StepUpFleeEntityGoal<>(this, LivingEntity.class, 1.25D, 1.35D, this::shouldFleeFrom));
         goalSelector.addGoal(5, new StepUpFleeDamageGoal(this, 1.35D));
         goalSelector.addGoal(7, new LureGoal(this, 10, 0.9D));
         goalSelector.addGoal(9, new EatEntityGoal(this, 1D, 15, 2));
@@ -241,7 +241,7 @@ public class MerborEntity extends TamableAnimalEntity implements IOrientedHitBox
         goalSelector.addGoal(12, new RandomLookGoal(this, 0.02F / 4));
         targetSelector.addGoal(1, new HurtByTargetGoal(this));
         if(getType() == EntitiesNF.MERBOR_TUSKER.get()) { //Function gets called mid-constructor so can't use sex
-            goalSelector.addGoal(4, new StepUpRushAttackGoal(this, 1.25D));
+            goalSelector.addGoal(3, new StepUpRushAttackGoal(this, 1.25D));
         }
     }
 

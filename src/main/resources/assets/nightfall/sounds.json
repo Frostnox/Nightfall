@@ -274,6 +274,34 @@
     "subtitle": "subtitles.block.generic.footsteps",
     "sounds": ["mob/llama/step1", "mob/llama/step2", "mob/llama/step3", "mob/llama/step4", "mob/llama/step5"]
   },
+  "entity.wolf.ambient": {
+    "subtitle": "nightfall.entity.wolf.ambient",
+    "sounds": ["nightfall:entity/wolf/ambient_0", "nightfall:entity/wolf/ambient_1", "nightfall:entity/wolf/ambient_2", "nightfall:entity/wolf/ambient_3"]
+  },
+  "entity.wolf.death": {
+    "subtitle": "nightfall.entity.wolf.death",
+    "sounds": ["nightfall:entity/wolf/death"]
+  },
+  "entity.wolf.hurt": {
+    "subtitle": "nightfall.entity.wolf.hurt",
+    "sounds": ["nightfall:entity/wolf/hurt_0", "nightfall:entity/wolf/hurt_1", "nightfall:entity/wolf/hurt_2"]
+  },
+  "entity.wolf.step": {
+    "subtitle": "subtitles.block.generic.footsteps",
+    "sounds": ["nightfall:entity/wolf/step_0", "nightfall:entity/wolf/step_1", "nightfall:entity/wolf/step_2", "nightfall:entity/wolf/step_3", "nightfall:entity/wolf/step_4"]
+  },
+  "entity.wolf.attack": {
+    "subtitle": "nightfall.entity.wolf.attack",
+    "sounds": ["nightfall:entity/wolf/attack_0", "nightfall:entity/wolf/attack_1"]
+  },
+  "entity.wolf.eat": {
+    "subtitle": "nightfall.entity.wolf.eat",
+    "sounds": ["nightfall:entity/wolf/eat_0", "nightfall:entity/wolf/eat_1"]
+  },
+  "entity.wolf.howl": {
+    "subtitle": "nightfall.entity.wolf.howl",
+    "sounds": ["nightfall:entity/wolf/howl_0", "nightfall:entity/wolf/howl_1"]
+  },
   "entity.drakefowl.ambient": {
     "subtitle": "nightfall.entity.drakefowl.ambient",
     "sounds": ["nightfall:entity/drakefowl/ambient_0", "nightfall:entity/drakefowl/ambient_1", "nightfall:entity/drakefowl/ambient_2", "nightfall:entity/drakefowl/ambient_3"]

@@ -316,6 +316,8 @@ public class ItemsNF {
             () -> new ForgeSpawnEggItem(EntitiesNF.RABBIT, 0xd7bb91, BEAST_COLOR, utility()));
     public static final RegistryObject<SpawnEggItem> DEER_SPAWN_EGG = register(EntitiesNF.DEER.getId().getPath() + "_spawn_egg",
             () -> new ForgeSpawnEggItem(EntitiesNF.DEER, 0xd6cec1, BEAST_COLOR, utility()));
+    public static final RegistryObject<SpawnEggItem> WOLF_SPAWN_EGG = register(EntitiesNF.WOLF.getId().getPath() + "_spawn_egg",
+            () -> new ForgeSpawnEggItem(EntitiesNF.WOLF, 0xbdccdc, BEAST_COLOR, utility()));
     public static final RegistryObject<SpawnEggItem> DRAKEFOWL_ROOSTER_SPAWN_EGG = register(EntitiesNF.DRAKEFOWL_ROOSTER.getId().getPath() + "_spawn_egg",
             () -> new ForgeSpawnEggItem(EntitiesNF.DRAKEFOWL_ROOSTER, 0xf7b22d, 0xc25217, utility()));
     public static final RegistryObject<SpawnEggItem> DRAKEFOWL_HEN_SPAWN_EGG = register(EntitiesNF.DRAKEFOWL_HEN.getId().getPath() + "_spawn_egg",

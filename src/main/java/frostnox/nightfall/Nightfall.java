@@ -355,6 +355,7 @@ public class Nightfall {
     public static void onEntityAttributeCreationEvent(EntityAttributeCreationEvent event) {
         event.put(EntitiesNF.RABBIT.get(), RabbitEntity.getAttributeMap().build());
         event.put(EntitiesNF.DEER.get(), DeerEntity.getAttributeMap().build());
+        event.put(EntitiesNF.WOLF.get(), WolfEntity.getAttributeMap().build());
         event.put(EntitiesNF.DRAKEFOWL_ROOSTER.get(), DrakefowlEntity.getAttributeMap().build());
         event.put(EntitiesNF.DRAKEFOWL_HEN.get(), DrakefowlEntity.getAttributeMap().build());
         event.put(EntitiesNF.DRAKEFOWL_CHICK.get(), DrakefowlBabyEntity.getAttributeMap().build());
@@ -519,6 +520,7 @@ public class Nightfall {
         public static void onEntityRenderersEvent(EntityRenderersEvent.RegisterRenderers event) {
             event.registerEntityRenderer(EntitiesNF.RABBIT.get(), RabbitRenderer::new);
             event.registerEntityRenderer(EntitiesNF.DEER.get(), DeerRenderer::new);
+            event.registerEntityRenderer(EntitiesNF.WOLF.get(), WolfRenderer::new);
             event.registerEntityRenderer(EntitiesNF.DRAKEFOWL_ROOSTER.get(), DrakefowlRenderer::new);
             event.registerEntityRenderer(EntitiesNF.DRAKEFOWL_HEN.get(), DrakefowlRenderer::new);
             event.registerEntityRenderer(EntitiesNF.DRAKEFOWL_CHICK.get(), DrakefowlBabyRenderer::new);
