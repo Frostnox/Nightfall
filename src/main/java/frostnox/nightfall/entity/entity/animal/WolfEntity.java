@@ -188,7 +188,11 @@ public class WolfEntity extends AnimalEntity implements IOrientedHitBoxes {
 
     @Override
     public float getVoicePitch() {
-        return 1.0F + (random.nextFloat() - random.nextFloat()) * 0.1F;
+        return (switch(getWolfType()) {
+            case DIRE -> 1.04F;
+            case STRIPED -> 0.96F;
+            case TIMBER -> 1F;
+        }) + (random.nextFloat() - random.nextFloat()) * 0.1F;
     }
 
     @Override
