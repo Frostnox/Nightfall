@@ -2,7 +2,6 @@ package frostnox.nightfall.entity.entity.animal;
 
 import com.mojang.math.Vector3d;
 import com.mojang.math.Vector3f;
-import frostnox.nightfall.action.Poise;
 import frostnox.nightfall.capability.ChunkData;
 import frostnox.nightfall.data.TagsNF;
 import frostnox.nightfall.entity.EntityPart;
@@ -197,7 +196,7 @@ public class WolfEntity extends AnimalEntity implements IOrientedHitBoxes {
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return SoundsNF.WOLF_AMBIENT.get();
+        return null;
     }
 
     @Override

@@ -383,12 +383,13 @@ public class LanguageProviderNF extends LanguageProvider {
         addSound(SoundsNF.SKIN_FLESH, "Skin peels");
         addSound(SoundsNF.DEER_DEATH, "Deer dies");
         addSound(SoundsNF.DEER_HURT, "Deer whines");
-        addSound(SoundsNF.WOLF_AMBIENT, "Wolf growls");
+        addSound(SoundsNF.WOLF_GROWL, "Wolf growls");
         addSound(SoundsNF.WOLF_DEATH, "Wolf dies");
         addSound(SoundsNF.WOLF_HURT, "Wolf whimpers");
         addSound(SoundsNF.WOLF_ATTACK, "Wolf barks");
         addSound(SoundsNF.WOLF_EAT, "Wolf eats");
-        addSound(SoundsNF.WOLF_HOWL, "Wolf howls");
+        addSound(SoundsNF.WOLF_HOWL_NEAR, "Nearby Wolf howls");
+        addSound(SoundsNF.WOLF_HOWL_FAR, "Distant Wolf howls");
         addSound(SoundsNF.DRAKEFOWL_AMBIENT, "Drakefowl clucks");
         addSound(SoundsNF.DRAKEFOWL_DEATH, "Drakefowl dies");
         addSound(SoundsNF.DRAKEFOWL_HURT, "Drakefowl squawks");

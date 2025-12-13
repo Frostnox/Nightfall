@@ -81,13 +81,14 @@ public class SoundsNF {
     public static final RegistryObject<SoundEvent> DEER_DEATH = generic("entity.deer.death");
     public static final RegistryObject<SoundEvent> DEER_HURT = generic("entity.deer.hurt");
     public static final RegistryObject<SoundEvent> DEER_STEP = generic("entity.deer.step");
-    public static final RegistryObject<SoundEvent> WOLF_AMBIENT = generic("entity.wolf.ambient");
+    public static final RegistryObject<SoundEvent> WOLF_GROWL = generic("entity.wolf.growl");
     public static final RegistryObject<SoundEvent> WOLF_DEATH = generic("entity.wolf.death");
     public static final RegistryObject<SoundEvent> WOLF_HURT = generic("entity.wolf.hurt");
     public static final RegistryObject<SoundEvent> WOLF_STEP = generic("entity.wolf.step");
     public static final RegistryObject<SoundEvent> WOLF_ATTACK = generic("entity.wolf.attack");
     public static final RegistryObject<SoundEvent> WOLF_EAT = generic("entity.wolf.eat");
-    public static final RegistryObject<SoundEvent> WOLF_HOWL = generic("entity.wolf.howl");
+    public static final RegistryObject<SoundEvent> WOLF_HOWL_NEAR = generic("entity.wolf.howl_near");
+    public static final RegistryObject<SoundEvent> WOLF_HOWL_FAR = generic("entity.wolf.howl_far");
     public static final RegistryObject<SoundEvent> DRAKEFOWL_AMBIENT = generic("entity.drakefowl.ambient");
     public static final RegistryObject<SoundEvent> DRAKEFOWL_DEATH = generic("entity.drakefowl.death");
     public static final RegistryObject<SoundEvent> DRAKEFOWL_HURT = generic("entity.drakefowl.hurt");
