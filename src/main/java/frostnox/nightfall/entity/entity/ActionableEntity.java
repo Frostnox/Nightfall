@@ -815,7 +815,7 @@ public abstract class ActionableEntity extends PathfinderMob {
             }
         }
         //Play attack sound on start of damage state
-        if(action.getSound() != null && capA.getFrame() == 1 && !capA.hasHitPause() && capA.isDamaging()) {
+        if(action.getSound() != null && capA.getFrame() == 1 && !capA.hasHitPause() && action.isStateDamaging(capA.getState())) {
             playSound(action.isChargeable() && capA.getCharge() >=  Math.round(action.getMaxCharge() * 0.75F) ? action.getExtraSound().get() : action.getSound().get(), 1F, 1F + level.random.nextFloat(-0.03F, 0.03F));
             gameEvent(GameEventsNF.ACTION_SOUND);
         }

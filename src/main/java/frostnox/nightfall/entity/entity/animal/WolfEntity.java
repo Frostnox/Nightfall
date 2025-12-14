@@ -8,6 +8,7 @@ import frostnox.nightfall.entity.EntityPart;
 import frostnox.nightfall.entity.IOrientedHitBoxes;
 import frostnox.nightfall.entity.ai.goal.*;
 import frostnox.nightfall.entity.entity.Diet;
+import frostnox.nightfall.registry.ActionsNF;
 import frostnox.nightfall.registry.forge.AttributesNF;
 import frostnox.nightfall.registry.forge.DataSerializersNF;
 import frostnox.nightfall.registry.forge.SoundsNF;
@@ -39,9 +40,11 @@ public class WolfEntity extends AnimalEntity implements IOrientedHitBoxes {
     public enum Type {
         DIRE, STRIPED, TIMBER
     }
+    public static final int GROWL_DURATION = 8 * 20;
     private static final EntityPart[] OBB_PARTS = new EntityPart[]{EntityPart.BODY, EntityPart.NECK, EntityPart.HEAD};
     protected static final EntityDataAccessor<WolfEntity.Type> TYPE = SynchedEntityData.defineId(WolfEntity.class, DataSerializersNF.WOLF_TYPE);
     protected static final EntityDataAccessor<Boolean> SPECIAL = SynchedEntityData.defineId(WolfEntity.class, EntityDataSerializers.BOOLEAN);
+    public int growlTicks;
 
     public WolfEntity(EntityType<? extends WolfEntity> type, Level worldIn) {
         super(type, worldIn);
@@ -60,9 +63,9 @@ public class WolfEntity extends AnimalEntity implements IOrientedHitBoxes {
 
     public static EnumMap<EntityPart, AnimationData> getHeadAnimMap() {
         EnumMap<EntityPart, AnimationData> map = new EnumMap<>(EntityPart.class);
-        map.put(EntityPart.BODY, new AnimationData(new Vector3f(0F/16F, -7.5F/16F, 5F/16F)));
-        map.put(EntityPart.NECK, new AnimationData(new Vector3f(0F/16F, -10F/16F, 0F/16F), new Vector3f(35, 0, 0)));
-        map.put(EntityPart.HEAD, new AnimationData(new Vector3f(0F/16F, 0F/16F, 0F/16F), new Vector3f(-35, 0, 0)));
+        map.put(EntityPart.BODY, new AnimationData(new Vector3f(0F/16F, -2.5F/16F, -7.5F/16F), new Vector3f(0, 0, 0)));
+        map.put(EntityPart.NECK, new AnimationData(new Vector3f(0F/16F, -1F/16F, -1.5F/16F), new Vector3f(0, 0, 0)));
+        map.put(EntityPart.HEAD, new AnimationData(new Vector3f(0F/16F, 0F/16F, 0F/16F), new Vector3f(0, 0, 0)));
         return map;
     }
 
@@ -123,7 +126,14 @@ public class WolfEntity extends AnimalEntity implements IOrientedHitBoxes {
     @Override
     public void tick() {
         super.tick();
+        if(!isRemoved() && getActionTracker().isInactive() && getTarget() == null && growlTicks > 0) growlTicks--;
+        if(getActionTracker().isInactive()) startAction(ActionsNF.WOLF_BITE.getId());
+    }
 
+    @Override
+    protected void simulateTime(int timePassed) {
+        growlTicks = Math.max(0, growlTicks - timePassed);
+        super.simulateTime(timePassed);
     }
 
     @Override
@@ -145,6 +155,7 @@ public class WolfEntity extends AnimalEntity implements IOrientedHitBoxes {
         if(type != 0) tag.putInt("type", type);
         boolean special = isSpecial();
         if(special) tag.putBoolean("special", special);
+        tag.putInt("growlTicks", growlTicks);
     }
 
     @Override
@@ -152,6 +163,7 @@ public class WolfEntity extends AnimalEntity implements IOrientedHitBoxes {
         super.readAdditionalSaveData(tag);
         getEntityData().set(TYPE, Type.values()[tag.getInt("type")]);
         getEntityData().set(SPECIAL, tag.getBoolean("special"));
+        growlTicks = tag.getInt("growlTicks");
     }
 
     public static class GroupData extends AgeableMob.AgeableMobGroupData {

@@ -1,10 +1,10 @@
-package frostnox.nightfall.action.npc.pit_devil;
+package frostnox.nightfall.action.npc.wolf;
 
 import frostnox.nightfall.action.Action;
 import frostnox.nightfall.capability.ActionTracker;
 import frostnox.nightfall.capability.IActionTracker;
 import frostnox.nightfall.entity.EntityPart;
-import frostnox.nightfall.entity.entity.monster.PitDevilEntity;
+import frostnox.nightfall.entity.entity.animal.WolfEntity;
 import frostnox.nightfall.network.NetworkHandler;
 import frostnox.nightfall.network.message.GenericEntityToClient;
 import frostnox.nightfall.util.MathUtil;
@@ -15,12 +15,12 @@ import net.minecraft.world.entity.LivingEntity;
 
 import java.util.EnumMap;
 
-public class PitDevilGrowl extends Action {
-    public PitDevilGrowl(int[] duration) {
+public class WolfGrowl extends Action {
+    public WolfGrowl(int[] duration) {
         super(duration);
     }
 
-    public PitDevilGrowl(Properties properties, int... duration) {
+    public WolfGrowl(Properties properties, int... duration) {
         super(properties, duration);
     }
 
@@ -28,18 +28,18 @@ public class PitDevilGrowl extends Action {
     public void onTick(LivingEntity user) {
         IActionTracker capA = ActionTracker.get(user);
         if(capA.getState() == 1) {
-            PitDevilEntity devil = (PitDevilEntity) user;
+            WolfEntity wolf = (WolfEntity) user;
             if(!user.level.isClientSide) {
-                if(capA.getFrame() % 60 == 1) user.playSound(getSound().get(), 1.5F, 0.97F + user.getRandom().nextFloat() * 0.06F);
-                devil.growlTicks++;
+                if(capA.getFrame() % 60 == 1) user.playSound(getSound().get(), 1.25F, 0.97F + user.getRandom().nextFloat() * 0.06F);
+                wolf.growlTicks++;
             }
-            devil.setYBodyRot(devil.getYHeadRot());
+            wolf.setYBodyRot(wolf.getYHeadRot());
         }
     }
 
     @Override
     public int getChargeTimeout() {
-        return PitDevilEntity.GROWL_DURATION;
+        return WolfEntity.GROWL_DURATION;
     }
 
     @Override
@@ -51,8 +51,8 @@ public class PitDevilGrowl extends Action {
     public boolean canContinueCharging(LivingEntity user) {
         if(user.level.isClientSide) return true;
         else {
-            PitDevilEntity devil = (PitDevilEntity) user;
-            return devil.growlTicks < PitDevilEntity.GROWL_DURATION && devil.getTarget() != null && user.getEyePosition().distanceToSqr(devil.getTarget().getEyePosition()) > 4 * 4;
+            WolfEntity wolf = (WolfEntity) user;
+            return wolf.growlTicks < WolfEntity.GROWL_DURATION && wolf.getTarget() != null && user.getEyePosition().distanceToSqr(wolf.getTarget().getEyePosition()) > 4 * 4;
         }
     }
 
@@ -61,7 +61,7 @@ public class PitDevilGrowl extends Action {
         if(!user.level.isClientSide) {
             NetworkHandler.toAllTracking(user, new GenericEntityToClient(NetworkHandler.Type.QUEUE_ACTION_TRACKER, user.getId()));
             int frame = ActionTracker.get(user).getFrame() % 60;
-            if(frame == 1 || frame > 18) user.playSound(getSound().get(), 1.5F, 0.97F + user.getRandom().nextFloat() * 0.06F);
+            if(frame == 1 || frame > 18) user.playSound(getSound().get(), 1.25F, 0.97F + user.getRandom().nextFloat() * 0.06F);
         }
     }
 
