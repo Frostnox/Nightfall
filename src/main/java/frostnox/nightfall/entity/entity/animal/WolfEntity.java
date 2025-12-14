@@ -48,7 +48,7 @@ public class WolfEntity extends AnimalEntity implements IOrientedHitBoxes {
     }
 
     public static AttributeSupplier.Builder getAttributeMap() {
-        return createAttributes().add(Attributes.MAX_HEALTH, 80D)
+        return createAttributes().add(Attributes.MAX_HEALTH, 90D)
                 .add(Attributes.MOVEMENT_SPEED, 0.275F)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0D)
                 .add(Attributes.ATTACK_DAMAGE, 1)
@@ -123,6 +123,7 @@ public class WolfEntity extends AnimalEntity implements IOrientedHitBoxes {
     @Override
     public void tick() {
         super.tick();
+
     }
 
     @Override
@@ -176,7 +177,9 @@ public class WolfEntity extends AnimalEntity implements IOrientedHitBoxes {
             spawnDataIn = new GroupData(type);
         }
         getEntityData().set(TYPE, type);
-        if(random.nextInt() % 2048 == 0) getEntityData().set(SPECIAL, true);
+        if(type == Type.DIRE) getAttribute(AttributesNF.FROST_DEFENSE.get()).setBaseValue(0.5);
+        else if(type == Type.TIMBER) getAttribute(AttributesNF.FROST_DEFENSE.get()).setBaseValue(0.25);
+        if(random.nextInt() % (type == Type.TIMBER ? 4 : 10) == 0) getEntityData().set(SPECIAL, true);
         return spawnDataIn;
     }
 
@@ -238,20 +241,25 @@ public class WolfEntity extends AnimalEntity implements IOrientedHitBoxes {
 
     @Override
     public boolean includeAABB() {
-        return true;
+        return !isAlive();
+    }
+
+    @Override
+    public float getModelScale() {
+        return getWolfType() == Type.DIRE ? 17F/16F : 1F;
     }
 
     @Override
     public Vector3f getOBBTranslation() {
-        return new Vector3f(0, 12F/16F, 0);
+        return new Vector3f(0, 10F/16F, 0);
     }
 
     @Override
     public EnumMap<EntityPart, AnimationData> getDefaultAnimMap() {
         EnumMap<EntityPart, AnimationData> map = getGenericAnimMap();
-        map.put(EntityPart.BODY, new AnimationData(new Vector3f(0F/16F, -7.5F/16F, -5F/16F)));
-        map.put(EntityPart.NECK, new AnimationData(new Vector3f(0F/16F, -8F/16F, 0F/16F), new Vector3f(35, 0, 0)));
-        map.put(EntityPart.HEAD, new AnimationData(new Vector3f(0F/16F, 0F/16F, 1/16F), new Vector3f(-35, 0, 0)));
+        map.put(EntityPart.BODY, new AnimationData(new Vector3f(0F/16F, -2.5F/16F, -7.5F/16F), new Vector3f(0, 0, 0), new Vector3f(0, 13.5F, 0)));
+        map.put(EntityPart.NECK, new AnimationData(new Vector3f(0F/16F, -1F/16F, -1.5F/16F), new Vector3f(0, 0, 0), new Vector3f(0, -1.5F, -6F)));
+        map.put(EntityPart.HEAD, new AnimationData(new Vector3f(0F/16F, 0F/16F, 0F/16F), new Vector3f(0, 0, 0), new Vector3f(0, 0, 0F)));
         return map;
     }
 
@@ -263,20 +271,25 @@ public class WolfEntity extends AnimalEntity implements IOrientedHitBoxes {
     @Override
     public OBB[][] getDefaultOBBs() {
         return new OBB[][] {
-                new OBB[] { new OBB(3.5F/16F, 10.5F/16F, 3.5F/16F, 0, 4F/16F, -0.5F/16F)},
-                new OBB[] { new OBB(4.5F/16F, 4.5F/16F, 6.5F/16F, 0, 2F/16F, 0.5F/16F),
-                        new OBB(2.5F/16F, 3.5F/16F, 3.5F/16F, 0, 1.5F/16F, 4.5F/16F + 0.5F/16F)}
+                new OBB[] {
+                        new OBB(7.5F/16F, 6.5F/16F, 14.5F/16F, 0, 0F/16F, 0F/16F)
+                },
+                new OBB[0],
+                new OBB[] {
+                        new OBB(6.5F/16F, 5.5F/16F, 4.5F/16F, 0, 1F/16F, 0.5F/16F),
+                        new OBB(3.5F/16F, 3.5F/16F, 3.5F/16F, 0, 0F/16F, 1.5F/16F + 2.5F/16F)
+                }
         };
     }
 
     @Override
     public AABB getEnclosingAABB() {
         AABB bb = getBoundingBox();
-        return new AABB(bb.minX - 0.55, bb.minY, bb.minZ - 0.55, bb.maxX + 0.55, bb.maxY + 0.55, bb.maxZ + 0.55);
+        return new AABB(bb.minX - 0.5, bb.minY, bb.minZ - 0.5, bb.maxX + 0.5, bb.maxY + 0.5, bb.maxZ + 0.5);
     }
 
     @Override
     public EquipmentSlot getHitSlot(Vector3d hitPos, int boxIndex) {
-        return boxIndex >= 0 ? EquipmentSlot.HEAD : EquipmentSlot.CHEST;
+        return boxIndex >= 1 ? EquipmentSlot.HEAD : EquipmentSlot.CHEST;
     }
 }

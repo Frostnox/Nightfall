@@ -6,12 +6,14 @@ import frostnox.nightfall.block.ITree;
 import frostnox.nightfall.data.TagsNF;
 import frostnox.nightfall.entity.ai.pathfinding.NodeManager;
 import frostnox.nightfall.entity.ai.pathfinding.NodeType;
+import frostnox.nightfall.entity.entity.ActionableEntity;
 import frostnox.nightfall.world.generation.tree.TreeGenerator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.BlockGetter;
@@ -74,7 +76,11 @@ public class TreeBranchesBlock extends Block implements ICustomPathfindable {
     @Override
     public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         if(context instanceof EntityCollisionContext entityContext && entityContext.getEntity() != null) {
-            return entityContext.getEntity() instanceof LivingEntity ? COLLISION_SHAPE : Shapes.empty(); //TODO: Let heavy entities sink
+            if(entityContext.getEntity() instanceof LivingEntity || entityContext.getEntity() instanceof Boat) {
+                if(entityContext.getEntity() instanceof ActionableEntity actionable && actionable.getPushResistance() >= ActionableEntity.PUSH_HIGH) return Shapes.empty();
+                else return COLLISION_SHAPE;
+            }
+            return Shapes.empty();
         }
         return super.getCollisionShape(state, level, pos, context);
     }

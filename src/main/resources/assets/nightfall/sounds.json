@@ -262,6 +262,10 @@
     "subtitle": "nightfall.action.poison_hit",
     "sounds": ["nightfall:action/poison_hit_0", "nightfall:action/poison_hit_1", "nightfall:action/poison_hit_2"]
   },
+  "entity.rabbit.eat": {
+    "subtitle": "nightfall.entity.rabbit.eat",
+    "sounds": ["mob/parrot/eat1", "mob/parrot/eat2", "mob/parrot/eat3"]
+  },
   "entity.deer.death": {
     "subtitle": "nightfall.entity.deer.death",
     "sounds": ["nightfall:entity/deer/hurt_0", "nightfall:entity/deer/hurt_1", "nightfall:entity/deer/hurt_2"]
@@ -273,6 +277,10 @@
   "entity.deer.step": {
     "subtitle": "subtitles.block.generic.footsteps",
     "sounds": ["mob/llama/step1", "mob/llama/step2", "mob/llama/step3", "mob/llama/step4", "mob/llama/step5"]
+  },
+  "entity.deer.eat": {
+    "subtitle": "nightfall.entity.deer.eat",
+    "sounds": ["mob/llama/eat1", "mob/llama/eat2", "mob/llama/eat3"]
   },
   "entity.wolf.growl": {
     "subtitle": "nightfall.entity.wolf.growl",
@@ -489,6 +497,10 @@
   "entity.spider.bite": {
     "subtitle": "nightfall.entity.spider.bite",
     "sounds": ["nightfall:entity/spider/bite_0", "nightfall:entity/spider/bite_1", "nightfall:entity/spider/bite_2"]
+  },
+  "entity.spider.eat": {
+    "subtitle": "nightfall.entity.spider.eat",
+    "sounds": ["nightfall:entity/spider/eat_0", "nightfall:entity/spider/eat_1", "nightfall:entity/spider/eat_2"]
   },
   "entity.rockworm.death": {
     "subtitle": "nightfall.entity.rockworm.death",

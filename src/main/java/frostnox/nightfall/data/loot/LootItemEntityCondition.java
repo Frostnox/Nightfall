@@ -8,6 +8,7 @@ import frostnox.nightfall.entity.IHungerEntity;
 import frostnox.nightfall.entity.entity.animal.DeerEntity;
 import frostnox.nightfall.entity.entity.animal.MerborEntity;
 import frostnox.nightfall.entity.entity.animal.RabbitEntity;
+import frostnox.nightfall.entity.entity.animal.WolfEntity;
 import frostnox.nightfall.entity.entity.monster.CockatriceEntity;
 import frostnox.nightfall.registry.vanilla.LootItemConditionTypesNF;
 import net.minecraft.util.GsonHelper;
@@ -23,6 +24,7 @@ import java.util.Set;
 public class LootItemEntityCondition implements LootItemCondition {
     public enum Test {
         LIVING_PRESENT, HUNGRY, RABBIT_BRUSH, RABBIT_COTTONTAIL, RABBIT_ARCTIC, RABBIT_STRIPED, DEER_BRIAR, DEER_RED, DEER_SPOTTED,
+        WOLF_DIRE, WOLF_STRIPED, WOLF_TIMBER, WOLF_SPECIAL,
         MERBOR_BOG, MERBOR_BRINE, MERBOR_RIVER, MERBOR_SPECIAL, COCKATRICE_BRONZE, COCKATRICE_EMERALD;
 
         private final String name;
@@ -67,6 +69,10 @@ public class LootItemEntityCondition implements LootItemCondition {
             case DEER_BRIAR -> context.getParam(entityTarget.getParam()) instanceof DeerEntity deer && deer.getDeerType() == DeerEntity.Type.BRIAR;
             case DEER_RED -> context.getParam(entityTarget.getParam()) instanceof DeerEntity deer && deer.getDeerType() == DeerEntity.Type.RED;
             case DEER_SPOTTED -> context.getParam(entityTarget.getParam()) instanceof DeerEntity deer && deer.getDeerType() == DeerEntity.Type.SPOTTED;
+            case WOLF_DIRE -> context.getParam(entityTarget.getParam()) instanceof WolfEntity wolf && !wolf.isSpecial() && wolf.getWolfType() == WolfEntity.Type.DIRE;
+            case WOLF_STRIPED -> context.getParam(entityTarget.getParam()) instanceof WolfEntity wolf && !wolf.isSpecial() && wolf.getWolfType() == WolfEntity.Type.STRIPED;
+            case WOLF_TIMBER -> context.getParam(entityTarget.getParam()) instanceof WolfEntity wolf && !wolf.isSpecial() && wolf.getWolfType() == WolfEntity.Type.TIMBER;
+            case WOLF_SPECIAL -> context.getParam(entityTarget.getParam()) instanceof WolfEntity wolf && wolf.isSpecial();
             case MERBOR_BOG -> context.getParam(entityTarget.getParam()) instanceof MerborEntity merbor && !merbor.isSpecial() && merbor.getMerborType() == MerborEntity.Type.BOG;
             case MERBOR_BRINE -> context.getParam(entityTarget.getParam()) instanceof MerborEntity merbor && !merbor.isSpecial() && merbor.getMerborType() == MerborEntity.Type.BRINE;
             case MERBOR_RIVER -> context.getParam(entityTarget.getParam()) instanceof MerborEntity merbor && !merbor.isSpecial() && merbor.getMerborType() == MerborEntity.Type.RIVER;

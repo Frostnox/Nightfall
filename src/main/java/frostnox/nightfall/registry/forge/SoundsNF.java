@@ -78,9 +78,11 @@ public class SoundsNF {
     public static final RegistryObject<SoundEvent> TILL_SOIL = generic("tool_action.till_soil");
     public static final RegistryObject<SoundEvent> STRIP_WOOD = generic("tool_action.strip_wood");
     public static final RegistryObject<SoundEvent> SKIN_FLESH = generic("tool_action.skin_flesh");
+    public static final RegistryObject<SoundEvent> RABBIT_EAT = generic("entity.rabbit.eat");
     public static final RegistryObject<SoundEvent> DEER_DEATH = generic("entity.deer.death");
     public static final RegistryObject<SoundEvent> DEER_HURT = generic("entity.deer.hurt");
     public static final RegistryObject<SoundEvent> DEER_STEP = generic("entity.deer.step");
+    public static final RegistryObject<SoundEvent> DEER_EAT = generic("entity.deer.eat");
     public static final RegistryObject<SoundEvent> WOLF_GROWL = generic("entity.wolf.growl");
     public static final RegistryObject<SoundEvent> WOLF_DEATH = generic("entity.wolf.death");
     public static final RegistryObject<SoundEvent> WOLF_HURT = generic("entity.wolf.hurt");
@@ -135,6 +137,7 @@ public class SoundsNF {
     public static final RegistryObject<SoundEvent> COCKATRICE_BITE = generic("entity.cockatrice.bite");
     public static final RegistryObject<SoundEvent> COCKATRICE_SPIT = generic("entity.cockatrice.spit");
     public static final RegistryObject<SoundEvent> SPIDER_BITE = generic("entity.spider.bite");
+    public static final RegistryObject<SoundEvent> SPIDER_EAT = generic("entity.spider.eat");
     public static final RegistryObject<SoundEvent> ROCKWORM_DEATH = generic("entity.rockworm.death");
     public static final RegistryObject<SoundEvent> ROCKWORM_HURT = generic("entity.rockworm.hurt");
     public static final RegistryObject<SoundEvent> ROCKWORM_BITE = generic("entity.rockworm.bite");

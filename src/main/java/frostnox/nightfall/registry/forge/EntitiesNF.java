@@ -20,7 +20,7 @@ public class EntitiesNF {
     public static final RegistryObject<EntityType<DeerEntity>> DEER = ENTITIES.register("deer", () -> EntityType.Builder.of(DeerEntity::new, MobCategory.CREATURE)
             .sized(13F/16F, 15.5F/16F).clientTrackingRange(10).setShouldReceiveVelocityUpdates(false).build("deer"));
     public static final RegistryObject<EntityType<WolfEntity>> WOLF = ENTITIES.register("wolf", () -> EntityType.Builder.of(WolfEntity::new, MobCategory.CREATURE)
-            .sized(10F/16F, 13.5F/16F).clientTrackingRange(10).setShouldReceiveVelocityUpdates(false).build("wolf"));
+            .sized(10F/16F, 13F/16F).clientTrackingRange(10).setShouldReceiveVelocityUpdates(false).build("wolf"));
 
     public static final RegistryObject<EntityType<DrakefowlEntity>> DRAKEFOWL_ROOSTER = ENTITIES.register("drakefowl_rooster", () -> EntityType.Builder.of(DrakefowlEntity::createMale, MobCategory.CREATURE)
             .sized(6F/16F, 9F/16F).clientTrackingRange(10).setShouldReceiveVelocityUpdates(false).build("drakefowl_rooster"));

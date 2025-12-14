@@ -14,10 +14,12 @@ public class WolfRenderer extends AnimatedMobRenderer<WolfEntity, WolfModel> {
     public static final ResourceLocation DIRE = ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "textures/entity/wolf/dire.png");
     public static final ResourceLocation STRIPED = ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "textures/entity/wolf/striped.png");
     public static final ResourceLocation TIMBER = ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "textures/entity/wolf/timber.png");
-    public static final ResourceLocation SPECIAL = ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "textures/entity/wolf/special.png");
+    public static final ResourceLocation SPECIAL_DIRE = ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "textures/entity/wolf/special_dire.png");
+    public static final ResourceLocation SPECIAL_STRIPED = ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "textures/entity/wolf/special_striped.png");
+    public static final ResourceLocation SPECIAL_TIMBER = ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "textures/entity/wolf/special_timber.png");
 
     public WolfRenderer(EntityRendererProvider.Context renderer) {
-        super(renderer, new WolfModel(renderer.bakeLayer(ModelRegistryNF.WOLF)), 0.3F);
+        super(renderer, new WolfModel(renderer.bakeLayer(ModelRegistryNF.WOLF)), 0.325F);
     }
 
     @Override
@@ -28,7 +30,11 @@ public class WolfRenderer extends AnimatedMobRenderer<WolfEntity, WolfModel> {
 
     @Override
     public ResourceLocation getTextureLocation(WolfEntity pEntity) {
-        if(pEntity.isSpecial()) return SPECIAL;
+        if(pEntity.isSpecial()) return switch(pEntity.getWolfType()) {
+            case DIRE -> SPECIAL_DIRE;
+            case STRIPED -> SPECIAL_STRIPED;
+            case TIMBER -> SPECIAL_TIMBER;
+        };
         else return switch(pEntity.getWolfType()) {
             case DIRE -> DIRE;
             case STRIPED -> STRIPED;

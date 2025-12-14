@@ -145,11 +145,6 @@ public class SkaraSwarmEntity extends HungryMonsterEntity implements IHomeEntity
     }
 
     @Override
-    public float getPushForce() {
-        return PUSH_ZERO;
-    }
-
-    @Override
     public float getNavigatorWaypointDist() {
         return 4F/16F;
     }

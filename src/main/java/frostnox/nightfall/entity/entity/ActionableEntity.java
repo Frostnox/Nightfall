@@ -607,7 +607,7 @@ public abstract class ActionableEntity extends PathfinderMob {
     }
 
     public float getPushForce() {
-        return PUSH_MEDIUM;
+        return getPushResistance();
     }
 
     @Override

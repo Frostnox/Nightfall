@@ -15,11 +15,6 @@ public abstract class AmbientEntity extends ActionableEntity {
     }
 
     @Override
-    public float getPushForce() {
-        return PUSH_ZERO;
-    }
-
-    @Override
     public boolean dropLootFromSkinning() {
         return true;
     }

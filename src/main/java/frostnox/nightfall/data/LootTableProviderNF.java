@@ -15,6 +15,7 @@ import frostnox.nightfall.data.loot.*;
 import frostnox.nightfall.entity.entity.animal.DeerEntity;
 import frostnox.nightfall.entity.entity.animal.MerborEntity;
 import frostnox.nightfall.entity.entity.animal.RabbitEntity;
+import frostnox.nightfall.entity.entity.animal.WolfEntity;
 import frostnox.nightfall.entity.entity.monster.CockatriceEntity;
 import frostnox.nightfall.item.Armament;
 import frostnox.nightfall.item.TieredArmorMaterial;
@@ -650,7 +651,7 @@ public class LootTableProviderNF extends LootTableProvider {
 
         @Override
         protected void addTables() {
-            add(EntitiesNF.RABBIT.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.RAW_GAME.get(), 2F, 3F)))
+            add(EntitiesNF.RABBIT.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.RAW_GAME.get(), 2F, 2F)))
                     .withPool(pool(entry(ItemsNF.RABBIT_PELTS.get(RabbitEntity.Type.BRUSH).get(), 1F, 1F, LootItemEntityCondition.of(LootItemEntityCondition.Test.RABBIT_BRUSH))))
                     .withPool(pool(entry(ItemsNF.RABBIT_PELTS.get(RabbitEntity.Type.COTTONTAIL).get(), 1F, 1F, LootItemEntityCondition.of(LootItemEntityCondition.Test.RABBIT_COTTONTAIL))))
                     .withPool(pool(entry(ItemsNF.RABBIT_PELTS.get(RabbitEntity.Type.ARCTIC).get(), 1F, 1F, LootItemEntityCondition.of(LootItemEntityCondition.Test.RABBIT_ARCTIC))))
@@ -660,9 +661,10 @@ public class LootTableProviderNF extends LootTableProvider {
                     .withPool(pool(entry(ItemsNF.DEER_HIDES.get(DeerEntity.Type.RED).get(), 1F, 1F, LootItemEntityCondition.of(LootItemEntityCondition.Test.DEER_RED))))
                     .withPool(pool(entry(ItemsNF.DEER_HIDES.get(DeerEntity.Type.SPOTTED).get(), 1F, 1F, LootItemEntityCondition.of(LootItemEntityCondition.Test.DEER_SPOTTED)))));
             add(EntitiesNF.WOLF.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.RAW_GAME.get(), 3, 4)))
-                    .withPool(pool(entry(ItemsNF.DEER_HIDES.get(DeerEntity.Type.BRIAR).get(), 1F, 1F, LootItemEntityCondition.of(LootItemEntityCondition.Test.DEER_BRIAR))))
-                    .withPool(pool(entry(ItemsNF.DEER_HIDES.get(DeerEntity.Type.RED).get(), 1F, 1F, LootItemEntityCondition.of(LootItemEntityCondition.Test.DEER_RED))))
-                    .withPool(pool(entry(ItemsNF.DEER_HIDES.get(DeerEntity.Type.SPOTTED).get(), 1F, 1F, LootItemEntityCondition.of(LootItemEntityCondition.Test.DEER_SPOTTED)))));
+                    .withPool(pool(entry(ItemsNF.WOLF_PELTS.get(WolfEntity.Type.DIRE).get(), 1F, 1F, LootItemEntityCondition.of(LootItemEntityCondition.Test.WOLF_DIRE))))
+                    .withPool(pool(entry(ItemsNF.WOLF_PELTS.get(WolfEntity.Type.STRIPED).get(), 1F, 1F, LootItemEntityCondition.of(LootItemEntityCondition.Test.WOLF_STRIPED))))
+                    .withPool(pool(entry(ItemsNF.WOLF_PELTS.get(WolfEntity.Type.TIMBER).get(), 1F, 1F, LootItemEntityCondition.of(LootItemEntityCondition.Test.WOLF_TIMBER))))
+                    .withPool(pool(entry(ItemsNF.BLACK_WOLF_PELT.get(), 1F, 1F, LootItemEntityCondition.of(LootItemEntityCondition.Test.WOLF_SPECIAL)))));
             add(EntitiesNF.DRAKEFOWL_ROOSTER.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.RAW_POULTRY.get(), 2, 2)))
                     .withPool(pool(entry(ItemsNF.SCARLET_FEATHER.get(), 5, 6))));
             add(EntitiesNF.DRAKEFOWL_HEN.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.RAW_POULTRY.get(), 2, 2)))

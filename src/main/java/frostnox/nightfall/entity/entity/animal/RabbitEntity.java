@@ -15,6 +15,7 @@ import frostnox.nightfall.entity.ai.sensing.AudioSensing;
 import frostnox.nightfall.entity.entity.Diet;
 import frostnox.nightfall.registry.forge.AttributesNF;
 import frostnox.nightfall.registry.forge.DataSerializersNF;
+import frostnox.nightfall.registry.forge.SoundsNF;
 import frostnox.nightfall.util.LevelUtil;
 import frostnox.nightfall.util.animation.AnimationData;
 import frostnox.nightfall.util.math.OBB;
@@ -159,11 +160,6 @@ public class RabbitEntity extends AnimalEntity implements IOrientedHitBoxes, IHo
         return PUSH_LOW;
     }
 
-    @Override
-    public float getPushForce() {
-        return PUSH_LOW;
-    }
-
     public static class GroupData extends AgeableMob.AgeableMobGroupData {
         public final Type type;
 
@@ -284,6 +280,6 @@ public class RabbitEntity extends AnimalEntity implements IOrientedHitBoxes, IHo
 
     @Override
     public SoundEvent getEatSound() {
-        return null; //TODO:
+        return SoundsNF.RABBIT_EAT.get();
     }
 }

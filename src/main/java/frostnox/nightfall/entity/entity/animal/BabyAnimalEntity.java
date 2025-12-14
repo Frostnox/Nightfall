@@ -103,9 +103,4 @@ public abstract class BabyAnimalEntity extends ActionableEntity {
     public float getPushResistance() {
         return PUSH_ZERO;
     }
-
-    @Override
-    public float getPushForce() {
-        return PUSH_ZERO;
-    }
 }

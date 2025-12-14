@@ -381,8 +381,10 @@ public class LanguageProviderNF extends LanguageProvider {
         addSound(SoundsNF.TILL_SOIL, "Soil stirs");
         addSound(SoundsNF.STRIP_WOOD, "Bark peels");
         addSound(SoundsNF.SKIN_FLESH, "Skin peels");
+        addSound(SoundsNF.RABBIT_EAT, "Rabbit eats");
         addSound(SoundsNF.DEER_DEATH, "Deer dies");
         addSound(SoundsNF.DEER_HURT, "Deer whines");
+        addSound(SoundsNF.DEER_EAT, "Deer eats");
         addSound(SoundsNF.WOLF_GROWL, "Wolf growls");
         addSound(SoundsNF.WOLF_DEATH, "Wolf dies");
         addSound(SoundsNF.WOLF_HURT, "Wolf whimpers");
@@ -429,6 +431,7 @@ public class LanguageProviderNF extends LanguageProvider {
         addSound(SoundsNF.COCKATRICE_BITE, "Cockatrice pecks");
         addSound(SoundsNF.COCKATRICE_SPIT, "Cockatrice spits");
         addSound(SoundsNF.SPIDER_BITE, "Spider bites");
+        addSound(SoundsNF.SPIDER_EAT, "Spider eats");
         addSound(SoundsNF.ROCKWORM_DEATH, "Rockworm dies");
         addSound(SoundsNF.ROCKWORM_HURT, "Rockworm screeches");
         addSound(SoundsNF.ROCKWORM_BITE, "Rockworm bites");

@@ -19,6 +19,7 @@ import frostnox.nightfall.registry.ActionsNF;
 import frostnox.nightfall.registry.forge.AttributesNF;
 import frostnox.nightfall.registry.forge.DataSerializersNF;
 import frostnox.nightfall.registry.forge.ParticleTypesNF;
+import frostnox.nightfall.registry.forge.SoundsNF;
 import frostnox.nightfall.util.animation.AnimationData;
 import frostnox.nightfall.world.ContinentalWorldType;
 import frostnox.nightfall.world.generation.ContinentalChunkGenerator;
@@ -305,11 +306,6 @@ public class SpiderEntity extends HungryMonsterEntity implements IChaser, IHomeE
         return PUSH_LOW;
     }
 
-    @Override
-    public float getPushForce() {
-        return PUSH_LOW;
-    }
-
     public static class GroupData extends AgeableMob.AgeableMobGroupData {
         public final Type type;
 
@@ -394,7 +390,7 @@ public class SpiderEntity extends HungryMonsterEntity implements IChaser, IHomeE
 
     @Override
     public SoundEvent getEatSound() {
-        return null; //TODO:
+        return SoundsNF.SPIDER_EAT.get();
     }
 
     @Override

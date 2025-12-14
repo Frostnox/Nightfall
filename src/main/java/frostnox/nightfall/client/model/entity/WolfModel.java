@@ -17,6 +17,7 @@ import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.util.Mth;
 
 import java.util.EnumMap;
 import java.util.List;
@@ -57,8 +58,8 @@ public class WolfModel extends AnimatedModel<WolfEntity> implements HeadedModel 
 
         PartDefinition neck = body.addOrReplaceChild("neck", CubeListBuilder.create().texOffs(0, 22).mirror().addBox(-4.0F, -2.5F, -2.5F, 8.0F, 5.0F, 5.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(0.0F, -1.5F, -6.0F));
 
-        PartDefinition head = neck.addOrReplaceChild("head", CubeListBuilder.create().texOffs(27, 23).mirror().addBox(-3.0F, -3.5F, -2.5F, 6.0F, 5.0F, 4.0F, new CubeDeformation(0.0F)).mirror(false)
-                .texOffs(48, 26).mirror().addBox(-1.5F, -1.5F, -5.5F, 3.0F, 3.0F, 3.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(0.0F, -1.0F, -1.5F));
+        PartDefinition head = neck.addOrReplaceChild("head", CubeListBuilder.create().texOffs(27, 23).mirror().addBox(-3.0F, -3.5F, -2.5F, 6.0F, 5.0F, 4.0F, new CubeDeformation(0.01F)).mirror(false)
+                .texOffs(48, 26).mirror().addBox(-1.5F, -1.5F, -5.5F, 3.0F, 3.0F, 3.0F, new CubeDeformation(0.01F)).mirror(false), PartPose.offset(0.0F, -1.0F, -1.5F));
 
         PartDefinition leftEar = head.addOrReplaceChild("leftEar", CubeListBuilder.create().texOffs(45, 22).addBox(-1.0F, -3.0F, 0.0F, 2.0F, 3.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offset(2.0F, -2.5F, 0.5F));
 
@@ -81,7 +82,9 @@ public class WolfModel extends AnimatedModel<WolfEntity> implements HeadedModel 
     public void setupAnim(WolfEntity entity, float limbSwing, float limbSwingAmount, float time, float netHeadYaw, float headPitch) {
         resetPose();
         float speed = 4F;
-        float runAmount = Math.max(0, (limbSwingAmount - 0.6F) / 0.4F);
+//        limbSwingAmount = 0.7F;
+//        limbSwing = time / 1.5F;
+        float runAmount = Mth.clamp((limbSwingAmount - 0.6F) / 0.1F, 0, 1);
         float walkAmount = Math.min(1F, limbSwingAmount * 2) * (1F - runAmount);
         //Look
         head.xRot += MathUtil.toRadians(headPitch);
@@ -89,10 +92,16 @@ public class WolfModel extends AnimatedModel<WolfEntity> implements HeadedModel 
         //Idle
         if(!entity.isDeadOrDying()) {
             int hash = entity.getUUID().hashCode();
-            float idle1 = (time + (hash & 255)) % 220F;
-            if(idle1 < 6F * 4F) rotateZ(tail, 20F, 6F, 0, 0, idle1 + 3F, 1F - (idle1 / (6F * 4F)), Easing.inOutSine, true);
-            float idle2 = (time + (hash >> 8 & 255));
-            rotateZ(tail, 2F, 20F, 0, 0, idle2, 1, Easing.inOutSine, true);
+            float idle1 = (time + (hash & 255)) % 440F;
+            if(idle1 < 180F) {
+                float p = Easing.inOutCubic.apply(idle1 < 5F ? (idle1 / 5F) : (idle1 >= 175F ? (1F - (idle1 - 175F) / 5F) : 1F));
+                head.yRot += MathUtil.toRadians(7) * p;
+            }
+            float idle2 = (time + (hash >> 8 & 255)) % 440F;
+            if(idle2 < 180F) {
+                float p = Easing.inOutCubic.apply(idle2 < 5F ? (idle2 / 5F) : (idle2 >= 175F ? (1F - (idle2 - 175F) / 5F) : 1F));
+                head.yRot += MathUtil.toRadians(-7) * p;
+            }
             float idle3 = (time + (hash >> 16 & 255)) % 310F;
             if(idle3 < 90F) {
                 float p = Easing.inOutCubic.apply(idle3 < 6F ? (idle3 / 6F) : (idle3 >= 84F ? (1F - (idle3 - 84F) / 6F) : 1F));
@@ -106,41 +115,41 @@ public class WolfModel extends AnimatedModel<WolfEntity> implements HeadedModel 
         }
         //Walk
         if(walkAmount > 0) {
-            translateY(body, -0.25F, speed / 2, 0, 0, limbSwing, walkAmount, Easing.inOutSine, true);
-            frontRightLeg.xRot += MathUtil.toRadians(-5F) * walkAmount;
-            frontLeftLeg.xRot += MathUtil.toRadians(-5F) * walkAmount;
-            hindRightLeg.xRot += MathUtil.toRadians(5F) * walkAmount;
-            hindLeftLeg.xRot += MathUtil.toRadians(5F) * walkAmount;
-            rotateX(tail, -9F, speed / 2, MathUtil.PI/6F, 0, limbSwing, walkAmount, Easing.inOutSine, false);
-            rotateX(frontRightLeg, 46, 1 * speed, 0, 0, limbSwing, walkAmount, Easing.inOutSine, true);
-            rotateX(frontLeftLeg, -46, 1 * speed, 0, 0, limbSwing, walkAmount, Easing.inOutSine, true);
-            rotateX(hindRightLeg, -46, 1 * speed, MathUtil.PI/16F, 0, limbSwing, walkAmount, Easing.inOutSine, true);
-            rotateX(hindLeftLeg, 46, 1 * speed, MathUtil.PI/16F, 0, limbSwing, walkAmount, Easing.inOutSine, true);
-            translateY(frontRightLeg, 0.25F, speed, MathUtil.PI + MathUtil.PI/2F, 0F, limbSwing, walkAmount, Easing.inOutSine, false);
-            translateY(frontLeftLeg, 0.25F, speed, MathUtil.PI + -MathUtil.PI/2F, 0F, limbSwing, walkAmount, Easing.inOutSine, false);
-            translateY(hindLeftLeg, 0.25F, speed, MathUtil.PI + MathUtil.PI/2F + MathUtil.PI/16F, 0F, limbSwing, walkAmount, Easing.inOutSine, false);
-            translateY(hindRightLeg, 0.25F, speed, MathUtil.PI + -MathUtil.PI/2F + MathUtil.PI/16F, 0F, limbSwing, walkAmount, Easing.inOutSine, false);
+            rotateX(body, 2.5F, speed / 2, 0, 0, limbSwing, walkAmount, Easing.inOutSine, false);
+            rotateX(neck, -2.5F, speed / 2, 0, 0, limbSwing, walkAmount, Easing.inOutSine, false);
+            rotateX(frontRightLeg, 50, speed, 0, 0, limbSwing, walkAmount, Easing.inOutSine, true);
+            rotateX(frontLeftLeg, -50, speed, 0, 0, limbSwing, walkAmount, Easing.inOutSine, true);
+            rotateX(hindRightLeg, -50, speed, MathUtil.PI/12F, 0, limbSwing, walkAmount, Easing.inOutSine, true);
+            rotateX(hindLeftLeg, 50, speed, MathUtil.PI/12F, 0, limbSwing, walkAmount, Easing.inOutSine, true);
+            translateY(frontRightLeg, 0.4F, speed, MathUtil.PI + MathUtil.PI/2F, 0F, limbSwing, walkAmount, Easing.inOutSine, false);
+            translateY(frontLeftLeg, 0.4F, speed, MathUtil.PI + -MathUtil.PI/2F, 0F, limbSwing, walkAmount, Easing.inOutSine, false);
+            translateY(hindLeftLeg, 0.4F, speed, MathUtil.PI + MathUtil.PI/2F + MathUtil.PI/12F, 0F, limbSwing, walkAmount, Easing.inOutSine, false);
+            translateY(hindRightLeg, 0.4F, speed, MathUtil.PI + -MathUtil.PI/2F + MathUtil.PI/12F, 0F, limbSwing, walkAmount, Easing.inOutSine, false);
+            rotateZ(tail, 10F, speed, 0, 0, limbSwing, walkAmount, Easing.inOutSine, true);
         }
         //Run
         if(runAmount > 0) {
-            rotateX(body, 5, 1 * speed, 0, 0, limbSwing, runAmount, Easing.inOutSine, true);
-            rotateX(head, -3, 1 * speed, 0, 0, limbSwing, runAmount, Easing.inOutSine, true);
+            rotateX(body, 5, speed, 0, 0, limbSwing, runAmount, Easing.inOutSine, true);
+            rotateX(neck, -3, speed, 0, 0, limbSwing, runAmount, Easing.inOutSine, true);
             for(AnimatedModelPart part : new AnimatedModelPart[] {body, frontRightLeg, frontLeftLeg, hindRightLeg, hindLeftLeg}) {
-                translateY(part, -1.7F, 1 * speed, MathUtil.PI, 0, limbSwing, runAmount, Easing.inOutSine, false);
+                translateY(part, -1.25F, speed, MathUtil.PI * 7F/8F, 0, limbSwing, runAmount, Easing.inOutSine, false);
+                part.y += 1F * runAmount;
             }
-            frontRightLeg.xRot += MathUtil.toRadians(-5F) * runAmount;
-            frontLeftLeg.xRot += MathUtil.toRadians(-5F) * runAmount;
-            rotateX(frontRightLeg, 52, 1 * speed, 0, 0, limbSwing, runAmount, Easing.inOutCubic, true);
-            rotateX(frontLeftLeg, 52, 1 * speed, MathUtil.PI/16F, 0, limbSwing, runAmount, Easing.inOutCubic, true);
-            translateY(frontRightLeg, -1.5F, speed, MathUtil.PI/2F, 0F, limbSwing, runAmount, Easing.inOutSine, false);
-            translateY(frontLeftLeg, -1.5F, speed, MathUtil.PI/2F + MathUtil.PI/16F, 0F, limbSwing, runAmount, Easing.inOutSine, false);
-            hindRightLeg.xRot += MathUtil.toRadians(5F) * runAmount;
-            hindLeftLeg.xRot += MathUtil.toRadians(5F) * runAmount;
-            rotateX(hindLeftLeg, -52, 1 * speed, 0, 0, limbSwing, runAmount, Easing.inOutCubic, true);
-            rotateX(hindRightLeg, -52, 1 * speed, MathUtil.PI/16F, 0, limbSwing, runAmount, Easing.inOutCubic, true);
-            translateY(hindLeftLeg, -1.5F, speed, -MathUtil.PI/2F, 0F, limbSwing, runAmount, Easing.inOutSine, false);
-            translateY(hindRightLeg, -1.5F, speed, -MathUtil.PI/2F + MathUtil.PI/16F, 0F, limbSwing, runAmount, Easing.inOutSine, false);
-            rotateX(tail, -18F, speed, MathUtil.PI * 0.4F, 0, limbSwing, runAmount, Easing.inOutSine, true);
+            translateY(head, 1F, speed, MathUtil.PI * 10/8F, 0, limbSwing, runAmount, Easing.inOutSine, false);
+            tail.xRot += MathUtil.toRadians(5F) * runAmount;
+            rotateX(tail, -14F, speed, MathUtil.PI * 0.4F, 0, limbSwing, runAmount, Easing.inOutSine, true);
+            rotateZ(tail, 7F, speed * 2, 0, 0, limbSwing, runAmount, Easing.inOutSine, true);
+
+            frontRightLeg.xRot += MathUtil.toRadians(-10F) * runAmount;
+            rotateX(frontRightLeg, 57, speed, 0, 0, limbSwing, runAmount, Easing.inOutCubic, true);
+            translateY(frontRightLeg, -1.5F, speed, MathUtil.PI, 0F, limbSwing, runAmount, Easing.inOutSine, false);
+            frontLeftLeg.xRot += MathUtil.toRadians(-10F) * runAmount;
+            rotateX(frontLeftLeg, 57, speed, -MathUtil.PI/7F, 0, limbSwing, runAmount, Easing.inOutCubic, true);
+            translateY(frontLeftLeg, -1.5F, speed, MathUtil.PI + MathUtil.PI/7F, 0F, limbSwing, runAmount, Easing.inOutSine, false);
+            rotateX(hindRightLeg, -52, speed, -MathUtil.PI/8F, 0, limbSwing, runAmount, Easing.inOutCubic, true);
+            translateY(hindRightLeg, -1F, speed, MathUtil.PI/4F - MathUtil.PI/8F, 0F, limbSwing, runAmount, Easing.inOutSine, false);
+            rotateX(hindLeftLeg, -52, speed, MathUtil.PI/7F - MathUtil.PI/8F, 0, limbSwing, runAmount, Easing.inOutCubic, true);
+            translateY(hindLeftLeg, -1F, speed, MathUtil.PI/7F + MathUtil.PI/4F - MathUtil.PI/8F, 0F, limbSwing, runAmount, Easing.inOutSine, false);
         }
     }
 
@@ -172,7 +181,7 @@ public class WolfModel extends AnimatedModel<WolfEntity> implements HeadedModel 
     @Override
     public void animateStun(int frame, int duration, int dir, float mag, WolfEntity user, AnimationCalculator mCalc, Vector3f mVec, float partialTicks) {
         super.animateStun(frame, duration, dir, mag, user, mCalc, mVec, partialTicks);
-        AnimationUtil.stunPartToDefaultWithPause(head, head.animationData, frame, duration, partialTicks, -12F * mag, 1);
+        AnimationUtil.stunPartToDefaultWithPause(head, head.animationData, frame, duration, partialTicks, -20F * mag, 1);
     }
 
     @Override

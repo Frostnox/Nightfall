@@ -229,8 +229,9 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
         }
         tag(TagsNF.ANIMAL_HIDE_LARGE);
         for(var item : ItemsNF.DEER_HIDES.values()) tag(TagsNF.ANIMAL_HIDE_MEDIUM).add(item.get());
+        for(var item : ItemsNF.WOLF_PELTS.values()) tag(TagsNF.ANIMAL_HIDE_MEDIUM).add(item.get());
         for(var item : ItemsNF.MERBOR_HIDES.values()) tag(TagsNF.ANIMAL_HIDE_MEDIUM).add(item.get());
-        tag(TagsNF.ANIMAL_HIDE_MEDIUM).add(ItemsNF.GOLDEN_MERBOR_HIDE.get());
+        tag(TagsNF.ANIMAL_HIDE_MEDIUM).add(ItemsNF.BLACK_WOLF_PELT.get(), ItemsNF.GOLDEN_MERBOR_HIDE.get());
         for(var item : ItemsNF.RABBIT_PELTS.values()) tag(TagsNF.ANIMAL_HIDE_SMALL).add(item.get());
         tag(TagsNF.ANIMAL_HIDE).addTags(TagsNF.ANIMAL_HIDE_SMALL, TagsNF.ANIMAL_HIDE_MEDIUM, TagsNF.ANIMAL_HIDE_LARGE);
         tag(TagsNF.RAWHIDE_LARGE);

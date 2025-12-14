@@ -275,6 +275,6 @@ public class DeerEntity extends AnimalEntity implements IOrientedHitBoxes {
 
     @Override
     public SoundEvent getEatSound() {
-        return null; //TODO:
+        return SoundsNF.DEER_EAT.get();
     }
 }

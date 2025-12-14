@@ -361,11 +361,6 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
     }
 
     @Override
-    public float getPushForce() {
-        return PUSH_LOW;
-    }
-
-    @Override
     public @Nullable ResourceLocation getCollapseAction() {
         return ActionsNF.DRAKEFOWL_COLLAPSE.getId();
     }
