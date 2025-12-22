@@ -127,7 +127,6 @@ public class WolfEntity extends AnimalEntity implements IOrientedHitBoxes {
     public void tick() {
         super.tick();
         if(!isRemoved() && getActionTracker().isInactive() && getTarget() == null && growlTicks > 0) growlTicks--;
-        if(getActionTracker().isInactive()) startAction(ActionsNF.WOLF_BITE.getId());
     }
 
     @Override

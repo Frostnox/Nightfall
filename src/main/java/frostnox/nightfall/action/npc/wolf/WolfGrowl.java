@@ -30,7 +30,7 @@ public class WolfGrowl extends Action {
         if(capA.getState() == 1) {
             WolfEntity wolf = (WolfEntity) user;
             if(!user.level.isClientSide) {
-                if(capA.getFrame() % 60 == 1) user.playSound(getSound().get(), 1.25F, 0.97F + user.getRandom().nextFloat() * 0.06F);
+                if(capA.getFrame() % 36 == 1) user.playSound(getSound().get(), 1.25F, 0.96F + user.getRandom().nextFloat() * 0.08F);
                 wolf.growlTicks++;
             }
             wolf.setYBodyRot(wolf.getYHeadRot());
@@ -60,7 +60,7 @@ public class WolfGrowl extends Action {
     public void onChargeRelease(LivingEntity user) {
         if(!user.level.isClientSide) {
             NetworkHandler.toAllTracking(user, new GenericEntityToClient(NetworkHandler.Type.QUEUE_ACTION_TRACKER, user.getId()));
-            int frame = ActionTracker.get(user).getFrame() % 60;
+            int frame = ActionTracker.get(user).getFrame() % 36;
             if(frame == 1 || frame > 18) user.playSound(getSound().get(), 1.25F, 0.97F + user.getRandom().nextFloat() * 0.06F);
         }
     }
@@ -68,48 +68,39 @@ public class WolfGrowl extends Action {
     @Override
     protected void transformModelSingle(int state, int frame, int duration, float charge, float pitch, LivingEntity user, EnumMap<EntityPart, AnimationData> data, AnimationCalculator mCalc) {
         AnimationData body = data.get(EntityPart.BODY);
-        AnimationData neck = data.get(EntityPart.NECK);
         AnimationData head = data.get(EntityPart.HEAD);
+        AnimationData neck = data.get(EntityPart.NECK);
         AnimationData tail = data.get(EntityPart.TAIL);
-        AnimationData legLeft = data.get(EntityPart.LEG_LEFT);
-        AnimationData legRight = data.get(EntityPart.LEG_RIGHT);
         AnimationData earLeft = data.get(EntityPart.EAR_LEFT);
         AnimationData earRight = data.get(EntityPart.EAR_RIGHT);
         switch(state) {
             case 0 -> {
-                body.rCalc.add(10, 0, 0);
-                body.tCalc.add(0, 1, 0);
-                head.tCalc.extend(0, 1, 0);
-                head.rCalc.extend(pitch, 0, 0);
-                earLeft.rCalc.add(-25, 0, 0);
-                earRight.rCalc.add(-25, 0, 0);
-                tail.rCalc.extend(20, 0, 0);
+                body.rCalc.add(5, 0, 0);
+                body.tCalc.add(0, 0.5F, 0);
+                head.tCalc.add(0, 1F, -0.5F);
+                head.rCalc.extend(-5 + pitch, 0, 0);
+                neck.tCalc.add(0, -0.5F, 0);
+                earLeft.rCalc.extend(-45, 0, 0);
+                earRight.rCalc.extend(-45, 0, 0);
+                tail.rCalc.extend(-3, 0, 0);
             }
             case 1 -> {
-                float f = (charge > 0 ? (ActionTracker.get(user).getCharge() - 2 + ActionTracker.get(user).getChargePartial()) :
-                        (frame - 1 + head.rCalc.partialTicks)) * 0.55F;
                 body.rCalc.freeze();
                 body.tCalc.freeze();
                 head.tCalc.freeze();
                 head.rCalc.freeze();
+                neck.tCalc.freeze();
                 earLeft.rCalc.freeze();
                 earRight.rCalc.freeze();
                 tail.rCalc.freeze();
-                float scale = 0.35F;
-                legLeft.rCalc.add(Mth.sin(f + MathUtil.PI / 6) * 10, 0, 0);
-                legLeft.tCalc.add(0, -Mth.sin(f) * scale, Mth.cos(f) * scale);
-                legRight.rCalc.add(-Mth.sin(f + MathUtil.PI / 6) * 10, 0, 0);
-                legRight.tCalc.add(0, Mth.sin(f) * scale, -Mth.cos(f) * scale);
             }
             case 2 -> {
                 body.toDefault();
-                head.toDefaultRotation();
-                neck.toDefaultRotation();
+                head.toDefault();
+                neck.toDefaultTranslation();
                 earLeft.toDefaultRotation();
                 earRight.toDefaultRotation();
                 tail.toDefaultRotation();
-                legLeft.toDefault();
-                legRight.toDefault();
             }
         }
     }

@@ -31,6 +31,7 @@ import frostnox.nightfall.action.npc.skeleton.SkeletonShoot;
 import frostnox.nightfall.action.npc.skeleton.SkeletonThrust;
 import frostnox.nightfall.action.npc.spider.SpiderBite;
 import frostnox.nightfall.action.npc.wolf.WolfBite;
+import frostnox.nightfall.action.npc.wolf.WolfBiteChain;
 import frostnox.nightfall.action.npc.wolf.WolfGrowl;
 import frostnox.nightfall.action.player.action.*;
 import frostnox.nightfall.action.player.action.guard.ShieldGuardAction;
@@ -411,10 +412,13 @@ public class ActionsNF {
             new DeerGraze(new Action.Properties().setChargeState(1), 8, 1, 10));
 
     public static final RegistryObject<WolfGrowl> WOLF_GROWL = ACTIONS.register("wolf_growl", () ->
-            new WolfGrowl(new Action.Properties().setChargeState(1).setSound(SoundsNF.WOLF_GROWL), 4, 1, 4));
+            new WolfGrowl(new Action.Properties().setChargeState(1).setSound(SoundsNF.WOLF_GROWL), 5, 1, 5));
     public static final RegistryObject<WolfBite> WOLF_BITE = ACTIONS.register("wolf_bite", () ->
             new WolfBite(26F, DamageType.PIERCING.asArray(), HurtSphere.WOLF_BITE, 1, CombatUtil.STUN_MEDIUM,
-                    new int[] {9, 6, 8}, new Action.Properties().setImpact(Impact.MEDIUM).setSound(SoundsNF.WOLF_ATTACK), bleeding(0.3F)));
+                    new int[] {9, 6, 1, 8}, new Action.Properties().setImpact(Impact.MEDIUM).setSound(SoundsNF.WOLF_ATTACK).setChainTo(ActionsNF.WOLF_BITE_CHAIN).setChainState(2), bleeding(0.3F)));
+    public static final RegistryObject<WolfBiteChain> WOLF_BITE_CHAIN = ACTIONS.register("wolf_bite_chain", () ->
+            new WolfBiteChain(26F, DamageType.PIERCING.asArray(), HurtSphere.WOLF_BITE, 1, CombatUtil.STUN_MEDIUM,
+                    new int[] {3, 6, 8}, new Action.Properties().setImpact(Impact.MEDIUM).setSound(SoundsNF.WOLF_ATTACK).setChainFrom(WOLF_BITE), bleeding(0.3F)));
 
     public static final RegistryObject<Action> DRAKEFOWL_BREED = ACTIONS.register("drakefowl_breed", () -> new Action(new Action.Properties().setSpecial(), 20));
     public static final RegistryObject<DrakefowlCollapse> DRAKEFOWL_COLLAPSE = ACTIONS.register("drakefowl_collapse", () ->

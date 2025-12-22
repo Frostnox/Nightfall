@@ -47,27 +47,29 @@ public class WolfBite extends NPCAttack {
     @Override
     protected void transformModelSingle(int state, int frame, int duration, float charge, float pitch, LivingEntity user, EnumMap<EntityPart, AnimationData> data, AnimationCalculator mCalc) {
         AnimationData body = data.get(EntityPart.BODY);
-        AnimationData neck = data.get(EntityPart.NECK);
         AnimationData head = data.get(EntityPart.HEAD);
         switch(state) {
             case 0 -> {
                 body.rCalc.add(10, 0, 0);
                 body.tCalc.add(0, 1, 1);
-                neck.rCalc.add(-10, 0, 0);
-                head.rCalc.extend(pitch, 0, 0);
+                head.rCalc.extend(-10 + pitch, 0, 0);
                 head.tCalc.add(0, 0F, 1F);
             }
             case 1 -> {
-                body.rCalc.add(pitch / 2, 0, 0, Easing.outQuart);
+                body.rCalc.add(-15 + pitch / 4, 0, 0, Easing.outQuart);
                 body.tCalc.add(0, -1, -1, Easing.outQuart);
-                neck.rCalc.add(10, 0, 0, Easing.outQuart);
-                head.rCalc.freeze();
-                head.tCalc.add(0, 0F, -2F, Easing.outQuart);
+                head.rCalc.add(15 - pitch / 4, 0, -25, Easing.outQuart);
+                head.tCalc.add(0, 0.5F, -2F, Easing.outQuart);
             }
             case 2 -> {
+                body.tCalc.freeze();
+                head.tCalc.freeze();
+                body.rCalc.freeze();
+                head.rCalc.freeze();
+            }
+            case 3 -> {
                 body.toDefault();
                 head.toDefault();
-                neck.toDefaultRotation();
             }
         }
         if(data.size() > 3) {
@@ -78,23 +80,33 @@ public class WolfBite extends NPCAttack {
             AnimationData hindLegRight = data.get(EntityPart.LEG_2_RIGHT);
             switch(state) {
                 case 0 -> {
-                    tail.rCalc.extend(20, 0, 0);
+                    tail.rCalc.add(20 + pitch / 2, 0, 0);
                     legLeft.tCalc.add(0, 0, 1.5F);
                     legRight.tCalc.add(0, 0, 1.5F);
                 }
                 case 1 -> {
-                    tail.rCalc.extend(-5, 0, 0, Easing.outQuart);
-                    legLeft.tCalc.add(0, 0, -1.5F, Easing.outQuart);
-                    legRight.tCalc.add(0, 0, -1.5F, Easing.outQuart);
-                    if(pitch > 0) {
-                        hindLegLeft.tCalc.add(0, -pitch/25, 0, Easing.outQuart);
-                        hindLegRight.tCalc.add(0, -pitch/25, 0, Easing.outQuart);
-                    }
+                    tail.rCalc.add(10, 0, 0, Easing.outQuart);
+                    legLeft.rCalc.add(5, 0, 0, Easing.outCubic);
+                    legRight.rCalc.add(5, 0, 0, Easing.outCubic);
+                    float y = pitch > 0 ? pitch/50 : 0;
+                    legLeft.tCalc.add(0, y + -1, -1.5F, Easing.outQuart);
+                    legRight.tCalc.add(0, y + -1, -1.5F, Easing.outQuart);
+                    hindLegLeft.tCalc.add(0, -y, 0, Easing.outQuart);
+                    hindLegRight.tCalc.add(0, -y, 0, Easing.outQuart);
                 }
                 case 2 -> {
+                    tail.rCalc.freeze();
+                    legLeft.rCalc.freeze();
+                    legRight.rCalc.freeze();
+                    legLeft.tCalc.freeze();
+                    legRight.tCalc.freeze();
+                    hindLegLeft.tCalc.freeze();
+                    hindLegRight.tCalc.freeze();
+                }
+                case 3 -> {
                     tail.toDefaultRotation();
-                    legLeft.toDefaultTranslation();
-                    legRight.toDefaultTranslation();
+                    legLeft.toDefault();
+                    legRight.toDefault();
                     hindLegLeft.toDefaultTranslation();
                     hindLegRight.toDefaultTranslation();
                 }
@@ -116,7 +128,7 @@ public class WolfBite extends NPCAttack {
 
     @Override
     public float getPitch(LivingEntity user, float partialTicks) {
-        return Mth.clamp(user.getViewXRot(partialTicks), -90F, 90F);
+        return Mth.clamp(user.getViewXRot(partialTicks), -85F, 80F);
     }
 
     @Override
@@ -124,7 +136,7 @@ public class WolfBite extends NPCAttack {
         if(!user.level.isClientSide && user instanceof Mob mob) {
             IActionTracker capA = ActionTracker.get(user);
             if(capA.getState() == 0 && capA.getFrame() == capA.getDuration() - 1) {
-                CombatUtil.addMovementTowardsTarget(0.75, 1, mob);
+                CombatUtil.addMovementTowardsTarget(0.6, 1, mob);
             }
         }
     }
@@ -144,7 +156,7 @@ public class WolfBite extends NPCAttack {
     public float getMaxYRot(int state) {
         return switch(state) {
             case 0 -> 30;
-            case 1 -> 0;
+            case 1 -> 5;
             default -> 45;
         };
     }
