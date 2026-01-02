@@ -203,7 +203,7 @@ public abstract class UndeadEntity extends MonsterEntity {
         }
         float essence = getEssence();
         if(level.isClientSide) {
-            if(tickCount % 5 == 0 && random.nextFloat() > getTransparency()) {
+            if(randTickCount % 5 == 0 && random.nextFloat() > getTransparency()) {
                 level.addParticle(ParticleTypesNF.ESSENCE_MOON.get(), getRandomX(0.5D), getRandomY(), getRandomZ(0.5D), 0, 0, 0);
             }
         }

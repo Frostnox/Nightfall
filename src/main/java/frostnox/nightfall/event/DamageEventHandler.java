@@ -129,9 +129,10 @@ public class DamageEventHandler {
         float originalAmount = damageAmount;
         DamageSource damageSrc = event.getSource();
         LivingEntity entity = event.getEntityLiving();
+        Entity cause = source.hasOwner() ? source.getOwner() : source.getEntity();
         //Pre damage
-        if(source.hasOwner() && (source.getOwner() instanceof Player || source.getOwner() instanceof ActionableEntity) && ActionTracker.get(source.getOwner()).getAction() instanceof Attack attack) {
-            damageAmount = attack.onDamageDealtPre((LivingEntity) source.getOwner(), entity, damageAmount);
+        if((cause instanceof Player || cause instanceof ActionableEntity) && ActionTracker.get(cause).getAction() instanceof Attack attack) {
+            damageAmount = attack.onDamageDealtPre((LivingEntity) cause, entity, damageAmount);
         }
         //Technique calculations
         if(entity instanceof ServerPlayer player) {
@@ -160,15 +161,15 @@ public class DamageEventHandler {
         damageAmount = CombatUtil.applyAccessoryDamageCalculations(entity ,source, damageAmount);
         //System.out.println("Accessories: " + damageAmount);
         //Post damage
-        if(source.hasOwner() && (source.getOwner() instanceof Player || source.getOwner() instanceof ActionableEntity) && ActionTracker.get(source.getOwner()).getAction() instanceof Attack attack) {
-            damageAmount = attack.onDamageDealtPost((LivingEntity) source.getOwner(), entity, damageAmount);
+        if((cause instanceof Player || cause instanceof ActionableEntity) && ActionTracker.get(cause).getAction() instanceof Attack attack) {
+            damageAmount = attack.onDamageDealtPost((LivingEntity) cause, entity, damageAmount);
         }
         //Effects
         Impact impact = source.getImpact();
         if(entity instanceof ActionableEntity actionable) impact = actionable.modifyIncomingImpact(source, impact);
         boolean impacted = !impact.negatedBy(poise.val);
         float reducedDamage = Math.min(2F, damageAmount / originalAmount);
-        float chargedModifier = (source.getOwner() instanceof Player || source.getOwner() instanceof ActionableEntity) ? ActionTracker.get(source.getOwner()).getChargeAttackMultiplier() : 1F;
+        float chargedModifier = (cause instanceof Player || cause instanceof ActionableEntity) ? ActionTracker.get(cause).getChargeAttackMultiplier() : 1F;
         if(reducedDamage > 0.1F) {
             float chanceModifier = Math.min(1F, reducedDamage + 0.25F);
             if(source.getEffects() != null) {
@@ -261,7 +262,7 @@ public class DamageEventHandler {
         if(event.getEntityLiving().hasEffect(EffectsNF.BLEEDING.get())) {
             event.setAmount(event.getAmount() / 2F);
         }
-        if(event.getEntityLiving() instanceof Player player) {
+        if(event.getEntityLiving() instanceof Player player && PlayerData.isPresent(player)) {
             float temp = PlayerData.get(player).getTemperature();
             if(temp < 0.25F) event.setAmount(event.getAmount() * Math.max(0, temp / 0.25F));
         }

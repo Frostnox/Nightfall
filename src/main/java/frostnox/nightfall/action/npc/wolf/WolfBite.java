@@ -15,7 +15,6 @@ import frostnox.nightfall.util.animation.AnimationData;
 import frostnox.nightfall.util.math.Easing;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 
 import javax.annotation.Nullable;
 import java.util.EnumMap;
@@ -133,10 +132,13 @@ public class WolfBite extends NPCAttack {
 
     @Override
     public void onTick(LivingEntity user) {
-        if(!user.level.isClientSide && user instanceof Mob mob) {
+        if(!user.level.isClientSide && user instanceof WolfEntity wolf) {
             IActionTracker capA = ActionTracker.get(user);
             if(capA.getState() == 0 && capA.getFrame() == capA.getDuration() - 1) {
-                CombatUtil.addMovementTowardsTarget(0.6, 1, mob);
+                CombatUtil.addMovementTowardsTarget(0.8, 1, wolf);
+            }
+            else if(capA.getState() == getChainState() && wolf.fleeTicks == 0 && wolf.getTarget() != null && CombatUtil.getShortestDistanceSqr(wolf, wolf.getTarget()) < 1.25F * 1.25F) {
+                wolf.queueAction();
             }
         }
     }
@@ -155,9 +157,16 @@ public class WolfBite extends NPCAttack {
     @Override
     public float getMaxYRot(int state) {
         return switch(state) {
-            case 0 -> 30;
-            case 1 -> 5;
+            case 0 -> 35;
+            case 1 -> 20;
             default -> 45;
         };
+    }
+
+    @Override
+    public float onDamageDealtPost(LivingEntity user, LivingEntity target, float damage) {
+        WolfEntity wolf = (WolfEntity) user;
+        wolf.fleeTicks = 10;
+        return damage;
     }
 }

@@ -2,7 +2,6 @@ package frostnox.nightfall.entity.entity.monster;
 
 import com.mojang.math.Vector3d;
 import com.mojang.math.Vector3f;
-import frostnox.nightfall.block.IFoodBlock;
 import frostnox.nightfall.block.block.nest.GuardedNestBlockEntity;
 import frostnox.nightfall.block.block.nest.NestBlockEntity;
 import frostnox.nightfall.capability.ChunkData;
@@ -40,7 +39,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -187,7 +185,7 @@ public class SpiderEntity extends HungryMonsterEntity implements IChaser, IHomeE
     }
 
     @Override
-    public ResourceLocation pickActionEnemy(double distanceSqr, Entity target) {
+    public ResourceLocation pickActionEnemy(double distanceSqr, LivingEntity target) {
         return switch(getSpiderType()) {
             case BLACK -> ActionsNF.SPIDER_BITE_POISONOUS.getId();
             case BANDED -> ActionsNF.SPIDER_BITE_PARALYZING.getId();

@@ -30,16 +30,20 @@ public class WolfGrowl extends Action {
         if(capA.getState() == 1) {
             WolfEntity wolf = (WolfEntity) user;
             if(!user.level.isClientSide) {
-                if(capA.getFrame() % 36 == 1) user.playSound(getSound().get(), 1.25F, 0.96F + user.getRandom().nextFloat() * 0.08F);
-                wolf.growlTicks++;
+                if(capA.getFrame() % 36 == 1) user.playSound(getSound().get(), 1.25F, 0.95F + user.getRandom().nextFloat() * 0.1F);
+                if(wolf.growlTicks < WolfEntity.GROWL_DURATION * 2) wolf.growlTicks++;
             }
-            wolf.setYBodyRot(wolf.getYHeadRot());
+            double dZ = wolf.getZ() - wolf.zo, dX = wolf.getX() - wolf.xo;
+            if(Math.abs(dZ) > 0.005 || Math.abs(dX) > 0.005) {
+                wolf.setYBodyRot(wolf.yBodyRot + Mth.clamp(Mth.wrapDegrees(MathUtil.getAngleDegrees(dZ, dX) - wolf.yBodyRot), -wolf.getMaxYRotPerTick(), wolf.getMaxYRotPerTick()));
+            }
+            else wolf.setYBodyRot(wolf.getYHeadRot());
         }
     }
 
     @Override
     public int getChargeTimeout() {
-        return WolfEntity.GROWL_DURATION;
+        return CHARGE_MAX;
     }
 
     @Override
@@ -52,7 +56,9 @@ public class WolfGrowl extends Action {
         if(user.level.isClientSide) return true;
         else {
             WolfEntity wolf = (WolfEntity) user;
-            return wolf.growlTicks < WolfEntity.GROWL_DURATION && wolf.getTarget() != null && user.getEyePosition().distanceToSqr(wolf.getTarget().getEyePosition()) > 4 * 4;
+            if(!wolf.canAttackInPack()) return true;
+            else wolf.attackTarget = wolf.getTarget();
+            return wolf.growlTicks < WolfEntity.GROWL_DURATION && wolf.getTarget() != null && user.getEyePosition().distanceToSqr(wolf.getTarget().getEyePosition()) > 3 * 3;
         }
     }
 
@@ -61,7 +67,7 @@ public class WolfGrowl extends Action {
         if(!user.level.isClientSide) {
             NetworkHandler.toAllTracking(user, new GenericEntityToClient(NetworkHandler.Type.QUEUE_ACTION_TRACKER, user.getId()));
             int frame = ActionTracker.get(user).getFrame() % 36;
-            if(frame == 1 || frame > 18) user.playSound(getSound().get(), 1.25F, 0.97F + user.getRandom().nextFloat() * 0.06F);
+            if(frame == 1 || frame > 18) user.playSound(getSound().get(), 1.25F, 0.95F + user.getRandom().nextFloat() * 0.1F);
         }
     }
 
@@ -78,7 +84,7 @@ public class WolfGrowl extends Action {
                 body.rCalc.add(5, 0, 0);
                 body.tCalc.add(0, 0.5F, 0);
                 head.tCalc.add(0, 1F, -0.5F);
-                head.rCalc.extend(-5 + pitch, 0, 0);
+                head.rCalc.extend(-5 + pitch, head.dRotation.y(), head.dRotation.z());
                 neck.tCalc.add(0, -0.5F, 0);
                 earLeft.rCalc.extend(-45, 0, 0);
                 earRight.rCalc.extend(-45, 0, 0);

@@ -37,8 +37,9 @@ public class EntityTypeTagsProviderNF extends EntityTypeTagsProvider {
                 EntitiesNF.SCORPION, EntitiesNF.TROLL, EntitiesNF.OLMUR, EntitiesNF.SPIDER, EntitiesNF.SKARA_SWARM, EntitiesNF.WOLF));
 
         tag(TagsNF.WOLF_PREDATOR).add(merge(EntitiesNF.SPIDER, EntitiesNF.ROCKWORM, EntitiesNF.SKARA_SWARM, EntitiesNF.OLMUR));
+        tag(TagsNF.WOLF_THREAT).add(merge(EntitiesNF.MERBOR_TUSKER, EntitiesNF.COCKATRICE, EntitiesNF.PIT_DEVIL, EntitiesNF.SCORPION));
         tag(TagsNF.WOLF_SOLO_PREY).add(merge(merge(babies, drakefowl), EntitiesNF.RABBIT, EntitiesNF.DEER, EntitiesNF.MERBOR_SOW));
-        tag(TagsNF.WOLF_PACK_PREY).add(merge(EntitiesNF.PIT_DEVIL, EntitiesNF.COCKATRICE, EntitiesNF.MERBOR_TUSKER, EntitiesNF.SCORPION));
+        tag(TagsNF.WOLF_PACK_PREY).add(merge(merge(merbor), EntitiesNF.PIT_DEVIL, EntitiesNF.COCKATRICE, EntitiesNF.SCORPION));
 
         tag(TagsNF.DRAKEFOWL_PREDATOR).add(merge(EntitiesNF.ROCKWORM, EntitiesNF.TROLL, EntitiesNF.OLMUR, EntitiesNF.SKARA_SWARM, EntitiesNF.SPIDER,
                 EntitiesNF.PIT_DEVIL, EntitiesNF.SCORPION, EntitiesNF.WOLF));

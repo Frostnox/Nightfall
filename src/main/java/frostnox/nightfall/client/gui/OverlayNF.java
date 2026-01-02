@@ -96,7 +96,7 @@ public abstract class OverlayNF extends GuiComponent {
                         }
                     });
             OverlayRegistry.registerOverlayAbove(ForgeIngameGui.FROSTBITE_ELEMENT, "TemperatureVignette", (gui, mStack, partialTicks, screenWidth, screenHeight) -> {
-                if(mc.player != null && !mc.player.isSpectator()) {
+                if(mc.player != null && !mc.player.isSpectator() && PlayerData.isPresent(mc.player)) {
                     gui.setupOverlayRenderState(true, false);
                     float temperature = PlayerData.get(mc.player).getTemperature();
                     if(temperature < 0.25) {

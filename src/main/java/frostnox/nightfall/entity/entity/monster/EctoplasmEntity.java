@@ -173,7 +173,7 @@ public class EctoplasmEntity extends MonsterEntity {
     }
 
     @Override
-    public ResourceLocation pickActionEnemy(double distanceSqr, Entity target) {
+    public ResourceLocation pickActionEnemy(double distanceSqr, LivingEntity target) {
         if(getHealth() / getMaxHealth() <= 0.5F || random.nextInt(10) == 0) {
             return size == Size.LARGE ? ActionsNF.ECTOPLASM_EXPLODE_LARGE.getId() : ActionsNF.ECTOPLASM_EXPLODE_MEDIUM.getId();
         }

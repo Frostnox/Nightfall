@@ -156,7 +156,7 @@ public class HuskEntity extends UndeadEntity {
     }
 
     @Override
-    public ResourceLocation pickActionEnemy(double distanceSqr, Entity target) {
+    public ResourceLocation pickActionEnemy(double distanceSqr, LivingEntity target) {
         if(random.nextDouble() < Math.min(0.85, 0.15 + distanceSqr / (2.5 * 2.5))) return ActionsNF.HUSK_OVERHEAD.getId();
         else {
             boolean mainItem = !getMainHandItem().isEmpty(), offItem = !getOffhandItem().isEmpty();

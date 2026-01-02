@@ -126,7 +126,7 @@ public abstract class ActionableEntity extends PathfinderMob {
         return canAttack(target);
     }
 
-    public ResourceLocation pickActionEnemy(double distanceSqr, Entity target) {
+    public ResourceLocation pickActionEnemy(double distanceSqr, LivingEntity target) {
         return ActionsNF.EMPTY.getId();
     }
 

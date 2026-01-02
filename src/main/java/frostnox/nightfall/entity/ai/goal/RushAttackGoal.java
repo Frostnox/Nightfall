@@ -14,11 +14,15 @@ import net.minecraft.world.entity.LivingEntity;
  * The attack to use is decided before appropriate range is reached and kept for a short while before expiring and choosing another.
  */
 public class RushAttackGoal extends PursueTargetGoal {
-    private ResourceLocation attackID;
-    private int heldAttackTicks = 1000;
+    protected ResourceLocation attackID;
+    protected int heldAttackTicks = 1000;
 
     public RushAttackGoal(ActionableEntity entity, double speedIn) {
         super(entity, speedIn);
+    }
+
+    protected boolean shouldRecalcAttack() {
+        return false;
     }
 
     @Override
@@ -35,7 +39,7 @@ public class RushAttackGoal extends PursueTargetGoal {
             IActionTracker capA = mob.getActionTracker();
             double distSqr = CombatUtil.getShortestDistanceSqr(mob, target);
             //Re-choose attack every 3 seconds
-            if(heldAttackTicks >= 60 || capA.isStunned()) {
+            if(heldAttackTicks >= 60 || shouldRecalcAttack() || capA.getStunFrame() == capA.getStunDuration()) {
                 attackID = mob.pickActionEnemy(distSqr, target);
                 heldAttackTicks = 0;
             }

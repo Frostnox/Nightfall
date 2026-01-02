@@ -17,6 +17,7 @@ public class SpawnGroupTagsProvider extends ForgeRegistryTagsProvider<SpawnGroup
     @Override
     protected void addTags() {
         tag(TagsNF.SURFACE_GROUPS).add(SpawnGroupsNF.COCKATRICE.get(), SpawnGroupsNF.DEER.get(), SpawnGroupsNF.RABBIT.get(),
+                SpawnGroupsNF.WOLF.get(),
                 SpawnGroupsNF.DRAKEFOWL.get(), SpawnGroupsNF.MERBOR.get(), SpawnGroupsNF.CREEPER.get(),
                 SpawnGroupsNF.PIT_DEVIL_SURFACE.get());
         tag(TagsNF.FRESHWATER_GROUPS);

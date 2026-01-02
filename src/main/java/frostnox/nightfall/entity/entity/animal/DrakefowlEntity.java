@@ -161,7 +161,7 @@ public class DrakefowlEntity extends TamableAnimalEntity implements IOrientedHit
     }
 
     @Override
-    public ResourceLocation pickActionEnemy(double distanceSqr, Entity target) {
+    public ResourceLocation pickActionEnemy(double distanceSqr, LivingEntity target) {
         if((getNavigator().getActivePath() != null && !getNavigator().getActivePath().reachesGoal())
                 || (distanceSqr > 2 * 2 && random.nextFloat() < Math.min(0.9, distanceSqr / (5 * 5)))) return ActionsNF.DRAKEFOWL_SPIT.getId();
         else return ActionsNF.DRAKEFOWL_CLAW.getId();

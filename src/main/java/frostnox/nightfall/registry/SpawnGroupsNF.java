@@ -21,8 +21,11 @@ public class SpawnGroupsNF {
             7, true, EntitiesNF.DEER.get(), SEA_LEVEL, SEA_LEVEL + 208, 1, 15, 1, 4,
             0.05F, 1F, 0.0F, 1F, TagsNF.DEER_SPAWN_BLOCK));
     public static final RegistryObject<SpawnGroup> RABBIT = GROUPS.register("rabbit", () -> new LandSpawnGroup(
-            2, true, EntitiesNF.RABBIT.get(), SEA_LEVEL, SEA_LEVEL + 312, 1, 15, 1, 1,
+            2, true, EntitiesNF.RABBIT.get(), SEA_LEVEL, Integer.MAX_VALUE, 1, 15, 1, 1,
             0.05F, 1F, 0.0F, 1F, TagsNF.RABBIT_SPAWN_BLOCK));
+    public static final RegistryObject<SpawnGroup> WOLF = GROUPS.register("wolf", () -> new WolfSpawnGroup(
+            3, false, SEA_LEVEL, Integer.MAX_VALUE, 1, 15,
+            0.05F, 1F, 0.0F, 1F, TagsNF.NATURAL_SOIL));
     public static final RegistryObject<SpawnGroup> DRAKEFOWL = GROUPS.register("drakefowl", () -> new DrakefowlSpawnGroup(
             3, true, SEA_LEVEL, Integer.MAX_VALUE, 1, 15,
             0.55F, 1F, 0.65F, 1F, TagsNF.NATURAL_SOIL));

@@ -17,7 +17,7 @@ public class PursueTargetGoal extends Goal {
     protected double pathedTargetY;
     protected double pathedTargetZ;
     protected int recalcTicks;
-    protected long lastCanUseCheck;
+    public long lastCanUseCheck;
     protected int pursueTime;
     protected BlockPos lastLastPos = null;
 
@@ -97,10 +97,11 @@ public class PursueTargetGoal extends Goal {
     @Override
     public void tick() {
         LivingEntity target = mob.getTarget();
+        boolean canPursue = canPursue();
         if(target != null) {
             mob.getLookControl().setLookAt(target, mob.getMaxYRotPerTick(), mob.getMaxXRotPerTick());
             recalcTicks = Math.max(recalcTicks - 1, 0);
-            if(canPursue()) {
+            if(canPursue) {
                 double distSqr = mob.distanceToSqr(target.getX(), target.getY(), target.getZ());
                 int accuracy = getAccuracy();
                 if((recalcTicks == 0 || mob.refreshPath || mob.getNavigator().isDone()) && (pathedTargetX == 0.0D && pathedTargetY == 0.0D && pathedTargetZ == 0.0D || target.distanceToSqr(pathedTargetX, pathedTargetY, pathedTargetZ) >= accuracy * accuracy || mob.getRandom().nextFloat() < 0.05F)) {
@@ -128,12 +129,12 @@ public class PursueTargetGoal extends Goal {
                     pursueTime = 0;
                 }
             }
-            else if(canPursue()) {
+            else if(canPursue) {
                 mob.getNavigator().moveTo(mob.lastTargetPos.getX(), mob.lastTargetPos.getY(), mob.lastTargetPos.getZ(), speedModifier, getAccuracy());
                 pursueTime = 0;
             }
         }
-        if(!canPursue()) mob.getNavigator().stop();
+        if(!canPursue) mob.getNavigator().stop();
         lastLastPos = mob.lastTargetPos;
     }
 }

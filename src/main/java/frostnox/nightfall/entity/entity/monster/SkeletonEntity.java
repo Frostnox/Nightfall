@@ -171,7 +171,7 @@ public class SkeletonEntity extends UndeadEntity {
     }
 
     @Override
-    public ResourceLocation pickActionEnemy(double distanceSqr, Entity target) {
+    public ResourceLocation pickActionEnemy(double distanceSqr, LivingEntity target) {
         if(getItemBySlot(EquipmentSlot.MAINHAND).is(TagsNF.BOW)) return ActionsNF.SKELETON_SHOOT.getId();
         else return ActionsNF.SKELETON_THRUST.getId();
     }

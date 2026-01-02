@@ -4,6 +4,7 @@ import frostnox.nightfall.action.AttackEffect;
 import frostnox.nightfall.action.DamageType;
 import frostnox.nightfall.action.HurtSphere;
 import frostnox.nightfall.entity.EntityPart;
+import frostnox.nightfall.entity.entity.animal.WolfEntity;
 import frostnox.nightfall.util.animation.AnimationCalculator;
 import frostnox.nightfall.util.animation.AnimationData;
 import frostnox.nightfall.util.math.Easing;
@@ -78,5 +79,11 @@ public class WolfBiteChain extends WolfBite {
                 }
             }
         }
+    }
+
+    @Override
+    public void onTick(LivingEntity user) {
+        WolfEntity wolf = (WolfEntity) user;
+        if(wolf.getActionTracker().getState() > 1 && wolf.fleeTicks == 0) wolf.fleeTicks = 10;
     }
 }

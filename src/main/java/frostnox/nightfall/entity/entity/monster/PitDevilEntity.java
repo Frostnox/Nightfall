@@ -167,9 +167,18 @@ public class PitDevilEntity extends HungryMonsterEntity implements IOrientedHitB
     }
 
     @Override
-    public ResourceLocation pickActionEnemy(double distanceSqr, Entity target) {
+    public ResourceLocation pickActionEnemy(double distanceSqr, LivingEntity target) {
         if(distanceSqr < 2 * 2) return ActionsNF.PIT_DEVIL_BITE.getId();
         else return growlTicks <= 0 ? ActionsNF.PIT_DEVIL_GROWL.getId() : ActionsNF.PIT_DEVIL_BITE.getId();
+    }
+
+    @Override
+    public boolean hurt(DamageSource pSource, float pAmount) {
+        if(super.hurt(pSource, pAmount)) {
+            if(growlTicks < GROWL_DURATION) growlTicks = GROWL_DURATION;
+            return true;
+        }
+        else return false;
     }
 
     @Override

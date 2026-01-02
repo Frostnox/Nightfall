@@ -46,6 +46,7 @@ public class FleeTargetGoal extends Goal {
     public boolean canUse() {
         LivingEntity target = mob.getTarget();
         if(target != null && mob.shouldFleeFrom(target)) avoidPos = target.position();
+        else avoidPos = null;
         return updatePath();
     }
 

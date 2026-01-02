@@ -152,7 +152,7 @@ public class CockatriceEntity extends HungryMonsterEntity implements IOrientedHi
     }
 
     @Override
-    public ResourceLocation pickActionEnemy(double distanceSqr, Entity target) {
+    public ResourceLocation pickActionEnemy(double distanceSqr, LivingEntity target) {
         if(distanceSqr > 2.75 * 2.75 && random.nextFloat() < Math.min(0.95, distanceSqr / (6 * 6))) return ActionsNF.COCKATRICE_SPIT.getId();
         else {
             if(target.getBbHeight() < 5F/16F) return ActionsNF.COCKATRICE_BITE.getId();

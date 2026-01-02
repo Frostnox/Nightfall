@@ -144,7 +144,7 @@ public class MerborEntity extends TamableAnimalEntity implements IOrientedHitBox
     }
 
     @Override
-    public ResourceLocation pickActionEnemy(double distanceSqr, Entity target) {
+    public ResourceLocation pickActionEnemy(double distanceSqr, LivingEntity target) {
         return ActionsNF.MERBOR_GORE.getId();
     }
 
