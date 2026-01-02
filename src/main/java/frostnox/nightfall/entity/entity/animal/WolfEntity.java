@@ -9,31 +9,38 @@ import frostnox.nightfall.entity.EntityPart;
 import frostnox.nightfall.entity.IOrientedHitBoxes;
 import frostnox.nightfall.entity.ai.goal.*;
 import frostnox.nightfall.entity.ai.goal.target.TrackNearestTargetGoal;
+import frostnox.nightfall.entity.ai.pathfinding.FlankingLandEntityNavigator;
 import frostnox.nightfall.entity.entity.ActionableEntity;
 import frostnox.nightfall.entity.entity.Diet;
 import frostnox.nightfall.registry.ActionsNF;
 import frostnox.nightfall.registry.forge.AttributesNF;
 import frostnox.nightfall.registry.forge.DataSerializersNF;
 import frostnox.nightfall.registry.forge.SoundsNF;
+import frostnox.nightfall.util.LevelUtil;
 import frostnox.nightfall.util.animation.AnimationData;
 import frostnox.nightfall.util.math.OBB;
 import frostnox.nightfall.world.ContinentalWorldType;
+import frostnox.nightfall.world.MoonPhase;
 import it.unimi.dsi.fastutil.objects.ObjectArraySet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
+import net.minecraft.network.protocol.game.ClientboundSoundEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -62,6 +69,7 @@ public class WolfEntity extends AnimalEntity implements IOrientedHitBoxes {
     public PackGoal packGoal = PackGoal.IDLE;
     protected final Set<UUID> packMembers = new ObjectArraySet<>(6);
     public @Nullable LivingEntity attackTarget;
+    protected int attackTargetDecay = 0;
     public int fleeTicks;
 
     public WolfEntity(EntityType<? extends WolfEntity> type, Level worldIn) {
@@ -214,48 +222,78 @@ public class WolfEntity extends AnimalEntity implements IOrientedHitBoxes {
         super.tick();
         if(!isRemoved() && getActionTracker().isInactive() && getTarget() == null && growlTicks > 0) growlTicks--;
         if(fleeTicks > 0) fleeTicks--;
-        if(randTickCount % 30 == 0 && !level.isClientSide && isAlive() && !packMembers.isEmpty()) {
-            LivingEntity target = getTarget();
-            if(target == null) packGoal = PackGoal.IDLE;
-            else if(!target.getType().is(TagsNF.WOLF_SOLO_PREY)) {
-                PackGoal newGoal;
-                int fleeVote = shouldFleeFrom(target) ? 1 : 0;
-                Set<WolfEntity> wolves = new ObjectArraySet<>(packMembers.size());
-                wolves.add(this);
-                for(UUID id : packMembers) {
-                    if(((ServerLevel) level).getEntity(id) instanceof WolfEntity wolf && wolf.isAlive() && distanceToSqr(wolf) < 32 * 32) {
-                        wolves.add(wolf);
-                        if(wolf.shouldFleeFrom(target)) fleeVote++;
-                    }
-                }
-                if(wolves.size() < 2) newGoal = PackGoal.IDLE;
-                else if(fleeVote > wolves.size() / 2) newGoal = PackGoal.FLEE;
-                else if(packGoal != PackGoal.HUNT) {
-                    if(target instanceof ActionableEntity prey) {
-                        int threats = prey.getType().is(TagsNF.WOLF_THREAT) ? 1 : 0;
-                        for(ActionableEntity nearby : level.getEntitiesOfClass(ActionableEntity.class, prey.getBoundingBox().inflate(12))) {
-                            if(nearby.getType().is(TagsNF.WOLF_THREAT) && (prey.getType() == nearby.getType() || prey.canReceiveAlert(nearby))) {
-                                threats++;
-                                if(threats > wolves.size() / 2) break;
+        if(!level.isClientSide) {
+            if(isAlive()) {
+                if(randTickCount % 30 == 0 && !packMembers.isEmpty()) {
+                    LivingEntity target = getTarget();
+                    if(target == null) packGoal = PackGoal.IDLE;
+                    else if(!target.getType().is(TagsNF.WOLF_SOLO_PREY)) {
+                        PackGoal newGoal;
+                        int fleeVote = shouldFleeFrom(target) ? 1 : 0;
+                        Set<WolfEntity> wolves = new ObjectArraySet<>(packMembers.size());
+                        wolves.add(this);
+                        for(UUID id : packMembers) {
+                            if(((ServerLevel) level).getEntity(id) instanceof WolfEntity wolf && wolf.isAlive() && distanceToSqr(wolf) < 32 * 32) {
+                                wolves.add(wolf);
+                                if(wolf.shouldFleeFrom(target)) fleeVote++;
                             }
                         }
-                        if(threats <= wolves.size() / 2) {
-                            newGoal = PackGoal.HUNT;
-                            for(WolfEntity wolf : wolves) wolf.growlTicks = GROWL_DURATION * 5;
+                        if(wolves.size() < 2) newGoal = PackGoal.IDLE;
+                        else if(fleeVote > wolves.size() / 2) newGoal = PackGoal.FLEE;
+                        else if(packGoal != PackGoal.HUNT) {
+                            if(target instanceof ActionableEntity prey) {
+                                int threats = prey.getType().is(TagsNF.WOLF_THREAT) ? 1 : 0;
+                                for(ActionableEntity nearby : level.getEntitiesOfClass(ActionableEntity.class, prey.getBoundingBox().inflate(12))) {
+                                    if(nearby.getType().is(TagsNF.WOLF_THREAT) && (prey.getType() == nearby.getType() || prey.canReceiveAlert(nearby))) {
+                                        threats++;
+                                        if(threats > wolves.size() / 2) break;
+                                    }
+                                }
+                                if(threats <= wolves.size() / 2) {
+                                    newGoal = PackGoal.HUNT;
+                                    for(WolfEntity wolf : wolves) wolf.growlTicks = GROWL_DURATION * 5;
+                                }
+                                else newGoal = PackGoal.IDLE;
+                            }
+                            else { //Players
+                                if(wolves.size() < level.getEntitiesOfClass(target.getClass(), target.getBoundingBox().inflate(12)).size()) newGoal = PackGoal.FLEE;
+                                else newGoal = PackGoal.HUNT;
+                            }
                         }
-                        else newGoal = PackGoal.IDLE;
-                    }
-                    else { //Players
-                        if(wolves.size() < level.getEntitiesOfClass(target.getClass(), target.getBoundingBox().inflate(12)).size()) newGoal = PackGoal.FLEE;
                         else newGoal = PackGoal.HUNT;
+                        for(WolfEntity wolf : wolves) {
+                            wolf.packGoal = newGoal;
+                            if(newGoal == PackGoal.HUNT) wolf.setTarget(target);
+                        }
                     }
                 }
-                else newGoal = PackGoal.HUNT;
-                for(WolfEntity wolf : wolves) {
-                    wolf.packGoal = newGoal;
-                    if(newGoal == PackGoal.HUNT) wolf.setTarget(target);
+                if(randTickCount % (20 * 10) == 0) {
+                    float howlChance = 0.007F;
+                    if(LevelUtil.isNight(level)) howlChance *= 2;
+                    MoonPhase phase = MoonPhase.get(level);
+                    if(phase == MoonPhase.FULL) howlChance *= 2;
+                    else if(phase == MoonPhase.NEW) howlChance /= 2;
+                    if(random.nextFloat() < howlChance) {
+                        for(ServerPlayer player : ((ServerLevel) level).players()) {
+                            if(player.level.dimension() == level.dimension()) {
+                                double distSqr = distanceToSqr(player);
+                                if(distSqr < 64 * 64) player.connection.send(new ClientboundSoundEntityPacket(SoundsNF.WOLF_HOWL_NEAR.get(), SoundSource.HOSTILE, this, 4F, 1F));
+                                else if(distSqr < 128 * 128) player.connection.send(new ClientboundSoundEntityPacket(SoundsNF.WOLF_HOWL_FAR.get(), SoundSource.HOSTILE, this, 8F, 1F));
+                            }
+                        }
+                    }
                 }
+                if(attackTarget != null) {
+                    attackTargetDecay++;
+                    if(attackTargetDecay > 20 * 5) {
+                        attackTarget = null;
+                        attackTargetDecay = 0;
+                        fleeTicks = 10;
+                    }
+                }
+                else attackTargetDecay = 0;
             }
+            else attackTarget = null;
         }
     }
 
@@ -277,6 +315,11 @@ public class WolfEntity extends AnimalEntity implements IOrientedHitBoxes {
     @Override
     protected int calculateFallDamage(float pFallDistance, float pDamageMultiplier) {
         return super.calculateFallDamage(pFallDistance, pDamageMultiplier) - 10;
+    }
+
+    @Override
+    protected PathNavigation createNavigation(Level level) {
+        return new FlankingLandEntityNavigator(this, level);
     }
 
     @Override
