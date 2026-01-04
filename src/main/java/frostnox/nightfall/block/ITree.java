@@ -33,6 +33,8 @@ public interface ITree extends IBlock {
 
     float getHardness();
 
+    int getLifespan();
+
     TagKey<Block> getTag();
 
     @Nullable RegistryObject<? extends ParticleType<BlockParticleOption>> getParticle();

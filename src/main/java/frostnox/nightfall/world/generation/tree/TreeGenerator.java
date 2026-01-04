@@ -45,7 +45,7 @@ public class TreeGenerator {
         public int ticks, stemsPlaced, height, maxHeight;
         public int[] intData = null;
 
-        protected Data(WorldGenLevel level, TreeTrunkBlock trunk, BlockPos trunkPos, int ticks, boolean decaying, int stemsPlaced, int height, int maxHeight, boolean simulateDetection, boolean woodOnly, boolean forceGrowth) {
+        protected Data(WorldGenLevel level, TreeTrunkBlock trunk, BlockPos trunkPos, int ticks, boolean decaying, int stemsPlaced, int height, int maxHeight, boolean simulateDetection, boolean woodOnly, boolean forceGrowth, boolean generating) {
             this.level = level;
             this.trunk = trunk;
             this.trunkPos = trunkPos;
@@ -65,7 +65,7 @@ public class TreeGenerator {
             this.decaying = decaying;
             this.changingLeaves = new ObjectArraySet<>();
             this.noPlacement = ticks == 0;
-            this.generating = ticks == Integer.MAX_VALUE;
+            this.generating = generating;
             newLeaves = (decaying ? (trunk.branchesBlock == null ? trunk.leavesBlock : trunk.branchesBlock) : trunk.leavesBlock).defaultBlockState();
         }
 
@@ -177,16 +177,16 @@ public class TreeGenerator {
     }
 
     public Data grow(ServerLevel level, TreeTrunkBlockEntity entity, boolean forceGrowth) {
-        return grow(level, entity, 1, forceGrowth);
+        return grow(level, entity, 1, forceGrowth, false);
     }
 
     /**
      * Grows tree based on its current state
      * @param ticks number of stages to grow, must be >= 1
      */
-    public Data grow(WorldGenLevel level, TreeTrunkBlockEntity entity, int ticks, boolean forceGrowth) {
+    public Data grow(WorldGenLevel level, TreeTrunkBlockEntity entity, int ticks, boolean forceGrowth, boolean generating) {
         ticks = Math.max(1, ticks);
-        return tick(level, entity, ticks, LevelData.isPresent(level.getLevel()) ? LevelData.get(level.getLevel()).getSeasonTime() : 0, false, false, forceGrowth);
+        return tick(level, entity, ticks, LevelData.isPresent(level.getLevel()) ? LevelData.get(level.getLevel()).getSeasonTime() : 0, false, false, forceGrowth, generating);
     }
 
     /**
@@ -195,21 +195,21 @@ public class TreeGenerator {
      */
     public Data grow(WorldGenLevel level, TreeTrunkBlockEntity entity, int ticks, long seasonTime, boolean forceGrowth) {
         ticks = Math.max(1, ticks);
-        return tick(level, entity, ticks, seasonTime, false, false, forceGrowth);
+        return tick(level, entity, ticks, seasonTime, false, false, forceGrowth, false);
     }
 
     /**
      * @param simulateDetection treat any space where a tree block is expected as valid, regardless of actual state
      */
     public Data getTree(WorldGenLevel level, TreeTrunkBlockEntity entity, boolean simulateDetection) {
-        return tick(level, entity, 0, 0, simulateDetection, false, false);
+        return tick(level, entity, 0, 0, simulateDetection, false, false, false);
     }
 
     public Data getWood(WorldGenLevel level, TreeTrunkBlockEntity entity, boolean simulateDetection) {
-        return tick(level, entity, 0, 0, simulateDetection, true, false);
+        return tick(level, entity, 0, 0, simulateDetection, true, false, false);
     }
 
-    protected Data tick(WorldGenLevel level, TreeTrunkBlockEntity entity, int ticks, long seasonTime, boolean simulateDetection, boolean woodOnly, boolean forceGrowth) {
+    protected Data tick(WorldGenLevel level, TreeTrunkBlockEntity entity, int ticks, long seasonTime, boolean simulateDetection, boolean woodOnly, boolean forceGrowth, boolean generating) {
         TreeTrunkBlock trunkBlock = (TreeTrunkBlock) entity.getBlockState().getBlock();
         boolean decaying;
         if(ticks > 0 && trunkBlock.type.isDeciduous()) {
@@ -218,7 +218,7 @@ public class TreeGenerator {
             else decaying = season == Season.WINTER;
         }
         else decaying = false;
-        Data d = new Data(level, trunkBlock, entity.getBlockPos(), ticks, decaying, 0, 0, 0, simulateDetection, woodOnly, forceGrowth);
+        Data d = new Data(level, trunkBlock, entity.getBlockPos(), ticks, decaying, 0, 0, 0, simulateDetection, woodOnly, forceGrowth, generating);
         Random random = new Random(entity.getSeed());
         d.maxHeight = baseHeight + ((random.nextInt() & Integer.MAX_VALUE) % randHeight);
         setupData(d, new Random(random.nextLong()));

@@ -28,10 +28,12 @@ import java.util.*;
 public class TreeTrunkBlockEntity extends BlockEntity {
     protected static boolean updating = false;
     public long lastTick;
+    public int age;
     public int maxHeight = -1; //Tallest height the tree has ever reached
     public boolean hasFruited;
     protected long seed;
     protected boolean special;
+    private static final BlockState AIR = Blocks.AIR.defaultBlockState();
 
     public TreeTrunkBlockEntity(BlockPos pos, BlockState state) {
         this(BlockEntitiesNF.TREE_TRUNK.get(), pos, state);
@@ -136,7 +138,7 @@ public class TreeTrunkBlockEntity extends BlockEntity {
                 BlockState state = serverLevel.getBlockState(pos);
                 boolean isLeaves = state.is(trunk.leavesBlock);
                 if((isLeaves || state.is(trunk.branchesBlock) || state.is(trunk.fruitBlock)) && !nearbyTrees.contains(pos)) {
-                    LevelUtil.uncheckedDropDestroyBlockNoSound(level, pos, state, Blocks.AIR.defaultBlockState(), null, 3);
+                    LevelUtil.uncheckedDropDestroyBlockNoSound(level, pos, state, AIR, null, 3);
                     if(isLeaves) leavesDestroyed++;
                 }
             }
@@ -147,7 +149,7 @@ public class TreeTrunkBlockEntity extends BlockEntity {
                 if(!currentTree.contains(pos)) {
                     BlockState state = serverLevel.getBlockState(pos);
                     if(state.is(trunk.stemBlock) && !nearbyTrees.contains(pos)) {
-                        LevelUtil.uncheckedDropDestroyBlockNoSound(level, pos, state, Blocks.AIR.defaultBlockState(), null, 3);
+                        LevelUtil.uncheckedDropDestroyBlockNoSound(level, pos, state, AIR, null, 3);
                         woodDestroyed++;
                     }
                 }
@@ -160,11 +162,42 @@ public class TreeTrunkBlockEntity extends BlockEntity {
         updating = false;
     }
 
+    public void removeTree() {
+        if(!(level instanceof ServerLevel serverLevel)) return;
+        TreeTrunkBlock trunk = (TreeTrunkBlock) getBlockState().getBlock();
+        TreeGenerator gen = trunk.treeGenerator;
+        TreeGenerator.Data simulatedData = gen.getTree(serverLevel, this, true);
+        int minX = worldPosition.getX() - gen.maxLeavesDistXZ, maxX = worldPosition.getX() + gen.maxLeavesDistXZ;
+        int minZ = worldPosition.getZ() - gen.maxLeavesDistXZ, maxZ = worldPosition.getZ() + gen.maxLeavesDistXZ;
+        List<TreeTrunkBlockEntity> nearbyTrunks = getNearbyTrunks(level, trunk.type, worldPosition, minX, maxX, minZ, maxZ);
+        ObjectSet<BlockPos> nearbyTrees = new ObjectOpenHashSet<>(60 * nearbyTrunks.size());
+        for(TreeTrunkBlockEntity nearbyTrunk : nearbyTrunks) {
+            if(nearbyTrunk == this) continue;
+            nearbyTrees.addAll(nearbyTrunk.getTree());
+        }
+        //Prevent tree blocks from trying to update again when removed from inside of this function
+        updating = true;
+        for(BlockPos pos : simulatedData.collectLeaves()) {
+            BlockState state = serverLevel.getBlockState(pos);
+            boolean isLeaves = state.is(trunk.leavesBlock);
+            if((isLeaves || state.is(trunk.branchesBlock) || state.is(trunk.fruitBlock)) && !nearbyTrees.contains(pos)) {
+                if(isLeaves) LevelUtil.uncheckedDestroyBlockNoSound(level, pos, state, AIR, 3);
+                else level.setBlock(pos, AIR, 3);
+            }
+        }
+        for(BlockPos pos : simulatedData.collectWood()) {
+            BlockState state = serverLevel.getBlockState(pos);
+            if (state.is(trunk.stemBlock) && !nearbyTrees.contains(pos)) level.setBlock(pos, AIR, 3);
+        }
+        updating = false;
+    }
+
     @Override
     public void load(CompoundTag tag) {
         super.load(tag);
         seed = tag.getLong("seed");
         lastTick = tag.getLong("lastTick");
+        age = tag.getInt("age");
         maxHeight = tag.getInt("maxHeight");
         hasFruited = tag.getBoolean("hasFruited");
         special = tag.getBoolean("special");
@@ -175,6 +208,7 @@ public class TreeTrunkBlockEntity extends BlockEntity {
         super.saveAdditional(tag);
         tag.putLong("seed", seed);
         tag.putLong("lastTick", lastTick);
+        tag.putInt("age", age);
         tag.putInt("maxHeight", maxHeight);
         tag.putBoolean("hasFruited", hasFruited);
         tag.putBoolean("special", special);

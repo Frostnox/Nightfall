@@ -93,24 +93,31 @@ public class TreeSeedBlock extends BushBlock implements ITimeSimulatedBlock {
             level.setBlockAndUpdate(pos, treeBlock.defaultBlockState());
             if(chunk.getBlockEntity(pos) instanceof TreeTrunkBlockEntity trunk) {
                 trunk.initSeed();
-                trunk.setChanged();
+                treeBlock.treeGenerator.grow(level, trunk, 1, seasonTime, true);
                 int spacing = treeBlock.type.getGrowthIntervalTicks();
-                int stages = MathUtil.getRandomSuccesses(randomTickChance, result.secondLong() - spacing,
+                long trials = result.secondLong() - spacing;
+                int stages = MathUtil.getRandomSuccesses(randomTickChance, trials,
                         treeBlock.treeGenerator.maxLength - trunk.maxHeight - 1, spacing, random);
                 TreeTrunkBlockEntity.updating = true;
-                int tickAdjustedSpacing = spacing + (int) (1 / randomTickChance);
-                long startSeasonTime = seasonTime - elapsedTime;
-                long finalTickSeasonTime = seasonTime - elapsedTime + stages * tickAdjustedSpacing;
-                if(stages >= 1) treeBlock.treeGenerator.grow(level, trunk, 1, finalTickSeasonTime, true);
                 if(stages > 1) {
-                    TreeGenerator.Data d = treeBlock.treeGenerator.grow(level, trunk, stages - 1, finalTickSeasonTime, false);
+                    trunk.age += (int) trials;
+                    if(trunk.age >= treeBlock.type.getLifespan()) {
+                        trunk.removeTree();
+                        trunk.maxHeight = -1;
+                        trunk.hasFruited = false;
+                        trunk.age %= treeBlock.type.getLifespan();
+                        stages = 1 + MathUtil.getRandomSuccesses(randomTickChance, trunk.age - spacing, (trunk.age - spacing) / treeBlock.type.getGrowthIntervalTicks(), spacing, random);
+                    }
+                    TreeGenerator.Data d = treeBlock.treeGenerator.grow(level, trunk, stages - 1, seasonTime, trunk.maxHeight == -1);
+                    int growTime = Math.min((int) trials, trunk.age);
+                    long startSeasonTime = seasonTime - growTime;
                     if(trunk.isSpecial() && treeBlock.fruitBlock != null && trunk.maxHeight == d.maxHeight) {
                         boolean doFruit = !d.decaying;
                         if(doFruit) {
-                            long summerTime = Season.getTimePassedWithin(startSeasonTime, stages * tickAdjustedSpacing, Season.SUMMER_START, Season.FALL_START);
+                            long summerTime = Season.getTimePassedWithin(startSeasonTime, growTime, Season.SUMMER_START, Season.FALL_START);
                             if(MathUtil.getRandomSuccesses(randomTickChance, summerTime, 1, random) >= 1) {
-                                if(Season.get(finalTickSeasonTime) != Season.SUMMER && MathUtil.getRandomSuccesses(randomTickChance,
-                                        Season.getTimePassedWithin(startSeasonTime, stages * tickAdjustedSpacing, Season.FALL_START, seasonTime), 1, random) >= 1) {
+                                if(Season.get(seasonTime) != Season.SUMMER && MathUtil.getRandomSuccesses(randomTickChance,
+                                        Season.getTimePassedWithin(startSeasonTime, growTime, Season.FALL_START, seasonTime), 1, random) >= 1) {
                                     doFruit = false;
                                 }
                             }
@@ -119,15 +126,13 @@ public class TreeSeedBlock extends BushBlock implements ITimeSimulatedBlock {
                         if(doFruit) {
                             if(!trunk.hasFruited) treeBlock.treeGenerator.tryFruit(level, d, trunk);
                         }
-                        else {
-                            trunk.hasFruited = false;
-                            trunk.setChanged();
-                        }
+                        else trunk.hasFruited = false;
                     }
                 }
                 TreeTrunkBlockEntity.updating = false;
                 //Not the most accurate way of doing this but don't have a way to simulate remaining trials with spacing
-                trunk.lastTick = gameTime / tickAdjustedSpacing * tickAdjustedSpacing;
+                trunk.lastTick = gameTime;
+                trunk.setChanged();
             }
         }
     }

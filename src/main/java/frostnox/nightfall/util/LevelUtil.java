@@ -245,6 +245,11 @@ public class LevelUtil {
         level.setBlock(pos, replaceState, flags);
     }
 
+    public static void uncheckedDestroyBlockNoSound(Level level, BlockPos pos, BlockState state, BlockState replaceState, int flags) {
+        NetworkHandler.toAllTrackingChunk(level.getChunkAt(pos), new DestroyBlockNoSoundToClient(pos, Block.getId(state)));
+        level.setBlock(pos, replaceState, flags);
+    }
+
     public static boolean destroyBlockNoSound(LevelAccessor level, BlockPos pos, boolean dropBlock) {
         return destroyBlockNoSound(level, pos, dropBlock, null);
     }

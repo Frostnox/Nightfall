@@ -66,7 +66,7 @@ public enum Tree implements ITree {
     private final float strength, explosionResistance, minTemp, maxTemp, minHumidity, maxHumidity;
     private final MaterialColor barkColor, woodColor;
     private final TreeGenerator treeGenerator;
-    private final int growthInterval;
+    private final int growthInterval, lifespan;
     private final boolean deciduous;
     private final String style;
     private final TagKey<Block> tag;
@@ -89,6 +89,7 @@ public enum Tree implements ITree {
         this.woodColor = woodColor;
         this.treeGenerator = treeGenerator;
         this.growthInterval = growthIntervalSeconds * 20; //Convert to ticks
+        this.lifespan = (treeGenerator.averageHeight - 1) * growthInterval * 4;
         this.deciduous = deciduous;
         this.style = style;
         this.tag = TagKey.create(Registry.BLOCK_REGISTRY, ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "tree/" + getName()));
@@ -171,6 +172,11 @@ public enum Tree implements ITree {
     @Override
     public float getHardness() {
         return strength / BASE_STRENGTH;
+    }
+
+    @Override
+    public int getLifespan() {
+        return lifespan;
     }
 
     @Override
