@@ -109,6 +109,17 @@ public enum Season {
         return TEMP_INFLUENCE * Mth.sin(progress - MathUtil.PI / 4F);
     }
 
+    public static float getPlantColorMultiplier(Level level) {
+        float progress = getNormalizedProgress(level);
+        if(progress < 0.25F) return 0.9F + (progress / 0.25F) * 0.1F;
+        else if(progress < 0.5F) return 1;
+        else if(progress < 0.6F) return 1F - ((progress - 0.5F) / 0.1F);
+        else if(progress < 0.625F) return 0;
+        else if(progress < 0.75F) return 0.2F * ((progress - 0.625F) / 0.125F);
+        else if(progress < 0.9F) return 0.2F;
+        else return 0.2F + 0.7F * ((progress - 0.9F) / 0.1F);
+    }
+
     public static Vec2f getMinMaxTemperatureInfluence(long startTime, long endTime) {
         long timeElapsed = endTime - startTime;
         if(timeElapsed >= YEAR_LENGTH) return new Vec2f(-TEMP_INFLUENCE, TEMP_INFLUENCE);

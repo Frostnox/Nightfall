@@ -609,14 +609,9 @@ public class ClientEngine {
     }
 
     public int getGrassColor(float temperature, float humidity) {
-        if(temperature > 0.4F) temperature = Math.min(1F, temperature + (temperature - 0.4F));
-        humidity *= temperature;
-        if(humidity < 0.33F) temperature = Math.min(1F, temperature + 0.33F - humidity);
-        int t = (int)((1.0D - temperature) * 255.0D);
-        int h = (int)((1.0D - humidity) * 255.0D);
-        int i = t | (h << 8);
+        int i = (int)(temperature * 255.0D) | ((int)(humidity * 255.0D) << 8);
         if(i < 0) return grassCache[0];
-        if(i >= 65536) return grassCache[65535];
+        if(i > 65535) return grassCache[65535];
         return grassCache[i];
     }
 
@@ -624,8 +619,8 @@ public class ClientEngine {
         forestCache = colors;
     }
 
-    public int getForestColor(float temperature) {
-        int i = (int) (temperature * 255F);
+    public int getForestColor(float humidity) {
+        int i = (int) (humidity * 255F);
         if(i >= 256) return forestCache[255];
         return forestCache[i];
     }

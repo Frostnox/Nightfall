@@ -416,9 +416,9 @@ public class Nightfall {
                     if(level != null && pos != null && LevelData.isPresent(Minecraft.getInstance().level)) {
                         LevelChunk chunk = Minecraft.getInstance().level.getChunkAt(pos);
                         IChunkData capC = ChunkData.get(chunk);
-                        return ClientEngine.get().getGrassColor(capC.getBaseTemperature(pos.getX(), pos.getZ()), capC.getHumidity(pos));
+                        return ClientEngine.get().getGrassColor(capC.getBaseTemperature(pos.getX(), pos.getZ()), capC.getHumidity(pos) * Season.getPlantColorMultiplier(Minecraft.getInstance().level));
                     }
-                    return ClientEngine.get().getGrassColor(0.8F, 0.4F);
+                    return ClientEngine.get().getGrassColor(0.5F, 0.5F);
                 }
                 return Color.WHITE.getRGB();
             }), BlocksNF.COVERED_SILT.get(SoilCover.GRASS).get(), BlocksNF.COVERED_DIRT.get(SoilCover.GRASS).get(), BlocksNF.COVERED_LOAM.get(SoilCover.GRASS).get());
@@ -428,9 +428,9 @@ public class Nightfall {
                     if(level != null && pos != null && LevelData.isPresent(Minecraft.getInstance().level)) {
                         LevelChunk chunk = Minecraft.getInstance().level.getChunkAt(pos);
                         IChunkData capC = ChunkData.get(chunk);
-                        return ClientEngine.get().getGrassColor(capC.getBaseTemperature(pos.getX(), pos.getZ()), capC.getHumidity(pos));
+                        return ClientEngine.get().getGrassColor(capC.getBaseTemperature(pos.getX(), pos.getZ()), capC.getHumidity(pos) * Season.getPlantColorMultiplier(Minecraft.getInstance().level));
                     }
-                    return ClientEngine.get().getGrassColor(0.8F, 0.4F);
+                    return ClientEngine.get().getGrassColor(0.5F, 0.5F);
                 }
                 return Color.WHITE.getRGB();
             }), BlocksNF.SHORT_GRASS.get(), BlocksNF.GRASS.get(), BlocksNF.TALL_GRASS.get(), BlocksNF.SMALL_FERN.get(),
@@ -441,7 +441,7 @@ public class Nightfall {
                     if(level != null && pos != null && LevelData.isPresent(Minecraft.getInstance().level)) {
                         LevelChunk chunk = Minecraft.getInstance().level.getChunkAt(pos);
                         IChunkData capC = ChunkData.get(chunk);
-                        return ClientEngine.get().getForestColor(capC.getBaseTemperature(pos.getX(), pos.getZ()));
+                        return ClientEngine.get().getForestColor(capC.getHumidity(pos));
                     }
                     return ClientEngine.get().getForestColor(0.5F);
                 }

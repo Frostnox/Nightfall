@@ -8,6 +8,8 @@ import frostnox.nightfall.capability.ChunkData;
 import frostnox.nightfall.capability.IChunkData;
 import frostnox.nightfall.capability.ILevelData;
 import frostnox.nightfall.capability.LevelData;
+import frostnox.nightfall.network.NetworkHandler;
+import frostnox.nightfall.network.message.world.UpdateBlockToClient;
 import frostnox.nightfall.registry.RegistriesNF;
 import frostnox.nightfall.util.LevelUtil;
 import frostnox.nightfall.util.MathUtil;
@@ -165,8 +167,11 @@ public class CoveredSoilBlock extends BlockNF implements ITimeSimulatedBlock {
         BlockPos abovePos = pos.above();
         int skyLight = level.getBrightness(LightLayer.SKY, abovePos);
         if(!soilCover.canGrow(skyLight)) level.setBlockAndUpdate(pos, soilBlock.get().defaultBlockState());
-        else if(level.getBlockState(abovePos).isAir() && random.nextInt(100) == 0 && Season.get(level) != Season.WINTER) {
-            growVegetation(level, ChunkData.get(level.getChunkAt(abovePos)), abovePos, skyLight);
+        else {
+            if(level.getBlockState(abovePos).isAir() && random.nextInt(100) == 0 && Season.get(level) != Season.WINTER) {
+                growVegetation(level, ChunkData.get(level.getChunkAt(abovePos)), abovePos, skyLight);
+            }
+            else if(soilCover == SoilCover.GRASS && random.nextInt(32) == 0) NetworkHandler.toAllTrackingChunk(level.getChunkAt(pos), new UpdateBlockToClient(pos));
         }
     }
 

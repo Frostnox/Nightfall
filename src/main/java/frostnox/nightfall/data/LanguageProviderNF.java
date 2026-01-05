@@ -267,8 +267,8 @@ public class LanguageProviderNF extends LanguageProvider {
         add(GodModeCommand.DISABLE_OTHER, "Godmode disabled for %s");
         addComponent(ReselectAttributesCommand.RESELECT, "Reselecting attributes...");
         add(ReselectAttributesCommand.RESELECT_OTHER, "Prompted %s to reselect attributes");
-        add(SeasonCommand.QUERY, "The season is %s");
-        add(SeasonCommand.SET, "Set the season to %s");
+        add(SeasonCommand.QUERY, "The season is %1$s (%2$s)");
+        add(SeasonCommand.SET, "Set the season to %1$s (%2$s)");
         add(WeatherCommandNF.QUERY, "The weather is %1$s with global intensity %2$s (%3$s moving to %4$s)");
         add(WeatherCommandNF.SET, "Set the weather to %1$s with global intensity %2$s");
 
