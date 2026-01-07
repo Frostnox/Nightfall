@@ -72,7 +72,7 @@ public class SplitTreeGenerator extends TreeGenerator {
                     BlockPos belowPos = pos.below();
                     if(curve) {
                         d.otherWood.add(belowPos);
-                        d.level.setBlock(belowPos.relative(curveDirection.getOpposite()), d.createStem(positive ? TreeStemBlock.Type.ROTATED_TOP : TreeStemBlock.Type.ROTATED_BOTTOM, axis), BLOCK_SET_FLAG);
+                        d.level.setBlock(belowPos.relative(curveDirection.getOpposite()), d.createStem(positive ? TreeStemBlock.Type.ROTATED_TOP : TreeStemBlock.Type.ROTATED_BOTTOM, axis), 3);
                     }
                     d.level.setBlock(belowPos, d.trunk.stemBlock.defaultBlockState(), BLOCK_SET_FLAG);
                 }
@@ -118,11 +118,11 @@ public class SplitTreeGenerator extends TreeGenerator {
                     d.trunkWood.get(trunkIndex).add(splitPos.immutable());
                 }
                 else if(d.canPlaceWood(splitState, lastSplitState)) {
-                    d.level.setBlock(splitPos.immutable(), d.createStem(TreeStemBlock.Type.END, moveUp ? Direction.Axis.Y : splitDir.getAxis()), BLOCK_SET_FLAG);
-                    if(i > splitHeight) d.level.setBlock(lastSplitPos, d.createBranch(moveUp ? Direction.UP : splitDir), BLOCK_SET_FLAG);
+                    d.level.setBlock(splitPos.immutable(), d.createStem(TreeStemBlock.Type.END, moveUp ? Direction.Axis.Y : splitDir.getAxis()), 3);
+                    if(i > splitHeight) d.level.setBlock(lastSplitPos, d.createBranch(moveUp ? Direction.UP : splitDir), 3);
                     else if(!convertedCenter) {
                         convertedCenter = true;
-                        d.level.setBlock(pos, d.createStem(TreeStemBlock.Type.FAKE_END), BLOCK_SET_FLAG);
+                        d.level.setBlock(pos, d.createStem(TreeStemBlock.Type.FAKE_END), 3);
                     }
                     placedHeight++;
                     d.trunkWood.get(trunkIndex).add(splitPos.immutable());

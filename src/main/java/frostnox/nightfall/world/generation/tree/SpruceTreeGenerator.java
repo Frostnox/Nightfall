@@ -47,7 +47,7 @@ public class SpruceTreeGenerator extends TreeGenerator {
                     BlockState branchState = d.level.getBlockState(pos);
                     if(d.stemsPlaced > 0 && d.canPlaceWood(branchState)) {
                         d.otherWood.add(pos.immutable());
-                        d.level.setBlock(pos, d.createStem(TreeStemBlock.Type.END, direction.getAxis()), BLOCK_SET_FLAG);
+                        d.level.setBlock(pos, d.createStem(TreeStemBlock.Type.END, direction.getAxis()), 3);
                         tickBranch(d, random, pos, stemPos, radius, direction);
                     }
                     else if(d.isTreeWood(branchState)) {
@@ -98,7 +98,7 @@ public class SpruceTreeGenerator extends TreeGenerator {
             if(i == radius - 1) {
                 if(!d.woodOnly) {
                     if(!d.noPlacement && lastState.is(d.trunk.stemBlock) && lastState.getValue(TreeStemBlock.TYPE) == TreeStemBlock.Type.END) {
-                        d.level.setBlock(pos, d.createLeaves(isAltLeaves(d, pos)), BLOCK_SET_FLAG);
+                        d.level.setBlock(pos, d.createLeaves(isAltLeaves(d, pos)), 3);
                         placed++;
                     }
                     else if(!d.simulateDetection && !state.is(d.trunk.leavesBlock)) break;
@@ -107,8 +107,8 @@ public class SpruceTreeGenerator extends TreeGenerator {
             }
             else {
                 if(d.canPlaceWood(state, lastState)) {
-                    d.level.setBlock(pos, d.createStem(TreeStemBlock.Type.END, axis), BLOCK_SET_FLAG);
-                    d.level.setBlock(lastPos, d.createBranch(startDirection), BLOCK_SET_FLAG);
+                    d.level.setBlock(pos, d.createStem(TreeStemBlock.Type.END, axis), 3);
+                    d.level.setBlock(lastPos, d.createBranch(startDirection), 3);
                     d.branchLeaves.remove(pos);
                     placed++;
                 }

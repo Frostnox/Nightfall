@@ -70,10 +70,10 @@ public class CaedtarTreeGenerator extends TreeGenerator {
                 for(var entry : growPositions.entrySet()) {
                     BlockPos growPos = entry.getValue();
                     d.otherWood.add(growPos);
-                    if(growPos.getY() == d.trunkPos.getY()) d.level.setBlock(growPos, d.createStem(TreeStemBlock.Type.END, Direction.Axis.Y), BLOCK_SET_FLAG);
+                    if(growPos.getY() == d.trunkPos.getY()) d.level.setBlock(growPos, d.createStem(TreeStemBlock.Type.END, Direction.Axis.Y), 3);
                     else {
-                        d.level.setBlock(growPos, d.createStem(TreeStemBlock.Type.TOP, Direction.Axis.Y), BLOCK_SET_FLAG);
-                        d.level.setBlock(growPos.above(), d.createStem(TreeStemBlock.Type.BOTTOM, Direction.Axis.Y), BLOCK_SET_FLAG);
+                        d.level.setBlock(growPos, d.createStem(TreeStemBlock.Type.TOP, Direction.Axis.Y), 3);
+                        d.level.setBlock(growPos.above(), d.createStem(TreeStemBlock.Type.BOTTOM, Direction.Axis.Y), 3);
                     }
                 }
             }

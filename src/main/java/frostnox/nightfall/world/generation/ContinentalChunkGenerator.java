@@ -884,7 +884,7 @@ public class ContinentalChunkGenerator extends ChunkGenerator {
         Holder<Biome> biome = getBiome(832, height, elevation, temperature, humidity).getHolder().get();
         float coverTemp = temperature + rand.nextFloat() * 0.025F;
         float coverHumidity = humidity + rand.nextFloat() * 0.025F;
-        int coverSoilDepth = getSoilDepth(height, coverHumidity, exposure + rand.nextFloat() * 0.0225F);
+        int coverSoilDepth = getSoilDepth(height, coverHumidity, exposure);
         int coverSoilQuality = getSoilQuality(coverSoilDepth, coverTemp, coverHumidity);
         BlockState coveredSoil = getSoil(coverSoilQuality, height, stoneGroup, igneousHeight, metamorphicHeight);
         if(height < SEA_LEVEL + 4) {

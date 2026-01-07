@@ -58,7 +58,7 @@ public class CurvedTreeGenerator extends TreeGenerator {
                     BlockPos belowPos = pos.below();
                     if(curve) {
                         d.otherWood.add(belowPos);
-                        d.level.setBlock(belowPos.relative(curveDirection.getOpposite()), d.createStem(positive ? TreeStemBlock.Type.ROTATED_TOP : TreeStemBlock.Type.ROTATED_BOTTOM, axis), BLOCK_SET_FLAG);
+                        d.level.setBlock(belowPos.relative(curveDirection.getOpposite()), d.createStem(positive ? TreeStemBlock.Type.ROTATED_TOP : TreeStemBlock.Type.ROTATED_BOTTOM, axis), 3);
                     }
                     d.level.setBlock(belowPos, d.trunk.stemBlock.defaultBlockState(), BLOCK_SET_FLAG);
                 }

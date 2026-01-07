@@ -181,7 +181,7 @@ public class BlocksNF {
             new VegetationBlock(Block.box(2.0D, 0.0D, 2.0D, 14.0D, 14.0D, 14.0D), 90, 0.05F, 0.95F, 0.75F, 1F, true,
                     BlockBehaviour.Properties.of(Material.REPLACEABLE_PLANT).strength(0.8F).noCollission().sound(SoundType.AZALEA_LEAVES)));
     public static final RegistryObject<VinesBlockNF> VINES = BLOCKS.register("vines", () -> new VinesBlockNF(BlockBehaviour.Properties.of(Material.REPLACEABLE_PLANT)
-            .strength(0.6F).noCollission().randomTicks().sound(SoundType.VINE)));
+            .strength(0.6F).noCollission().sound(SoundType.VINE)));
     /*public static final RegistryObject<LichenBlock> LICHEN = BLOCKS.register("lichen", () -> new LichenBlock(BlockBehaviour.Properties.of(Material.REPLACEABLE_PLANT)
             .strength(0.4F).noCollission().sound(SoundType.GLOW_LICHEN)));*/
     public static final RegistryObject<BushBlockNF> DEAD_BUSH = BLOCKS.register("dead_bush", () -> new BushBlockNF(

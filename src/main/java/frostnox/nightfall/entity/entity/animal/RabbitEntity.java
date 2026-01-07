@@ -99,7 +99,7 @@ public class RabbitEntity extends AnimalEntity implements IOrientedHitBoxes, IHo
         goalSelector.addGoal(4, new StepUpFleeDamageGoal(this, 1.8D));
         goalSelector.addGoal(5, new EatEntityGoal(this, 1.3D, 20, 2));
         goalSelector.addGoal(6, new EatBlockGoal(this, 1.3D, 20, 2));
-        goalSelector.addGoal(7, new ReducedWanderLandGoal(this, 1.3D, 16));
+        goalSelector.addGoal(7, new ReducedWanderLandGoal(this, 1.3D, 8));
     }
 
     @Override
