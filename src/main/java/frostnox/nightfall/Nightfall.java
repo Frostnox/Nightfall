@@ -434,8 +434,8 @@ public class Nightfall {
                     return ClientEngine.get().getGrassColor(0.5F, 0.5F);
                 }
                 return Color.WHITE.getRGB();
-            }), BlocksNF.SHORT_GRASS.get(), BlocksNF.GRASS.get(), BlocksNF.TALL_GRASS.get(), BlocksNF.SMALL_FERN.get(),
-                    BlocksNF.FERN.get(), BlocksNF.LARGE_FERN.get(), BlocksNF.VINES.get());
+            }), BlocksNF.SHORT_GRASS.get(), BlocksNF.GRASS.get(), BlocksNF.TALL_GRASS.get(), BlocksNF.SMALL_FERN.get(), BlocksNF.FERN.get(), BlocksNF.LARGE_FERN.get(), BlocksNF.VINES.get(),
+                    BlocksNF.POTATOES.get(), BlocksNF.CARROTS.get(), BlocksNF.FLAX.get(), BlocksNF.YARROW.get(), BlocksNF.BERRY_BUSH.get());
 
             event.getBlockColors().register(((state, level, pos, tintIndex) -> {
                 if(tintIndex == 1) {
@@ -500,7 +500,8 @@ public class Nightfall {
             coloredBlockItems.addAll(BlocksNF.LEAVES.values().stream().map(RegistryObject::get).toList());
             coloredBlockItems.addAll(BlocksNF.FRUIT_LEAVES.values().stream().map(RegistryObject::get).toList());
             coloredBlockItems.addAll(List.of(BlocksNF.SHORT_GRASS.get(), BlocksNF.GRASS.get(), BlocksNF.TALL_GRASS.get(),
-                    BlocksNF.SMALL_FERN.get(), BlocksNF.FERN.get(), BlocksNF.LARGE_FERN.get(), BlocksNF.VINES.get()));
+                    BlocksNF.SMALL_FERN.get(), BlocksNF.FERN.get(), BlocksNF.LARGE_FERN.get(), BlocksNF.VINES.get(),
+                    BlocksNF.BERRY_BUSH.get()));
 
             event.getItemColors().register((stack, layer) -> {
                 BlockState blockstate = ((BlockItem)stack.getItem()).getBlock().defaultBlockState();

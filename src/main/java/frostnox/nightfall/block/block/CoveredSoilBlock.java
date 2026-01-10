@@ -171,7 +171,7 @@ public class CoveredSoilBlock extends BlockNF implements ITimeSimulatedBlock {
             if(level.getBlockState(abovePos).isAir() && random.nextInt(100) == 0 && Season.get(level) != Season.WINTER) {
                 growVegetation(level, ChunkData.get(level.getChunkAt(abovePos)), abovePos, skyLight);
             }
-            else if(soilCover == SoilCover.GRASS && random.nextInt(32) == 0) NetworkHandler.toAllTrackingChunk(level.getChunkAt(pos), new UpdateBlockToClient(pos));
+            else if(soilCover == SoilCover.GRASS && random.nextInt(128) == 0) NetworkHandler.toAllTrackingChunk(level.getChunkAt(pos), new UpdateBlockToClient(pos));
         }
     }
 

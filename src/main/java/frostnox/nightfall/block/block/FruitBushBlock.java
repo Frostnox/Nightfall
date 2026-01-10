@@ -7,6 +7,8 @@ import frostnox.nightfall.capability.ILevelData;
 import frostnox.nightfall.capability.LevelData;
 import frostnox.nightfall.data.TagsNF;
 import frostnox.nightfall.entity.entity.Diet;
+import frostnox.nightfall.network.NetworkHandler;
+import frostnox.nightfall.network.message.world.UpdateBlockToClient;
 import frostnox.nightfall.registry.forge.BlockEntitiesNF;
 import frostnox.nightfall.util.LevelUtil;
 import frostnox.nightfall.util.MathUtil;
@@ -104,6 +106,7 @@ public class FruitBushBlock extends BushBlock implements EntityBlock, ITimeSimul
 
     @Override
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random) {
+        if(random.nextInt(64) == 0) NetworkHandler.toAllTrackingChunk(level.getChunkAt(pos), new UpdateBlockToClient(pos));
         int stage = state.getValue(STAGE);
         if(checkSoilAndSky(level, pos, level.getBlockState(pos.below())) && level.getBlockEntity(pos) instanceof TimeDataBlockEntity crop) {
             if(LevelData.isPresent(level)) {

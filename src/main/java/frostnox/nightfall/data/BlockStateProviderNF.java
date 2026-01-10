@@ -21,6 +21,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.Direction;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackType;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.*;
@@ -34,14 +35,17 @@ import java.util.List;
 import java.util.function.Function;
 
 public class BlockStateProviderNF extends BlockStateProvider {
+    protected static final ExistingFileHelper.ResourceType TEXTURE = new ExistingFileHelper.ResourceType(PackType.CLIENT_RESOURCES, ".png", "textures");
     protected final String externalPath;
     protected final DataGenerator generator;
+    protected final ExistingFileHelper fileHelper;
 
     public BlockStateProviderNF(DataGenerator generator, String id, ExistingFileHelper helper) {
         super(generator, id, helper);
         this.generator = generator;
         String outputString = generator.getOutputFolder().toString();
         this.externalPath = outputString.substring(0, outputString.lastIndexOf("\\src\\")) + "\\src\\main\\resources\\assets\\" + id + "\\models\\";
+        this.fileHelper = helper;
     }
 
     protected Path getExternalImagePath(ResourceLocation loc) {
@@ -338,8 +342,8 @@ public class BlockStateProviderNF extends BlockStateProvider {
                 .texture("cross", resource(block))).build());
     }
 
-    public void saplingBlock(Block block) {
-        getVariantBuilder(block).partialState().addModels(ConfiguredModel.builder().modelFile(models().withExistingParent(name(block), resource("sapling"))
+    public void tintedCross(Block block) {
+        getVariantBuilder(block).partialState().addModels(ConfiguredModel.builder().modelFile(models().withExistingParent(name(block), resource("tinted_cross"))
                 .texture("base", resource(block)).texture("overlay", resource(block, "_overlay"))).build());
     }
 
@@ -353,7 +357,7 @@ public class BlockStateProviderNF extends BlockStateProvider {
     public void deciduousSaplingBlock(Block block) {
         getVariantBuilder(block).partialState().with(TreeSeedBlock.STAGE, 0).addModels(ConfiguredModel.builder().modelFile(models().withExistingParent(
                 name(block) + "_sprout", "cross").texture("cross", resource(block, "_sprout"))).build());
-        getVariantBuilder(block).partialState().with(TreeSeedBlock.STAGE, 1).addModels(ConfiguredModel.builder().modelFile(models().withExistingParent(name(block), resource("sapling"))
+        getVariantBuilder(block).partialState().with(TreeSeedBlock.STAGE, 1).addModels(ConfiguredModel.builder().modelFile(models().withExistingParent(name(block), resource("tinted_cross"))
                 .texture("base", resource(block)).texture("overlay", resource(block, "_overlay"))).build());
     }
 
@@ -935,19 +939,47 @@ public class BlockStateProviderNF extends BlockStateProvider {
         }
     }
 
-    public void cropBlock(Block block, int... texStages) {
-        for(int i = 0; i < 8; i++) {
-            getVariantBuilder(block).partialState().with(BlockStatePropertiesNF.STAGE_8, i + 1).modelForState()
-                    .modelFile(models().withExistingParent(name(block) + "_" + texStages[i], resource("crop"))
-                            .texture("all", resource(block, "_" + texStages[i]))).addModel();
+    public void stagedTintedCrossBlock(Block block, IntegerProperty property) {
+        for(Integer i : property.getPossibleValues()) {
+            getVariantBuilder(block).partialState().with(property, i).modelForState()
+                    .modelFile(models().withExistingParent(name(block) + "_" + i, resource("tinted_cross"))
+                            .texture("base", resource(block, "_" + i)).texture("overlay", resource(block, "_" + i + "_overlay"))).addModel();
         }
     }
 
-    public void crossCropBlock(Block block, int... texStages) {
+    public enum Tint {
+        NONE, FULL, PART
+    }
+
+    public void cropBlock(Block block, Tint[] stageTints, int... texStages) {
         for(int i = 0; i < 8; i++) {
-            getVariantBuilder(block).partialState().with(BlockStatePropertiesNF.STAGE_8, i + 1).modelForState()
-                    .modelFile(models().withExistingParent(name(block) + "_" + texStages[i], "cross")
-                            .texture("cross", resource(block, "_" + texStages[i]))).addModel();
+            switch(stageTints[texStages[i] - 1]) {
+                case NONE -> getVariantBuilder(block).partialState().with(BlockStatePropertiesNF.STAGE_8, i + 1).modelForState()
+                        .modelFile(models().withExistingParent(name(block) + "_" + texStages[i], resource("crop"))
+                                .texture("all", resource(block, "_" + texStages[i]))).addModel();
+                case FULL -> getVariantBuilder(block).partialState().with(BlockStatePropertiesNF.STAGE_8, i + 1).modelForState()
+                        .modelFile(models().withExistingParent(name(block) + "_" + texStages[i], resource("full_tinted_crop"))
+                                .texture("all", resource(block, "_" + texStages[i]))).addModel();
+                case PART -> getVariantBuilder(block).partialState().with(BlockStatePropertiesNF.STAGE_8, i + 1).modelForState()
+                        .modelFile(models().withExistingParent(name(block) + "_" + texStages[i], resource("tinted_crop"))
+                                .texture("base", resource(block, "_" + texStages[i])).texture("overlay", resource(block, "_" + texStages[i] + "_overlay"))).addModel();
+            }
+        }
+    }
+
+    public void crossCropBlock(Block block, Tint[] stageTints, int... texStages) {
+        for(int i = 0; i < 8; i++) {
+            switch(stageTints[texStages[i] - 1]) {
+                case NONE -> getVariantBuilder(block).partialState().with(BlockStatePropertiesNF.STAGE_8, i + 1).modelForState()
+                        .modelFile(models().withExistingParent(name(block) + "_" + texStages[i], "cross")
+                                .texture("cross", resource(block, "_" + texStages[i]))).addModel();
+                case FULL -> getVariantBuilder(block).partialState().with(BlockStatePropertiesNF.STAGE_8, i + 1).modelForState()
+                        .modelFile(models().withExistingParent(name(block) + "_" + texStages[i], "tinted_cross")
+                                .texture("cross", resource(block, "_" + texStages[i]))).addModel();
+                case PART -> getVariantBuilder(block).partialState().with(BlockStatePropertiesNF.STAGE_8, i + 1).modelForState()
+                        .modelFile(models().withExistingParent(name(block) + "_" + texStages[i], resource("tinted_cross"))
+                                .texture("base", resource(block, "_" + texStages[i])).texture("overlay", resource(block, "_" + texStages[i] + "_overlay"))).addModel();
+            }
         }
     }
 
@@ -1024,12 +1056,12 @@ public class BlockStateProviderNF extends BlockStateProvider {
         vinesBlock(BlocksNF.VINES.get());
         crossBlock(BlocksNF.DEAD_BUSH.get());
         crossBlock(BlocksNF.DEAD_PLANT.get());
-        cropBlock(BlocksNF.DEAD_CROP.get(), 1, 1, 2, 2, 3, 3, 3, 4);
-        cropBlock(BlocksNF.POTATOES.get(), 1, 1, 2, 2, 3, 3, 3, 4);
-        cropBlock(BlocksNF.CARROTS.get(), 1, 1, 2, 2, 3, 3, 3, 4);
-        cropBlock(BlocksNF.FLAX.get(), 1, 2, 3, 4, 4, 5, 5, 6);
-        crossCropBlock(BlocksNF.YARROW.get(), 1, 1, 1, 2, 2, 2, 2, 3);
-        stagedCrossBlock(BlocksNF.BERRY_BUSH.get(), BlockStatePropertiesNF.STAGE_4);
+        cropBlock(BlocksNF.DEAD_CROP.get(), new Tint[]{Tint.NONE, Tint.NONE, Tint.NONE, Tint.NONE}, 1, 1, 2, 2, 3, 3, 3, 4);
+        cropBlock(BlocksNF.POTATOES.get(), new Tint[]{Tint.FULL, Tint.FULL, Tint.FULL, Tint.PART}, 1, 1, 2, 2, 3, 3, 3, 4);
+        cropBlock(BlocksNF.CARROTS.get(), new Tint[]{Tint.FULL, Tint.FULL, Tint.PART, Tint.PART}, 1, 1, 2, 2, 3, 3, 3, 4);
+        cropBlock(BlocksNF.FLAX.get(), new Tint[]{Tint.FULL, Tint.FULL, Tint.PART, Tint.PART, Tint.NONE, Tint.NONE}, 1, 2, 3, 4, 4, 5, 5, 6);
+        crossCropBlock(BlocksNF.YARROW.get(), new Tint[]{Tint.FULL, Tint.PART, Tint.PART}, 1, 1, 1, 2, 2, 2, 2, 3);
+        stagedTintedCrossBlock(BlocksNF.BERRY_BUSH.get(), BlockStatePropertiesNF.STAGE_4);
         for(Stone type : Stone.values()) {
             if(type == Stone.PUMICE) {
                 mirroredBlock(BlocksNF.STONE_BLOCKS.get(type).get());

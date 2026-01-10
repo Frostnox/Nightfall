@@ -4,12 +4,16 @@ import frostnox.nightfall.block.INaturalVegetation;
 import frostnox.nightfall.block.ISoil;
 import frostnox.nightfall.block.SoilCover;
 import frostnox.nightfall.data.TagsNF;
+import frostnox.nightfall.network.NetworkHandler;
+import frostnox.nightfall.network.message.world.UpdateBlockToClient;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.VoxelShape;
+
+import java.util.Random;
 
 public class VegetationBlock extends BushBlockNF implements INaturalVegetation {
     private final int weight;
@@ -29,6 +33,11 @@ public class VegetationBlock extends BushBlockNF implements INaturalVegetation {
     @Override
     protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos) {
         return state.is(TagsNF.TILLABLE_SOIL);
+    }
+
+    @Override
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random) {
+        if(random.nextInt(64) == 0) NetworkHandler.toAllTrackingChunk(level.getChunkAt(pos), new UpdateBlockToClient(pos));
     }
 
     @Override

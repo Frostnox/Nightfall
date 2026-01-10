@@ -164,24 +164,24 @@ public class BlocksNF {
     //Plants
     public static final RegistryObject<VegetationBlock> SHORT_GRASS = BLOCKS.register("short_grass", () ->
             new VegetationBlock(Block.box(2.0D, 0.0D, 2.0D, 14.0D, 8.0D, 14.0D), 3000, 0F, 1F, 0F, 1F, false,
-                    BlockBehaviour.Properties.of(Material.REPLACEABLE_PLANT).strength(0.6F).noCollission().sound(SoundType.AZALEA_LEAVES)));
+                    BlockBehaviour.Properties.of(Material.REPLACEABLE_PLANT).strength(0.6F).noCollission().randomTicks().sound(SoundType.AZALEA_LEAVES)));
     public static final RegistryObject<VegetationBlock> GRASS = BLOCKS.register("grass", () ->
             new VegetationBlock(Block.box(2.0D, 0.0D, 2.0D, 14.0D, 12.0D, 14.0D), 3000, 0F, 1F, 0.03F, 1F, false,
-                    BlockBehaviour.Properties.of(Material.REPLACEABLE_PLANT).strength(0.7F).noCollission().sound(SoundType.AZALEA_LEAVES)));
+                    BlockBehaviour.Properties.of(Material.REPLACEABLE_PLANT).strength(0.7F).noCollission().randomTicks().sound(SoundType.AZALEA_LEAVES)));
     public static final RegistryObject<VegetationBlock> TALL_GRASS = BLOCKS.register("tall_grass", () ->
             new VegetationBlock(Block.box(2.0D, 0.0D, 2.0D, 14.0D, 16.0D, 14.0D), 3000, 0.42F, 0.58F, 0.05F, 0.3F, false,
-                    BlockBehaviour.Properties.of(Material.REPLACEABLE_PLANT).strength(0.8F).noCollission().sound(SoundType.AZALEA_LEAVES)));
+                    BlockBehaviour.Properties.of(Material.REPLACEABLE_PLANT).strength(0.8F).noCollission().randomTicks().sound(SoundType.AZALEA_LEAVES)));
     public static final RegistryObject<VegetationBlock> SMALL_FERN = BLOCKS.register("small_fern", () ->
             new VegetationBlock(Block.box(2.0D, 0.0D, 2.0D, 14.0D, 9.0D, 14.0D), 200, 0.05F, 0.95F, 0.68F, 1F, true,
-                    BlockBehaviour.Properties.of(Material.REPLACEABLE_PLANT).strength(0.6F).noCollission().sound(SoundType.AZALEA_LEAVES)));
+                    BlockBehaviour.Properties.of(Material.REPLACEABLE_PLANT).strength(0.6F).noCollission().randomTicks().sound(SoundType.AZALEA_LEAVES)));
     public static final RegistryObject<VegetationBlock> FERN = BLOCKS.register("fern", () ->
             new VegetationBlock(Block.box(2.0D, 0.0D, 2.0D, 14.0D, 12.0D, 14.0D), 150, 0.05F, 0.95F, 0.72F, 1F, true,
-                    BlockBehaviour.Properties.of(Material.REPLACEABLE_PLANT).strength(0.7F).noCollission().sound(SoundType.AZALEA_LEAVES)));
+                    BlockBehaviour.Properties.of(Material.REPLACEABLE_PLANT).strength(0.7F).noCollission().randomTicks().sound(SoundType.AZALEA_LEAVES)));
     public static final RegistryObject<VegetationBlock> LARGE_FERN = BLOCKS.register("large_fern", () ->
             new VegetationBlock(Block.box(2.0D, 0.0D, 2.0D, 14.0D, 14.0D, 14.0D), 90, 0.05F, 0.95F, 0.75F, 1F, true,
-                    BlockBehaviour.Properties.of(Material.REPLACEABLE_PLANT).strength(0.8F).noCollission().sound(SoundType.AZALEA_LEAVES)));
+                    BlockBehaviour.Properties.of(Material.REPLACEABLE_PLANT).strength(0.8F).noCollission().randomTicks().sound(SoundType.AZALEA_LEAVES)));
     public static final RegistryObject<VinesBlockNF> VINES = BLOCKS.register("vines", () -> new VinesBlockNF(BlockBehaviour.Properties.of(Material.REPLACEABLE_PLANT)
-            .strength(0.6F).noCollission().sound(SoundType.VINE)));
+            .strength(0.6F).noCollission().randomTicks().sound(SoundType.VINE)));
     /*public static final RegistryObject<LichenBlock> LICHEN = BLOCKS.register("lichen", () -> new LichenBlock(BlockBehaviour.Properties.of(Material.REPLACEABLE_PLANT)
             .strength(0.4F).noCollission().sound(SoundType.GLOW_LICHEN)));*/
     public static final RegistryObject<BushBlockNF> DEAD_BUSH = BLOCKS.register("dead_bush", () -> new BushBlockNF(

@@ -270,7 +270,7 @@ public class ItemModelProviderNF extends ModelProvider<AnimatedItemModelBuilder>
         genericBlockAsItem(ItemsNF.DEAD_PLANT.get());
         genericBlockAsItem(ItemsNF.DEAD_CROP.get(), "dead_crop_1");
         genericItem(ItemsNF.SEASHELL.get());
-        genericItem(ItemsNF.BERRY_BUSH.get());
+        doubleLayerItem(ItemsNF.BERRY_BUSH.get());
         genericItem(ItemsNF.POTATO_SEEDS.get());
         genericItem(ItemsNF.CARROT_SEEDS.get());
         genericItem(ItemsNF.FLAX_SEEDS.get());

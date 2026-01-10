@@ -1,8 +1,9 @@
 package frostnox.nightfall.block.block;
 
-import com.google.common.collect.Lists;
 import frostnox.nightfall.block.BlockStatePropertiesNF;
 import frostnox.nightfall.block.IWaterloggedBlock;
+import frostnox.nightfall.network.NetworkHandler;
+import frostnox.nightfall.network.message.world.UpdateBlockToClient;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -18,8 +19,6 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.FluidState;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 
 public class VinesBlockNF extends VineBlock implements IWaterloggedBlock {
@@ -55,49 +54,7 @@ public class VinesBlockNF extends VineBlock implements IWaterloggedBlock {
 
     @Override
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random) {
-        if(level.random.nextFloat() < 0.01F && state.getValue(WATER_LEVEL) == 0 && level.isAreaLoaded(pos, 2)) {
-            Direction dir = Direction.getRandom(random);
-            BlockPos dirPos = pos.relative(dir);
-            BlockState dirState = level.getBlockState(dirPos);
-            //Try to grow inside own block first
-            if(dir != Direction.DOWN && !state.getValue(getPropertyForFace(dir)) && isAcceptableNeighbour(level, dirPos, dir)) {
-                level.setBlock(pos, state.setValue(getPropertyForFace(dir), true), 2);
-                return;
-            }
-            if(dir == Direction.UP) {
-                dir = Direction.DOWN;
-                dirPos = pos.below();
-                dirState = level.getBlockState(dirPos);
-            }
-            //Pick a random direction from this vine
-            Direction facingDir = null;
-            List<Direction> directions = dir == Direction.DOWN ? Lists.newArrayList(Direction.Plane.HORIZONTAL) : Lists.newArrayList(dir.getClockWise(), dir.getCounterClockWise());
-            Collections.shuffle(directions, random);
-            for(Direction randDir : directions) {
-                if(state.getValue(getPropertyForFace(randDir))) {
-                    facingDir = randDir;
-                    break;
-                }
-            }
-            if(facingDir == null) return;
-
-            BlockState newState = null;
-            if(dirState.isAir()) newState = defaultBlockState();
-            else if(dirState.is(this)) newState = dirState;
-
-            if(newState != null && !newState.getValue(getPropertyForFace(facingDir))) {
-                if(dir == Direction.DOWN) {
-                    BlockPos.MutableBlockPos abovePos = pos.mutable();
-                    for(int i = 0; true; i++) {
-                        abovePos.setY(abovePos.getY() + 1);
-                        if(!level.getBlockState(abovePos).is(this)) break;
-                        else if(i == 3) return;
-                    }
-                }
-                else if(!isAcceptableNeighbour(level, dirPos.relative(facingDir), facingDir)) return;
-                level.setBlock(dirPos, newState.setValue(getPropertyForFace(facingDir), true), 2);
-            }
-        }
+        if(random.nextInt(64) == 0) NetworkHandler.toAllTrackingChunk(level.getChunkAt(pos), new UpdateBlockToClient(pos));
     }
 
     @Override
