@@ -132,6 +132,7 @@ public class ClientEngine {
 
     //Color maps
     private int[] grassCache = new int[65536];
+    private int[] mossCache = new int[65536];
     private int[] forestCache = new int[256];
     private int[] lichenCache = new int[256];
     private int[] oakLeavesCache = new int[256];
@@ -615,6 +616,17 @@ public class ClientEngine {
         return grassCache[i];
     }
 
+    private void fillMossCache(int[] colors) {
+        mossCache = colors;
+    }
+
+    public int getMossColor(float temperature, float humidity) {
+        int i = (int)(temperature * 255.0D) | ((int)(humidity * 255.0D) << 8);
+        if(i < 0) return mossCache[0];
+        if(i > 65535) return mossCache[65535];
+        return mossCache[i];
+    }
+
     private void fillForestCache(int[] colors) {
         forestCache = colors;
     }
@@ -1048,6 +1060,18 @@ public class ClientEngine {
             @Override
             protected void apply(int[] pObject, ResourceManager pResourceManager, ProfilerFiller pProfiler) {
                 ClientEngine.get().fillGrassCache(pObject);
+            }
+        });
+        event.registerReloadListener(new SimplePreparableReloadListener<int[]>() {
+            private static final ResourceLocation LOCATION = ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "textures/colormap/moss.png");
+            @Override
+            protected int[] prepare(ResourceManager pResourceManager, ProfilerFiller pProfiler) {
+                try { return LegacyStuffWrapper.getPixels(pResourceManager, LOCATION); }
+                catch (IOException ioexception) { throw new IllegalStateException("Failed to load moss color texture", ioexception); }
+            }
+            @Override
+            protected void apply(int[] pObject, ResourceManager pResourceManager, ProfilerFiller pProfiler) {
+                ClientEngine.get().fillMossCache(pObject);
             }
         });
         event.registerReloadListener(new SimplePreparableReloadListener<int[]>() {

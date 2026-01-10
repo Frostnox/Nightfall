@@ -11,16 +11,14 @@ import frostnox.nightfall.util.LevelUtil;
 import frostnox.nightfall.util.data.WrappedInt;
 import frostnox.nightfall.util.math.OctalDirection;
 import frostnox.nightfall.world.Season;
+import frostnox.nightfall.world.generation.ContinentalChunkGenerator;
 import it.unimi.dsi.fastutil.objects.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.SectionPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
-import net.minecraft.world.level.BlockAndTintGetter;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.VineBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -334,7 +332,8 @@ public class TreeGenerator {
      */
     protected void tryDecoration(Data d, WorldGenLevel level, Random random, Season season) {
         //Vines on branches/trunk
-        if(d.height == d.maxHeight && !d.decaying && season != Season.WINTER && LevelData.isPresent(level.getLevel()) && ChunkData.get(level.getLevel().getChunkAt(d.trunkPos)).getHumidity(d.trunkPos) > 0.8F) {
+        if(d.height == d.maxHeight && !d.decaying && season != Season.WINTER &&
+                (d.generating ? (((ContinentalChunkGenerator) level.getLevel().getChunkSource().getGenerator()).getCachedHumidity(new ChunkPos(d.trunkPos))) : ChunkData.get(level.getLevel().getChunkAt(d.trunkPos)).getHumidity(d.trunkPos)) > 0.8F) {
             long vineSeed = random.nextLong();
             for(BlockPos pos : d.collectVineAnchors()) {
                 long vineRand = hash(vineSeed, pos.getX(), pos.getY(), pos.getZ());

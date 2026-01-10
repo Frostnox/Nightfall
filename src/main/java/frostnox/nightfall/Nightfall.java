@@ -73,6 +73,7 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -441,7 +442,19 @@ public class Nightfall {
                     if(level != null && pos != null && LevelData.isPresent(Minecraft.getInstance().level)) {
                         LevelChunk chunk = Minecraft.getInstance().level.getChunkAt(pos);
                         IChunkData capC = ChunkData.get(chunk);
-                        return ClientEngine.get().getForestColor(capC.getHumidity(pos));
+                        return ClientEngine.get().getMossColor(capC.getBaseTemperature(pos.getX(), pos.getZ()), Math.max(0, (capC.getHumidity(pos) - 0.7F) * (1 / 0.3F)));
+                    }
+                    return ClientEngine.get().getMossColor(0.5F, 0.5F);
+                }
+                return Color.WHITE.getRGB();
+            }), BlocksNF.COVERED_SILT.get(SoilCover.MOSS).get(), BlocksNF.COVERED_DIRT.get(SoilCover.MOSS).get(), BlocksNF.COVERED_LOAM.get(SoilCover.MOSS).get());
+
+            event.getBlockColors().register(((state, level, pos, tintIndex) -> {
+                if(tintIndex == 1) {
+                    if(level != null && pos != null && LevelData.isPresent(Minecraft.getInstance().level)) {
+                        LevelChunk chunk = Minecraft.getInstance().level.getChunkAt(pos);
+                        IChunkData capC = ChunkData.get(chunk);
+                        return ClientEngine.get().getForestColor(Mth.clamp((capC.getHumidity(pos) - 0.3F) / 0.4F, 0, 1));
                     }
                     return ClientEngine.get().getForestColor(0.5F);
                 }
@@ -453,7 +466,7 @@ public class Nightfall {
                     if(level != null && pos != null && LevelData.isPresent(Minecraft.getInstance().level)) {
                         LevelChunk chunk = Minecraft.getInstance().level.getChunkAt(pos);
                         IChunkData capC = ChunkData.get(chunk);
-                        return ClientEngine.get().getLichenColor(capC.getHumidity(pos) * 3F); //Lichen naturally appears only in tundras, so max humidity caps out around 1/3
+                        return ClientEngine.get().getLichenColor(capC.getHumidity(pos) * (1F / 0.3F));
                     }
                     return ClientEngine.get().getLichenColor(0.5F);
                 }
@@ -481,9 +494,9 @@ public class Nightfall {
         @SubscribeEvent
         public static void onItemColorHandlerEvent(ColorHandlerEvent.Item event) {
             List<Block> coloredBlockItems = new ArrayList<>();
-            coloredBlockItems.addAll(BlocksNF.COVERED_SILT.values().stream().filter(block -> block.get().soilCover != SoilCover.MOSS).map(RegistryObject::get).toList());
-            coloredBlockItems.addAll(BlocksNF.COVERED_DIRT.values().stream().filter(block -> block.get().soilCover != SoilCover.MOSS).map(RegistryObject::get).toList());
-            coloredBlockItems.addAll(BlocksNF.COVERED_LOAM.values().stream().filter(block -> block.get().soilCover != SoilCover.MOSS).map(RegistryObject::get).toList());
+            coloredBlockItems.addAll(BlocksNF.COVERED_SILT.values().stream().map(RegistryObject::get).toList());
+            coloredBlockItems.addAll(BlocksNF.COVERED_DIRT.values().stream().map(RegistryObject::get).toList());
+            coloredBlockItems.addAll(BlocksNF.COVERED_LOAM.values().stream().map(RegistryObject::get).toList());
             coloredBlockItems.addAll(BlocksNF.LEAVES.values().stream().map(RegistryObject::get).toList());
             coloredBlockItems.addAll(BlocksNF.FRUIT_LEAVES.values().stream().map(RegistryObject::get).toList());
             coloredBlockItems.addAll(List.of(BlocksNF.SHORT_GRASS.get(), BlocksNF.GRASS.get(), BlocksNF.TALL_GRASS.get(),

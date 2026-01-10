@@ -18,7 +18,7 @@ public enum SoilCover {
     MOSS("mossy", MaterialColor.COLOR_GREEN, SoundType.GRASS) {
         @Override
         public boolean canGrow(int aboveLight) {
-            return aboveLight < 14 && aboveLight > 0;
+            return aboveLight > 0;
         }
     },
     FOREST("forested", MaterialColor.PODZOL, SoundType.ROOTED_DIRT) {
@@ -48,8 +48,9 @@ public enum SoilCover {
 
     public static @Nullable SoilCover getForBiome(Holder<Biome> biome) {
         if(biome.is(BiomesNF.TUNDRA.getKey())) return LICHEN;
-        else if(biome.is(BiomesNF.OLDWOODS.getKey()) || biome.is(BiomesNF.FOREST.getKey()) || biome.is(BiomesNF.JUNGLE.getKey())) return FOREST;
+        else if(biome.is(BiomesNF.FOREST.getKey())) return FOREST;
+        else if(biome.is(BiomesNF.OLDWOODS.getKey()) || biome.is(BiomesNF.JUNGLE.getKey())) return MOSS;
         else if(biome.is(BiomesNF.DESERT.getKey()) || biome.is(BiomesNF.BADLANDS.getKey())) return null;
-        else return GRASS;
+        else return GRASS; //Grasslands, Taiga, Swamp, Island
     }
 }

@@ -1000,8 +1000,7 @@ public class BlockStateProviderNF extends BlockStateProvider {
         randomRotatedBlock(BlocksNF.BLACK_GRAVEL.get());
         for(var block : BlocksNF.getCoveredSoils()) {
             SoilCover cover = block.get().soilCover;
-            if(cover == SoilCover.MOSS) snowySoilBlock(block.get(), block.getId().getPath().toString().replace(cover.prefix + "_", ""), cover.prefix + "_top");
-            else snowyTintedSoilBlock(block.get(), block.getId().getPath().toString().replace(cover.prefix + "_", ""), cover.prefix + "_top");
+            snowyTintedSoilBlock(block.get(), block.getId().getPath().toString().replace(cover.prefix + "_", ""), cover.prefix + "_top");
         }
         tilledSoilBlock(BlocksNF.TILLED_SILT.get(), resource(BlocksNF.SILT.get()));
         tilledSoilBlock(BlocksNF.TILLED_DIRT.get(), resource(BlocksNF.DIRT.get()));
