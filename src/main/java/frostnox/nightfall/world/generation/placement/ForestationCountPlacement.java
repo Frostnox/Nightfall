@@ -21,6 +21,7 @@ public class ForestationCountPlacement extends NoiseCountPlacement {
 
     @Override
     protected float getScalar(ContinentalChunkGenerator gen, BlockPos pos) {
+        if(gen.isClearing(pos.getX(), pos.getZ())) return 0F;
         ChunkPos chunkPos = new ChunkPos(pos);
         float humidity = gen.getCachedHumidity(chunkPos) * 0.65F;
         float temperature = (1 - Math.abs(gen.getCachedTemperature(chunkPos) - 0.5F) * 2) * 0.35F;

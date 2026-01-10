@@ -87,8 +87,8 @@ public class SoilBlock extends UnstableBlock implements ITimeSimulatedBlock {
     protected void tryGrowCover(BlockState state, ServerLevel level, BlockPos pos, BlockPos abovePos, BlockState aboveState, int light) {
         if(aboveState.getFluidState().isEmpty() && LayerLightEngine.getLightBlockInto(level, state, pos, aboveState, abovePos, Direction.UP, aboveState.getLightBlock(level, abovePos)) < level.getMaxLightLevel()) {
             //Use exact biome since level only saves biomes in 4x4x4 pieces that are blended together
-            SoilCover cover = SoilCover.getForBiome(level.getChunkSource().getGenerator() instanceof ContinentalChunkGenerator chunkGen ?
-                    chunkGen.calculateBiome(pos.getX(), 832, pos.getZ()).getHolder().get() : level.getBiome(pos));
+            SoilCover cover = level.getChunkSource().getGenerator() instanceof ContinentalChunkGenerator chunkGen ? 
+                    SoilCover.getForBiome(chunkGen.calculateBiome(pos.getX(), 832, pos.getZ()).getHolder().get()) : SoilCover.GRASS;
             BlockState coveredBlock = getCoveredBlock(cover);
             if(coveredBlock != null && cover.canGrow(light)) level.setBlockAndUpdate(pos, coveredBlock);
         }

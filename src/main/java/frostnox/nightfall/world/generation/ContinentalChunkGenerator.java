@@ -103,8 +103,8 @@ public class ContinentalChunkGenerator extends ChunkGenerator {
     protected final FractalSimplexNoiseFast detail; //Amplifier - expands/reduces roughness
     protected final FractalSimplexNoiseCached weathering; //3D surface formations
     protected final FractalSimplexNoiseFast exposure; //Amplifier - expands/reduces weathering
-    protected final FractalSimplexNoiseFast temperature, humidity, forestation; //Biome factors
-    protected final FractalSimplexNoiseFast tree1, tree2, tree3, tree4; //Tree factors
+    protected final FractalSimplexNoiseFast temperature, humidity; //Biome factors
+    protected final FractalSimplexNoiseFast forestation, clearing, tree1, tree2, tree3, tree4; //Tree factors
     protected final FractalSimplexNoiseFast clayPatches, mudPatches;
     protected final SimplexNoiseCached bigTunnels1, bigTunnels2, smallTunnels1, smallTunnels2; //Long winding caves with varying size, concentrated at top
     protected final FractalSimplexNoiseFast bigTunnelsWarp, smallTunnelsWarp; //Warp tunnels to make them more irregular
@@ -128,6 +128,7 @@ public class ContinentalChunkGenerator extends ChunkGenerator {
         this.temperature = new FractalSimplexNoiseFast(random.nextLong(), 0.0002F, 7, 0.5F, 2.0F);
         this.humidity = new FractalSimplexNoiseFast(random.nextLong(), 0.0002F, 7, 0.5F, 2.0F);
         this.forestation = new FractalSimplexNoiseFast(random.nextLong(), 0.0002F, 7, 0.5F, 2.0F);
+        this.clearing = new FractalSimplexNoiseFast(random.nextLong(), 0.003F, 3, 0.5F, 2.0F);
         tree1 = new FractalSimplexNoiseFast(random.nextLong(), 0.0002F, 7, 0.5F, 2.0F);
         tree2 = new FractalSimplexNoiseFast(random.nextLong(), 0.0002F, 7, 0.5F, 2.0F);
         tree3 = new FractalSimplexNoiseFast(random.nextLong(), 0.0002F, 7, 0.5F, 2.0F);
@@ -427,6 +428,14 @@ public class ContinentalChunkGenerator extends ChunkGenerator {
 
     public float getForestation(int x, int z) {
         return forestation.noise2D(x, z);
+    }
+
+    public float getClearing(int x, int z) {
+        return clearing.noise2D(x, z);
+    }
+
+    public boolean isClearing(int x, int z) {
+        return Math.abs(clearing.noise2D(x, z)) > 0.55F;
     }
 
     private int getHeight(float elevation, float roughness, float detail) {
@@ -941,8 +950,8 @@ public class ContinentalChunkGenerator extends ChunkGenerator {
         info.add("Climate: T: " + format.format(getTemperature(pos.getX(), pos.getZ())) + " H: " + format.format(getHumidity(pos.getX(), pos.getZ())));
         info.add("Stone: ST: " + format.format(stoneType.noise2D(pos.getX(), pos.getZ())) + " IH: " + format.format(igneousHeight.noise2D(pos.getX(), pos.getZ())) +
                 " MH: " + format.format(metamorphicHeight.noise2D(pos.getX(), pos.getZ())));
-        info.add("Trees: F: " + format.format(forestation.noise2D(pos.getX(), pos.getZ())) + " 1: " + format.format(tree1.noise2D(pos.getX(), pos.getZ())) +
-                " 2: " + format.format(tree2.noise2D(pos.getX(), pos.getZ())) + " 3: " + format.format(tree3.noise2D(pos.getX(), pos.getZ())) +
-                " 4: " + format.format(tree4.noise2D(pos.getX(), pos.getZ())));
+        info.add("Trees: F: " + format.format(forestation.noise2D(pos.getX(), pos.getZ())) + " C: " + format.format(clearing.noise2D(pos.getX(), pos.getZ())) +
+                " 1: " + format.format(tree1.noise2D(pos.getX(), pos.getZ())) + " 2: " + format.format(tree2.noise2D(pos.getX(), pos.getZ())) +
+                " 3: " + format.format(tree3.noise2D(pos.getX(), pos.getZ())) + " 4: " + format.format(tree4.noise2D(pos.getX(), pos.getZ())));
     }
 }
