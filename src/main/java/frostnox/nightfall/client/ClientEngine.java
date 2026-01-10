@@ -45,6 +45,8 @@ import frostnox.nightfall.util.LevelUtil;
 import frostnox.nightfall.util.MathUtil;
 import frostnox.nightfall.util.data.SingleSortedSet;
 import frostnox.nightfall.util.data.Vec3f;
+import frostnox.nightfall.world.Season;
+import frostnox.nightfall.world.generation.ContinentalChunkGenerator;
 import frostnox.nightfall.world.generation.structure.ExplorerRuinsPiece;
 import frostnox.nightfall.world.generation.structure.SlayerRuinsPiece;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -57,6 +59,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.EffectInstance;
 import net.minecraft.client.renderer.PostChain;
+import net.minecraft.client.renderer.PostPass;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -149,6 +152,8 @@ public class ClientEngine {
     private PostChain waterPost;
     private RenderTarget translucentTarget;
     public float tempFogStart;
+    private final ResourceLocation seasonPostLocation = ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "shaders/post/season.json");
+    private PostChain seasonPost;
 
     //Entity renderers
     private PlayerRendererNF defaultPlayerRenderer;
@@ -293,6 +298,7 @@ public class ClientEngine {
         }
         waterPost = getShader(waterPost, waterPostLocation);
         translucentTarget = waterPost.getTempTarget("translucent");
+        seasonPost = getShader(seasonPost, seasonPostLocation);
     }
 
     private PostChain getShader(PostChain oldShader, ResourceLocation location) {
@@ -313,6 +319,7 @@ public class ClientEngine {
 
     public void resize(int width, int height) {
         if(waterPost != null) waterPost.resize(width, height);
+        if(seasonPost != null) seasonPost.resize(width, height);
     }
 
     public void applyWaterShader(Matrix4f projMat, float partialTick) {
@@ -334,6 +341,50 @@ public class ClientEngine {
 
         waterPost.process(partialTick);
         mc.getMainRenderTarget().copyDepthFrom(translucentTarget);
+    }
+
+    public void applySeasonShader(float partialTick) {
+        if(LevelData.isPresent(mc.level)) {
+            float y = mc.player != null ? (float) mc.player.getEyePosition(partialTick).y : Float.MAX_VALUE;
+            if(y > ContinentalChunkGenerator.SEA_LEVEL - 64) {
+                float time = Season.getNormalizedProgress(LevelData.get(mc.level).getSeasonTime());
+                if((time > 0.2F && time < 0.55F) || (time > 0.7F || time < 0.05F)) {
+                    float scalar = 0.05F;
+                    float intensity = y > (ContinentalChunkGenerator.SEA_LEVEL - 32) ? 1F : ((y - (ContinentalChunkGenerator.SEA_LEVEL - 64)) / 32F);
+                    float r, b;
+                    if(time < 0.05F) {
+                        r = -scalar * (0.5F - time / 0.05F);
+                        b = -r;
+                    }
+                    else if(time < 0.3F) {
+                        r = scalar * ((time - 0.2F) / 0.1F);
+                        b = -r;
+                    }
+                    else if(time < 0.45F) {
+                        r = scalar;
+                        b = -scalar;
+                    }
+                    else if(time < 0.55F) {
+                        r = scalar * (1F - (time - 0.45F) / 0.1F);
+                        b = -r;
+                    }
+                    else if(time < 0.8F) {
+                        r = -scalar * ((time - 0.7F) / 0.1F);
+                        b = -r;
+                    }
+                    else if(time < 0.95F) {
+                        r = -scalar;
+                        b = scalar;
+                    }
+                    else {
+                        r = -scalar * (1F - (time - 0.95F) / 0.1F);
+                        b = -r;
+                    }
+                    for(PostPass pass : seasonPost.passes) pass.getEffect().safeGetUniform("Color").set(1 + r * intensity, 1, 1 + b * intensity);
+                    seasonPost.process(partialTick);
+                }
+            }
+        }
     }
 
     //Avoid doing stuff that isn't available during data gen

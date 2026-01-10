@@ -1,5 +1,6 @@
 package frostnox.nightfall.mixin;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import frostnox.nightfall.client.ClientEngine;
 import frostnox.nightfall.entity.IOrientedHitBoxes;
@@ -25,7 +26,16 @@ import java.util.function.Predicate;
 public abstract class GameRendererMixin implements ResourceManagerReloadListener, AutoCloseable {
     @Inject(method = "resize", at = @At("HEAD"))
     private void nightfall$resizeShaders(int width, int height, CallbackInfo callbackInfo) {
-        if(ClientEngine.get() != null) ClientEngine.get().resize(width, height);
+        ClientEngine.get().resize(width, height);
+    }
+
+    @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/LevelRenderer;doEntityOutline()V", shift = At.Shift.AFTER))
+    private void nightfall$applyPostShaders(float pPartialTicks, long pNanoTime, boolean pRenderLevel, CallbackInfo callbackInfo) {
+        RenderSystem.disableBlend();
+        RenderSystem.disableDepthTest();
+        RenderSystem.enableTexture();
+        RenderSystem.resetTextureMatrix();
+        ClientEngine.get().applySeasonShader(pPartialTicks);
     }
 
     /**
