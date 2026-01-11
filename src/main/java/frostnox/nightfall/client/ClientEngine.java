@@ -28,6 +28,7 @@ import frostnox.nightfall.client.model.AnimatedItemModel;
 import frostnox.nightfall.client.render.BlockEntityAsItemRenderer;
 import frostnox.nightfall.client.render.entity.PlayerRendererNF;
 import frostnox.nightfall.data.TagsNF;
+import frostnox.nightfall.data.recipe.ToolIngredientRecipe;
 import frostnox.nightfall.encyclopedia.Entry;
 import frostnox.nightfall.entity.entity.ActionableEntity;
 import frostnox.nightfall.item.Armament;
@@ -35,6 +36,7 @@ import frostnox.nightfall.item.TieredArmorMaterial;
 import frostnox.nightfall.item.TieredItemMaterial;
 import frostnox.nightfall.item.client.IHeldClientTick;
 import frostnox.nightfall.item.client.ISwapBehavior;
+import frostnox.nightfall.item.item.ToolItem;
 import frostnox.nightfall.network.NetworkHandler;
 import frostnox.nightfall.network.message.capability.EntryNotificationToServer;
 import frostnox.nightfall.registry.ActionsNF;
@@ -79,6 +81,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.Pose;
@@ -899,6 +902,14 @@ public class ClientEngine {
 
     public void openAttributeSelectionScreen() {
         if(!(mc.screen instanceof AttributeSelectionScreen) && mc.player != null && mc.player.isAlive()) mc.setScreen(new AttributeSelectionScreen());
+    }
+
+    public void updateToolItemRecipeSelection(ToolItem tool, boolean mainHand) {
+        List<ToolIngredientRecipe> recipes = tool.getRecipes(mc.level, mc.player, mc.player.getItemInHand(mainHand ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND));
+        List<ItemStack> items = new ObjectArrayList<>(recipes.size());
+        for(int i = 0; i < recipes.size(); i++) items.add(i, recipes.get(i).getResultItem());
+        System.out.println("CREATE SCREEN " + mainHand);
+        ModifiableItemScreen.initSelection(mc, items, tool, mainHand);
     }
 
     public float getPartialTick() {

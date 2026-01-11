@@ -7,12 +7,14 @@ import frostnox.nightfall.capability.*;
 import frostnox.nightfall.client.ClientEngine;
 import frostnox.nightfall.data.TagsNF;
 import frostnox.nightfall.data.recipe.HeldToolRecipe;
+import frostnox.nightfall.data.recipe.ToolIngredientRecipe;
 import frostnox.nightfall.entity.entity.ActionableEntity;
 import frostnox.nightfall.item.*;
 
 import frostnox.nightfall.registry.ActionsNF;
 import frostnox.nightfall.registry.KnowledgeNF;
 import frostnox.nightfall.registry.forge.SoundsNF;
+import frostnox.nightfall.util.LevelUtil;
 import frostnox.nightfall.world.ToolActionsNF;
 import frostnox.nightfall.item.Weight;
 import it.unimi.dsi.fastutil.floats.FloatImmutableList;
@@ -37,13 +39,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.ToolAction;
+import net.minecraftforge.registries.RegistryObject;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class MeleeWeaponItem extends ItemNF implements IWeaponItem {
+public class MeleeWeaponItem extends ToolItem implements IWeaponItem {
     public final PlayerActionSet actionSet;
     public final ITieredItemMaterial material;
     public final boolean canDig;
@@ -228,7 +231,13 @@ public class MeleeWeaponItem extends ItemNF implements IWeaponItem {
 
     private boolean canDoRecipe(Player user, Action action, PlayerActionSet set) {
         if(set.recipeAction == null) return false;
-        else return ActionsNF.get(set.recipeAction.getId()).canStart(user) && (action.isEmpty() || action.isActionEqualOrLinked(set.recipeAction.getId()));
+        else if(ActionsNF.get(set.recipeAction.getId()).canStart(user) && (action.isEmpty() || action.isActionEqualOrLinked(set.recipeAction.getId()))) {
+            IPlayerData capP = PlayerData.get(user);
+            List<ToolIngredientRecipe> recipes = getRecipes(user.level, user, user.getItemInHand(capP.getOppositeActiveHand()));
+            int index = LevelUtil.getModifiableItemIndex(user.level, user, capP.getActiveHand());
+            return index >= 0 && index < recipes.size();
+        }
+        return false;
     }
 
     private boolean canDoTechnique(Player user, Action action, PlayerActionSet set) {
@@ -257,11 +266,8 @@ public class MeleeWeaponItem extends ItemNF implements IWeaponItem {
         }
         else if(capA.isInactive()) {
             if(canDoRecipe(user, action, set)) {
-                Optional<HeldToolRecipe> recipe = HeldToolRecipe.getRecipe(user);
-                if(recipe.isPresent()) {
-                    capA.startAction(set.recipeAction.getId());
+                    capA.startAction(getRecipeAction().getId());
                     return true;
-                }
             }
             if(canDoTechnique(user, action, set)) {
                 capA.startAction(set.defaultTech.getId());
@@ -293,11 +299,7 @@ public class MeleeWeaponItem extends ItemNF implements IWeaponItem {
 
     public static boolean canExecuteAttack(Player user, boolean crawling) {
         if(user.isUsingItem() || user.isSpectator() || (crawling ? (user.getPose() != Pose.SWIMMING && user.getPose() != Pose.FALL_FLYING) : (user.getPose() != Pose.STANDING && user.getPose() != Pose.CROUCHING)) || user.swinging) return false;
-        IActionTracker capA = ActionTracker.get(user);
-        IPlayerData capP = PlayerData.get(user);
-        //if(capA.isStunned() || !(user.getItemInHand(capP.getActiveHand()).getItem() instanceof IWeaponItem)) return false;
-        if(capA.isStunned()) return false;
-        return true;
+        return !ActionTracker.get(user).isStunned();
     }
 
     public void initNBT(ItemStack stack) {
@@ -313,7 +315,13 @@ public class MeleeWeaponItem extends ItemNF implements IWeaponItem {
     }
 
     @Override
+    public @Nullable RegistryObject<? extends Action> getRecipeAction() {
+        return actionSet.recipeAction;
+    }
+
+    @Override
     public void inventoryTick(ItemStack stack, Level worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
+        super.inventoryTick(stack, worldIn, entityIn, itemSlot, isSelected);
         if(!(entityIn instanceof Player) || !entityIn.isAlive()) return;
         initNBT(stack);
     }

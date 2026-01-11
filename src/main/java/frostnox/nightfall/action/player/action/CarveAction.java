@@ -3,8 +3,10 @@ package frostnox.nightfall.action.player.action;
 import com.mojang.math.Vector3f;
 import frostnox.nightfall.capability.ActionTracker;
 import frostnox.nightfall.capability.IActionTracker;
+import frostnox.nightfall.capability.IPlayerData;
 import frostnox.nightfall.capability.PlayerData;
-import frostnox.nightfall.data.recipe.HeldToolRecipe;
+import frostnox.nightfall.data.recipe.ToolIngredientRecipe;
+import frostnox.nightfall.item.item.ToolItem;
 import frostnox.nightfall.network.NetworkHandler;
 import frostnox.nightfall.network.message.GenericEntityToClient;
 import frostnox.nightfall.util.LevelUtil;
@@ -13,7 +15,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
-import java.util.Optional;
+import java.util.List;
 
 public abstract class CarveAction extends MoveSpeedPlayerAction {
     public CarveAction(int[] duration, Properties properties) {
@@ -45,11 +47,13 @@ public abstract class CarveAction extends MoveSpeedPlayerAction {
         IActionTracker capA = ActionTracker.get(user);
         if(!user.level.isClientSide && capA.getFrame() % getDuration(getChargeState(), user) == 0) {
             Player player = (Player) user;
-            Optional<HeldToolRecipe> recipe = HeldToolRecipe.getRecipe(player);
-            if(recipe.isPresent()) {
-                ItemStack oppItem = user.getItemInHand(PlayerData.get(player).getOppositeActiveHand());
+            IPlayerData capP = PlayerData.get(player);
+            ItemStack oppItem = user.getItemInHand(capP.getOppositeActiveHand());
+            List<ToolIngredientRecipe> recipes = player.getItemInHand(capP.getActiveHand()).getItem() instanceof ToolItem tool ? tool.getRecipes(user.level, player, oppItem) : List.of();
+            int index = capP.getCachedModifiableIndex();
+            if(index >= 0 && index < recipes.size()) {
                 if(!player.getAbilities().instabuild) oppItem.shrink(1);
-                LevelUtil.giveItemToPlayer(recipe.get().getResultItem(), player, true);
+                LevelUtil.giveItemToPlayer(recipes.get(index).getResultItem(), player, true);
                 if(oppItem.isEmpty()) {
                     capA.queue();
                     NetworkHandler.toAllTrackingAndSelf(player, new GenericEntityToClient(NetworkHandler.Type.QUEUE_ACTION_TRACKER, player.getId()));

@@ -321,6 +321,8 @@ public class ActionsNF {
             new HammerTechnique(AnvilAction.UPSET, AnvilAction.UPSET_LINE, DamageType.STRIKING.asArray(), HurtSphere.HAMMER, 2, CombatUtil.STUN_MEDIUM, new int[] {24, 5, 4, 9}, new Action.Properties().setChargeState(0).setSound(SoundsNF.SWING).setKnockback(HAMMER_KNOCKBACK).setImpact(Impact.MEDIUM).setExtraSound(SoundsNF.SWING_CHARGED)));
 
     //Items
+    public static final RegistryObject<FlintKnap> FLINT_KNAP = ACTIONS.register("flint_knap", () ->
+            new FlintKnap(new int[] {7, 43, 7}, new Action.Properties().setChargeState(1)));
     public static final RegistryObject<ShieldGuardAction> SHIELD_GUARD = ACTIONS.register("shield_guard", () ->
             new ShieldGuardAction(new Action.Properties().setChargeState(0).setChainState(0).setChainTo(ActionsNF.SHIELD_RIPOSTE).setSound(() -> SoundEvents.SHIELD_BLOCK), 5, 5));
     public static final RegistryObject<ShieldRiposte> SHIELD_RIPOSTE = ACTIONS.register("shield_riposte", () ->

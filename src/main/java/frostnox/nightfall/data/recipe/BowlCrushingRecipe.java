@@ -12,8 +12,8 @@ public class BowlCrushingRecipe extends ToolIngredientRecipe {
     public static final RecipeType<BowlCrushingRecipe> TYPE = RecipeType.register(Nightfall.MODID + ":bowl_crushing");
     public static final Serializer<BowlCrushingRecipe> SERIALIZER = new Serializer<>(BowlCrushingRecipe::new, "bowl_crushing");
 
-    public BowlCrushingRecipe(ResourceLocation id, ResourceLocation requirement, Ingredient input, Ingredient tool, ItemStack output) {
-        super(id, requirement, input, tool, output);
+    public BowlCrushingRecipe(ResourceLocation id, ResourceLocation requirement, Ingredient input, Ingredient tool, ItemStack output, int menuOrder) {
+        super(id, requirement, input, tool, output, menuOrder);
     }
 
     @Override

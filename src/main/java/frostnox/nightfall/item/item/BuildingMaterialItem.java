@@ -63,7 +63,7 @@ public class BuildingMaterialItem extends ScreenCacheItem implements IModifiable
                 }
             }
             else if(itemSlot == 0) {
-                if(entityIn instanceof Player player && PlayerData.isPresent(player)) {
+                if(entityIn instanceof Player player && PlayerData.isPresent(player) && player.getOffhandItem() == stack) {
                     ClientEngine.get().canUseModifiableOff =
                             canUseSelectedItem(ClientEngine.get().getModifiableIndexOff(), worldIn, player, InteractionHand.OFF_HAND);
                 }

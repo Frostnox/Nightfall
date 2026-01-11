@@ -131,12 +131,12 @@ public class ItemsNF {
     //Resources
     public static final RegistryObject<FireStarterItem> FLINT = ITEMS.register("flint", () -> new FireStarterItem(
             Map.of(TagsNF.FLINT_FIRE_STARTER_WEAK, 10, TagsNF.FLINT_FIRE_STARTER_STRONG, 0),
-            () -> SoundEvents.FLINTANDSTEEL_USE, 1F/32F, ingredient()));
+            () -> SoundEvents.FLINTANDSTEEL_USE, 1F/32F, ActionsNF.FLINT_KNAP, ingredient()));
     public static final RegistryObject<Item> BONE_SHARD = register("bone_shard", INGREDIENTS_TAB);
     public static final RegistryObject<Item> OBSIDIAN_SHARD = ITEMS.register("obsidian_shard", () -> new Item(ingredient()));
     public static final RegistryObject<Item> ANCHORING_RESIN = ITEMS.register("anchoring_resin", () -> new Item(ingredient()));
     public static final RegistryObject<FireStarterItem> STICK = ITEMS.register("stick", () -> new FireStarterItem(Map.of(TagsNF.STICK_FIRE_STARTER, 20),
-            SoundsNF.STICK_FIRE_STRIKE, 1F/16F, ingredient()));
+            SoundsNF.STICK_FIRE_STRIKE, 1F/16F, null, ingredient()));
     public static final RegistryObject<BuildingMaterialItem> PLANT_FIBERS = ITEMS.register("plant_fibers", () -> new BuildingMaterialItem(building()));
     public static final RegistryObject<Item> RAWHIDE = ITEMS.register("rawhide", () -> new Item(ingredient()));
     public static final RegistryObject<Item> LEATHER = ITEMS.register("leather", () -> new Item(ingredient()));
@@ -580,6 +580,9 @@ public class ItemsNF {
     public static final RegistryObject<BlockItemNF> WARDING_EFFIGY = register(BlocksNF.WARDING_EFFIGY, FUNCTIONAL_TAB);
     public static final RegistryObject<MeleeWeaponItem> WOODEN_CLUB = ITEMS.register("wooden_club", () -> new MeleeWeaponItem(TieredItemMaterial.WOOD,
             PlayerActionSet.CLUB, HurtSphere.CLUB, HurtSphere.WEAPONS_TP.get(HurtSphere.CLUB), false, new Item.Properties().tab(ARMAMENTS_TAB), List.of(), DamageType.STRIKING));
+    public static final Map<Armament, RegistryObject<Item>> FLINT_ARMAMENT_HEADS = DataUtil.mapEnum(Armament.class,
+            a -> a != Armament.ADZE && a != Armament.AXE && a != Armament.DAGGER && a != Armament.HAMMER && a != Armament.SHOVEL && a != Armament.SPEAR,
+            armament -> register("flint_" + armament.getName() + "_head", 1));
     public static final RegistryObject<MeleeWeaponItem> FLINT_ADZE = ITEMS.register("flint_adze", () -> new MeleeWeaponItem(TieredItemMaterial.FLINT,
             PlayerActionSet.ADZE, HurtSphere.ADZE, HurtSphere.WEAPONS_TP.get(HurtSphere.ADZE), true, new Item.Properties().tab(ARMAMENTS_TAB), Armament.ADZE.getToolActions(), DamageType.SLASHING));
     public static final RegistryObject<MeleeWeaponItem> FLINT_AXE = ITEMS.register("flint_axe", () -> new MeleeWeaponItem(TieredItemMaterial.FLINT,

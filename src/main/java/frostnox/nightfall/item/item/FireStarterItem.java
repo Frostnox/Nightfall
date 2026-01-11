@@ -1,5 +1,6 @@
 package frostnox.nightfall.item.item;
 
+import frostnox.nightfall.action.Action;
 import frostnox.nightfall.block.IIgnitable;
 import frostnox.nightfall.block.TieredHeat;
 import frostnox.nightfall.block.block.FireBlockNF;
@@ -21,17 +22,19 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraftforge.registries.RegistryObject;
 
+import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.function.Supplier;
 
-public class FireStarterItem extends ItemNF {
+public class FireStarterItem extends SimpleToolItem {
     public final Map<TagKey<Item>, Integer> pairedItems;
     public final Supplier<SoundEvent> sound;
     public final float breakChance;
 
-    public FireStarterItem(Map<TagKey<Item>, Integer> pairedItems, Supplier<SoundEvent> sound, float breakChance, Properties properties) {
-        super(properties);
+    public FireStarterItem(Map<TagKey<Item>, Integer> pairedItems, Supplier<SoundEvent> sound, float breakChance, @Nullable RegistryObject<? extends Action> recipeAction, Properties properties) {
+        super(recipeAction, properties);
         this.pairedItems = pairedItems;
         this.sound = sound;
         this.breakChance = breakChance;
