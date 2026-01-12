@@ -17,7 +17,7 @@ public class PlayerActionSet {
     public static final PlayerActionSet MACE = new PlayerActionSet("mace", ActionsNF.MACE_GUARD, ActionsNF.MACE_BASIC_1, ActionsNF.MACE_ALTERNATE_1, ActionsNF.MACE_CRAWLING, null, 28, 0.8F, ActionsNF.bleeding(0.3F));
     public static final PlayerActionSet CLUB = new PlayerActionSet("club", ActionsNF.EMPTY, ActionsNF.CLUB_BASIC_1, ActionsNF.CLUB_ALTERNATE_1, ActionsNF.CLUB_CRAWLING, null, 28, 0.4F);
     public static final PlayerActionSet SPEAR = new PlayerActionSet("spear", ActionsNF.SPEAR_THROW, ActionsNF.SPEAR_BASIC_1, ActionsNF.SPEAR_ALTERNATE_1, ActionsNF.SPEAR_CRAWLING, null, 22, 0.6F);
-    public static final PlayerActionSet DAGGER = new PlayerActionSet("dagger", ActionsNF.EMPTY, ActionsNF.DAGGER_BASIC_1, ActionsNF.DAGGER_ALTERNATE_1, ActionsNF.DAGGER_CRAWLING, ActionsNF.DAGGER_CARVE, 20, 0.6F);
+    public static final PlayerActionSet KNIFE = new PlayerActionSet("knife", ActionsNF.EMPTY, ActionsNF.KNIFE_BASIC_1, ActionsNF.KNIFE_ALTERNATE_1, ActionsNF.KNIFE_CRAWLING, ActionsNF.KNIFE_CARVE, 20, 0.6F);
     public static final PlayerActionSet CHISEL = new PlayerActionSet("chisel", ActionsNF.EMPTY, ActionsNF.CHISEL_BASIC_1, ActionsNF.CHISEL_ALTERNATE_1, ActionsNF.CHISEL_CRAWLING, ActionsNF.CHISEL_CARVE, 15, 0.4F);
     public static final PlayerActionSet HAMMER = new PlayerActionSet("hammer", ActionsNF.HAMMER_UPSET, ActionsNF.HAMMER_BASIC_1, ActionsNF.HAMMER_ALTERNATE_1, ActionsNF.HAMMER_CRAWLING, ActionsNF.HAMMER_BREAK, 25, 0.5F);
     public static final PlayerActionSet AXE = new PlayerActionSet("axe", ActionsNF.AXE_THROW, ActionsNF.AXE_BASIC_1, ActionsNF.AXE_ALTERNATE_1, ActionsNF.AXE_CRAWLING, ActionsNF.AXE_CARVE, 25, 0.5F);
@@ -28,7 +28,7 @@ public class PlayerActionSet {
     public static final PlayerActionSet CHISEL_AND_HAMMER = new PlayerActionSet("chisel_and_hammer", ActionsNF.EMPTY, ActionsNF.CHISEL_AND_HAMMER_BASIC_1, ActionsNF.CHISEL_AND_HAMMER_ALTERNATE, ActionsNF.CHISEL_AND_HAMMER_CRAWLING, null, 20, 0.4F);
     public static final PlayerActionSet FLINT_CHISEL_AND_HAMMER = new PlayerActionSet("flint_chisel_and_hammer", ActionsNF.EMPTY, ActionsNF.FLINT_CHISEL_AND_HAMMER_BASIC_1, ActionsNF.FLINT_CHISEL_AND_HAMMER_ALTERNATE, ActionsNF.FLINT_CHISEL_AND_HAMMER_CRAWLING, null, 20, 0.4F);
     public static final PlayerActionSet MAUL = new PlayerActionSet("maul", ActionsNF.EMPTY, ActionsNF.MAUL_BASIC_1, ActionsNF.MAUL_ALTERNATE_1, ActionsNF.MAUL_CRAWLING, null, 30, 0.5F);
-    public static final List<PlayerActionSet> SETS = List.of(SWORD, SABRE, MACE, CLUB, SPEAR, DAGGER, CHISEL, HAMMER, AXE, PICKAXE, SHOVEL, SICKLE, ADZE, CHISEL_AND_HAMMER, FLINT_CHISEL_AND_HAMMER, MAUL);
+    public static final List<PlayerActionSet> SETS = List.of(SWORD, SABRE, MACE, CLUB, SPEAR, KNIFE, CHISEL, HAMMER, AXE, PICKAXE, SHOVEL, SICKLE, ADZE, CHISEL_AND_HAMMER, FLINT_CHISEL_AND_HAMMER, MAUL);
 
     public final RegistryObject<? extends Action> defaultTech, basic, alternate, crawl;
     public final @Nullable RegistryObject<? extends Action> recipeAction;

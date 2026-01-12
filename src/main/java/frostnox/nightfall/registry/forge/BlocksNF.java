@@ -647,7 +647,7 @@ public class BlocksNF {
             armament -> register(armament.getName() + "_mold", () -> new ItemMoldBlock(switch(armament) {
                 case AXE -> Block.box(3.5, 0, 4, 12.5, 2, 12);
                 case CHISEL -> Block.box(1, 0, 5, 15, 2, 11);
-                case DAGGER -> Block.box(1.5, 0, 5, 14.5, 2, 11);
+                case KNIFE -> Block.box(1.5, 0, 5, 14.5, 2, 11);
                 case PICKAXE -> Block.box(0, 0, 4.5, 16, 2, 11.5);
                 case SHOVEL -> Block.box(3.5, 0, 4, 12.5, 2, 12);
                 case SICKLE -> Block.box(0, 0, 3.5, 16, 2, 12.5);
@@ -656,7 +656,7 @@ public class BlocksNF {
             }, switch(armament) {
                 case AXE -> TagsNF.AXE_HEAD;
                 case CHISEL -> TagsNF.CHISEL_HEAD;
-                case DAGGER -> TagsNF.DAGGER_HEAD;
+                case KNIFE -> TagsNF.KNIFE_HEAD;
                 case PICKAXE -> TagsNF.PICKAXE_HEAD;
                 case SHOVEL -> TagsNF.SHOVEL_HEAD;
                 case SICKLE -> TagsNF.SICKLE_HEAD;

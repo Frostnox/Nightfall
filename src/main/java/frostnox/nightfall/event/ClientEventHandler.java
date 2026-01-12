@@ -529,7 +529,7 @@ public class ClientEventHandler {
                     if(action.canHarvest() && ClientEngine.get().microHitResult == null && capA.getLivingEntitiesHit() == 0) {
                         if(!capP.hasDugBlock() && capA.getFrame() == action.getBlockHitFrame(capA.getState(), player) && mc.hitResult != null && mc.hitResult.getType() == HitResult.Type.BLOCK) {
                             BlockPos center = ((BlockHitResult)mc.hitResult).getBlockPos();
-                            boolean canMineAny = !action.harvestableBlocks.equals(TagsNF.MINEABLE_WITH_SICKLE) && !action.harvestableBlocks.equals(TagsNF.MINEABLE_WITH_DAGGER) && !action.harvestableBlocks.equals(BlockTags.MINEABLE_WITH_AXE);
+                            boolean canMineAny = !action.harvestableBlocks.equals(TagsNF.MINEABLE_WITH_SICKLE) && !action.harvestableBlocks.equals(TagsNF.MINEABLE_WITH_KNIFE) && !action.harvestableBlocks.equals(BlockTags.MINEABLE_WITH_AXE);
                             if(canMineAny || action.canHarvest(level.getBlockState(center))) {
                                 capP.setDugBlock(true);
                                 boolean facingX = player.getDirection().getAxis().equals(Direction.Axis.X);

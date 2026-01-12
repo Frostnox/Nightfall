@@ -153,8 +153,8 @@ public class ItemModelProviderNF extends ModelProvider<AnimatedItemModelBuilder>
         doubleModelAnimatedItem(item, "axe", 0.75F, -0.12F);
     }
 
-    protected void dagger(Item item) {
-        doubleModelAnimatedItem(item, "dagger");
+    protected void knife(Item item) {
+        doubleModelAnimatedItem(item, "knife");
     }
 
     protected void spear(Item item) {
@@ -319,7 +319,7 @@ public class ItemModelProviderNF extends ModelProvider<AnimatedItemModelBuilder>
             var set = ItemsNF.METAL_ARMAMENTS.get(material);
             adze(set.get(Armament.ADZE).get());
             axe(set.get(Armament.AXE).get());
-            dagger(set.get(Armament.DAGGER).get());
+            knife(set.get(Armament.KNIFE).get());
             chisel(set.get(Armament.CHISEL).get());
             hammer(set.get(Armament.HAMMER).get());
             mace(set.get(Armament.MACE).get());

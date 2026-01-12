@@ -12,7 +12,7 @@ public enum Armament implements IArmament {
     ADZE(PlayerActionSet.ADZE, HurtSphere.ADZE, DamageType.SLASHING, ImpactSoundType.PIERCE, true, ToolActionsNF.STRIP, ToolActionsNF.TILL),
     AXE(PlayerActionSet.AXE, HurtSphere.AXE, DamageType.SLASHING, ImpactSoundType.STRIKE, true),
     CHISEL(PlayerActionSet.CHISEL, HurtSphere.CHISEL, DamageType.PIERCING, ImpactSoundType.PIERCE, true, ToolActionsNF.REFINE),
-    DAGGER(PlayerActionSet.DAGGER, HurtSphere.DAGGER, DamageType.SLASHING, ImpactSoundType.SLASH, true, ToolActionsNF.SKIN),
+    KNIFE(PlayerActionSet.KNIFE, HurtSphere.KNIFE, DamageType.SLASHING, ImpactSoundType.SLASH, true, ToolActionsNF.SKIN),
     HAMMER(PlayerActionSet.HAMMER, HurtSphere.HAMMER, DamageType.STRIKING, ImpactSoundType.STRIKE, true),
     MACE(PlayerActionSet.MACE, HurtSphere.MACE, DamageType.STRIKING, ImpactSoundType.STRIKE, false),
     PICKAXE(PlayerActionSet.PICKAXE, HurtSphere.PICKAXE, DamageType.STRIKING, ImpactSoundType.STRIKE, true),

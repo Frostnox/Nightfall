@@ -96,7 +96,7 @@ public class DigBlockToServer {
         else if(!capA.isInactive()) {
             ItemStack stack = player.getItemInHand(capP.getActiveHand());
             int hits = 0;
-            boolean canMineAny = !action.harvestableBlocks.equals(TagsNF.MINEABLE_WITH_SICKLE) && !action.harvestableBlocks.equals(TagsNF.MINEABLE_WITH_DAGGER) && !action.harvestableBlocks.equals(BlockTags.MINEABLE_WITH_AXE);
+            boolean canMineAny = !action.harvestableBlocks.equals(TagsNF.MINEABLE_WITH_SICKLE) && !action.harvestableBlocks.equals(TagsNF.MINEABLE_WITH_KNIFE) && !action.harvestableBlocks.equals(BlockTags.MINEABLE_WITH_AXE);
             if(canMineAny || action.canHarvest(player.level.getBlockState(center))) {
                 boolean facingX = player.getDirection().getAxis().equals(Direction.Axis.X);
                 int xRange = (stack.is(TagsNF.SICKLE) && (!action.isChargeable() || !facingX)) ? 1 : 0;

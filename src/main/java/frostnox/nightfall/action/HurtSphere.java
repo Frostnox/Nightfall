@@ -18,9 +18,8 @@ public class HurtSphere {
             new BoundingSphere(-1D/16D, 2D/16D + 0.3D, 0, 0.25D),
             new BoundingSphere(-1D/16D, 2D/16D + 0.3D * 2, 0, 0.25D),
             new BoundingSphere(0, 2D/16D + 0.3D * 3, 0, 0.25D));
-    public static final HurtSphere FLINT_DAGGER = new HurtSphere(0.25D, 3, 0, 0.18D, 0, 0, 2D/16D, 0);
+    public static final HurtSphere KNIFE = new HurtSphere(0.25D, 3, 0, 0.18D, 0, 0, 2D/16D, 0);
     public static final HurtSphere CHISEL = new HurtSphere(0.24D, 3, 0, 0.24D, 0, 0, 2D/16D, 0);
-    public static final HurtSphere DAGGER = new HurtSphere(0.25D, 3, 0, 0.25D, 0, 0, 2D/16D, 0);
     public static final HurtSphere SPEAR = new HurtSphere(0.22D, 5, 0, 0.27D, 0, 0, 2D/16D, 0);
     public static final HurtSphere CLUB = new HurtSphere(new BoundingSphere(0, 2D/16D, 0, 0.2D),
             new BoundingSphere(0, 2D/16D + 4D/16D, 0, 0.25D),
@@ -85,8 +84,7 @@ public class HurtSphere {
         addTP(builder, AXE);
         addTP(builder, CLUB);
         addTP(builder, CHISEL);
-        addTP(builder, DAGGER);
-        addTP(builder, FLINT_DAGGER);
+        addTP(builder, KNIFE);
         addTP(builder, HAMMER);
         addTP(builder, MACE);
         addTP(builder, PICKAXE);

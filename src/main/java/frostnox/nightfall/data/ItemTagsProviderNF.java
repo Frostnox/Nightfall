@@ -111,10 +111,11 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
             for(var item : ItemsNF.ARMAMENT_HEADS.get(material).values()) tag(material.getMetal().getTag()).add(item.get());
         }
         for(var item : ItemsNF.METAL_ARROWHEADS.values()) tag(TagsNF.ARROWHEAD).add(item.get());
+        for(var item : ItemsNF.METAL_ARROWS.values()) tag(TagsNF.METAL_ARROW).add(item.get());
         for(TieredItemMaterial material : ItemsNF.METAL_ARMAMENTS.keySet()) {
             tag(TagsNF.ADZE).add(ItemsNF.METAL_ARMAMENTS.get(material).get(Armament.ADZE).get());
             tag(TagsNF.AXE).add(ItemsNF.METAL_ARMAMENTS.get(material).get(Armament.AXE).get());
-            tag(TagsNF.DAGGER).add(ItemsNF.METAL_ARMAMENTS.get(material).get(Armament.DAGGER).get());
+            tag(TagsNF.KNIFE).add(ItemsNF.METAL_ARMAMENTS.get(material).get(Armament.KNIFE).get());
             tag(TagsNF.CHISEL_METAL).add(ItemsNF.METAL_ARMAMENTS.get(material).get(Armament.CHISEL).get());
             tag(TagsNF.HAMMER).add(ItemsNF.METAL_ARMAMENTS.get(material).get(Armament.HAMMER).get());
             tag(TagsNF.MACE).add(ItemsNF.METAL_ARMAMENTS.get(material).get(Armament.MACE).get());
@@ -127,7 +128,7 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
             tag(TagsNF.ADZE_HEAD).add(ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.ADZE).get());
             tag(TagsNF.AXE_HEAD).add(ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.AXE).get());
             tag(TagsNF.CHISEL_HEAD).add(ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.CHISEL).get());
-            tag(TagsNF.DAGGER_HEAD).add(ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.DAGGER).get());
+            tag(TagsNF.KNIFE_HEAD).add(ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.KNIFE).get());
             tag(TagsNF.MACE_HEAD).add(ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.MACE).get());
             tag(TagsNF.PICKAXE_HEAD).add(ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.PICKAXE).get());
             tag(TagsNF.SABRE_HEAD).add(ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.SABRE).get());
@@ -136,10 +137,11 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
             tag(TagsNF.SPEAR_HEAD).add(ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.SPEAR).get());
             tag(TagsNF.SWORD_HEAD).add(ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.SWORD).get());
         }
+        for(var item :ItemsNF.FLINT_ARMAMENT_HEADS.values()) tag(TagsNF.FLINT_ARMAMENT_HEAD).add(item.get());
         tag(TagsNF.AXE).add(ItemsNF.FLINT_AXE.get());
         tag(TagsNF.SHOVEL).add(ItemsNF.FLINT_SHOVEL.get());
         tag(TagsNF.ADZE).add(ItemsNF.FLINT_ADZE.get());
-        tag(TagsNF.DAGGER).add(ItemsNF.FLINT_DAGGER.get());
+        tag(TagsNF.KNIFE).add(ItemsNF.FLINT_KNIFE.get());
         tag(TagsNF.CHISEL).add(ItemsNF.FLINT_CHISEL.get());
         tag(TagsNF.CHISEL).addTag(TagsNF.CHISEL_METAL);
         tag(TagsNF.HAMMER).add(ItemsNF.FLINT_HAMMER.get());
@@ -152,13 +154,13 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
         tag(TagsNF.SHIELD).addTags(TagsNF.WOODEN_SHIELD, TagsNF.UNDYED_METAL_SHIELD);
         for(var item : ItemsNF.METAL_SHIELDS.values()) tag(TagsNF.UNDYED_METAL_SHIELD).add(item.get());
         for(var item : ItemsNF.METAL_SHIELDS_DYED.values()) tag(TagsNF.SHIELD).add(item.get());
-        tag(TagsNF.TOOL).addTags(TagsNF.ADZE, TagsNF.AXE, TagsNF.CHISEL, TagsNF.DAGGER, TagsNF.HAMMER, TagsNF.PICKAXE, TagsNF.SICKLE, TagsNF.SHOVEL);
+        tag(TagsNF.TOOL).addTags(TagsNF.ADZE, TagsNF.AXE, TagsNF.CHISEL, TagsNF.KNIFE, TagsNF.HAMMER, TagsNF.PICKAXE, TagsNF.SICKLE, TagsNF.SHOVEL);
         tag(TagsNF.TOOL).add(ItemsNF.RUSTED_MAUL.get());
         tag(TagsNF.ARMAMENT).addTags(TagsNF.TOOL, TagsNF.MACE, TagsNF.SABRE, TagsNF.SPEAR, TagsNF.SWORD);
         tag(TagsNF.CHISEL_OR_HAMMER).addTags(TagsNF.CHISEL, TagsNF.HAMMER);
         tag(TagsNF.SABRE_OR_HEAD).addTags(TagsNF.SABRE, TagsNF.SABRE_HEAD);
         tag(TagsNF.SICKLE_OR_HEAD).addTags(TagsNF.SICKLE, TagsNF.SICKLE_HEAD);
-        tag(TagsNF.RECIPE_TOOL_WOOD_SIMPLE).addTags(TagsNF.ADZE, TagsNF.AXE, TagsNF.DAGGER);
+        tag(TagsNF.RECIPE_TOOL_WOOD_SIMPLE).addTags(TagsNF.ADZE, TagsNF.AXE, TagsNF.KNIFE);
         tag(TagsNF.RECIPE_TOOL_WOOD_COMPLEX).addTag(TagsNF.ADZE);
         tag(TagsNF.RECIPE_TOOL_STONE_CARVE).addTag(TagsNF.CHISEL_METAL);
         tag(TagsNF.RECIPE_TOOL_FLINT).add(ItemsNF.FLINT.get(), ItemsNF.BONE.get());
@@ -170,7 +172,7 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
             else if(type.getType() == StoneType.METAMORPHIC) tag(TagsNF.METAMORPHIC).add(item.get());
             else tag(TagsNF.IGNEOUS).add(item.get());
         }
-        tag(TagsNF.NO_HITSTOP).addTags(TagsNF.DAGGER, TagsNF.SICKLE);
+        tag(TagsNF.NO_HITSTOP).addTags(TagsNF.KNIFE, TagsNF.SICKLE);
         tag(TagsNF.GRID_INTERACTABLE).addTag(TagsNF.HAMMER);
         tag(TagsNF.MIXTURE_1);
         tag(TagsNF.MIXTURE_2).add(ItemsNF.RAW_VENISON.get(), ItemsNF.COOKED_VENISON.get(), ItemsNF.APPLE.get());
@@ -216,7 +218,7 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
         tag(TagsNF.FLINT_FIRE_STARTER_STRONG).add(ItemsNF.INGOTS.get(Metal.IRON).get(), ItemsNF.INGOTS.get(Metal.STEEL).get(), ItemsNF.BILLETS.get(Metal.IRON).get(),
                 ItemsNF.BILLETS.get(Metal.STEEL).get(), ItemsNF.PLATES.get(Metal.IRON).get(), ItemsNF.PLATES.get(Metal.STEEL).get(),
                 ItemsNF.METAL_ARMAMENTS.get(TieredItemMaterial.IRON).get(Armament.CHISEL).get(), ItemsNF.METAL_ARMAMENTS.get(TieredItemMaterial.STEEL).get(Armament.CHISEL).get(),
-                ItemsNF.METAL_ARMAMENTS.get(TieredItemMaterial.IRON).get(Armament.DAGGER).get(), ItemsNF.METAL_ARMAMENTS.get(TieredItemMaterial.STEEL).get(Armament.DAGGER).get());
+                ItemsNF.METAL_ARMAMENTS.get(TieredItemMaterial.IRON).get(Armament.KNIFE).get(), ItemsNF.METAL_ARMAMENTS.get(TieredItemMaterial.STEEL).get(Armament.KNIFE).get());
         tag(TagsNF.RACK_ITEM).addTags(TagsNF.ARMAMENT, TagsNF.BOW, TagsNF.SHIELD);
         for(var item : ItemsNF.ROCKS.values()) tag(TagsNF.ROCK).add(item.get());
         tag(TagsNF.STONE).addTags(TagsNF.ROCK, TagsNF.CRUSHABLE_TO_BONE_SHARD);
@@ -362,10 +364,11 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
                 TagsNF.ROCK, TagsNF.PLANK, Tags.Items.INGOTS, TagsNF.ARROWHEAD, TagsNF.WOODEN_HATCHES_ITEM, TagsNF.WOODEN_LADDERS_ITEM, TagsNF.WOODEN_RACKS_ITEM,
                 TagsNF.WOODEN_SHELVES_ITEM, TagsNF.WOODEN_BARRELS_ITEM, ItemTags.WOODEN_FENCES, TagsNF.WOODEN_FENCE_GATES_ITEM, TagsNF.ANVILS_ITEM, TagsNF.METAL_ANVILS_ITEM,
                 TagsNF.METAL_BLOCKS_ITEM, TagsNF.WIRES, TagsNF.PLATES, TagsNF.CHAINMAIL, TagsNF.SCALES, TagsNF.BILLETS, TagsNF.ADZE_HEAD, TagsNF.AXE_HEAD, TagsNF.CHISEL_HEAD,
-                TagsNF.DAGGER_HEAD, TagsNF.MACE_HEAD, TagsNF.PICKAXE_HEAD, TagsNF.SABRE_HEAD, TagsNF.SHOVEL_HEAD, TagsNF.SICKLE_HEAD, TagsNF.SPEAR_HEAD,
-                TagsNF.SWORD_HEAD, TagsNF.ADZE, TagsNF.AXE, TagsNF.CHISEL, TagsNF.DAGGER, TagsNF.HAMMER, TagsNF.MACE, TagsNF.PICKAXE, TagsNF.SABRE, TagsNF.SICKLE, TagsNF.SHOVEL,
+                TagsNF.KNIFE_HEAD, TagsNF.MACE_HEAD, TagsNF.PICKAXE_HEAD, TagsNF.SABRE_HEAD, TagsNF.SHOVEL_HEAD, TagsNF.SICKLE_HEAD, TagsNF.SPEAR_HEAD,
+                TagsNF.SWORD_HEAD, TagsNF.ADZE, TagsNF.AXE, TagsNF.CHISEL, TagsNF.KNIFE, TagsNF.HAMMER, TagsNF.MACE, TagsNF.PICKAXE, TagsNF.SABRE, TagsNF.SICKLE, TagsNF.SHOVEL,
                 TagsNF.SPEAR, TagsNF.SWORD, TagsNF.BOW, TagsNF.SHIELD, TagsNF.WOODEN_BOW, TagsNF.UNDYED_METAL_SHIELD, TagsNF.NATIVE_METAL, TagsNF.NATIVE_METAL_INGOT,
-                TagsNF.LUMBER_TANNIN, TagsNF.CURABLE_FOOD, TagsNF.CURED_MEAT, ItemTags.SIGNS, TagsNF.CHAIRS_ITEM, TagsNF.TROUGHS_ITEM, TagsNF.ITEM_FRAMES_ITEM, ItemTags.BOATS);
+                TagsNF.LUMBER_TANNIN, TagsNF.CURABLE_FOOD, TagsNF.CURED_MEAT, ItemTags.SIGNS, TagsNF.CHAIRS_ITEM, TagsNF.TROUGHS_ITEM, TagsNF.ITEM_FRAMES_ITEM, ItemTags.BOATS,
+                TagsNF.FLINT_ARMAMENT_HEAD, TagsNF.METAL_ARROW);
         tag(TagsNF.RECIPE_GROUP).addTags(TagsNF.SURVIVOR_PLATE_PIECES.values().toArray(TagKey[]::new));
         tag(TagsNF.RECIPE_GROUP).addTags(TagsNF.SURVIVOR_SCALE_PIECES.values().toArray(TagKey[]::new));
         tag(TagsNF.RECIPE_GROUP).addTags(TagsNF.SURVIVOR_CHAINMAIL_PIECES.values().toArray(TagKey[]::new));

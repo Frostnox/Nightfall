@@ -200,25 +200,28 @@ public class RecipeProviderNF extends RecipeProvider {
         BowlCrushingRecipe.saveBowl(Ingredient.of(TagsNF.CRUSHABLE_TO_BONE_SHARD), Ingredient.of(TagsNF.HAMMER), ItemsNF.BONE_SHARD.get(), 2, EntriesNF.WOODCARVING.getId(), consumer);
 
         HeldToolRecipe.saveHeldTool(Ingredient.of(ItemTags.LOGS), Ingredient.of(TagsNF.RECIPE_TOOL_WOOD_COMPLEX), ItemsNF.WOODEN_BOWL.get(), 1, -1, EntriesNF.WOODCARVING.getId(), consumer);
+        for(Tree tree : ItemsNF.STRIPPED_LOGS.keySet()) HeldToolRecipe.saveHeldTool(Ingredient.of(ItemsNF.LOGS.get(tree).get()), Ingredient.of(TagsNF.ADZE), ItemsNF.STRIPPED_LOGS.get(tree).get(),
+                1, -1, entryKnowledge(EntriesNF.TOOLS), consumer);
         HeldToolRecipe.saveHeldTool(Ingredient.of(ItemTags.LOGS), Ingredient.of(TagsNF.RECIPE_TOOL_WOOD_SIMPLE), ItemsNF.WOODEN_CLUB.get(), 1, -1, EntriesNF.WOODCARVING.getId(), consumer);
         HeldToolRecipe.saveHeldTool(Ingredient.of(ItemsNF.COCONUT.get()), Ingredient.of(TagsNF.RECIPE_TOOL_COCONUT), ItemsNF.COCONUT_HALF.get(), 2, -1, entryKnowledge(EntriesNF.TOOLS), consumer);
         HeldToolRecipe.saveHeldTool(Ingredient.of(ItemsNF.FLINT.get()), Ingredient.of(TagsNF.RECIPE_TOOL_FLINT), ItemsNF.FLINT_ARMAMENT_HEADS.get(Armament.ADZE).get(), 1, 0, EntriesNF.TOOLS.getId(), consumer);
         HeldToolRecipe.saveHeldTool(Ingredient.of(ItemsNF.FLINT.get()), Ingredient.of(TagsNF.RECIPE_TOOL_FLINT), ItemsNF.FLINT_ARMAMENT_HEADS.get(Armament.AXE).get(), 1, 1, EntriesNF.TOOLS.getId(), consumer);
-        HeldToolRecipe.saveHeldTool(Ingredient.of(ItemsNF.FLINT.get()), Ingredient.of(TagsNF.RECIPE_TOOL_FLINT), ItemsNF.FLINT_ARMAMENT_HEADS.get(Armament.DAGGER).get(), 1, 2, EntriesNF.TOOLS.getId(), consumer);
-        HeldToolRecipe.saveHeldTool(Ingredient.of(ItemsNF.FLINT.get()), Ingredient.of(TagsNF.RECIPE_TOOL_FLINT), ItemsNF.FLINT_ARMAMENT_HEADS.get(Armament.HAMMER).get(), 1, 3, EntriesNF.TOOLS.getId(), consumer);
-        HeldToolRecipe.saveHeldTool(Ingredient.of(ItemsNF.FLINT.get()), Ingredient.of(TagsNF.RECIPE_TOOL_FLINT), ItemsNF.FLINT_ARMAMENT_HEADS.get(Armament.SHOVEL).get(), 1, 4, EntriesNF.TOOLS.getId(), consumer);
-        HeldToolRecipe.saveHeldTool(Ingredient.of(ItemsNF.FLINT.get()), Ingredient.of(TagsNF.RECIPE_TOOL_FLINT), ItemsNF.FLINT_ARMAMENT_HEADS.get(Armament.SPEAR).get(), 1, 5, EntriesNF.TOOLS.getId(), consumer);
+        HeldToolRecipe.saveHeldTool(Ingredient.of(ItemsNF.FLINT.get()), Ingredient.of(TagsNF.RECIPE_TOOL_FLINT), ItemsNF.FLINT_ARMAMENT_HEADS.get(Armament.KNIFE).get(), 1, 2, EntriesNF.TOOLS.getId(), consumer);
+        HeldToolRecipe.saveHeldTool(Ingredient.of(ItemsNF.FLINT.get()), Ingredient.of(TagsNF.RECIPE_TOOL_FLINT), ItemsNF.FLINT_ARMAMENT_HEADS.get(Armament.SHOVEL).get(), 1, 3, EntriesNF.TOOLS.getId(), consumer);
+        HeldToolRecipe.saveHeldTool(Ingredient.of(ItemsNF.FLINT.get()), Ingredient.of(TagsNF.RECIPE_TOOL_FLINT), ItemsNF.FLINT_ARMAMENT_HEADS.get(Armament.SPEAR).get(), 1, 4, EntriesNF.TOOLS.getId(), consumer);
+        HeldToolRecipe.saveHeldTool(Ingredient.of(ItemsNF.FLINT.get()), Ingredient.of(TagsNF.RECIPE_TOOL_FLINT), ItemsNF.FLINT_ARMAMENT_HEADS.get(Armament.HAMMER).get(), 1, 5, EntriesNF.TOOLS.getId(), consumer);
         HeldToolRecipe.saveHeldTool(Ingredient.of(ItemsNF.FLINT.get()), Ingredient.of(TagsNF.RECIPE_TOOL_FLINT), ItemsNF.FLINT_CHISEL.get(), 1, 6, EntriesNF.TOOLS.getId(), consumer);
+        HeldToolRecipe.saveHeldTool(Ingredient.of(ItemsNF.FLINT.get()), Ingredient.of(TagsNF.RECIPE_TOOL_FLINT), ItemsNF.FLINT_ARROWHEAD.get(), 2, -1, EntriesNF.BOW_AND_ARROW.getId(), consumer);
+        HeldToolRecipe.saveHeldTool(Ingredient.of(ItemsNF.BONE_SHARD.get()), Ingredient.of(TagsNF.RECIPE_TOOL_FLINT), ItemsNF.BONE_ARROWHEAD.get(), 2, -1, EntriesNF.BONE_ARROW.getId(), consumer);
 
-        CraftingRecipeBuilder.base(ItemsNF.FLINT_ADZE.get(), EntriesNF.TOOLS).define('F', ItemsNF.FLINT.get()).define('X', ItemsNF.PLANT_FIBERS.get()).define('S', ItemsNF.STICK.get()).pattern(" X").pattern("FS").save(consumer);
-        CraftingRecipeBuilder.base(ItemsNF.FLINT_AXE.get(), EntriesNF.TOOLS).define('F', ItemsNF.FLINT.get()).define('X', ItemsNF.PLANT_FIBERS.get()).define('S', ItemsNF.STICK.get()).pattern("FX").pattern(" S").save(consumer);
-        CraftingRecipeBuilder.base(ItemsNF.FLINT_DAGGER.get(), EntriesNF.TOOLS).define('F', ItemsNF.FLINT.get()).define('S', ItemsNF.STICK.get()).pattern("F").pattern("S").save(consumer);
-        CraftingRecipeBuilder.base(ItemsNF.FLINT_HAMMER.get(), EntriesNF.TOOLS).define('F', ItemsNF.FLINT.get()).define('X', ItemsNF.PLANT_FIBERS.get()).define('S', ItemsNF.STICK.get()).pattern("FXF").pattern(" S ").save(consumer);
-        CraftingRecipeBuilder.base(ItemsNF.FLINT_SHOVEL.get(), EntriesNF.TOOLS).define('F', ItemsNF.FLINT.get()).define('X', ItemsNF.PLANT_FIBERS.get()).define('S', ItemsNF.STICK.get()).pattern("F").pattern("X").pattern("S").save(consumer);
-        CraftingRecipeBuilder.base(ItemsNF.FLINT_SPEAR.get(), EntriesNF.TOOLS).define('F', ItemsNF.FLINT.get()).define('S', ItemsNF.STICK.get()).pattern("F  ").pattern(" S ").pattern("  S").save(consumer);
+        CraftingRecipeBuilder.base(ItemsNF.FLINT_ADZE.get(), EntriesNF.TOOLS).define('F', ItemsNF.FLINT_ARMAMENT_HEADS.get(Armament.ADZE).get()).define('X', ItemsNF.PLANT_FIBERS.get()).define('S', ItemsNF.STICK.get()).pattern("F").pattern("X").pattern("S").save(consumer);
+        CraftingRecipeBuilder.base(ItemsNF.FLINT_AXE.get(), EntriesNF.TOOLS).define('F', ItemsNF.FLINT_ARMAMENT_HEADS.get(Armament.AXE).get()).define('X', ItemsNF.PLANT_FIBERS.get()).define('S', ItemsNF.STICK.get()).pattern("F").pattern("X").pattern("S").save(consumer);
+        CraftingRecipeBuilder.base(ItemsNF.FLINT_KNIFE.get(), EntriesNF.TOOLS).define('F', ItemsNF.FLINT_ARMAMENT_HEADS.get(Armament.KNIFE).get()).define('X', ItemsNF.PLANT_FIBERS.get()).define('S', ItemsNF.STICK.get()).pattern("F").pattern("X").pattern("S").save(consumer);
+        CraftingRecipeBuilder.base(ItemsNF.FLINT_HAMMER.get(), EntriesNF.TOOLS).define('F', ItemsNF.FLINT_ARMAMENT_HEADS.get(Armament.HAMMER).get()).define('X', ItemsNF.PLANT_FIBERS.get()).define('S', ItemsNF.STICK.get()).pattern("F").pattern("X").pattern("S").save(consumer);
+        CraftingRecipeBuilder.base(ItemsNF.FLINT_SHOVEL.get(), EntriesNF.TOOLS).define('F', ItemsNF.FLINT_ARMAMENT_HEADS.get(Armament.SHOVEL).get()).define('X', ItemsNF.PLANT_FIBERS.get()).define('S', ItemsNF.STICK.get()).pattern("F").pattern("X").pattern("S").save(consumer);
+        CraftingRecipeBuilder.base(ItemsNF.FLINT_SPEAR.get(), EntriesNF.TOOLS).define('F', ItemsNF.FLINT_ARMAMENT_HEADS.get(Armament.SPEAR).get()).define('X', ItemsNF.PLANT_FIBERS.get()).define('S', ItemsNF.STICK.get()).pattern("F").pattern("X").pattern("S").save(consumer);
         CraftingRecipeBuilder.base(ItemsNF.ROPE.get(), EntriesNF.TOOLS).define('F', ItemsNF.PLANT_FIBERS.get()).pattern("F").pattern("F").pattern("F").save(consumer);
         CraftingRecipeBuilder.base(ItemsNF.FIBER_BANDAGE.get(), EntriesNF.TOOLS).define('F', ItemsNF.PLANT_FIBERS.get()).pattern("FF").pattern("FF").save(consumer);
-        CraftingRecipeBuilder.base(ItemsNF.FLINT_CHISEL.get(), EntriesNF.TOOLS).define('F', ItemsNF.FLINT.get()).pattern("F").pattern("F").save(consumer);
         CraftingRecipeBuilder.base(ItemsNF.WOODEN_BUCKET.get(), EntriesNF.WOODWORKING).define('P', TagsNF.PLANK).define('R', ItemsNF.ROPE.get()).pattern(" R ").pattern("P P").pattern("PPP").save(consumer);
         CraftingRecipeBuilder.base(ItemsNF.IRONWOOD_SHIELD.get(), EntriesNF.WOODEN_SHIELD).define('P', ItemsNF.PLANKS.get(Tree.IRONWOOD).get()).pattern("PPP").pattern("PPP").pattern("PPP").save(consumer);
         CraftingRecipeBuilder.base(ItemsNF.TORCH_UNLIT.get(), EntriesNF.CAMPFIRE).define('S', ItemsNF.STICK.get()).define('F', ItemsNF.PLANT_FIBERS.get()).pattern("F").pattern("S").save(consumer);
@@ -236,8 +239,8 @@ public class RecipeProviderNF extends RecipeProvider {
         CraftingRecipeBuilder.base(ItemsNF.LEGGINGS.get(TieredArmorMaterial.PADDED).get(), EntriesNF.WEAVING).define('A', ItemsNF.LINEN.get()).pattern("AAA").pattern("A A").pattern("A A").save(consumer);
         CraftingRecipeBuilder.base(ItemsNF.BOOTS.get(TieredArmorMaterial.PADDED).get(), EntriesNF.WEAVING).define('A', ItemsNF.LINEN.get()).pattern("A A").pattern("A A").save(consumer);
         CraftingRecipeBuilder.base(ItemsNF.MEDICINAL_BANDAGE.get(), EntriesNF.MEDICINAL_BANDAGE).define('B', ItemsNF.BANDAGE.get()).define('M', ItemsNF.YARROW_POWDER.get()).pattern("M").pattern("B").save(consumer);
-        CraftingRecipeBuilder.base(ItemsNF.FLINT_ARROW.get(), EntriesNF.BOW_AND_ARROW).define('A', ItemsNF.FLINT.get()).define('S', ItemsNF.STICK.get()).define('F', TagsNF.FLETCHING).pattern("A").pattern("S").pattern("F").save(consumer);
-        CraftingRecipeBuilder.base(ItemsNF.BONE_ARROW.get(), EntriesNF.BONE_ARROW).define('A', ItemsNF.BONE_SHARD.get()).define('S', ItemsNF.STICK.get()).define('F', TagsNF.FLETCHING).pattern("A").pattern("S").pattern("F").save(consumer);
+        CraftingRecipeBuilder.base(ItemsNF.FLINT_ARROW.get(), EntriesNF.BOW_AND_ARROW).define('A', ItemsNF.FLINT_ARROWHEAD.get()).define('S', ItemsNF.STICK.get()).define('F', TagsNF.FLETCHING).pattern("A").pattern("S").pattern("F").save(consumer);
+        CraftingRecipeBuilder.base(ItemsNF.BONE_ARROW.get(), EntriesNF.BONE_ARROW).define('A', ItemsNF.BONE_ARROWHEAD.get()).define('S', ItemsNF.STICK.get()).define('F', TagsNF.FLETCHING).pattern("A").pattern("S").pattern("F").save(consumer);
         CraftingRecipeBuilder.base(ItemsNF.SLING.get(), EntriesNF.SLING).define('F', ItemsNF.ROPE.get()).pattern(" FF").pattern("F F").pattern(" F ").save(consumer);
         CraftingRecipeBuilder.base(ItemsNF.SLING_REINFORCED.get(), EntriesNF.REINFORCED_SLING).define('F', ItemsNF.ROPE.get()).define('L', ItemsNF.LEATHER.get()).pattern(" FL").pattern("F F").pattern(" F ").save(consumer);
         CraftingRecipeBuilder.base(ItemsNF.WARDING_CHARM.get(), EntriesNF.WARDING_CHARM).define('F', ItemsNF.PLANT_FIBERS.get()).define('B', ItemsNF.LIVING_BONE.get()).pattern(" F ").pattern("F F").pattern(" B ").save(consumer);
@@ -316,6 +319,9 @@ public class RecipeProviderNF extends RecipeProvider {
         for(Metal metal : ItemsNF.METAL_SHIELDS.keySet()) {
             CraftingRecipeBuilder.base(ItemsNF.METAL_SHIELDS.get(metal).get(), EntriesNF.SHIELD).define('S', TagsNF.WOODEN_SHIELD).define('W', ItemsNF.WIRES.get(metal).get()).pattern("WWW").pattern("WSW").pattern("WWW").save(consumer);
         }
+        for(TieredItemMaterial material : ItemsNF.METAL_ARROWS.keySet()) {
+            CraftingRecipeBuilder.base(ItemsNF.METAL_ARROWS.get(material).get(), EntriesNF.ARROWHEAD_MOLD).define('A', ItemsNF.METAL_ARROWHEADS.get(material).get()).define('S', ItemsNF.STICK.get()).define('F', TagsNF.FLETCHING).pattern("A").pattern("S").pattern("F").save(consumer);
+        }
 
         SingleRecipeBuilder.base(FluidsNF.METAL.get(Metal.COPPER).get(), 20).input(ItemsNF.COPPER_NUGGET.get()).cookTime(20 * 5).saveCrucible(consumer);
         SingleRecipeBuilder.base(FluidsNF.METAL.get(Metal.COPPER).get(), 100).input(ItemsNF.COPPER_CHUNK.get()).cookTime(20 * 20).saveCrucible(consumer);
@@ -388,8 +394,8 @@ public class RecipeProviderNF extends RecipeProvider {
                         .randRange(entry.randMin, entry.randMax).addStartShape(entry.shape).addFinishShape(MicroGridShape.AXE).requirement(EntriesNF.SMITHING).save(consumer);
                 TieredAnvilRecipeBuilder.base(ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.CHISEL).get(), material.getTier()).addIngredient(entry.item)
                         .randRange(entry.randMin, entry.randMax).addStartShape(entry.shape).addFinishShape(MicroGridShape.CHISEL).requirement(EntriesNF.SMITHING).save(consumer);
-                TieredAnvilRecipeBuilder.base(ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.DAGGER).get(), material.getTier()).addIngredient(entry.item)
-                        .randRange(entry.randMin, entry.randMax).addStartShape(entry.shape).addFinishShape(MicroGridShape.DAGGER).requirement(EntriesNF.SMITHING).save(consumer);
+                TieredAnvilRecipeBuilder.base(ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.KNIFE).get(), material.getTier()).addIngredient(entry.item)
+                        .randRange(entry.randMin, entry.randMax).addStartShape(entry.shape).addFinishShape(MicroGridShape.KNIFE).requirement(EntriesNF.SMITHING).save(consumer);
                 TieredAnvilRecipeBuilder.base(ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.MACE).get(), material.getTier()).addIngredient(entry.item)
                         .randRange(entry.randMin, entry.randMax).addStartShape(entry.shape).addFinishShape(MicroGridShape.MACE).requirement(EntriesNF.MACE).save(consumer);
                 TieredAnvilRecipeBuilder.base(ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.PICKAXE).get(), material.getTier()).addIngredient(entry.item)

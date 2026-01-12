@@ -77,7 +77,7 @@ public class TagsNF {
     public static final TagKey<Block> HEAT_RESISTANT_3 = blockTag("metallurgy/heat_resistant_3");
     public static final TagKey<Block> HEAT_RESISTANT_4 = blockTag("metallurgy/heat_resistant_4");
     public static final TagKey<Block> MINEABLE_WITH_SICKLE = blockTag("mineable_with_sickle");
-    public static final TagKey<Block> MINEABLE_WITH_DAGGER = blockTag("mineable_with_dagger");
+    public static final TagKey<Block> MINEABLE_WITH_KNIFE = blockTag("mineable_with_knife");
     public static final TagKey<Block> MINEABLE_WITH_ADZE = blockTag("mineable_with_adze");
     public static final TagKey<Block> MINEABLE_WITH_MAUL = blockTag("mineable_with_maul");
     public static final TagKey<Block> FALLING_DESTROYABLE = blockTag("falling_destroyable");
@@ -141,10 +141,11 @@ public class TagsNF {
     public static final TagKey<Item> TANNIN = itemTag("tannin");
     public static final TagKey<Item> LUMBER_TANNIN = itemTag("lumber_tannin");
     public static final TagKey<Item> ARROWHEAD = itemTag("arrowhead");
+    public static final TagKey<Item> METAL_ARROW = itemTag("metal_arrow");
     public static final TagKey<Item> ADZE_HEAD = itemTag("adze_head");
     public static final TagKey<Item> AXE_HEAD = itemTag("axe_head");
     public static final TagKey<Item> CHISEL_HEAD = itemTag("chisel_head");
-    public static final TagKey<Item> DAGGER_HEAD = itemTag("dagger_head");
+    public static final TagKey<Item> KNIFE_HEAD = itemTag("knife_head");
     public static final TagKey<Item> MACE_HEAD = itemTag("mace_head");
     public static final TagKey<Item> PICKAXE_HEAD = itemTag("pickaxe_head");
     public static final TagKey<Item> SABRE_HEAD = itemTag("sabre_head");
@@ -152,12 +153,13 @@ public class TagsNF {
     public static final TagKey<Item> SICKLE_HEAD = itemTag("sickle_head");
     public static final TagKey<Item> SPEAR_HEAD = itemTag("spear_head");
     public static final TagKey<Item> SWORD_HEAD = itemTag("sword_head");
+    public static final TagKey<Item> FLINT_ARMAMENT_HEAD = itemTag("flint_armament_head");
     public static final TagKey<Item> PICKAXE = itemTag("pickaxe");
     public static final TagKey<Item> AXE = itemTag("axe");
     public static final TagKey<Item> SHOVEL = itemTag("shovel");
     public static final TagKey<Item> ADZE = itemTag("adze");
     public static final TagKey<Item> SICKLE = itemTag("sickle");
-    public static final TagKey<Item> DAGGER = itemTag("dagger");
+    public static final TagKey<Item> KNIFE = itemTag("knife");
     public static final TagKey<Item> CHISEL = itemTag("chisel");
     public static final TagKey<Item> CHISEL_METAL = itemTag("chisel_metal");
     public static final TagKey<Item> HAMMER = itemTag("hammer");

@@ -20,7 +20,7 @@ public class MicroGridShape {
     public static final MicroGridShape ADZE = new MicroGridShape(TieredAnvilBlockEntity.GRID_Z, Levels.ADZE_BASE, Levels.ADZE_BASE);
     public static final MicroGridShape AXE = new MicroGridShape(TieredAnvilBlockEntity.GRID_Z, Levels.AXE_BASE, Levels.AXE_TOP);
     public static final MicroGridShape CHISEL = new MicroGridShape(TieredAnvilBlockEntity.GRID_Z, Levels.CHISEL_BASE);
-    public static final MicroGridShape DAGGER = new MicroGridShape(TieredAnvilBlockEntity.GRID_Z, Levels.DAGGER_BASE);
+    public static final MicroGridShape KNIFE = new MicroGridShape(TieredAnvilBlockEntity.GRID_Z, Levels.KNIFE_BASE);
     public static final MicroGridShape MACE = new MicroGridShape(TieredAnvilBlockEntity.GRID_Z, Levels.MACE_BASE, Levels.MACE_MIDDLE, Levels.MACE_BASE, Levels.MACE_TOP);
     public static final MicroGridShape PICKAXE = new MicroGridShape(TieredAnvilBlockEntity.GRID_Z, Levels.PICKAXE_BASE, Levels.PICKAXE_TOP);
     public static final MicroGridShape SABRE = new MicroGridShape(TieredAnvilBlockEntity.GRID_Z, Levels.SABRE_BASE);
@@ -244,7 +244,7 @@ public class MicroGridShape {
                         "oooooooooooooo" +
                         "oooooooooooooo";
 
-        private static final String DAGGER_BASE =
+        private static final String KNIFE_BASE =
                         "oooooooooooooo" +
                         "oooooooooooooo" +
                         "oooooooooooooo" +

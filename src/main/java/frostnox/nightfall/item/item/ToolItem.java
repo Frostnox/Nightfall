@@ -54,7 +54,7 @@ public abstract class ToolItem extends ScreenCacheItem implements IModifiable, I
     public void inventoryTick(ItemStack stack, Level worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
         if(worldIn.isClientSide) {
             if(isSelected) {
-                if(entityIn instanceof Player player && PlayerData.isPresent(player)) {
+                if(entityIn instanceof Player player && PlayerData.isPresent(player) && player.getMainHandItem() == stack) {
                     boolean oldCanUse = ClientEngine.get().canUseModifiableMain;
                     ClientEngine.get().canUseModifiableMain = canUseSelectedItem(ClientEngine.get().getModifiableIndexMain(), worldIn, player, InteractionHand.MAIN_HAND);
                     if(oldCanUse != ClientEngine.get().canUseModifiableMain) ClientEngine.get().updateToolItemRecipeSelection(this, true);

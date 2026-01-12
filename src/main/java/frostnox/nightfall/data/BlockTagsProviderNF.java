@@ -140,7 +140,7 @@ public class BlockTagsProviderNF extends BlockTagsProvider {
         tag(TagsNF.HEAT_RESISTANT_2).addTags(TagsNF.HEAT_RESISTANT_3);
         tag(TagsNF.HEAT_RESISTANT_3).addTags(TagsNF.HEAT_RESISTANT_4);
 
-        tag(TagsNF.MINEABLE_WITH_DAGGER).addTag(TagsNF.MINEABLE_WITH_SICKLE);
+        tag(TagsNF.MINEABLE_WITH_KNIFE).addTag(TagsNF.MINEABLE_WITH_SICKLE);
         tag(TagsNF.MINEABLE_WITH_ADZE).addTags(BlockTags.MINEABLE_WITH_SHOVEL, BlockTags.MINEABLE_WITH_AXE);
         tag(TagsNF.MINEABLE_WITH_MAUL).addTags(BlockTags.MINEABLE_WITH_SHOVEL, BlockTags.MINEABLE_WITH_AXE, BlockTags.MINEABLE_WITH_PICKAXE);
 

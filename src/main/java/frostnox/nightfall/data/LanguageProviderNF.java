@@ -497,7 +497,7 @@ public class LanguageProviderNF extends LanguageProvider {
         add(ItemsNF.TORCH_UNLIT.get(), "Unlit Torch");
         for(var map : ItemsNF.ARMAMENT_HEADS.values()) {
             for(Armament armament : map.keySet()) {
-                if(armament == Armament.DAGGER || armament == Armament.SABRE || armament == Armament.SICKLE || armament == Armament.SWORD) {
+                if(armament == Armament.KNIFE || armament == Armament.SABRE || armament == Armament.SICKLE || armament == Armament.SWORD) {
                     add(map.get(armament).get(), WordUtils.capitalize(map.get(armament).getId().getPath()
                             .replace("_head", " blade").replace("_", " ")));
                 }

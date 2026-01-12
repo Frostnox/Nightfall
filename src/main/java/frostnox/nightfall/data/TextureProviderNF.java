@@ -391,24 +391,18 @@ public class TextureProviderNF extends TextureProvider {
 
         replaceImagePalette(item(ItemsNF.FLINT_ADZE), item("flint_adze"), FLINT4, STICK5, FIBER);
         replaceImagePalette(itemInv(ItemsNF.FLINT_ADZE), item("flint_adze_inventory"), FLINT, STICK, FIBER);
-        replaceImagePalette(item(ItemsNF.FLINT_ARMAMENT_HEADS.get(Armament.ADZE)), item(ItemsNF.FLINT_ARMAMENT_HEADS.get(Armament.ADZE)), FLINT);
         replaceImagePalette(item(ItemsNF.FLINT_AXE), item("flint_axe"), FLINT5, STICK5, FIBER);
         replaceImagePalette(itemInv(ItemsNF.FLINT_AXE), item("flint_axe_inventory"), FLINT, STICK, FIBER);
-        replaceImagePalette(item(ItemsNF.FLINT_ARMAMENT_HEADS.get(Armament.AXE)), item(ItemsNF.FLINT_ARMAMENT_HEADS.get(Armament.AXE)), FLINT);
-        replaceImagePalette(item(ItemsNF.FLINT_DAGGER), item("flint_dagger"), FLINT4, STICK5, FIBER);
-        replaceImagePalette(itemInv(ItemsNF.FLINT_DAGGER), item("flint_dagger_inventory"), FLINT4, STICK, FIBER);
-        replaceImagePalette(item(ItemsNF.FLINT_ARMAMENT_HEADS.get(Armament.DAGGER)), item(ItemsNF.FLINT_ARMAMENT_HEADS.get(Armament.DAGGER)), FLINT4);
+        replaceImagePalette(item(ItemsNF.FLINT_KNIFE), item("flint_knife"), FLINT4, STICK5, FIBER);
+        replaceImagePalette(itemInv(ItemsNF.FLINT_KNIFE), item("flint_knife_inventory"), FLINT4, STICK, FIBER);
         replaceImagePalette(item(ItemsNF.FLINT_CHISEL), item("flint_chisel"), FLINT5);
         replaceImagePalette(itemInv(ItemsNF.FLINT_CHISEL), item("flint_chisel_inventory"), FLINT);
         replaceImagePalette(item(ItemsNF.FLINT_HAMMER), item("flint_hammer"), FLINT4, STICK5, FIBER);
-        replaceImagePalette(itemInv(ItemsNF.FLINT_HAMMER), item("flint_hammer_inventory"), subset(FLINT, 5, 0), STICK, FIBER);
-        replaceImagePalette(item(ItemsNF.FLINT_ARMAMENT_HEADS.get(Armament.HAMMER)), item(ItemsNF.FLINT_ARMAMENT_HEADS.get(Armament.HAMMER)), subset(FLINT, 5, 0));
+        replaceImagePalette(itemInv(ItemsNF.FLINT_HAMMER), item("flint_hammer_inventory"), FLINT, STICK, FIBER);
         replaceImagePalette(item(ItemsNF.FLINT_SHOVEL), item("flint_shovel"), subset(FLINT, 4, 0), STICK5, FIBER);
-        replaceImagePalette(itemInv(ItemsNF.FLINT_SHOVEL), item("flint_shovel_inventory"), subset(FLINT, 5, 0), STICK, FIBER);
-        replaceImagePalette(item(ItemsNF.FLINT_ARMAMENT_HEADS.get(Armament.SHOVEL)), item(ItemsNF.FLINT_ARMAMENT_HEADS.get(Armament.SHOVEL)), subset(FLINT, 5, 0));
+        replaceImagePalette(itemInv(ItemsNF.FLINT_SHOVEL), item("flint_shovel_inventory"), FLINT, STICK, FIBER);
         replaceImagePalette(item(ItemsNF.FLINT_SPEAR), item("flint_spear"), FLINT4, STICK5, FIBER);
         replaceImagePalette(itemInv(ItemsNF.FLINT_SPEAR), item("flint_spear_inventory"), FLINT, STICK, FIBER);
-        replaceImagePalette(item(ItemsNF.FLINT_ARMAMENT_HEADS.get(Armament.SPEAR)), item(ItemsNF.FLINT_ARMAMENT_HEADS.get(Armament.SPEAR)), FLINT);
 
         replaceImagePalette(item(ItemsNF.IRONWOOD_SHIELD), item("shield"),
                 subset(WOOD_FULL_PALETTES.get(Tree.IRONWOOD), 6, 2));
@@ -487,7 +481,7 @@ public class TextureProviderNF extends TextureProvider {
                 List<Integer> wrapping = tier3 ? LEATHER3 : TWINE3;
                 List<Integer> head;
                 if(armament == Armament.HAMMER || armament == Armament.SHOVEL) head = METAL_DULL_PALETTES.get(metal);
-                else if(armament == Armament.DAGGER || armament == Armament.SWORD || armament == Armament.SABRE) {
+                else if(armament == Armament.KNIFE || armament == Armament.SWORD || armament == Armament.SABRE) {
                     head = METAL_PALETTES.get(metal);
                     if(tier3) {
                         handle = wrapping;

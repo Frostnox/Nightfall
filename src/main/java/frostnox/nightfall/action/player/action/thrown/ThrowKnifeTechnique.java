@@ -15,8 +15,8 @@ import net.minecraft.world.entity.player.Player;
 import javax.annotation.Nullable;
 import java.util.EnumMap;
 
-public class ThrowDaggerTechnique extends ThrowTechnique {
-    public ThrowDaggerTechnique(DamageType[] damageType, int stunDuration, int[] duration, Properties properties, float throwVelocity, float curve, boolean spinning, @Nullable AttackEffect... effects) {
+public class ThrowKnifeTechnique extends ThrowTechnique {
+    public ThrowKnifeTechnique(DamageType[] damageType, int stunDuration, int[] duration, Properties properties, float throwVelocity, float curve, boolean spinning, @Nullable AttackEffect... effects) {
         super(damageType, stunDuration, duration, properties, throwVelocity, curve, spinning, effects);
     }
 

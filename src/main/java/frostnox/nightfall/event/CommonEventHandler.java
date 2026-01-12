@@ -1074,7 +1074,7 @@ public class CommonEventHandler {
                         BlockHitResult hitResult = level.clip(new ClipContext(eyePos, endPos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player));
                         if(hitResult.getType() == HitResult.Type.BLOCK) {
                             BlockPos pos = hitResult.getBlockPos();
-                            boolean canMineAny = !action.harvestableBlocks.equals(TagsNF.MINEABLE_WITH_SICKLE) && !action.harvestableBlocks.equals(TagsNF.MINEABLE_WITH_DAGGER) && !action.harvestableBlocks.equals(BlockTags.MINEABLE_WITH_AXE);
+                            boolean canMineAny = !action.harvestableBlocks.equals(TagsNF.MINEABLE_WITH_SICKLE) && !action.harvestableBlocks.equals(TagsNF.MINEABLE_WITH_KNIFE) && !action.harvestableBlocks.equals(BlockTags.MINEABLE_WITH_AXE);
                             if(canMineAny || action.canHarvest(level.getBlockState(pos))) {
                                 IGlobalChunkData chunkData = GlobalChunkData.get(level.getChunkAt(pos));
                                 float progress = chunkData.getBreakProgress(pos) + level.getBlockState(pos).getDestroyProgress(player, level, pos) *

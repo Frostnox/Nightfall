@@ -37,7 +37,7 @@ import frostnox.nightfall.action.player.action.*;
 import frostnox.nightfall.action.player.action.guard.ShieldGuardAction;
 import frostnox.nightfall.action.player.action.guard.WeaponGuardAction;
 import frostnox.nightfall.action.player.action.thrown.ThrowAxeTechnique;
-import frostnox.nightfall.action.player.action.thrown.ThrowDaggerTechnique;
+import frostnox.nightfall.action.player.action.thrown.ThrowKnifeTechnique;
 import frostnox.nightfall.action.player.action.thrown.ThrowSpearTechnique;
 import frostnox.nightfall.action.player.attack.*;
 import frostnox.nightfall.action.player.technique.HammerTechnique;
@@ -82,7 +82,7 @@ public class ActionsNF {
     protected final static float MACE_KNOCKBACK = 0.3F;
     protected final static float CLUB_KNOCKBACK = 0.25F;
     protected final static float SPEAR_KNOCKBACK = 0.1F;
-    protected final static float DAGGER_KNOCKBACK = 0.05F;
+    protected final static float KNIFE_KNOCKBACK = 0.05F;
     protected final static float CHISEL_KNOCKBACK = 0.05F;
     protected final static float HAMMER_KNOCKBACK = 0.2F;
     protected final static float AXE_KNOCKBACK = 0.25F;
@@ -156,17 +156,17 @@ public class ActionsNF {
     public static final RegistryObject<CrawlingThrust> SPEAR_CRAWLING = ACTIONS.register("spear_crawling", () ->
             new CrawlingThrust(DamageType.PIERCING.asArray(), HurtSphere.SPEAR, 1, CombatUtil.STUN_SHORT, new int[] {10, 5, 3, 9}, new Action.Properties().setSprinting().setCrawling().setKnockback(SPEAR_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.LONG_BLADE_SWING)));
 
-    public static final RegistryObject<SwingRight> DAGGER_BASIC_1 = ACTIONS.register("dagger_basic_1", () ->
-            new SwingRight(DamageType.SLASHING.asArray(), HurtSphere.DAGGER, 2, CombatUtil.STUN_SHORT, new int[] {6, 8, 3, 8}, new Action.Properties().setChainTo(ActionsNF.DAGGER_BASIC_2).setChainState(2).setSound(SoundsNF.SHORT_BLADE_SWING).setHarvestable(TagsNF.MINEABLE_WITH_DAGGER).setKnockback(DAGGER_KNOCKBACK).setImpact(Impact.MEDIUM)));
-    public static final RegistryObject<SwingLeft> DAGGER_BASIC_2 = ACTIONS.register("dagger_basic_2", () ->
-            new SwingLeft(DamageType.SLASHING.asArray(), HurtSphere.DAGGER, 2, CombatUtil.STUN_SHORT, new int[] {6, 8, 3, 7}, new Action.Properties().setChainFrom(DAGGER_BASIC_1).setChainTo(ActionsNF.DAGGER_BASIC_3).setChainState(2).setSound(SoundsNF.SHORT_BLADE_SWING).setHarvestable(TagsNF.MINEABLE_WITH_DAGGER).setKnockback(DAGGER_KNOCKBACK).setImpact(Impact.MEDIUM)));
-    public static final RegistryObject<SwingRight> DAGGER_BASIC_3 = ACTIONS.register("dagger_basic_3_conditional", () ->
-            new SwingRight(DamageType.SLASHING.asArray(), HurtSphere.DAGGER, 2, CombatUtil.STUN_SHORT, new int[] {6, 8, 3, 8}, new Action.Properties().setChainTo(ActionsNF.DAGGER_BASIC_2).setChainFrom(DAGGER_BASIC_2).setChainState(2).setSound(SoundsNF.SHORT_BLADE_SWING).setHarvestable(TagsNF.MINEABLE_WITH_DAGGER).setKnockback(DAGGER_KNOCKBACK).setImpact(Impact.MEDIUM)));
-    public static final RegistryObject<StabCharged> DAGGER_ALTERNATE_1 = ACTIONS.register("dagger_alternate_1", () ->
-            new StabCharged(DamageType.PIERCING.asArray(), HurtSphere.DAGGER, 1, CombatUtil.STUN_LONG, new int[] {7, 13, 4, 4, 7}, new Action.Properties().setChargeState(1).setSound(SoundsNF.SHORT_BLADE_SWING).setExtraSound(SoundsNF.SHORT_BLADE_SWING_CHARGED).setKnockback(DAGGER_KNOCKBACK).setImpact(Impact.MEDIUM), bleeding(0.4F)));
-    public static final RegistryObject<CrawlingSwing> DAGGER_CRAWLING = ACTIONS.register("dagger_crawling", () ->
-            new CrawlingSwing(DamageType.SLASHING.asArray(), HurtSphere.DAGGER, 1, CombatUtil.STUN_SHORT, new int[] {6, 5, 3, 7}, new Action.Properties().setSprinting().setCrawling().setSound(SoundsNF.SHORT_BLADE_SWING).setHarvestable(TagsNF.MINEABLE_WITH_DAGGER).setKnockback(DAGGER_KNOCKBACK).setImpact(Impact.MEDIUM)));
-    public static final RegistryObject<KnifeCarveAction> DAGGER_CARVE = ACTIONS.register("dagger_carve", () ->
+    public static final RegistryObject<SwingRight> KNIFE_BASIC_1 = ACTIONS.register("knife_basic_1", () ->
+            new SwingRight(DamageType.SLASHING.asArray(), HurtSphere.KNIFE, 2, CombatUtil.STUN_SHORT, new int[] {6, 8, 3, 8}, new Action.Properties().setChainTo(ActionsNF.KNIFE_BASIC_2).setChainState(2).setSound(SoundsNF.SHORT_BLADE_SWING).setHarvestable(TagsNF.MINEABLE_WITH_KNIFE).setKnockback(KNIFE_KNOCKBACK).setImpact(Impact.MEDIUM)));
+    public static final RegistryObject<SwingLeft> KNIFE_BASIC_2 = ACTIONS.register("knife_basic_2", () ->
+            new SwingLeft(DamageType.SLASHING.asArray(), HurtSphere.KNIFE, 2, CombatUtil.STUN_SHORT, new int[] {6, 8, 3, 7}, new Action.Properties().setChainFrom(KNIFE_BASIC_1).setChainTo(ActionsNF.KNIFE_BASIC_3).setChainState(2).setSound(SoundsNF.SHORT_BLADE_SWING).setHarvestable(TagsNF.MINEABLE_WITH_KNIFE).setKnockback(KNIFE_KNOCKBACK).setImpact(Impact.MEDIUM)));
+    public static final RegistryObject<SwingRight> KNIFE_BASIC_3 = ACTIONS.register("knife_basic_3_conditional", () ->
+            new SwingRight(DamageType.SLASHING.asArray(), HurtSphere.KNIFE, 2, CombatUtil.STUN_SHORT, new int[] {6, 8, 3, 8}, new Action.Properties().setChainTo(ActionsNF.KNIFE_BASIC_2).setChainFrom(KNIFE_BASIC_2).setChainState(2).setSound(SoundsNF.SHORT_BLADE_SWING).setHarvestable(TagsNF.MINEABLE_WITH_KNIFE).setKnockback(KNIFE_KNOCKBACK).setImpact(Impact.MEDIUM)));
+    public static final RegistryObject<StabCharged> KNIFE_ALTERNATE_1 = ACTIONS.register("knife_alternate_1", () ->
+            new StabCharged(DamageType.PIERCING.asArray(), HurtSphere.KNIFE, 1, CombatUtil.STUN_LONG, new int[] {7, 13, 4, 4, 7}, new Action.Properties().setChargeState(1).setSound(SoundsNF.SHORT_BLADE_SWING).setExtraSound(SoundsNF.SHORT_BLADE_SWING_CHARGED).setKnockback(KNIFE_KNOCKBACK).setImpact(Impact.MEDIUM), bleeding(0.4F)));
+    public static final RegistryObject<CrawlingSwing> KNIFE_CRAWLING = ACTIONS.register("knife_crawling", () ->
+            new CrawlingSwing(DamageType.SLASHING.asArray(), HurtSphere.KNIFE, 1, CombatUtil.STUN_SHORT, new int[] {6, 5, 3, 7}, new Action.Properties().setSprinting().setCrawling().setSound(SoundsNF.SHORT_BLADE_SWING).setHarvestable(TagsNF.MINEABLE_WITH_KNIFE).setKnockback(KNIFE_KNOCKBACK).setImpact(Impact.MEDIUM)));
+    public static final RegistryObject<KnifeCarveAction> KNIFE_CARVE = ACTIONS.register("knife_carve", () ->
             new KnifeCarveAction(new int[] {6, 43, 7}, new Action.Properties().setChargeState(1).setSound(SoundsNF.SWING).setExtraSound(SoundsNF.SWING_CHARGED)));
 
     public static final RegistryObject<Stab> CHISEL_BASIC_1 = ACTIONS.register("chisel_basic_1", () ->
@@ -312,8 +312,8 @@ public class ActionsNF {
     public static final RegistryObject<ThrowSpearTechnique> SPEAR_THROW = ACTIONS.register("spear_throw", () ->
             new ThrowSpearTechnique(DamageType.PIERCING.asArray(), CombatUtil.STUN_MEDIUM, new int[] {8, 18, 5, 2, 6}, new Action.Properties().setChargeState(1).setKnockback(SPEAR_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.LONG_BLADE_SWING).setExtraSound(SoundsNF.LONG_BLADE_SWING_CHARGED),
                     2F, 0, false));
-    public static final RegistryObject<ThrowDaggerTechnique> DAGGER_THROW = ACTIONS.register("dagger_throw", () ->
-            new ThrowDaggerTechnique(DamageType.PIERCING.asArray(), CombatUtil.STUN_SHORT, new int[] {8, 14, 5, 2, 5}, new Action.Properties().setChargeState(1).setKnockback(DAGGER_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.SHORT_BLADE_SWING).setExtraSound(SoundsNF.SHORT_BLADE_SWING_CHARGED),
+    public static final RegistryObject<ThrowKnifeTechnique> KNIFE_THROW = ACTIONS.register("knife_throw", () ->
+            new ThrowKnifeTechnique(DamageType.PIERCING.asArray(), CombatUtil.STUN_SHORT, new int[] {8, 14, 5, 2, 5}, new Action.Properties().setChargeState(1).setKnockback(KNIFE_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.SHORT_BLADE_SWING).setExtraSound(SoundsNF.SHORT_BLADE_SWING_CHARGED),
                     1.75F, 0, true));
     public static final RegistryObject<ThrowAxeTechnique> AXE_THROW = ACTIONS.register("axe_throw", () ->
             new ThrowAxeTechnique(DamageType.SLASHING.asArray(), CombatUtil.STUN_MEDIUM, new int[] {28, 4, 2, 6}, new Action.Properties().setChargeState(0).setKnockback(AXE_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.HEAVY_BLADE_SWING).setExtraSound(SoundsNF.HEAVY_BLADE_SWING_CHARGED),

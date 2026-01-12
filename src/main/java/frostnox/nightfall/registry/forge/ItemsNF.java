@@ -581,14 +581,14 @@ public class ItemsNF {
     public static final RegistryObject<MeleeWeaponItem> WOODEN_CLUB = ITEMS.register("wooden_club", () -> new MeleeWeaponItem(TieredItemMaterial.WOOD,
             PlayerActionSet.CLUB, HurtSphere.CLUB, HurtSphere.WEAPONS_TP.get(HurtSphere.CLUB), false, new Item.Properties().tab(ARMAMENTS_TAB), List.of(), DamageType.STRIKING));
     public static final Map<Armament, RegistryObject<Item>> FLINT_ARMAMENT_HEADS = DataUtil.mapEnum(Armament.class,
-            a -> a != Armament.ADZE && a != Armament.AXE && a != Armament.DAGGER && a != Armament.HAMMER && a != Armament.SHOVEL && a != Armament.SPEAR,
+            a -> a != Armament.ADZE && a != Armament.AXE && a != Armament.KNIFE && a != Armament.HAMMER && a != Armament.SHOVEL && a != Armament.SPEAR,
             armament -> register("flint_" + armament.getName() + "_head", 1));
     public static final RegistryObject<MeleeWeaponItem> FLINT_ADZE = ITEMS.register("flint_adze", () -> new MeleeWeaponItem(TieredItemMaterial.FLINT,
             PlayerActionSet.ADZE, HurtSphere.ADZE, HurtSphere.WEAPONS_TP.get(HurtSphere.ADZE), true, new Item.Properties().tab(ARMAMENTS_TAB), Armament.ADZE.getToolActions(), DamageType.SLASHING));
     public static final RegistryObject<MeleeWeaponItem> FLINT_AXE = ITEMS.register("flint_axe", () -> new MeleeWeaponItem(TieredItemMaterial.FLINT,
             PlayerActionSet.AXE, HurtSphere.AXE, HurtSphere.WEAPONS_TP.get(HurtSphere.AXE), true, new Item.Properties().tab(ARMAMENTS_TAB), Armament.AXE.getToolActions(), DamageType.SLASHING));
-    public static final RegistryObject<MeleeWeaponItem> FLINT_DAGGER = ITEMS.register("flint_dagger", () -> new MeleeWeaponItem(TieredItemMaterial.FLINT,
-            PlayerActionSet.DAGGER, HurtSphere.FLINT_DAGGER, HurtSphere.WEAPONS_TP.get(HurtSphere.FLINT_DAGGER), true, new Item.Properties().tab(ARMAMENTS_TAB), Armament.DAGGER.getToolActions(), DamageType.SLASHING));
+    public static final RegistryObject<MeleeWeaponItem> FLINT_KNIFE = ITEMS.register("flint_knife", () -> new MeleeWeaponItem(TieredItemMaterial.FLINT,
+            PlayerActionSet.KNIFE, HurtSphere.KNIFE, HurtSphere.WEAPONS_TP.get(HurtSphere.KNIFE), true, new Item.Properties().tab(ARMAMENTS_TAB), Armament.KNIFE.getToolActions(), DamageType.SLASHING));
     public static final RegistryObject<PairedMeleeWeaponItem> FLINT_CHISEL = ITEMS.register("flint_chisel", () -> new PairedMeleeWeaponItem(
             TieredItemMaterial.FLINT, PlayerActionSet.CHISEL, PlayerActionSet.HAMMER, PlayerActionSet.FLINT_CHISEL_AND_HAMMER, HurtSphere.CHISEL,
             HurtSphere.WEAPONS_TP.get(HurtSphere.CHISEL), true, new Item.Properties().tab(ARMAMENTS_TAB), Armament.CHISEL.getToolActions(), DamageType.PIERCING));
@@ -605,6 +605,8 @@ public class ItemsNF {
     public static final Map<Tree, RegistryObject<BowItemNF>> BOWS = DataUtil.mapEnum(Tree.class, tree -> tree.getHardness() < 1.4F || tree.getHardness() > 2.0F,
             tree -> ITEMS.register(tree.getName() + "_bow", () -> new BowItemNF(
                     ActionsNF.BOW_SHOOT, ItemTags.ARROWS, new Item.Properties().durability((int) (tree.getHardness() * 120)).tab(ARMAMENTS_TAB))));
+    public static final RegistryObject<Item> FLINT_ARROWHEAD = register("flint_arrowhead");
+    public static final RegistryObject<Item> BONE_ARROWHEAD = register("bone_arrowhead");
     public static final RegistryObject<ProjectileItem> FLINT_ARROW = register("flint_arrow", () -> new ProjectileItem(
             15F, 1F, 0.5F, new DamageType[] {DamageType.PIERCING}, ARROW_ID++, new Item.Properties().tab(ARMAMENTS_TAB)));
     public static final RegistryObject<ProjectileItem> BONE_ARROW = register("bone_arrow", () -> new ProjectileItem(

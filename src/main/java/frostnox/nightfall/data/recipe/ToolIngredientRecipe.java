@@ -81,11 +81,6 @@ public abstract class ToolIngredientRecipe extends EncyclopediaRecipe<RecipeWrap
 
     @Override
     public NonNullList<Ingredient> getIngredients() {
-        return NonNullList.of(Ingredient.EMPTY, input);
-    }
-
-    @Override
-    public NonNullList<Ingredient> getUnlockIngredients() {
         return NonNullList.of(Ingredient.EMPTY, input, tool);
     }
 
