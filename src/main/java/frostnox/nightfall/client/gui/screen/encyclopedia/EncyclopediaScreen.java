@@ -28,6 +28,7 @@ public class EncyclopediaScreen extends Screen {
     public static final TranslatableComponent LOCKED_ENTRY = new TranslatableComponent("encyclopedia.locked_entry");
     public static final int WIDTH = 396;
     public static final int HEIGHT = 276;
+    private static double scaleCache;
     private final EncyclopediaTab[] tabs;
     private boolean showTabs;
     public static EncyclopediaTab selectedTab;
@@ -74,6 +75,14 @@ public class EncyclopediaScreen extends Screen {
 
     @Override
     protected void init() {
+        //Scale the screen down in smaller windows so it doesn't overflow as easily
+        //Bad side effect: scales background GUIs as well
+        scaleCache = mc.getWindow().getGuiScale();
+        if(scaleCache > 3 && (mc.getWindow().getWidth() < 2000 || mc.getWindow().getHeight() < 1100)) {
+            mc.getWindow().setGuiScale(3);
+            width = mc.getWindow().getGuiScaledWidth();
+            height = mc.getWindow().getGuiScaledHeight();
+        }
         if(entryScreen != null) entryScreen.init(mc, mc.getWindow().getGuiScaledWidth(), mc.getWindow().getGuiScaledHeight());
     }
 
@@ -268,5 +277,6 @@ public class EncyclopediaScreen extends Screen {
     public void onClose() {
         if(entryScreen != null) entryScreen.onClose();
         super.onClose();
+        mc.getWindow().setGuiScale(scaleCache);
     }
 }

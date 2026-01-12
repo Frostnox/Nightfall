@@ -127,12 +127,8 @@ public class EntryCompletedScreen extends Screen {
             int xOff = width/2 - BACKGROUND_WIDTH/2;
             int yOff = height/2 - BACKGROUND_HEIGHT/2 - PartialInventoryScreen.HEIGHT/2;
             stack.translate(xOff, yOff, 0);
-            blit(stack, 0, 0, 0, 512 - BACKGROUND_HEIGHT, BACKGROUND_WIDTH, BACKGROUND_HEIGHT, 512, 512);
-            EntryPuzzleScreen.renderImage(stack, cEntry.completedImage);
-            /*for(int i = 0; i < groupedItems.size(); i++) {
-                int xPos = 5 + (i % 5) * 21 - 1, yPos = 5 + (i / 5) * 21 - 1;
-                blit(stack, xPos, yPos, 19, 406, 18, 18, 512, 512);
-            }*/
+            if(!groupedItems.isEmpty() || cEntry.completedImage == null) blit(stack, 0, 0, 0, 512 - BACKGROUND_HEIGHT, BACKGROUND_WIDTH, BACKGROUND_HEIGHT, 512, 512);
+            EntryPuzzleScreen.renderImage(stack, cEntry.completedImage, groupedItems.isEmpty());
             for(int i = 0; i < groupedItems.size(); i++) {
                 int xPos = 5 + (i % 5) * 21 + xOff, yPos = 5 + (i / 5) * 21 + yOff;
                 mc.getItemRenderer().renderAndDecorateItem(groupedItems.get(i).get((tickCount / 24) % groupedItems.get(i).size()), xPos, yPos);

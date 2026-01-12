@@ -119,7 +119,7 @@ public class EntryPuzzleScreen extends PartialInventoryScreen<PuzzleContainer> {
             //Experiment button
             blit(stack, 4 + puzzle.ingredients().size() * 21, 46, 0, 425, 18, 18, 512, 512);
         }
-        renderImage(stack, cEntry.puzzleImage);
+        renderImage(stack, cEntry.puzzleImage, false);
         stack.popPose();
     }
 
@@ -210,9 +210,9 @@ public class EntryPuzzleScreen extends PartialInventoryScreen<PuzzleContainer> {
         else return false;
     }
 
-    static void renderImage(PoseStack poseStack, EntryClient.Image image) {
+    static void renderImage(PoseStack poseStack, EntryClient.Image image, boolean center) {
         if(image != null) {
-            int x = 100 + BACKGROUND_WIDTH/2;
+            int x = BACKGROUND_WIDTH/2 + (center ? -image.width()/2 : 100);
             int y = BACKGROUND_HEIGHT/2 - image.height()/2;
             int margin = 8;
             int width = Math.min(image.width() + margin * 2, MAX_IMAGE_SIZE), height = Math.min(image.height() + margin * 2, MAX_IMAGE_SIZE);
