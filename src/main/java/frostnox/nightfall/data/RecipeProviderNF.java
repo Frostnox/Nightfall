@@ -83,7 +83,7 @@ public class RecipeProviderNF extends RecipeProvider {
             BuildingRecipeBuilder.base(brick, 3, ItemsNF.STONE_BRICK_STAIRS.get(type).get()).order(1).save(consumer);
             BuildingRecipeBuilder.base(brick, 2, ItemsNF.STONE_BRICK_SLABS.get(type).get()).order(2).save(consumer);
             BuildingRecipeBuilder.base(brick, 2, ItemsNF.STONE_BRICK_SIDINGS.get(type).get()).order(3).save(consumer);
-            HeldToolRecipe.saveHeldTool(Ingredient.of(rock), Ingredient.of(TagsNF.CHISEL_METAL), brick, 1, -1, entryKnowledge(EntriesNF.TOOLS), consumer);
+            HeldToolRecipe.saveHeldTool(Ingredient.of(rock), Ingredient.of(TagsNF.RECIPE_TOOL_STONE_CARVE), brick, 1, -1, entryKnowledge(EntriesNF.TOOLS), consumer);
         }
         for(Tree type : Tree.values()) {
             Item plank = ItemsNF.PLANKS.get(type).get();
@@ -199,16 +199,16 @@ public class RecipeProviderNF extends RecipeProvider {
         BowlCrushingRecipe.saveBowl(Ingredient.of(TagsNF.CRUSHABLE_TO_LIME), Ingredient.of(TagsNF.CHISEL_OR_HAMMER), ItemsNF.LIME.get(), 1, EntriesNF.WOODCARVING.getId(), consumer);
         BowlCrushingRecipe.saveBowl(Ingredient.of(TagsNF.CRUSHABLE_TO_BONE_SHARD), Ingredient.of(TagsNF.HAMMER), ItemsNF.BONE_SHARD.get(), 2, EntriesNF.WOODCARVING.getId(), consumer);
 
-        HeldToolRecipe.saveHeldTool(Ingredient.of(ItemTags.LOGS), Ingredient.of(TagsNF.ADZE), ItemsNF.WOODEN_BOWL.get(), 1, -1, EntriesNF.WOODCARVING.getId(), consumer);
-        HeldToolRecipe.saveHeldTool(Ingredient.of(ItemTags.LOGS), Ingredient.of(TagsNF.AXE), ItemsNF.WOODEN_CLUB.get(), 1, -1, EntriesNF.WOODCARVING.getId(), consumer);
-        HeldToolRecipe.saveHeldTool(Ingredient.of(ItemsNF.COCONUT.get()), Ingredient.of(TagsNF.DAGGER), ItemsNF.COCONUT_HALF.get(), 2, -1, entryKnowledge(EntriesNF.TOOLS), consumer);
-        HeldToolRecipe.saveHeldTool(Ingredient.of(ItemsNF.FLINT.get()), Ingredient.of(ItemsNF.FLINT.get()), ItemsNF.FLINT_ARMAMENT_HEADS.get(Armament.ADZE).get(), 1, 0, EntriesNF.TOOLS.getId(), consumer);
-        HeldToolRecipe.saveHeldTool(Ingredient.of(ItemsNF.FLINT.get()), Ingredient.of(ItemsNF.FLINT.get()), ItemsNF.FLINT_ARMAMENT_HEADS.get(Armament.AXE).get(), 1, 1, EntriesNF.TOOLS.getId(), consumer);
-        HeldToolRecipe.saveHeldTool(Ingredient.of(ItemsNF.FLINT.get()), Ingredient.of(ItemsNF.FLINT.get()), ItemsNF.FLINT_ARMAMENT_HEADS.get(Armament.DAGGER).get(), 1, 2, EntriesNF.TOOLS.getId(), consumer);
-        HeldToolRecipe.saveHeldTool(Ingredient.of(ItemsNF.FLINT.get()), Ingredient.of(ItemsNF.FLINT.get()), ItemsNF.FLINT_ARMAMENT_HEADS.get(Armament.HAMMER).get(), 1, 3, EntriesNF.TOOLS.getId(), consumer);
-        HeldToolRecipe.saveHeldTool(Ingredient.of(ItemsNF.FLINT.get()), Ingredient.of(ItemsNF.FLINT.get()), ItemsNF.FLINT_ARMAMENT_HEADS.get(Armament.SHOVEL).get(), 1, 4, EntriesNF.TOOLS.getId(), consumer);
-        HeldToolRecipe.saveHeldTool(Ingredient.of(ItemsNF.FLINT.get()), Ingredient.of(ItemsNF.FLINT.get()), ItemsNF.FLINT_ARMAMENT_HEADS.get(Armament.SPEAR).get(), 1, 5, EntriesNF.TOOLS.getId(), consumer);
-        HeldToolRecipe.saveHeldTool(Ingredient.of(ItemsNF.FLINT.get()), Ingredient.of(ItemsNF.FLINT.get()), ItemsNF.FLINT_CHISEL.get(), 1, 6, EntriesNF.TOOLS.getId(), consumer);
+        HeldToolRecipe.saveHeldTool(Ingredient.of(ItemTags.LOGS), Ingredient.of(TagsNF.RECIPE_TOOL_WOOD_COMPLEX), ItemsNF.WOODEN_BOWL.get(), 1, -1, EntriesNF.WOODCARVING.getId(), consumer);
+        HeldToolRecipe.saveHeldTool(Ingredient.of(ItemTags.LOGS), Ingredient.of(TagsNF.RECIPE_TOOL_WOOD_SIMPLE), ItemsNF.WOODEN_CLUB.get(), 1, -1, EntriesNF.WOODCARVING.getId(), consumer);
+        HeldToolRecipe.saveHeldTool(Ingredient.of(ItemsNF.COCONUT.get()), Ingredient.of(TagsNF.RECIPE_TOOL_COCONUT), ItemsNF.COCONUT_HALF.get(), 2, -1, entryKnowledge(EntriesNF.TOOLS), consumer);
+        HeldToolRecipe.saveHeldTool(Ingredient.of(ItemsNF.FLINT.get()), Ingredient.of(TagsNF.RECIPE_TOOL_FLINT), ItemsNF.FLINT_ARMAMENT_HEADS.get(Armament.ADZE).get(), 1, 0, EntriesNF.TOOLS.getId(), consumer);
+        HeldToolRecipe.saveHeldTool(Ingredient.of(ItemsNF.FLINT.get()), Ingredient.of(TagsNF.RECIPE_TOOL_FLINT), ItemsNF.FLINT_ARMAMENT_HEADS.get(Armament.AXE).get(), 1, 1, EntriesNF.TOOLS.getId(), consumer);
+        HeldToolRecipe.saveHeldTool(Ingredient.of(ItemsNF.FLINT.get()), Ingredient.of(TagsNF.RECIPE_TOOL_FLINT), ItemsNF.FLINT_ARMAMENT_HEADS.get(Armament.DAGGER).get(), 1, 2, EntriesNF.TOOLS.getId(), consumer);
+        HeldToolRecipe.saveHeldTool(Ingredient.of(ItemsNF.FLINT.get()), Ingredient.of(TagsNF.RECIPE_TOOL_FLINT), ItemsNF.FLINT_ARMAMENT_HEADS.get(Armament.HAMMER).get(), 1, 3, EntriesNF.TOOLS.getId(), consumer);
+        HeldToolRecipe.saveHeldTool(Ingredient.of(ItemsNF.FLINT.get()), Ingredient.of(TagsNF.RECIPE_TOOL_FLINT), ItemsNF.FLINT_ARMAMENT_HEADS.get(Armament.SHOVEL).get(), 1, 4, EntriesNF.TOOLS.getId(), consumer);
+        HeldToolRecipe.saveHeldTool(Ingredient.of(ItemsNF.FLINT.get()), Ingredient.of(TagsNF.RECIPE_TOOL_FLINT), ItemsNF.FLINT_ARMAMENT_HEADS.get(Armament.SPEAR).get(), 1, 5, EntriesNF.TOOLS.getId(), consumer);
+        HeldToolRecipe.saveHeldTool(Ingredient.of(ItemsNF.FLINT.get()), Ingredient.of(TagsNF.RECIPE_TOOL_FLINT), ItemsNF.FLINT_CHISEL.get(), 1, 6, EntriesNF.TOOLS.getId(), consumer);
 
         CraftingRecipeBuilder.base(ItemsNF.FLINT_ADZE.get(), EntriesNF.TOOLS).define('F', ItemsNF.FLINT.get()).define('X', ItemsNF.PLANT_FIBERS.get()).define('S', ItemsNF.STICK.get()).pattern(" X").pattern("FS").save(consumer);
         CraftingRecipeBuilder.base(ItemsNF.FLINT_AXE.get(), EntriesNF.TOOLS).define('F', ItemsNF.FLINT.get()).define('X', ItemsNF.PLANT_FIBERS.get()).define('S', ItemsNF.STICK.get()).pattern("FX").pattern(" S").save(consumer);

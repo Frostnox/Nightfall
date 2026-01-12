@@ -658,6 +658,10 @@
     "subtitle": "nightfall.item.armor.equip_plate",
     "sounds": ["item/armor/equip_netherite1", "item/armor/equip_netherite2", "item/armor/equip_netherite3", "item/armor/equip_netherite4"]
   },
+  "item.hit_wood": {
+    "subtitle": "nightfall.item.hit_wood",
+    "sounds": ["nightfall:item/hit_wood_0", "nightfall:item/hit_wood_1", "nightfall:item/hit_wood_2"]
+  },
   "item.carve_wood": {
     "subtitle": "nightfall.item.carve_wood",
     "sounds": ["nightfall:item/carve_wood_0", "nightfall:item/carve_wood_1", "nightfall:item/carve_wood_2", "nightfall:item/carve_wood_3", "nightfall:item/carve_wood_4"]

@@ -191,7 +191,7 @@ public class ItemsNF {
     public static final RegistryObject<Item> RAW_JELLYFISH = ITEMS.register("raw_jellyfish", () -> new Item(ingredient().stacksTo(4)));
     public static final RegistryObject<Item> RAW_PALE_FLESH = ITEMS.register("raw_pale_flesh", () -> new Item(ingredient().stacksTo(4)));
     public static final RegistryObject<Item> PIT_DEVIL_TOOTH = ITEMS.register("pit_devil_tooth", () -> new Item(ingredient()));
-    public static final RegistryObject<Item> BONE = ITEMS.register("bone", () -> new Item(ingredient()));
+    public static final RegistryObject<Item> BONE = ITEMS.register("bone", () -> new SimpleToolItem(ActionsNF.BONE_KNAP, ingredient()));
     public static final RegistryObject<Item> ECTOPLASM = ITEMS.register("ectoplasm", () -> new Item(ingredient()));
     public static final RegistryObject<Item> SKARA_SHELLS = ITEMS.register("skara_shells", () -> new Item(ingredient()));
     public static final RegistryObject<Item> MERBOR_TUSK = ITEMS.register("merbor_tusk", () -> new Item(ingredient().stacksTo(32)));

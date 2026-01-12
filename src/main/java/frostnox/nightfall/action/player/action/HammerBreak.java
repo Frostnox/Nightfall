@@ -12,12 +12,12 @@ import net.minecraft.world.entity.player.Player;
 
 import java.util.EnumMap;
 
-public class FlintKnap extends KnapAction {
-    public FlintKnap(int[] duration, Properties properties) {
+public class HammerBreak extends KnapAction {
+    public HammerBreak(int[] duration, Properties properties) {
         super(duration, properties);
     }
 
-    public FlintKnap(Properties properties, int... duration) {
+    public HammerBreak(Properties properties, int... duration) {
         super(properties, duration);
     }
 
@@ -30,19 +30,27 @@ public class FlintKnap extends KnapAction {
         Vector3f dRotation = data.dRotation;
         switch(state) {
             case 0 -> {
-                tCalc.add(-12.5F/16F, 1F/16F, -5F/16F);
-                rCalc.extend(0, 0, -30);
+                tCalc.add(-15.5F/16F, -5F/16F, -1F/16F);
+                rCalc.add(0, 65, 0);
             }
             case 1 -> {
-                data.tCalc.addWithCharge(3F/16F, 7F/16F, 0, Math.min(1F, (ActionTracker.get(user).getCharge() % 10F) / 3F), Easing.outSine);
+                data.tCalc.addWithCharge(0.5F/16F, 3F/16F, 0, Math.min(1F, (ActionTracker.get(user).getCharge() % 10F) / 3F), Easing.outSine);
                 if(charge == 0F) data.tCalc.frame %= 10;
                 if((charge > 0F ? ActionTracker.get(user).getCharge() : frame) % 10 > 3) {
                     if(charge == 0F) data.tCalc.frame -= 3;
-                    data.tCalc.addWithCharge(-3F/16F, -7F/16F, 0, Math.min(1F, ((ActionTracker.get(user).getCharge() % 10F) - 3) / 4F), Easing.outCubic);
+                    data.tCalc.addWithCharge(-0.5F/16F, -3F/16F, 0, Math.min(1F, ((ActionTracker.get(user).getCharge() % 10F) - 3) / 4F), Easing.outCubic);
                     data.tCalc.length = 4;
                 }
                 else data.tCalc.length = 3;
-                rCalc.freeze();
+
+                data.rCalc.addWithCharge(0, 0, 30, Math.min(1F, (ActionTracker.get(user).getCharge() % 10F) / 3F), Easing.outSine);
+                if(charge == 0F) data.rCalc.frame %= 10;
+                if((charge > 0F ? ActionTracker.get(user).getCharge() : frame) % 10 > 3) {
+                    if(charge == 0F) data.rCalc.frame -= 3;
+                    data.rCalc.addWithCharge(0, 0, -30, Math.min(1F, ((ActionTracker.get(user).getCharge() % 10F) - 3) / 4F), Easing.outCubic);
+                    data.rCalc.length = 4;
+                }
+                else data.rCalc.length = 3;
             }
             case 2 -> {
                 tCalc.extend(dTranslation);
@@ -69,11 +77,11 @@ public class FlintKnap extends KnapAction {
                 case 1 -> {
                     rightArm.rCalc.freeze();
                     leftArm.rCalc.freeze();
-                    rightHand.rCalc.addWithCharge(-35, 0, 0, Math.min(1F, (ActionTracker.get(user).getCharge() % 10F) / 3F), Easing.outSine);
+                    rightHand.rCalc.addWithCharge(-30, 0, 0, Math.min(1F, (ActionTracker.get(user).getCharge() % 10F) / 3F), Easing.outSine);
                     if(charge == 0F) rightHand.rCalc.frame %= 10;
                     if((charge > 0F ? ActionTracker.get(user).getCharge() : frame) % 10 > 3) {
                         if(charge == 0F) rightHand.rCalc.frame -= 3;
-                        rightHand.rCalc.addWithCharge(35, 0, -0, Math.min(1F, ((ActionTracker.get(user).getCharge() % 10F) - 3) / 4F), Easing.outCubic);
+                        rightHand.rCalc.addWithCharge(30, 0, -0, Math.min(1F, ((ActionTracker.get(user).getCharge() % 10F) - 3) / 4F), Easing.outCubic);
                         rightHand.rCalc.length = 4;
                     }
                     else rightHand.rCalc.length = 3;
@@ -93,13 +101,13 @@ public class FlintKnap extends KnapAction {
     public void transformLayerSingle(int state, int frame, int duration, float charge, LivingEntity user, AnimationData data) {
         switch(state) {
             case 0 -> {
-                data.rCalc.add(0, -45, 0);
+                data.tCalc.add(0, -4F/16F, 0);
             }
             case 1 -> {
-                data.rCalc.freeze();
+                data.tCalc.freeze();
             }
             case 2 -> {
-                data.toDefaultRotation();
+                data.toDefaultTranslation();
             }
         }
     }

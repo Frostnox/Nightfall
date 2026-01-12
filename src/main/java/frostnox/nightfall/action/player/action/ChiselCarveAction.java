@@ -2,18 +2,13 @@ package frostnox.nightfall.action.player.action;
 
 import com.mojang.math.Vector3f;
 import frostnox.nightfall.capability.ActionTracker;
-import frostnox.nightfall.capability.IActionTracker;
-import frostnox.nightfall.capability.PlayerData;
-import frostnox.nightfall.data.TagsNF;
 import frostnox.nightfall.entity.EntityPart;
-import frostnox.nightfall.registry.forge.SoundsNF;
 import frostnox.nightfall.util.AnimationUtil;
 import frostnox.nightfall.util.animation.AnimationCalculator;
 import frostnox.nightfall.util.animation.AnimationData;
 import frostnox.nightfall.util.math.Easing;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 
 import java.util.EnumMap;
 
@@ -27,14 +22,8 @@ public class ChiselCarveAction extends CarveAction {
     }
 
     @Override
-    public void onTick(LivingEntity user) {
-        super.onTick(user);
-        IActionTracker capA = ActionTracker.get(user);
-        if(capA.getState() == getChargeState() && capA.getFrame() % 10 == 7) {
-            Player player = (Player) user;
-            ItemStack oppItem = user.getItemInHand(PlayerData.get(player).getOppositeActiveHand());
-            player.playSound(oppItem.is(TagsNF.ROCK) ? SoundsNF.CARVE_STONE.get() : SoundsNF.CARVE_WOOD.get(), 0.6F, 0.97F + player.getRandom().nextFloat() * 0.06F);
-        }
+    protected boolean isSoundFrame(int frame) {
+        return frame % 10 == 7;
     }
 
     @Override

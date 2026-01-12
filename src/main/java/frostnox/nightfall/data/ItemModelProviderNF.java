@@ -227,6 +227,12 @@ public class ItemModelProviderNF extends ModelProvider<AnimatedItemModelBuilder>
         getBuilder(item.getRegistryName().getPath()).swapSpeed(swapSpeed).swapYOffset(swapYOffset).base(base).inventory(inventory).animatedLoader();
     }
 
+    protected void animatedHandheldItem(Item item) {
+        AnimatedItemModelBuilder builder = getUnsavedBuilder(item.getRegistryName().getPath())
+                .parent(getExistingFile(mcLoc("item/handheld"))).texture("layer0", itemLoc(item));
+        getBuilder(item.getRegistryName().getPath()).base(builder.toJson()).inventory(builder.toJson()).animatedLoader();
+    }
+
     protected void animatedItem(Item item) {
         AnimatedItemModelBuilder builder = getUnsavedBuilder(item.getRegistryName().getPath())
                 .parent(getExistingFile(mcLoc("item/generated"))).texture("layer0", itemLoc(item));
@@ -299,6 +305,8 @@ public class ItemModelProviderNF extends ModelProvider<AnimatedItemModelBuilder>
         }
 
         handheldItem(ItemsNF.STICK.get());
+        handheldItem(ItemsNF.LIVING_BONE.get());
+        animatedHandheldItem(ItemsNF.BONE.get());
         genericItem(ItemsNF.SNOWBALL_THROWABLE.get(), ItemsNF.SNOWBALL.get());
 
         templateItem(ItemsNF.TORCH.get(), modLoc("item/handheld_small_flipped"));

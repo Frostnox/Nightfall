@@ -13,7 +13,7 @@ import net.minecraft.world.entity.player.Player;
 
 import java.util.EnumMap;
 
-public class KnifeCarveAction extends WoodCarveAction {
+public class KnifeCarveAction extends CarveAction {
     public KnifeCarveAction(int[] duration, Properties properties) {
         super(properties, duration);
     }

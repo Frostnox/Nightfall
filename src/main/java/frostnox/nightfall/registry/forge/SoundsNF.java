@@ -177,6 +177,7 @@ public class SoundsNF {
     public static final RegistryObject<SoundEvent> LIGHT_ARMOR_EQUIP = generic("item.armor.equip_light");
     public static final RegistryObject<SoundEvent> SCALE_ARMOR_EQUIP = generic("item.armor.equip_scale");
     public static final RegistryObject<SoundEvent> PLATE_ARMOR_EQUIP = generic("item.armor.equip_plate");
+    public static final RegistryObject<SoundEvent> HIT_WOOD = generic("item.hit_wood");
     public static final RegistryObject<SoundEvent> CARVE_WOOD = generic("item.carve_wood");
     public static final RegistryObject<SoundEvent> CARVE_STONE = generic("item.carve_stone");
     public static final RegistryObject<SoundEvent> STICK_FIRE_STRIKE = generic("item.stick_fire_strike");

@@ -5,12 +5,15 @@ import frostnox.nightfall.capability.ActionTracker;
 import frostnox.nightfall.capability.IActionTracker;
 import frostnox.nightfall.capability.IPlayerData;
 import frostnox.nightfall.capability.PlayerData;
+import frostnox.nightfall.data.TagsNF;
 import frostnox.nightfall.data.recipe.ToolIngredientRecipe;
 import frostnox.nightfall.item.item.ToolItem;
 import frostnox.nightfall.network.NetworkHandler;
 import frostnox.nightfall.network.message.GenericEntityToClient;
+import frostnox.nightfall.registry.forge.SoundsNF;
 import frostnox.nightfall.util.LevelUtil;
 import frostnox.nightfall.util.animation.AnimationCalculator;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -24,6 +27,14 @@ public abstract class CarveAction extends MoveSpeedPlayerAction {
 
     public CarveAction(Properties properties, int... duration) {
         super(properties, -0.25F, duration);
+    }
+
+    protected SoundEvent getCarveSound(ItemStack oppItem) {
+        return oppItem.is(TagsNF.STONE) ? SoundsNF.CARVE_STONE.get() : SoundsNF.CARVE_WOOD.get();
+    }
+
+    protected boolean isSoundFrame(int frame) {
+        return frame % 10 == 1;
     }
 
     @Override
@@ -52,7 +63,11 @@ public abstract class CarveAction extends MoveSpeedPlayerAction {
             List<ToolIngredientRecipe> recipes = player.getItemInHand(capP.getActiveHand()).getItem() instanceof ToolItem tool ? tool.getRecipes(user.level, player, oppItem) : List.of();
             int index = capP.getCachedModifiableIndex();
             if(index >= 0 && index < recipes.size()) {
-                if(!player.getAbilities().instabuild) oppItem.shrink(1);
+                if(!player.getAbilities().instabuild) {
+                    oppItem.shrink(1);
+                    ItemStack item = player.getItemInHand(capP.getActiveHand());
+                    if(item.isDamageableItem()) item.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(capP.getActiveHand()));
+                }
                 LevelUtil.giveItemToPlayer(recipes.get(index).getResultItem(), player, true);
                 if(oppItem.isEmpty()) {
                     capA.queue();
@@ -63,6 +78,11 @@ public abstract class CarveAction extends MoveSpeedPlayerAction {
                 capA.queue();
                 NetworkHandler.toAllTrackingAndSelf(player, new GenericEntityToClient(NetworkHandler.Type.QUEUE_ACTION_TRACKER, player.getId()));
             }
+        }
+        if(capA.getState() == getChargeState() && isSoundFrame(capA.getFrame())) {
+            Player player = (Player) user;
+            ItemStack oppItem = user.getItemInHand(PlayerData.get(player).getOppositeActiveHand());
+            player.playSound(getCarveSound(oppItem), 0.6F, 0.97F + player.getRandom().nextFloat() * 0.06F);
         }
     }
 

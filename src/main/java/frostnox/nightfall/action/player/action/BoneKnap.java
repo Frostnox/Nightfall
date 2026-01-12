@@ -12,12 +12,12 @@ import net.minecraft.world.entity.player.Player;
 
 import java.util.EnumMap;
 
-public class FlintKnap extends KnapAction {
-    public FlintKnap(int[] duration, Properties properties) {
+public class BoneKnap extends KnapAction {
+    public BoneKnap(int[] duration, Properties properties) {
         super(duration, properties);
     }
 
-    public FlintKnap(Properties properties, int... duration) {
+    public BoneKnap(Properties properties, int... duration) {
         super(properties, duration);
     }
 
@@ -30,8 +30,8 @@ public class FlintKnap extends KnapAction {
         Vector3f dRotation = data.dRotation;
         switch(state) {
             case 0 -> {
-                tCalc.add(-12.5F/16F, 1F/16F, -5F/16F);
-                rCalc.extend(0, 0, -30);
+                tCalc.add(-11.5F/16F, -0.5F/16F, -5F/16F);
+                rCalc.extend(0, 0, 100);
             }
             case 1 -> {
                 data.tCalc.addWithCharge(3F/16F, 7F/16F, 0, Math.min(1F, (ActionTracker.get(user).getCharge() % 10F) / 3F), Easing.outSine);
@@ -93,13 +93,13 @@ public class FlintKnap extends KnapAction {
     public void transformLayerSingle(int state, int frame, int duration, float charge, LivingEntity user, AnimationData data) {
         switch(state) {
             case 0 -> {
-                data.rCalc.add(0, -45, 0);
+                data.tCalc.add(0, -6F/16F, 1.1F/16F);
             }
             case 1 -> {
-                data.rCalc.freeze();
+                data.tCalc.freeze();
             }
             case 2 -> {
-                data.toDefaultRotation();
+                data.toDefaultTranslation();
             }
         }
     }

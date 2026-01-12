@@ -174,6 +174,11 @@ public class TagsNF {
     public static final TagKey<Item> CHISEL_OR_HAMMER = itemTag("chisel_or_hammer");
     public static final TagKey<Item> SABRE_OR_HEAD = itemTag("sabre_or_head");
     public static final TagKey<Item> SICKLE_OR_HEAD = itemTag("sickle_or_head");
+    public static final TagKey<Item> RECIPE_TOOL_WOOD_SIMPLE = itemTag("recipe_tool/wood_simple");
+    public static final TagKey<Item> RECIPE_TOOL_WOOD_COMPLEX = itemTag("recipe_tool/wood_complex");
+    public static final TagKey<Item> RECIPE_TOOL_STONE_CARVE = itemTag("recipe_tool/stone_carve");
+    public static final TagKey<Item> RECIPE_TOOL_FLINT = itemTag("recipe_tool/flint");
+    public static final TagKey<Item> RECIPE_TOOL_COCONUT = itemTag("recipe_tool/coconut");
     public static final TagKey<Item> SLING_AMMO = itemTag("sling_ammo");
     public static final TagKey<Item> NO_HITSTOP = itemTag("no_hitstop");
     public static final TagKey<Item> GRID_INTERACTABLE = itemTag("grid_interactable");
@@ -206,6 +211,7 @@ public class TagsNF {
     public static final TagKey<Item> STICK_FIRE_STARTER = itemTag("stick_fire_starter");
     public static final TagKey<Item> RACK_ITEM = itemTag("rack_item");
     public static final TagKey<Item> ROCK = itemTag("rock");
+    public static final TagKey<Item> STONE = itemTag("stone");
     public static final TagKey<Item> SAND_ITEM = itemTag("sand_item");
     public static final TagKey<Item> SOIL_ITEM = itemTag("soil_item");
     public static final TagKey<Item> FLUID_ITEM = itemTag("fluid_item");

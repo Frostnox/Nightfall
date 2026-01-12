@@ -158,6 +158,11 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
         tag(TagsNF.CHISEL_OR_HAMMER).addTags(TagsNF.CHISEL, TagsNF.HAMMER);
         tag(TagsNF.SABRE_OR_HEAD).addTags(TagsNF.SABRE, TagsNF.SABRE_HEAD);
         tag(TagsNF.SICKLE_OR_HEAD).addTags(TagsNF.SICKLE, TagsNF.SICKLE_HEAD);
+        tag(TagsNF.RECIPE_TOOL_WOOD_SIMPLE).addTags(TagsNF.ADZE, TagsNF.AXE, TagsNF.DAGGER);
+        tag(TagsNF.RECIPE_TOOL_WOOD_COMPLEX).addTag(TagsNF.ADZE);
+        tag(TagsNF.RECIPE_TOOL_STONE_CARVE).addTag(TagsNF.CHISEL_METAL);
+        tag(TagsNF.RECIPE_TOOL_FLINT).add(ItemsNF.FLINT.get(), ItemsNF.BONE.get());
+        tag(TagsNF.RECIPE_TOOL_COCONUT).addTags(TagsNF.RECIPE_TOOL_FLINT, TagsNF.HAMMER);
         for(Stone type : ItemsNF.ROCKS.keySet()) {
             var item = ItemsNF.ROCKS.get(type);
             tag(TagsNF.SLING_AMMO).add(item.get());
@@ -214,6 +219,8 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
                 ItemsNF.METAL_ARMAMENTS.get(TieredItemMaterial.IRON).get(Armament.DAGGER).get(), ItemsNF.METAL_ARMAMENTS.get(TieredItemMaterial.STEEL).get(Armament.DAGGER).get());
         tag(TagsNF.RACK_ITEM).addTags(TagsNF.ARMAMENT, TagsNF.BOW, TagsNF.SHIELD);
         for(var item : ItemsNF.ROCKS.values()) tag(TagsNF.ROCK).add(item.get());
+        tag(TagsNF.STONE).addTags(TagsNF.ROCK, TagsNF.CRUSHABLE_TO_BONE_SHARD);
+        tag(TagsNF.STONE).add(ItemsNF.FLINT.get(), ItemsNF.OBSIDIAN_SHARD.get(), ItemsNF.BONE_SHARD.get());
         for(var item : ItemsNF.SOILS.values()) tag(TagsNF.SOIL_ITEM).add(item.get());
         tag(TagsNF.SAND_ITEM).add(ItemsNF.SOILS.get(Soil.SAND).get(), ItemsNF.SOILS.get(Soil.RED_SAND).get(), ItemsNF.SOILS.get(Soil.WHITE_SAND).get());
         tag(TagsNF.FLUID_ITEM).add(ItemsNF.WATER.get(), ItemsNF.SEAWATER.get());

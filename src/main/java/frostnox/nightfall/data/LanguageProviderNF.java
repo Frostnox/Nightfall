@@ -470,6 +470,7 @@ public class LanguageProviderNF extends LanguageProvider {
         addSound(SoundsNF.LIGHT_ARMOR_EQUIP, "Armor rustles");
         addSound(SoundsNF.SCALE_ARMOR_EQUIP, "Scale armor clatters");
         addSound(SoundsNF.PLATE_ARMOR_EQUIP, "Plate armor clanks");
+        addSound(SoundsNF.HIT_WOOD, "Wood cracks");
         addSound(SoundsNF.CARVE_WOOD, "Wood carves");
         addSound(SoundsNF.CARVE_STONE, "Stone carves");
         addSound(SoundsNF.STICK_FIRE_STRIKE, "Stick strikes");

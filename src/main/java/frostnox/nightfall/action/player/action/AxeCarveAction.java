@@ -12,7 +12,7 @@ import net.minecraft.world.entity.player.Player;
 
 import java.util.EnumMap;
 
-public class AxeCarveAction extends WoodCarveAction {
+public class AxeCarveAction extends CarveAction {
     public AxeCarveAction(int[] duration, Properties properties) {
         super(properties, duration);
     }

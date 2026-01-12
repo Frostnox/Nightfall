@@ -180,7 +180,7 @@ public class ActionsNF {
     public static final RegistryObject<CrawlingThrust> CHISEL_CRAWLING = ACTIONS.register("chisel_crawling", () ->
             new CrawlingThrust(DamageType.PIERCING.asArray(), HurtSphere.CHISEL, 1, CombatUtil.STUN_SHORT, new int[] {8, 5, 3, 8}, new Action.Properties().setSprinting().setCrawling().setSound(SoundsNF.SHORT_BLADE_SWING).setKnockback(CHISEL_KNOCKBACK).setImpact(Impact.MEDIUM)));
     public static final RegistryObject<ChiselCarveAction> CHISEL_CARVE = ACTIONS.register("chisel_carve", () ->
-            new ChiselCarveAction(new int[] {8, 43, 9}, new Action.Properties().setChargeState(1).setSound(SoundsNF.SWING).setExtraSound(SoundsNF.SWING_CHARGED)));
+            new ChiselCarveAction(new int[] {8, 37, 9}, new Action.Properties().setChargeState(1).setSound(SoundsNF.SWING).setExtraSound(SoundsNF.SWING_CHARGED)));
 
     public static final RegistryObject<HammerStrike> HAMMER_BASIC_1 = ACTIONS.register("hammer_basic_1", () ->
             new HammerStrike(DamageType.STRIKING.asArray(), HurtSphere.HAMMER, 1, CombatUtil.STUN_MEDIUM, new int[] {8, 6, 4, 7}, new Action.Properties().setChainTo(ActionsNF.HAMMER_BASIC_2).setChainState(2).setKnockback(HAMMER_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.SWING)));
@@ -192,6 +192,8 @@ public class ActionsNF {
             new HammerTechnique(AnvilAction.DRAW, AnvilAction.DRAW_LINE, DamageType.STRIKING.asArray(), HurtSphere.HAMMER, 1, CombatUtil.STUN_MEDIUM, new int[] {24, 5, 4, 9}, new Action.Properties().setChargeState(0).setKnockback(HAMMER_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.SWING).setExtraSound(SoundsNF.SWING_CHARGED)));
     public static final RegistryObject<CrawlingSwing> HAMMER_CRAWLING = ACTIONS.register("hammer_crawling", () ->
             new CrawlingSwing(DamageType.STRIKING.asArray(), HurtSphere.HAMMER, 1, CombatUtil.STUN_MEDIUM, new int[] {8, 6, 4, 7}, new Action.Properties().setSprinting().setCrawling().setKnockback(HAMMER_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.SWING).setSound(SoundsNF.SWING)));
+    public static final RegistryObject<HammerBreak> HAMMER_BREAK = ACTIONS.register("hammer_break", () ->
+            new HammerBreak(new int[] {7, 37, 7}, new Action.Properties().setChargeState(1)));
 
     public static final RegistryObject<WideSwingRight> AXE_BASIC_1 = ACTIONS.register("axe_basic_1", () ->
             new WideSwingRight(STRIKING_SLASHING, HurtSphere.AXE, 2, CombatUtil.STUN_LONG, new int[] {7, 12, 2, 8}, new Action.Properties().setChainTo(ActionsNF.AXE_BASIC_2).setChainState(2).setKnockback(AXE_KNOCKBACK).setImpact(Impact.MEDIUM).setConditionalChainTo(ActionsNF.AXE_BASIC_2_CONDITIONAL).setConditionalChainFunction(HITSTOP).setSound(SoundsNF.HEAVY_BLADE_SWING).setHarvestable(BlockTags.MINEABLE_WITH_AXE)));
@@ -322,7 +324,9 @@ public class ActionsNF {
 
     //Items
     public static final RegistryObject<FlintKnap> FLINT_KNAP = ACTIONS.register("flint_knap", () ->
-            new FlintKnap(new int[] {7, 43, 7}, new Action.Properties().setChargeState(1)));
+            new FlintKnap(new int[] {7, 57, 7}, new Action.Properties().setChargeState(1)));
+    public static final RegistryObject<BoneKnap> BONE_KNAP = ACTIONS.register("bone_knap", () ->
+            new BoneKnap(new int[] {7, 57, 7}, new Action.Properties().setChargeState(1)));
     public static final RegistryObject<ShieldGuardAction> SHIELD_GUARD = ACTIONS.register("shield_guard", () ->
             new ShieldGuardAction(new Action.Properties().setChargeState(0).setChainState(0).setChainTo(ActionsNF.SHIELD_RIPOSTE).setSound(() -> SoundEvents.SHIELD_BLOCK), 5, 5));
     public static final RegistryObject<ShieldRiposte> SHIELD_RIPOSTE = ACTIONS.register("shield_riposte", () ->
