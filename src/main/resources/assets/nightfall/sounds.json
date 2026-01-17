@@ -682,6 +682,9 @@
     "subtitle": "nightfall.item.metal_break",
     "sounds": ["nightfall:item/metal_break_0", "nightfall:item/metal_break_1"]
   },
+  "gui.encyclopedia_use": {
+    "sounds": ["nightfall:gui/encyclopedia_use_0", "nightfall:gui/encyclopedia_use_1"]
+  },
   "gui.category_revealed": {
     "sounds": ["nightfall:gui/category_revealed"]
   },

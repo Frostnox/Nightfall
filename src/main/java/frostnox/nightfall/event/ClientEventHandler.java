@@ -54,6 +54,7 @@ import net.minecraft.client.gui.screens.inventory.SignEditScreen;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.debug.DebugRenderer;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.SectionPos;
@@ -697,7 +698,10 @@ public class ClientEventHandler {
             if(modifyCounter <= 0) updateHand(p);
         }
         else if(key == ClientEngine.get().keyEncyclopedia.getKey().getValue() && ClientEngine.get().keyEncyclopedia.consumeClick()) {
-            if(mc.screen == null) mc.setScreen(new EncyclopediaScreen());
+            if(mc.screen == null) {
+                mc.setScreen(new EncyclopediaScreen());
+                mc.getSoundManager().play(SimpleSoundInstance.forUI(SoundsNF.ENCYCLOPEDIA_USE.get(), 1F));
+            }
         }
         else if(key == ClientEngine.get().keyModify.getKey().getValue() && action != GLFW.GLFW_REPEAT) {
             InteractionHand hand = PlayerData.get(p).getActiveHand();

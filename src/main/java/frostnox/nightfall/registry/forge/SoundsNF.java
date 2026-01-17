@@ -183,6 +183,7 @@ public class SoundsNF {
     public static final RegistryObject<SoundEvent> STICK_FIRE_STRIKE = generic("item.stick_fire_strike");
     public static final RegistryObject<SoundEvent> QUENCH = generic("item.quench");
     public static final RegistryObject<SoundEvent> METAL_BREAK = generic("item.metal_break");
+    public static final RegistryObject<SoundEvent> ENCYCLOPEDIA_USE = generic("gui.encyclopedia_use");
     public static final RegistryObject<SoundEvent> CATEGORY_REVEALED = generic("gui.category_revealed");
     public static final RegistryObject<SoundEvent> ENTRY_UPDATED = generic("gui.entry_updated");
     public static final RegistryObject<SoundEvent> EXPERIMENT_SURVIVAL_FAIL = generic("gui.experiment_survival_fail");

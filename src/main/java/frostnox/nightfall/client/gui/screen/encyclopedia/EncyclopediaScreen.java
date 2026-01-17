@@ -10,7 +10,7 @@ import frostnox.nightfall.encyclopedia.EntryStage;
 import frostnox.nightfall.network.NetworkHandler;
 import frostnox.nightfall.network.message.capability.EntryNotificationToServer;
 import frostnox.nightfall.network.message.capability.PuzzleContainerRequestToServer;
-import frostnox.nightfall.util.RenderUtil;
+import frostnox.nightfall.registry.forge.SoundsNF;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.chat.NarratorChatListener;
 import net.minecraft.client.gui.screens.Screen;
@@ -239,7 +239,7 @@ public class EncyclopediaScreen extends Screen {
                     if(tabs[i] != selectedTab) {
                         selectedTab = tabs[i];
                         selectedTab.tickCount = 0;
-                        mc.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_STONECUTTER_SELECT_RECIPE, 1.0F));
+                        mc.getSoundManager().play(SimpleSoundInstance.forUI(SoundsNF.ENCYCLOPEDIA_USE.get(), 1F));
                     }
                 }
             }
@@ -277,5 +277,6 @@ public class EncyclopediaScreen extends Screen {
         if(entryScreen != null) entryScreen.onClose();
         super.onClose();
         mc.getWindow().setGuiScale(scaleCache);
+        mc.getSoundManager().play(SimpleSoundInstance.forUI(SoundsNF.ENCYCLOPEDIA_USE.get(), 1F));
     }
 }
