@@ -140,24 +140,23 @@ public class EncyclopediaScreen extends Screen {
         if(showTabs) {
             for(int i = 0; i < tabs.length; i++) {
                 if(tabs[i] == null) continue;
-                int tabX = 7 + 24 * i;
+                int tabX = 17 + 26 * i;
                 int tabY = -20;
                 int yOff = 5;
                 if(tabs[i] == selectedTab) yOff = 0;
                 else if(entryScreen == null && mouseX >= tabX && mouseX < tabX + 20 && mouseY >= tabY && mouseY < tabY + 20) yOff = 0;
-                RenderSystem.setShaderTexture(0, TEXTURE);
-                blit(poseStack, tabX + xOffset, tabY + yOff + yOffset, 0, 385, 20, 20 - yOff,  512, 512);
                 RenderSystem.setShaderTexture(0, tabs[i].category.icon());
-                blit(poseStack, tabX + xOffset + 2, tabY + yOff + yOffset + 2, 0, 0, 16, 16 - Math.max(0, yOff - 2), 16, 16);
-                if(tabs[i] == selectedTab) {
-                    RenderUtil.renderGradient(poseStack, tabX + xOffset, tabY + yOff + yOffset, 20, 20 - yOff, getBlitOffset(), 0x4f402000);
-                }
+                if(tabs[i] == selectedTab) RenderSystem.setShaderColor(0.7F, 0.66F, 0.66F, 1F);
+                else RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+                blit(poseStack, tabX + xOffset, tabY + yOff + yOffset, 0, 0, 20, 20 - Math.max(0, yOff), 20, 20);
                 if(tabs[i].hasNotifications) {
                     RenderSystem.setShaderTexture(0, TEXTURE);
+                    RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
                     blit(poseStack, tabX + xOffset, tabY + yOff + yOffset, 0, 364, 20, 20 - yOff,  512, 512);
                 }
             }
         }
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         //Opened entry
         if(entryScreen != null) {
             entryScreen.render(poseStack, x, y, partial);
@@ -167,7 +166,7 @@ public class EncyclopediaScreen extends Screen {
             if(showTabs) {
                 for(int i = 0; i < tabs.length; i++) {
                     if(tabs[i] == null) continue;
-                    int tabX = 7 + 24 * i;
+                    int tabX = 17 + 26 * i;
                     int tabY = -20;
                     if(mouseX >= tabX && mouseX < tabX + 20 && mouseY >= tabY && mouseY < tabY + 20) {
                         renderTooltip(poseStack, new TranslatableComponent(tabs[i].category.name()), x, y);
@@ -234,7 +233,7 @@ public class EncyclopediaScreen extends Screen {
         if(showTabs) {
             for(int i = 0; i < tabs.length; i++) {
                 if(tabs[i] == null) continue;
-                int tabX = 7 + 24 * i;
+                int tabX = 17 + 26 * i;
                 int tabY = -20;
                 if(mouseX >= tabX && mouseX < tabX + 20 && mouseY >= tabY && mouseY < tabY + 20) {
                     if(tabs[i] != selectedTab) {
