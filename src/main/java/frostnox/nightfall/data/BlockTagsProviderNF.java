@@ -167,7 +167,7 @@ public class BlockTagsProviderNF extends BlockTagsProvider {
                 TagsNF.WOODEN_LADDERS, TagsNF.WOODEN_BARRELS, TagsNF.WOODEN_CHESTS, TagsNF.WOODEN_RACKS, TagsNF.WOODEN_SHELVES,
                 Tags.Blocks.GLASS, TagsNF.BRANCHES_OR_LEAVES);
         tag(BlockTags.MINEABLE_WITH_AXE).add(BlocksNF.DEAD_BUSH.get(), BlocksNF.CAMPFIRE.get(), BlocksNF.FIREWOOD.get(), BlocksNF.FIREWOOD_BURNING.get(),
-                BlocksNF.MOON_ESSENCE.get());
+                BlocksNF.MOON_ESSENCE.get(), BlocksNF.CHARRED_LOG.get());
         for(var block : BlocksNF.ANVILS_LOG.values()) tag(BlockTags.MINEABLE_WITH_AXE).add(block.get());
 
         tag(BlockTags.MINEABLE_WITH_SHOVEL).addTags(TagsNF.SOIL);
@@ -244,7 +244,7 @@ public class BlockTagsProviderNF extends BlockTagsProvider {
         addSupports(sup, 2, BlocksNF.THATCH, BlocksNF.THATCH_STAIRS, BlocksNF.THATCH_SLAB, BlocksNF.THATCH_SIDING, BlocksNF.TERRACOTTA, BlocksNF.TERRACOTTA_TILES,
                 BlocksNF.TERRACOTTA_TILE_STAIRS, BlocksNF.TERRACOTTA_TILE_SLAB, BlocksNF.TERRACOTTA_TILE_SIDING, BlocksNF.TERRACOTTA_MOSAIC, BlocksNF.TERRACOTTA_MOSAIC_STAIRS,
                 BlocksNF.TERRACOTTA_MOSAIC_SLAB, BlocksNF.TERRACOTTA_MOSAIC_SIDING, BlocksNF.ICE, BlocksNF.SEA_ICE);
-        addSupports(sup, 4, BlocksNF.MUD_BRICKS, BlocksNF.MUD_BRICK_STAIRS, BlocksNF.MUD_BRICK_SLAB, BlocksNF.MUD_BRICK_SIDING);
+        addSupports(sup, 4, BlocksNF.MUD_BRICKS, BlocksNF.MUD_BRICK_STAIRS, BlocksNF.MUD_BRICK_SLAB, BlocksNF.MUD_BRICK_SIDING, BlocksNF.CHARRED_LOG);
         addSupports(sup, 6, BlocksNF.BRICKS, BlocksNF.BRICK_STAIRS, BlocksNF.BRICK_SLAB, BlocksNF.BRICK_SIDING,
                 BlocksNF.FIRE_BRICKS, BlocksNF.FIRE_BRICK_STAIRS, BlocksNF.FIRE_BRICK_SLAB, BlocksNF.FIRE_BRICK_SIDING);
         addSupports(sup, 10, BlocksNF.GLASS_BLOCK, BlocksNF.GLASS_SLAB, BlocksNF.GLASS_SIDING);

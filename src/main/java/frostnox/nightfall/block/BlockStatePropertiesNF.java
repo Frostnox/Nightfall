@@ -13,6 +13,7 @@ public class BlockStatePropertiesNF {
     public static final BooleanProperty RANDOM_TICKING = BooleanProperty.create("random_ticking");
     public static final BooleanProperty TICKING = BooleanProperty.create("ticking");
     public static final BooleanProperty CHANGED = BooleanProperty.create("changed");
+    public static final BooleanProperty CHARRED = BooleanProperty.create("charred");
     public static final BooleanProperty ALTERNATE = BooleanProperty.create("alternate");
     public static final BooleanProperty HEATED = BooleanProperty.create("heated");
     public static final BooleanProperty HAS_FOOD = BooleanProperty.create("has_food");

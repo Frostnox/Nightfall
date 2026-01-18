@@ -249,19 +249,15 @@ public class BlocksNF {
     public static final Map<Tree, RegistryObject<TreeStemBlock>> STEMS = DataUtil.mapEnum(Tree.class, tree ->
             register(tree.getName() + "_stem", () -> new TreeStemBlock(tree, BlockBehaviour.Properties.of(Material.WOOD, (state) ->
                             state.getValue(TreeStemBlock.TYPE) != TreeStemBlock.Type.TOP &&
-                                    state.getValue(TreeStemBlock.TYPE) != TreeStemBlock.Type.ROTATED_TOP ? tree.getBarkColor() :
-                                    (state.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? tree.getBaseColor() : tree.getBarkColor()))
-                            .strength(tree.getStrength(), tree.getExplosionResistance()).sound(tree.getSound())) {
-                @Override
-                public int getFireSpreadSpeed(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
-                    return 5;
-                }
+                                    state.getValue(TreeStemBlock.TYPE) != TreeStemBlock.Type.ROTATED_TOP ? (state.getValue(TreeStemBlock.CHARRED) ? MaterialColor.COLOR_BLACK : tree.getBarkColor()) :
+                                    (state.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ?
+                                            (state.getValue(TreeStemBlock.CHARRED) ? MaterialColor.COLOR_GRAY : tree.getBaseColor()) :
+                                            (state.getValue(TreeStemBlock.CHARRED) ? MaterialColor.COLOR_BLACK : tree.getBarkColor())))
+                            .strength(tree.getStrength(), tree.getExplosionResistance()).sound(tree.getSound()))));
 
-                @Override
-                public int getFlammability(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
-                    return 5;
-                }
-            }));
+    public static final RegistryObject<RotatedPillarBlock> CHARRED_LOG = register("charred_log", () -> new RotatedPillarBlock(
+            BlockBehaviour.Properties.of(Material.WOOD, (state) -> state.getValue(LogBlock.AXIS) == Direction.Axis.Y ? MaterialColor.COLOR_GRAY : MaterialColor.COLOR_BLACK)
+            .strength(6F, 18F).sound(SoundType.WOOD)));
 
     public static final Map<Tree, RegistryObject<RotatedPillarBlock>> STRIPPED_LOGS = DataUtil.mapEnum(Tree.class, tree ->
             register("stripped_" + tree.getName() + "_log", () -> new RotatedPillarBlock(BlockBehaviour.Properties.of(Material.WOOD,tree.getBaseColor())

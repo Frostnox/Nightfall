@@ -1,6 +1,7 @@
 package frostnox.nightfall.block.block;
 
 import com.google.common.collect.ImmutableMap;
+import frostnox.nightfall.block.IBurnable;
 import frostnox.nightfall.block.IHeatSource;
 import frostnox.nightfall.block.TieredHeat;
 import frostnox.nightfall.registry.forge.BlocksNF;
@@ -8,7 +9,6 @@ import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.*;
@@ -175,12 +175,12 @@ public class FireBlockNF extends BaseFireBlock implements IHeatSource {
 
                 boolean flag1 = level.isHumidAt(pos);
                 int k = flag1 ? -50 : 0;
-                tryCatchFire(level, pos.east(), 300 + k, rand, i, Direction.WEST);
-                tryCatchFire(level, pos.west(), 300 + k, rand, i, Direction.EAST);
-                tryCatchFire(level, pos.below(), 250 + k, rand, i, Direction.UP);
-                tryCatchFire(level, pos.above(), 250 + k, rand, i, Direction.DOWN);
-                tryCatchFire(level, pos.north(), 300 + k, rand, i, Direction.SOUTH);
-                tryCatchFire(level, pos.south(), 300 + k, rand, i, Direction.NORTH);
+                trySpreadOrBurn(level, pos.east(), 300 + k, rand, i, Direction.WEST);
+                trySpreadOrBurn(level, pos.west(), 300 + k, rand, i, Direction.EAST);
+                trySpreadOrBurn(level, pos.below(), 250 + k, rand, i, Direction.UP);
+                trySpreadOrBurn(level, pos.above(), 250 + k, rand, i, Direction.DOWN);
+                trySpreadOrBurn(level, pos.north(), 300 + k, rand, i, Direction.SOUTH);
+                trySpreadOrBurn(level, pos.south(), 300 + k, rand, i, Direction.NORTH);
                 BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
 
                 for(int l = -1; l <= 1; ++l) {
@@ -218,15 +218,16 @@ public class FireBlockNF extends BaseFireBlock implements IHeatSource {
         return pLevel.isRainingAt(pPos) || pLevel.isRainingAt(pPos.west()) || pLevel.isRainingAt(pPos.east()) || pLevel.isRainingAt(pPos.north()) || pLevel.isRainingAt(pPos.south());
     }
 
-    private void tryCatchFire(Level pLevel, BlockPos pPos, int pChance, Random pRandom, int pAge, Direction face) {
+    private void trySpreadOrBurn(Level pLevel, BlockPos pPos, int pChance, Random pRandom, int pAge, Direction face) {
         int i = pLevel.getBlockState(pPos).getFlammability(pLevel, pPos, face);
         if (pRandom.nextInt(pChance) < i) {
             BlockState blockstate = pLevel.getBlockState(pPos);
-            if (pRandom.nextInt(pAge + 10) < 5 && !pLevel.isRainingAt(pPos)) {
+            if(!blockstate.getMaterial().blocksMotion() && pRandom.nextInt(pAge + 10) < 5 && !pLevel.isRainingAt(pPos)) {
                 int j = Math.min(pAge + pRandom.nextInt(5) / 4, 15);
                 pLevel.setBlock(pPos, getStateWithAge(pLevel, pPos, j), 3);
             } else {
-                pLevel.removeBlock(pPos, false);
+                if(blockstate.getBlock() instanceof IBurnable burnable) pLevel.setBlockAndUpdate(pPos, burnable.getBurnedState(blockstate));
+                else pLevel.removeBlock(pPos, false);
             }
 
             blockstate.onCaughtFire(pLevel, pPos, face, null);

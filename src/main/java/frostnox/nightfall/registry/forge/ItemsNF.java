@@ -454,6 +454,7 @@ public class ItemsNF {
     //Tree blocks
     public static final Map<Tree, RegistryObject<LogItem>> LOGS = DataUtil.mapEnum(Tree.class, tree ->
             ITEMS.register(BlocksNF.LOGS.get(tree).getId().getPath(), () -> new LogItem(BlocksNF.LOGS.get(tree).get(), building().stacksTo(16))));
+    public static final RegistryObject<BlockItemNF> CHARRED_LOG = register(BlocksNF.CHARRED_LOG, BUILDING_TAB);
     public static final Map<Tree, RegistryObject<BlockItemNF>> STRIPPED_LOGS = DataUtil.mapEnum(Tree.class, tree ->
             register(BlocksNF.STRIPPED_LOGS.get(tree), BUILDING_TAB));
     public static final Map<Tree, RegistryObject<BlockItemNF>> LEAVES = DataUtil.mapEnum(Tree.class, tree ->

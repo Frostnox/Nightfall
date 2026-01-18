@@ -1,6 +1,8 @@
 package frostnox.nightfall.block.block;
 
+import frostnox.nightfall.block.IBurnable;
 import frostnox.nightfall.block.block.anvil.TieredAnvilBlock;
+import frostnox.nightfall.registry.forge.BlocksNF;
 import frostnox.nightfall.world.ToolActionsNF;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -14,7 +16,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 import javax.annotation.Nullable;
 
-public class LogBlock extends RotatedPillarBlock {
+public class LogBlock extends RotatedPillarBlock implements IBurnable {
     public final RegistryObject<? extends RotatedPillarBlock> strippedBlock;
     public final @Nullable RegistryObject<? extends TieredAnvilBlock> anvilBlock;
 
@@ -41,5 +43,10 @@ public class LogBlock extends RotatedPillarBlock {
     @Override
     public int getFlammability(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
         return 5;
+    }
+
+    @Override
+    public BlockState getBurnedState(BlockState state) {
+        return BlocksNF.CHARRED_LOG.get().defaultBlockState().setValue(AXIS, state.getValue(AXIS));
     }
 }

@@ -303,6 +303,7 @@ public class ItemModelProviderNF extends ModelProvider<AnimatedItemModelBuilder>
             genericItem((ItemsNF.CHAIRS.get(type).get()));
             genericBlock(ItemsNF.TROUGHS.get(type).get(), "_0");
         }
+        genericItem(ItemsNF.CHARRED_LOG.get());
 
         handheldItem(ItemsNF.STICK.get());
         handheldItem(ItemsNF.LIVING_BONE.get());

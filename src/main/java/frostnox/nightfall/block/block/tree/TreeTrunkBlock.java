@@ -128,7 +128,7 @@ public class TreeTrunkBlock extends BaseEntityBlock implements ITimeSimulatedBlo
     }
 
     public boolean isTreeBase(BlockState state) {
-        return state.is(stemBlock) || state.is(this);
+        return (state.is(stemBlock) && !state.getValue(TreeStemBlock.CHARRED)) || state.is(this);
     }
 
     @Nullable

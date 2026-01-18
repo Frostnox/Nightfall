@@ -11,6 +11,7 @@ import frostnox.nightfall.block.block.FruitBushBlock;
 import frostnox.nightfall.block.block.SidingBlock;
 import frostnox.nightfall.block.block.eggnest.EggNestBlock;
 import frostnox.nightfall.block.block.pile.PileBlock;
+import frostnox.nightfall.block.block.tree.TreeStemBlock;
 import frostnox.nightfall.data.loot.*;
 import frostnox.nightfall.entity.entity.animal.DeerEntity;
 import frostnox.nightfall.entity.entity.animal.MerborEntity;
@@ -213,7 +214,7 @@ public class LootTableProviderNF extends LootTableProvider {
             dropFruitBush(BlocksNF.BERRY_BUSH.get(), 1, 1, 2, 3, 0.5F, 0.025F);
             for(Tree type : Tree.values()) {
                 dropOther(BlocksNF.TRUNKS.get(type).get(), BlocksNF.LOGS.get(type).get(), 1);
-                dropOther(BlocksNF.STEMS.get(type).get(), BlocksNF.LOGS.get(type).get(), 1);
+                dropStem(BlocksNF.STEMS.get(type).get(), BlocksNF.LOGS.get(type).get(), BlocksNF.CHARRED_LOG.get());
                 int min = -68;
                 if(type == Tree.PALM) min = -28;
                 else if(type == Tree.LARCH || type == Tree.SPRUCE) min = -88;
@@ -248,6 +249,8 @@ public class LootTableProviderNF extends LootTableProvider {
             dropFruitLeaves(BlocksNF.FRUIT_LEAVES.get(Tree.JUNGLE).get(), ItemsNF.TREE_SEEDS.get(Tree.JUNGLE).get(), -68, 1, 1, ItemsNF.STICK.get(), -1, 1, ItemsNF.COCOA_POD.get());
             dropFruitLeaves(BlocksNF.FRUIT_LEAVES.get(Tree.OAK).get(), ItemsNF.TREE_SEEDS.get(Tree.OAK).get(), -68, 1, 1, ItemsNF.STICK.get(), -1, 1, ItemsNF.APPLE.get());
             dropFruitLeaves(BlocksNF.FRUIT_LEAVES.get(Tree.PALM).get(), ItemsNF.TREE_SEEDS.get(Tree.PALM).get(), -28, 1, 1, ItemsNF.STICK.get(), -1, 1, ItemsNF.COCONUT.get());
+            dropSpecialActionPerception(BlocksNF.CHARRED_LOG.get(), BlocksNF.CHARRED_LOG.get(), 1, TagsNF.CHOPPING_ACTION, ItemsNF.SOILS.get(Soil.ASH).get(), 3, 4,
+                    ItemsNF.CHARCOAL.get(), 1, 0.15F, 0.01F, 1);
 
             for(Stone type : Stone.values()) {
                 dropStone(BlocksNF.TILED_STONE.get(type).get(), type, 4);
@@ -560,6 +563,29 @@ public class LootTableProviderNF extends LootTableProvider {
                     .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F))
                             .add(LootItem.lootTableItem(actionDrop).apply(SetItemCountFunction.setCount(ConstantValue.exactly(actionAmount))))
                             .when(ActionTagCondition.of(tag)))));
+        }
+
+        protected void dropSpecialActionPerception(Block block, ItemLike drop, int amount, TagKey<Action> tag, ItemLike actionDrop, int actionMin, int actionMax, ItemLike pDrop, int pAmount, float chance, float increment, int pRolls) {
+            add(block, applyExplosionDecay(block, LootTable.lootTable()
+                    .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F))
+                            .add(LootItem.lootTableItem(drop).apply(SetItemCountFunction.setCount(ConstantValue.exactly(amount))))
+                            .when(ActionTagCondition.of(tag).invert()))
+                    .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F))
+                            .add(LootItem.lootTableItem(actionDrop).apply(SetItemCountFunction.setCount(UniformGenerator.between(actionMin, actionMax))))
+                            .when(ActionTagCondition.of(tag)))
+                    .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(pRolls))
+                            .add(LootItem.lootTableItem(pDrop).apply(SetItemCountFunction.setCount(ConstantValue.exactly(0))).apply(PerceptionCountFunction.with(pAmount, chance, increment)))
+                            .when(ActionTagCondition.of(tag)))));
+        }
+
+        protected void dropStem(Block block, ItemLike drop, ItemLike charredDrop) {
+            add(block, applyExplosionDecay(block, LootTable.lootTable()
+                    .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F))
+                            .add(LootItem.lootTableItem(drop).apply(SetItemCountFunction.setCount(ConstantValue.exactly(1))))
+                            .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(block).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(TreeStemBlock.CHARRED, false))))
+                    .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F))
+                            .add(LootItem.lootTableItem(charredDrop).apply(SetItemCountFunction.setCount(ConstantValue.exactly(1))))
+                            .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(block).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(TreeStemBlock.CHARRED, true))))));
         }
 
         protected void dropVegetableCrop(Block block, ItemLike vegetable, float min, float max, ItemLike seeds, float pChance, float pIncrement) {

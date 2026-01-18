@@ -164,29 +164,32 @@ public class BlockStateProviderNF extends BlockStateProvider {
     }
 
     public void stemBlock(TreeStemBlock block, RotatedPillarBlock texBlock) {
-        ResourceLocation sideTex = resource(texBlock), topTex = resource(texBlock, "_top");
-        for(TreeStemBlock.Type type : TreeStemBlock.TYPE.getPossibleValues()) {
-            int xRot = (type == TreeStemBlock.Type.BOTTOM || type == TreeStemBlock.Type.ROTATED_BOTTOM) ? 180 : 0;
-            ModelFile vertical, horizontal;
-            if(type == TreeStemBlock.Type.END || type == TreeStemBlock.Type.FAKE_END) {
-                vertical = models().cubeColumn(name(block) + "_end", sideTex, sideTex);
-                horizontal = models().cubeColumnHorizontal(name(block) + "_horizontal_end", sideTex, sideTex);
+        for(boolean charred : TreeStemBlock.CHARRED.getPossibleValues()) {
+            ResourceLocation sideTex = resource(charred ? BlocksNF.CHARRED_LOG.get() : texBlock), topTex = resource(charred ? BlocksNF.CHARRED_LOG.get() : texBlock, "_top");
+            for(TreeStemBlock.Type type : TreeStemBlock.TYPE.getPossibleValues()) {
+                int xRot = (type == TreeStemBlock.Type.BOTTOM || type == TreeStemBlock.Type.ROTATED_BOTTOM) ? 180 : 0;
+                ModelFile vertical, horizontal;
+                String name = charred ? "charred_stem" : name(block);
+                if(type == TreeStemBlock.Type.END || type == TreeStemBlock.Type.FAKE_END) {
+                    vertical = models().cubeColumn(name + "_end", sideTex, sideTex);
+                    horizontal = models().cubeColumnHorizontal(name + "_horizontal_end", sideTex, sideTex);
+                }
+                else if(type == TreeStemBlock.Type.TOP || type == TreeStemBlock.Type.BOTTOM) {
+                    vertical = models().cubeTop(name, sideTex, topTex);
+                    horizontal = cubeTopHorizontal(name + "_horizontal", sideTex, topTex);
+                }
+                else {
+                    vertical = cubeTopHorizontalRotated(name + "_horizontal_rotated", sideTex, topTex);
+                    horizontal = cubeTopHorizontalRotated(name + "_horizontal_rotated", sideTex, topTex);
+                }
+                getVariantBuilder(block)
+                        .partialState().with(RotatedPillarBlock.AXIS, Direction.Axis.Y).with(TreeStemBlock.TYPE, type).with(TreeStemBlock.CHARRED, charred)
+                        .modelForState().modelFile(vertical).rotationX(xRot).addModel()
+                        .partialState().with(RotatedPillarBlock.AXIS, Direction.Axis.Z).with(TreeStemBlock.TYPE, type).with(TreeStemBlock.CHARRED, charred)
+                        .modelForState().modelFile(horizontal).rotationX(xRot + 90).addModel()
+                        .partialState().with(RotatedPillarBlock.AXIS, Direction.Axis.X).with(TreeStemBlock.TYPE, type).with(TreeStemBlock.CHARRED, charred)
+                        .modelForState().modelFile(horizontal).rotationX(xRot + 90).rotationY(90).addModel();
             }
-            else if(type == TreeStemBlock.Type.TOP || type == TreeStemBlock.Type.BOTTOM) {
-                vertical = models().cubeTop(name(block), sideTex, topTex);
-                horizontal = cubeTopHorizontal(name(block) + "_horizontal", sideTex, topTex);
-            }
-            else {
-                vertical = cubeTopHorizontalRotated(name(block) + "_horizontal_rotated", sideTex, topTex);
-                horizontal = cubeTopHorizontalRotated(name(block) + "_horizontal_rotated", sideTex, topTex);
-            }
-            getVariantBuilder(block)
-                    .partialState().with(RotatedPillarBlock.AXIS, Direction.Axis.Y).with(TreeStemBlock.TYPE, type)
-                    .modelForState().modelFile(vertical).rotationX(xRot).addModel()
-                    .partialState().with(RotatedPillarBlock.AXIS, Direction.Axis.Z).with(TreeStemBlock.TYPE, type)
-                    .modelForState().modelFile(horizontal).rotationX(xRot + 90).addModel()
-                    .partialState().with(RotatedPillarBlock.AXIS, Direction.Axis.X).with(TreeStemBlock.TYPE, type)
-                    .modelForState().modelFile(horizontal).rotationX(xRot + 90).rotationY(90).addModel();
         }
     }
 
@@ -1090,6 +1093,7 @@ public class BlockStateProviderNF extends BlockStateProvider {
             clusterBlock(BlocksNF.ROCK_CLUSTERS.get(type).get(), blockTexture(BlocksNF.STONE_BLOCKS.get(type).get()), "rock");
         }
         clusterBlock(BlocksNF.FLINT_CLUSTER.get(), resource("flint"), "rock");
+        logBlock(BlocksNF.CHARRED_LOG.get());
         for(Tree type : Tree.values()) {
             logBlock(BlocksNF.LOGS.get(type).get());
             stemBlock(BlocksNF.STEMS.get(type).get(), BlocksNF.LOGS.get(type).get());
