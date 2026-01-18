@@ -42,13 +42,13 @@ public class TreeGenerator {
         protected final TreeTrunkBlock trunk;
         protected final BlockPos trunkPos;
         protected final BlockState newLeaves;
-        public final boolean generating, decaying, woodOnly, forceGrowth, simulateDetection;
+        public final boolean generating, decaying, woodOnly, forceGrowth, simulateDetection, charred, allowCharred;
         public boolean noPlacement;
         public int ticks, stemsPlaced, height, maxHeight;
         public int[] intData = null;
         public long[] longData = null;
 
-        protected Data(TreeGenerator gen, WorldGenLevel level, TreeTrunkBlock trunk, BlockPos trunkPos, int ticks, boolean decaying, int stemsPlaced, int height, int maxHeight, boolean simulateDetection, boolean woodOnly, boolean forceGrowth, boolean generating) {
+        protected Data(TreeGenerator gen, WorldGenLevel level, TreeTrunkBlock trunk, BlockPos trunkPos, int ticks, boolean decaying, int stemsPlaced, int height, int maxHeight, boolean simulateDetection, boolean woodOnly, boolean forceGrowth, boolean generating, boolean charred, boolean allowCharred) {
             this.gen = gen;
             this.level = level;
             this.trunk = trunk;
@@ -60,6 +60,8 @@ public class TreeGenerator {
             this.simulateDetection = simulateDetection;
             this.woodOnly = woodOnly;
             this.forceGrowth = forceGrowth;
+            this.charred = charred;
+            this.allowCharred = allowCharred;
             this.trunkWood = new ObjectArrayList<>(5);
             trunkWood.add(new ObjectArrayList<>());
             this.trunkLeaves = new ObjectArraySet<>();
@@ -111,7 +113,7 @@ public class TreeGenerator {
         }
 
         protected boolean isTreeWood(BlockState state) {
-            return simulateDetection || trunk.isTreeBase(state);
+            return simulateDetection || (state.is(trunk.stemBlock) && (allowCharred || !state.getValue(TreeStemBlock.CHARRED))) || state.is(trunk);
         }
 
         protected boolean isTreeLeaves(BlockState state) {
@@ -138,11 +140,11 @@ public class TreeGenerator {
         }
 
         protected BlockState createStem(TreeStemBlock.Type type) {
-            return trunk.stemBlock.defaultBlockState().setValue(TreeStemBlock.TYPE, type);
+            return trunk.stemBlock.defaultBlockState().setValue(TreeStemBlock.TYPE, type).setValue(TreeStemBlock.CHARRED, charred);
         }
 
         protected BlockState createStem(TreeStemBlock.Type type, Direction.Axis axis) {
-            return trunk.stemBlock.defaultBlockState().setValue(TreeStemBlock.TYPE, type).setValue(TreeStemBlock.AXIS, axis);
+            return trunk.stemBlock.defaultBlockState().setValue(TreeStemBlock.TYPE, type).setValue(TreeStemBlock.AXIS, axis).setValue(TreeStemBlock.CHARRED, charred);
         }
 
         protected BlockState createBranch(Direction newDir) {
@@ -150,7 +152,7 @@ public class TreeGenerator {
             boolean positive = newDir.getAxisDirection() == Direction.AxisDirection.POSITIVE;
             if(axis == Direction.Axis.Z) positive = !positive;
             return trunk.stemBlock.defaultBlockState().setValue(TreeStemBlock.TYPE, positive ? TreeStemBlock.Type.TOP : TreeStemBlock.Type.BOTTOM)
-                    .setValue(TreeStemBlock.AXIS, axis);
+                    .setValue(TreeStemBlock.AXIS, axis).setValue(TreeStemBlock.CHARRED, charred);
         }
     }
 
@@ -185,16 +187,16 @@ public class TreeGenerator {
     }
 
     public Data grow(ServerLevel level, TreeTrunkBlockEntity entity, boolean forceGrowth) {
-        return grow(level, entity, 1, forceGrowth, false);
+        return grow(level, entity, 1, forceGrowth, false, false);
     }
 
     /**
      * Grows tree based on its current state
      * @param ticks number of stages to grow, must be >= 1
      */
-    public Data grow(WorldGenLevel level, TreeTrunkBlockEntity entity, int ticks, boolean forceGrowth, boolean generating) {
+    public Data grow(WorldGenLevel level, TreeTrunkBlockEntity entity, int ticks, boolean forceGrowth, boolean generating, boolean charred) {
         ticks = Math.max(1, ticks);
-        return tick(level, entity, ticks, LevelData.isPresent(level.getLevel()) ? LevelData.get(level.getLevel()).getSeasonTime() : 0, false, false, forceGrowth, generating);
+        return tick(level, entity, ticks, LevelData.isPresent(level.getLevel()) ? LevelData.get(level.getLevel()).getSeasonTime() : 0, false, false, forceGrowth, generating, charred, false);
     }
 
     /**
@@ -203,21 +205,21 @@ public class TreeGenerator {
      */
     public Data grow(WorldGenLevel level, TreeTrunkBlockEntity entity, int ticks, long seasonTime, boolean forceGrowth) {
         ticks = Math.max(1, ticks);
-        return tick(level, entity, ticks, seasonTime, false, false, forceGrowth, false);
+        return tick(level, entity, ticks, seasonTime, false, false, forceGrowth, false, false, false);
     }
 
     /**
      * @param simulateDetection treat any space where a tree block is expected as valid, regardless of actual state
      */
     public Data getTree(WorldGenLevel level, TreeTrunkBlockEntity entity, boolean simulateDetection) {
-        return tick(level, entity, 0, 0, simulateDetection, false, false, false);
+        return tick(level, entity, 0, 0, simulateDetection, false, false, false, false, true);
     }
 
     public Data getWood(WorldGenLevel level, TreeTrunkBlockEntity entity, boolean simulateDetection) {
-        return tick(level, entity, 0, 0, simulateDetection, true, false, false);
+        return tick(level, entity, 0, 0, simulateDetection, true, false, false, false, true);
     }
 
-    protected Data tick(WorldGenLevel level, TreeTrunkBlockEntity entity, int ticks, long seasonTime, boolean simulateDetection, boolean woodOnly, boolean forceGrowth, boolean generating) {
+    protected Data tick(WorldGenLevel level, TreeTrunkBlockEntity entity, int ticks, long seasonTime, boolean simulateDetection, boolean woodOnly, boolean forceGrowth, boolean generating, boolean charred, boolean allowCharred) {
         TreeTrunkBlock trunkBlock = (TreeTrunkBlock) entity.getBlockState().getBlock();
         boolean decaying;
         Season season = Season.get(seasonTime);
@@ -226,7 +228,7 @@ public class TreeGenerator {
             else decaying = season == Season.WINTER;
         }
         else decaying = false;
-        Data d = new Data(this, level, trunkBlock, entity.getBlockPos(), ticks, decaying, 0, 0, 0, simulateDetection, woodOnly, forceGrowth, generating);
+        Data d = new Data(this, level, trunkBlock, entity.getBlockPos(), ticks, decaying, 0, 0, 0, simulateDetection, woodOnly || (generating && charred), forceGrowth, generating, charred, allowCharred);
         Random random = new Random(entity.getSeed());
         d.maxHeight = baseHeight + ((random.nextInt() & Integer.MAX_VALUE) % randHeight);
         setupData(d, new Random(random.nextLong()));
@@ -394,7 +396,7 @@ public class TreeGenerator {
             }
             else if(d.canPlaceWood(centerState, lastState)) {
                 d.level.setBlock(pos.immutable(), d.createStem(TreeStemBlock.Type.END), BLOCK_SET_FLAG);
-                if(d.height != 0) d.level.setBlock(pos.below(), d.trunk.stemBlock.defaultBlockState(), BLOCK_SET_FLAG);
+                if(d.height != 0) d.level.setBlock(pos.below(), d.trunk.stemBlock.defaultBlockState().setValue(TreeStemBlock.CHARRED, d.charred), BLOCK_SET_FLAG);
                 d.height++;
                 d.stemsPlaced++;
                 d.trunkWood.get(0).add(pos.immutable());

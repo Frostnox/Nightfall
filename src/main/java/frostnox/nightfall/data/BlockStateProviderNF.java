@@ -241,7 +241,8 @@ public class BlockStateProviderNF extends BlockStateProvider {
     }
 
     public void trunkBlock(TreeTrunkBlock block, Block textureBlock) {
-        getVariantBuilder(block).partialState().addModels(ConfiguredModel.builder().modelFile(models().cubeColumn(name(block), resource(textureBlock), resource(textureBlock.getRegistryName().getPath() + "_top"))).build());
+        getVariantBuilder(block).partialState().with(TreeTrunkBlock.CHARRED, false).modelForState().modelFile(models().cubeColumn(name(block), resource(textureBlock), resource(textureBlock.getRegistryName().getPath() + "_top"))).addModel()
+                .partialState().with(TreeTrunkBlock.CHARRED, true).modelForState().modelFile(models().cubeColumn("charred_trunk", resource(BlocksNF.CHARRED_LOG.get()), resource(BlocksNF.CHARRED_LOG.getId().getPath() + "_top"))).addModel();
     }
 
     public void barrelBlock(BarrelBlockNF block) {

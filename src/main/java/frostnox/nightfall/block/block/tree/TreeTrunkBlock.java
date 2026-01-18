@@ -1,5 +1,7 @@
 package frostnox.nightfall.block.block.tree;
 
+import frostnox.nightfall.block.BlockStatePropertiesNF;
+import frostnox.nightfall.block.IBurnable;
 import frostnox.nightfall.block.ITimeSimulatedBlock;
 import frostnox.nightfall.block.ITree;
 import frostnox.nightfall.block.block.CoveredSoilBlock;
@@ -11,22 +13,24 @@ import frostnox.nightfall.util.MathUtil;
 import frostnox.nightfall.world.Season;
 import frostnox.nightfall.world.generation.tree.TreeGenerator;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.ticks.TickPriority;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
 
-public class TreeTrunkBlock extends BaseEntityBlock implements ITimeSimulatedBlock {
+public class TreeTrunkBlock extends BaseEntityBlock implements ITimeSimulatedBlock, IBurnable {
+    public static final BooleanProperty CHARRED = BlockStatePropertiesNF.CHARRED;
     public final TreeStemBlock stemBlock;
     public final TreeLeavesBlock leavesBlock;
     public final @Nullable TreeBranchesBlock branchesBlock;
@@ -42,6 +46,7 @@ public class TreeTrunkBlock extends BaseEntityBlock implements ITimeSimulatedBlo
         this.fruitBlock = fruitBlock;
         this.treeGenerator = treeGenerator;
         this.type = leavesBlock.type;
+        registerDefaultState(defaultBlockState().setValue(CHARRED, false));
     }
 
     @Override
@@ -70,6 +75,11 @@ public class TreeTrunkBlock extends BaseEntityBlock implements ITimeSimulatedBlo
     }
 
     @Override
+    public boolean isRandomlyTicking(BlockState pState) {
+        return !pState.getValue(CHARRED);
+    }
+
+    @Override
     public void onBlockStateChange(LevelReader levelReader, BlockPos pos, BlockState oldState, BlockState newState) {
         Level level = (Level) levelReader;
         if(!level.isClientSide && !oldState.is(this) && LevelData.isPresent(level)) {
@@ -89,14 +99,14 @@ public class TreeTrunkBlock extends BaseEntityBlock implements ITimeSimulatedBlo
         }
     }
 
-    public void generateAt(WorldGenLevel level, BlockPos pos, ChunkPos chunkPos, Random random) {
-        level.setBlock(pos, defaultBlockState(), 4);
+    public void generateAt(WorldGenLevel level, BlockPos pos, ChunkPos chunkPos, Random random, boolean charred) {
+        level.setBlock(pos, defaultBlockState().setValue(CHARRED, charred), 4);
         if(level.getBlockEntity(pos) instanceof TreeTrunkBlockEntity trunk) {
             level.getChunk(chunkPos.x, chunkPos.z).markPosForPostprocessing(pos);
             trunk.initSeed(level, random);
             trunk.age = random.nextInt(type.getLifespan());
             trunk.setChanged();
-            TreeGenerator.Data d = treeGenerator.grow(level, trunk, 1 + trunk.age / type.getGrowthIntervalTicks(), true, true);
+            TreeGenerator.Data d = treeGenerator.grow(level, trunk, 1 + trunk.age / type.getGrowthIntervalTicks(), true, true, charred);
             if(trunk.isSpecial() && fruitBlock != null && trunk.maxHeight == d.maxHeight) {
                 if(Season.get(level.getLevel()) == Season.SUMMER) {
                     if(!trunk.hasFruited) treeGenerator.tryFruit(level, d, trunk);
@@ -127,10 +137,6 @@ public class TreeTrunkBlock extends BaseEntityBlock implements ITimeSimulatedBlo
         }
     }
 
-    public boolean isTreeBase(BlockState state) {
-        return (state.is(stemBlock) && !state.getValue(TreeStemBlock.CHARRED)) || state.is(this);
-    }
-
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
@@ -144,7 +150,7 @@ public class TreeTrunkBlock extends BaseEntityBlock implements ITimeSimulatedBlo
 
     @Override
     public void simulateTime(ServerLevel level, LevelChunk chunk, IChunkData chunkData, BlockPos pos, BlockState state, long elapsedTime, long gameTime, long dayTime, long seasonTime, float seasonalTemp, double randomTickChance, Random random) {
-        if(elapsedTime != Long.MAX_VALUE && chunk.getBlockEntity(pos) instanceof TreeTrunkBlockEntity trunk) {
+        if(!state.getValue(CHARRED) && elapsedTime != Long.MAX_VALUE && chunk.getBlockEntity(pos) instanceof TreeTrunkBlockEntity trunk) {
             int spacing = type.getGrowthIntervalTicks();
             long timePassed = gameTime - trunk.lastTick;
             if(timePassed > spacing) {
@@ -194,5 +200,26 @@ public class TreeTrunkBlock extends BaseEntityBlock implements ITimeSimulatedBlo
     @Override
     public TickPriority getTickPriority() {
         return TickPriority.LOW;
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
+        super.createBlockStateDefinition(pBuilder);
+        pBuilder.add(CHARRED);
+    }
+
+    @Override
+    public int getFireSpreadSpeed(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+        return state.getValue(CHARRED) ? 0 : 5;
+    }
+
+    @Override
+    public int getFlammability(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+        return state.getValue(CHARRED) ? 0 : 5;
+    }
+
+    @Override
+    public BlockState getBurnedState(BlockState state) {
+        return state.setValue(CHARRED, true);
     }
 }

@@ -113,6 +113,7 @@ public class ContinentalChunkGenerator extends ChunkGenerator {
     protected final FractalSimplexNoiseFast bedrock, bedrockCover; //Height for bedrock layer
     protected final FractalSimplexNoiseFast stoneType; //Independent variable to randomize stone selection a bit
     protected final FractalSimplexNoiseFast igneousHeight, metamorphicHeight; //Warp height to simulate stone deposits on top of different terrain
+    protected final FractalSimplexNoiseFast charring;
     protected final Spline elevationSpline, roughnessSpline, detailSpline, exposureSpline;
 
     public ContinentalChunkGenerator(Registry<StructureSet> structureSets, BiomeSource biomeSource, long seed) {
@@ -148,6 +149,7 @@ public class ContinentalChunkGenerator extends ChunkGenerator {
         this.stoneType = new FractalSimplexNoiseFast(random.nextLong(), 0.0002F, 7, 0.5F, 2.0F);
         this.igneousHeight = new FractalSimplexNoiseFast(random.nextLong(), 0.0002F, 7, 0.5F, 2.0F);
         this.metamorphicHeight = new FractalSimplexNoiseFast(random.nextLong(), 0.0002F, 7, 0.5F, 2.0F);
+        this.charring = new FractalSimplexNoiseFast(random.nextLong(), 0.00095F, 5, 0.5F, 2.0F);
         this.elevationSpline = new Spline(point(-1, 423), point(-0.67, 423), point(-0.57, 364, Easing.inSine), point(-0.505, 64),
                 point(0.115, 88), point(0.178, 364, Easing.inSine), point(0.278, 423, Easing.inSine), point(1.0, 423));
         this.roughnessSpline = new Spline(point(-1.0, 416), point(-0.7, 380),
@@ -161,10 +163,9 @@ public class ContinentalChunkGenerator extends ChunkGenerator {
         if(false) {
             int size = 100000;
             float pass = 0, fail = 0;
-            double threshold = 0.213;
             for(int x = 0; x < size; x++) {
-                float noise = tree1.noise2D(random.nextInt(), random.nextInt());
-                if(noise < -threshold || noise > threshold) pass++;
+                float noise = charring.noise2D(random.nextInt(), random.nextInt());
+                if(noise > 0.565) pass++;
                 else fail++;
             }
             System.out.println(pass / (pass + fail));
@@ -436,6 +437,16 @@ public class ContinentalChunkGenerator extends ChunkGenerator {
 
     public boolean isClearing(int x, int z) {
         return Math.abs(clearing.noise2D(x, z)) > 0.55F;
+    }
+
+    public float getCharring(int x, int z) {
+        return charring.noise2D(x, z);
+    }
+
+    public boolean isCharred(ChunkPos chunkPos, int x, int z) {
+        float humidity = getCachedHumidity(chunkPos);
+        if(humidity < 0.2 || humidity > 0.8) return false;
+        return charring.noise2D(x, z) > (0.565F + (0.65F - 0.565F) * (Math.abs(humidity - 0.5) / 0.3));
     }
 
     private int getHeight(float elevation, float roughness, float detail) {

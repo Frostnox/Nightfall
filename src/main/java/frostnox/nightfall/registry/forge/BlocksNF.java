@@ -292,7 +292,7 @@ public class BlocksNF {
             register(tree.getName() + "_trunk", () -> new TreeTrunkBlock(STEMS.get(tree).get(), LEAVES.get(tree).get(),
                     BRANCHES.containsKey(tree) ? BRANCHES.get(tree).get() : null, FRUIT_LEAVES.containsKey(tree) ? FRUIT_LEAVES.get(tree).get() : null,
                     tree.getGenerator(), BlockBehaviour.Properties.of(Material.WOOD, tree.getBaseColor()).strength(tree.getStrength(),
-                    tree.getExplosionResistance()).sound(SoundType.WOOD).randomTicks())));
+                    tree.getExplosionResistance()).sound(SoundType.WOOD))));
 
     public static final Map<Tree, RegistryObject<TreeSeedBlock>> TREE_SEEDS = DataUtil.mapEnum(Tree.class, tree ->
             register(tree.getName() + "_seed", () -> (tree != Tree.CAEDTAR ? new TreeSeedBlock(TRUNKS.get(tree).get(), BlockBehaviour.Properties.of(Material.PLANT)

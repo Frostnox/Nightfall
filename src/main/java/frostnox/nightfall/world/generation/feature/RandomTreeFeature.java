@@ -40,7 +40,7 @@ public class RandomTreeFeature extends Feature<NoneFeatureConfiguration> {
                 }
             }
             else if(!fluid.isEmpty()) return false;
-            trunk.generateAt(level, origin, chunkPos, context.random());
+            trunk.generateAt(level, origin, chunkPos, context.random(), gen.isCharred(chunkPos, origin.getX(), origin.getZ()));
             return true;
         }
         else return false;

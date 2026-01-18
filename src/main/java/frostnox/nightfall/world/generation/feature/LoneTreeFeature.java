@@ -27,7 +27,7 @@ public class LoneTreeFeature extends Feature<NoneFeatureConfiguration> {
         if(tree == null) return false;
         TreeTrunkBlock trunk = BlocksNF.TRUNKS.get(tree).get();
         if(trunk.treeGenerator.canPlaceOnBlock(level, origin.below()) && !level.getBlockState(origin.below(2)).isAir()) {
-            trunk.generateAt(level, origin, chunkPos, context.random());
+            trunk.generateAt(level, origin, chunkPos, context.random(), context.random().nextInt(32) == 0);
             return true;
         }
         else return false;

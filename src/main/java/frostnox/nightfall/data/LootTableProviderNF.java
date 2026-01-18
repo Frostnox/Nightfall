@@ -213,8 +213,8 @@ public class LootTableProviderNF extends LootTableProvider {
             dropVegetableCrop(BlocksNF.YARROW.get(), ItemsNF.YARROW.get(), 2, 3, ItemsNF.YARROW_SEEDS.get(), 0.35F, 0.025F);
             dropFruitBush(BlocksNF.BERRY_BUSH.get(), 1, 1, 2, 3, 0.5F, 0.025F);
             for(Tree type : Tree.values()) {
-                dropOther(BlocksNF.TRUNKS.get(type).get(), BlocksNF.LOGS.get(type).get(), 1);
-                dropStem(BlocksNF.STEMS.get(type).get(), BlocksNF.LOGS.get(type).get(), BlocksNF.CHARRED_LOG.get());
+                dropLogs(BlocksNF.TRUNKS.get(type).get(), BlocksNF.LOGS.get(type).get(), BlocksNF.CHARRED_LOG.get());
+                dropLogs(BlocksNF.STEMS.get(type).get(), BlocksNF.LOGS.get(type).get(), BlocksNF.CHARRED_LOG.get());
                 int min = -68;
                 if(type == Tree.PALM) min = -28;
                 else if(type == Tree.LARCH || type == Tree.SPRUCE) min = -88;
@@ -578,7 +578,7 @@ public class LootTableProviderNF extends LootTableProvider {
                             .when(ActionTagCondition.of(tag)))));
         }
 
-        protected void dropStem(Block block, ItemLike drop, ItemLike charredDrop) {
+        protected void dropLogs(Block block, ItemLike drop, ItemLike charredDrop) {
             add(block, applyExplosionDecay(block, LootTable.lootTable()
                     .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1F))
                             .add(LootItem.lootTableItem(drop).apply(SetItemCountFunction.setCount(ConstantValue.exactly(1))))
