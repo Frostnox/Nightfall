@@ -46,6 +46,7 @@ public class TreeGenerator {
         public boolean noPlacement;
         public int ticks, stemsPlaced, height, maxHeight;
         public int[] intData = null;
+        public long[] longData = null;
 
         protected Data(TreeGenerator gen, WorldGenLevel level, TreeTrunkBlock trunk, BlockPos trunkPos, int ticks, boolean decaying, int stemsPlaced, int height, int maxHeight, boolean simulateDetection, boolean woodOnly, boolean forceGrowth, boolean generating) {
             this.gen = gen;
@@ -289,7 +290,7 @@ public class TreeGenerator {
         return d;
     }
 
-    private static long hash(long seed, int x, int y, int z) {
+    protected static long hash(long seed, int x, int y, int z) {
         long h = seed;
 
         h ^= (long) x * 0x632BE59BD9B4E019L;
