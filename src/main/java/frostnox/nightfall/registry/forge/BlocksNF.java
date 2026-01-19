@@ -133,9 +133,9 @@ public class BlocksNF {
             .strength(0.1F).noCollission().requiresCorrectToolForDrops().randomTicks().sound(SoundType.SNOW)));
     public static final RegistryObject<MeltableBlock> PACKED_SNOW = BLOCKS.register("packed_snow", () -> new MeltableBlock(BlocksNF.WATER, 0.3F,
             BlockBehaviour.Properties.of(Material.SNOW).strength(2F).requiresCorrectToolForDrops().randomTicks().sound(SoundType.SNOW)));
-    public static final RegistryObject<UnstableBlock> MUD = BLOCKS.register("mud_block", () -> new UnstableBlock(SoundsNF.WET_SOIL_FALL,
+    public static final RegistryObject<MudBlock> MUD = BLOCKS.register("mud_block", () -> new MudBlock(SoundsNF.WET_SOIL_FALL,
             BlockBehaviour.Properties.of(Material.DIRT, MaterialColor.TERRACOTTA_BROWN).strength(Soil.DIRT.getStrength() + 0.2F)
-                    .speedFactor(0.6F).jumpFactor(0.6F).sound(SoundsNF.MUD_TYPE)));
+                    .speedFactor(0.6F).jumpFactor(0.6F).randomTicks().sound(SoundsNF.MUD_TYPE)));
     public static final RegistryObject<SimpleFireableBlock> CLAY = BLOCKS.register("clay_block", () -> new SimpleFireableBlock(
             20 * 60 * 8, TieredHeat.ORANGE, BlocksNF.TERRACOTTA, BlockBehaviour.Properties.of(Material.CLAY).strength(1.5F).sound(SoundsNF.MUD_TYPE)));
     public static final RegistryObject<Block> FIRE_CLAY = BLOCKS.register("fire_clay_block", () -> new BlockNF(
