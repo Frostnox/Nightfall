@@ -129,8 +129,6 @@ public class TilledSoilBlock extends UnstableBlock implements ITimeSimulatedBloc
 
     @Override
     public void simulateTime(ServerLevel level, LevelChunk chunk, IChunkData chunkData, BlockPos pos, BlockState state, long elapsedTime, long gameTime, long dayTime, long seasonTime, float seasonalTemp, double randomTickChance, Random random) {
-        //Update once to most recent humidity (slightly inaccurate in rare cases since this is assuming current weather
-        //and not past weather but calculating the exact time is more expensive and a waste 99% of the time)
         if(MathUtil.getRandomSuccesses(randomTickChance, elapsedTime, 1, random) >= 1) {
             randomTick(state, level, pos, random);
         }

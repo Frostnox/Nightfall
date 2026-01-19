@@ -551,6 +551,11 @@ public class ChunkData implements IChunkData {
     }
 
     @Override
+    public double getWeatherPercentageAboveIntensityOverTime(ILevelData levelData, BlockPos pos, float intensity, long startTime, long endTime) {
+        return levelData.getWeatherPercentageAboveIntensityOverTime(intensity - getWeatherAddend(pos.getX(), pos.getZ()), startTime, endTime);
+    }
+
+    @Override
     public void addUndeadUUID(UUID id) {
         undeadIds.add(id);
     }

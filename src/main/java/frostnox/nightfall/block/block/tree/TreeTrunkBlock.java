@@ -169,7 +169,7 @@ public class TreeTrunkBlock extends BaseEntityBlock implements ITimeSimulatedBlo
                     TreeTrunkBlockEntity.updating = true;
                     int growTime = Math.min((int) timePassed, trunk.age);
                     long startSeasonTime = seasonTime - growTime;
-                    TreeGenerator.Data d = treeGenerator.grow(level, trunk, stages, seasonTime, trunk.maxHeight == -1);
+                    TreeGenerator.Data d = treeGenerator.growNoDrops(level, trunk, stages, seasonTime, trunk.maxHeight == -1);
                     //Simulate fruit
                     if(trunk.isSpecial() && fruitBlock != null && trunk.maxHeight == d.maxHeight) {
                         boolean doFruit = !d.decaying;

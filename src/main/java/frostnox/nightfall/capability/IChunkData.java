@@ -64,6 +64,8 @@ public interface IChunkData {
 
     void removeSimulatableBlock(TickPriority priority, BlockPos pos);
 
+    double getWeatherPercentageAboveIntensityOverTime(ILevelData levelData, BlockPos pos, float intensity, long startTime, long endTime);
+
     void addUndeadUUID(UUID id);
 
     void clearUndeadUUIDs();

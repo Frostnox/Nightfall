@@ -3,7 +3,6 @@ package frostnox.nightfall.block.block.tree;
 import frostnox.nightfall.block.ITimeSimulatedBlock;
 import frostnox.nightfall.capability.IChunkData;
 import frostnox.nightfall.registry.forge.BlocksNF;
-import frostnox.nightfall.util.LevelUtil;
 import frostnox.nightfall.util.MathUtil;
 import frostnox.nightfall.world.Season;
 import frostnox.nightfall.world.generation.tree.TreeGenerator;
@@ -93,7 +92,7 @@ public class TreeSeedBlock extends BushBlock implements ITimeSimulatedBlock {
             level.setBlockAndUpdate(pos, treeBlock.defaultBlockState());
             if(chunk.getBlockEntity(pos) instanceof TreeTrunkBlockEntity trunk) {
                 trunk.initSeed();
-                treeBlock.treeGenerator.grow(level, trunk, 1, seasonTime, true);
+                treeBlock.treeGenerator.growNoDrops(level, trunk, 1, seasonTime, true);
                 int spacing = treeBlock.type.getGrowthIntervalTicks();
                 long trials = result.secondLong() - spacing;
                 int stages = MathUtil.getRandomSuccesses(randomTickChance, trials,
@@ -108,7 +107,7 @@ public class TreeSeedBlock extends BushBlock implements ITimeSimulatedBlock {
                         trunk.age %= treeBlock.type.getLifespan();
                         stages = 1 + MathUtil.getRandomSuccesses(randomTickChance, trunk.age - spacing, (trunk.age - spacing) / treeBlock.type.getGrowthIntervalTicks(), spacing, random);
                     }
-                    TreeGenerator.Data d = treeBlock.treeGenerator.grow(level, trunk, stages - 1, seasonTime, trunk.maxHeight == -1);
+                    TreeGenerator.Data d = treeBlock.treeGenerator.growNoDrops(level, trunk, stages - 1, seasonTime, trunk.maxHeight == -1);
                     int growTime = Math.min((int) trials, trunk.age);
                     long startSeasonTime = seasonTime - growTime;
                     if(trunk.isSpecial() && treeBlock.fruitBlock != null && trunk.maxHeight == d.maxHeight) {

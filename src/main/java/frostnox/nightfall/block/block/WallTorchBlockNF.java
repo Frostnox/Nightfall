@@ -1,8 +1,15 @@
 package frostnox.nightfall.block.block;
 
 import frostnox.nightfall.block.BlockStatePropertiesNF;
+import frostnox.nightfall.block.ITimeSimulatedBlock;
 import frostnox.nightfall.block.IWaterloggedBlock;
+import frostnox.nightfall.capability.ChunkData;
+import frostnox.nightfall.capability.IChunkData;
+import frostnox.nightfall.capability.LevelData;
 import frostnox.nightfall.registry.forge.ParticleTypesNF;
+import frostnox.nightfall.util.LevelUtil;
+import frostnox.nightfall.util.MathUtil;
+import frostnox.nightfall.world.Weather;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -12,18 +19,21 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.WallTorchBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.ticks.TickPriority;
 
 import java.util.Random;
 import java.util.function.Supplier;
 
-public class WallTorchBlockNF extends WallTorchBlock implements IWaterloggedBlock {
+public class WallTorchBlockNF extends WallTorchBlock implements IWaterloggedBlock, ITimeSimulatedBlock {
     public static final IntegerProperty WATER_LEVEL = BlockStatePropertiesNF.WATER_LEVEL;
     public static final EnumProperty<WaterlogType> WATERLOG_TYPE = BlockStatePropertiesNF.WATERLOG_TYPE;
     public final boolean lit;
@@ -110,5 +120,29 @@ public class WallTorchBlockNF extends WallTorchBlock implements IWaterloggedBloc
     @Override
     public int getExcludedWaterLevel(BlockState state) {
         return 0;
+    }
+
+    @Override
+    public void onBlockStateChange(LevelReader levelReader, BlockPos pos, BlockState oldState, BlockState newState) {
+        Level level = (Level) levelReader;
+        if(!level.isClientSide && newState.isRandomlyTicking() && !oldState.is(this) && LevelData.isPresent(level)) {
+            ChunkData.get(level.getChunkAt(pos)).addSimulatableBlock(TickPriority.NORMAL, pos);
+        }
+    }
+
+    @Override
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState pNewState, boolean pIsMoving) {
+        super.onRemove(state, level, pos, pNewState, pIsMoving);
+        if(!pNewState.is(this) && LevelData.isPresent(level)) {
+            ChunkData.get(level.getChunkAt(pos)).removeSimulatableBlock(TickPriority.NORMAL, pos);
+        }
+    }
+
+    @Override
+    public void simulateTime(ServerLevel level, LevelChunk chunk, IChunkData chunkData, BlockPos pos, BlockState state, long elapsedTime, long gameTime, long dayTime, long seasonTime, float seasonalTemp, double randomTickChance, Random random) {
+        if(lit && LevelUtil.isSkyUnobstructed(level, pos) && MathUtil.getRandomSuccesses(randomTickChance / 2 *
+                chunkData.getWeatherPercentageAboveIntensityOverTime(LevelData.get(level), pos, Weather.GLOBAL_CLOUDS_THRESHOLD, gameTime - elapsedTime, gameTime), elapsedTime, 1, random) >= 1) {
+            level.setBlock(pos, oppositeBlock.get().defaultBlockState(), 3);
+        }
     }
 }

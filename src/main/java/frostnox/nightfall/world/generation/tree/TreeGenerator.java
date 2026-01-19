@@ -196,30 +196,30 @@ public class TreeGenerator {
      */
     public Data grow(WorldGenLevel level, TreeTrunkBlockEntity entity, int ticks, boolean forceGrowth, boolean generating, boolean charred) {
         ticks = Math.max(1, ticks);
-        return tick(level, entity, ticks, LevelData.isPresent(level.getLevel()) ? LevelData.get(level.getLevel()).getSeasonTime() : 0, false, false, forceGrowth, generating, charred, false);
+        return tick(level, entity, ticks, LevelData.isPresent(level.getLevel()) ? LevelData.get(level.getLevel()).getSeasonTime() : 0, false, false, forceGrowth, generating, charred, false, false);
     }
 
     /**
      * Grows tree based on its current state
      * @param ticks number of stages to grow, must be >= 1
      */
-    public Data grow(WorldGenLevel level, TreeTrunkBlockEntity entity, int ticks, long seasonTime, boolean forceGrowth) {
+    public Data growNoDrops(WorldGenLevel level, TreeTrunkBlockEntity entity, int ticks, long seasonTime, boolean forceGrowth) {
         ticks = Math.max(1, ticks);
-        return tick(level, entity, ticks, seasonTime, false, false, forceGrowth, false, false, false);
+        return tick(level, entity, ticks, seasonTime, false, false, forceGrowth, false, false, false, true);
     }
 
     /**
      * @param simulateDetection treat any space where a tree block is expected as valid, regardless of actual state
      */
     public Data getTree(WorldGenLevel level, TreeTrunkBlockEntity entity, boolean simulateDetection) {
-        return tick(level, entity, 0, 0, simulateDetection, false, false, false, false, true);
+        return tick(level, entity, 0, 0, simulateDetection, false, false, false, false, true, true);
     }
 
     public Data getWood(WorldGenLevel level, TreeTrunkBlockEntity entity, boolean simulateDetection) {
-        return tick(level, entity, 0, 0, simulateDetection, true, false, false, false, true);
+        return tick(level, entity, 0, 0, simulateDetection, true, false, false, false, true, true);
     }
 
-    protected Data tick(WorldGenLevel level, TreeTrunkBlockEntity entity, int ticks, long seasonTime, boolean simulateDetection, boolean woodOnly, boolean forceGrowth, boolean generating, boolean charred, boolean allowCharred) {
+    protected Data tick(WorldGenLevel level, TreeTrunkBlockEntity entity, int ticks, long seasonTime, boolean simulateDetection, boolean woodOnly, boolean forceGrowth, boolean generating, boolean charred, boolean allowCharred, boolean noDrops) {
         TreeTrunkBlock trunkBlock = (TreeTrunkBlock) entity.getBlockState().getBlock();
         boolean decaying;
         Season season = Season.get(seasonTime);
@@ -268,9 +268,15 @@ public class TreeGenerator {
             }
         }
         if(ticks > 0 && !d.generating && !d.changingLeaves.isEmpty()) {
-            if(d.decaying) for(BlockPos pos : d.changingLeaves) {
-                BlockState state = level.getBlockState(pos);
-                if(d.isTreeLeaves(state)) LevelUtil.uncheckedDropDestroyBlockNoSound((Level) level, pos, state, d.createLeaves(isAltLeaves(d, pos)), null, BLOCK_SET_FLAG);
+            if(d.decaying) {
+                if(noDrops) for(BlockPos pos : d.changingLeaves) {
+                    BlockState state = level.getBlockState(pos);
+                    if(d.isTreeLeaves(state)) level.setBlock(pos, d.createLeaves(isAltLeaves(d, pos)), BLOCK_SET_FLAG);
+                }
+                else for(BlockPos pos : d.changingLeaves) {
+                    BlockState state = level.getBlockState(pos);
+                    if(d.isTreeLeaves(state)) LevelUtil.uncheckedDropDestroyBlockNoSound((Level) level, pos, state, d.createLeaves(isAltLeaves(d, pos)), null, BLOCK_SET_FLAG);
+                }
             }
             else for(BlockPos pos : d.changingLeaves) {
                 BlockState state = level.getBlockState(pos);
@@ -287,8 +293,10 @@ public class TreeGenerator {
             }
             if(d.stemsPlaced > 0) entity.maxHeight = d.height;
         }
-        entity.lastTick = level.getLevelData().getGameTime();
-        entity.setChanged();
+        if(ticks > 0) {
+            entity.lastTick = level.getLevelData().getGameTime();
+            entity.setChanged();
+        }
         return d;
     }
 

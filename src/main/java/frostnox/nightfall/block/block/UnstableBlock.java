@@ -13,7 +13,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import org.apache.commons.compress.utils.Lists;
 
@@ -102,17 +101,4 @@ public class UnstableBlock extends BlockNF implements IFallable {
         super.fallOn(level, state, pos, entity, fallDistance);
         if(!level.isClientSide() && LevelData.isPresent(level)) ChunkData.get(level.getChunkAt(pos)).schedulePhysicsTick(pos);
     }
-
-    /*@Override
-    public void animateTick(BlockState state, Level level, BlockPos pos, Random pRand) {
-        if(pRand.nextInt(16) == 0) {
-            BlockPos blockpos = pos.below();
-            if(isFree(level.getBlockState(blockpos))) {
-                double d0 = (double)pos.getX() + pRand.nextDouble();
-                double d1 = (double)pos.getY() - 0.05D;
-                double d2 = (double)pos.getZ() + pRand.nextDouble();
-                level.addParticle(new BlockParticleOption(ParticleTypes.FALLING_DUST, state), d0, d1, d2, 0.0D, 0.0D, 0.0D);
-            }
-        }
-    }*/
 }
