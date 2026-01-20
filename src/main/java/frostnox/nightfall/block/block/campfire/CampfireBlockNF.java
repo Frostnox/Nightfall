@@ -3,7 +3,11 @@ package frostnox.nightfall.block.block.campfire;
 import frostnox.nightfall.action.DamageTypeSource;
 import frostnox.nightfall.block.*;
 import frostnox.nightfall.block.block.WaterloggedEntityBlock;
+import frostnox.nightfall.capability.ChunkData;
+import frostnox.nightfall.capability.IChunkData;
+import frostnox.nightfall.capability.LevelData;
 import frostnox.nightfall.data.recipe.CampfireRecipe;
+import frostnox.nightfall.data.recipe.SingleRecipe;
 import frostnox.nightfall.entity.ai.pathfinding.NodeType;
 import frostnox.nightfall.item.item.FireStarterItem;
 import frostnox.nightfall.item.item.IgnitableItem;
@@ -20,6 +24,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -32,6 +37,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -43,12 +49,14 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.EntityCollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.ticks.TickPriority;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
 import org.jetbrains.annotations.Nullable;
@@ -56,7 +64,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 import java.util.Random;
 
-public class CampfireBlockNF extends WaterloggedEntityBlock implements IIgnitable, IHeatSource, IAdjustableNodeType {
+public class CampfireBlockNF extends WaterloggedEntityBlock implements IIgnitable, IHeatSource, IAdjustableNodeType, ITimeSimulatedBlock {
     public static final int MAX_FUEL = 4;
     private static final VoxelShape INTERACTION_SHAPE_HIGH = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 7.0D, 16.0D);
     private static final VoxelShape INTERACTION_SHAPE_LOW = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 4.0D, 16.0D);
@@ -94,7 +102,7 @@ public class CampfireBlockNF extends WaterloggedEntityBlock implements IIgnitabl
                         return InteractionResult.SUCCESS;
                     }
                 }
-                return InteractionResult.CONSUME;
+                return InteractionResult.sidedSuccess(level.isClientSide);
             }
             else if(item.getItem() instanceof FireStarterItem || item.getItem() instanceof IgnitableItem || item.getItem() instanceof TorchItem) return InteractionResult.PASS;
             else if((campfire.items.stream().noneMatch(ItemStack::isEmpty) ? Optional.empty() : level.getRecipeManager().getRecipeFor(CampfireRecipe.TYPE,
@@ -110,7 +118,7 @@ public class CampfireBlockNF extends WaterloggedEntityBlock implements IIgnitabl
                         return InteractionResult.SUCCESS;
                     }
                 }
-                return InteractionResult.CONSUME;
+                return InteractionResult.sidedSuccess(level.isClientSide);
             }
         }
         return InteractionResult.PASS;
@@ -134,15 +142,6 @@ public class CampfireBlockNF extends WaterloggedEntityBlock implements IIgnitabl
             pEntity.hurt(DamageTypeSource.IN_FIRE, 5F);
         }
         super.entityInside(state, level, pos, pEntity);
-    }
-
-    @Override
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState pNewState, boolean pIsMoving) {
-        if(!state.is(pNewState.getBlock())) {
-            if(level.getBlockEntity(pos) instanceof CampfireBlockEntityNF campfire) Containers.dropContents(level, pos, campfire.items);
-            super.onRemove(state, level, pos, pNewState, pIsMoving);
-            spreadHeat(level, pos, TieredHeat.NONE);
-        }
     }
 
     @Override
@@ -320,7 +319,84 @@ public class CampfireBlockNF extends WaterloggedEntityBlock implements IIgnitabl
     }
 
     @Override
+    public int getRemainingBurnTicks(Level level, BlockPos pos, BlockState state) {
+        if(level.getBlockEntity(pos) instanceof CampfireBlockEntityNF campfire) {
+            int firewood = state.getValue(CampfireBlockNF.FIREWOOD);
+            return (CampfireBlockEntityNF.FIREWOOD_BURN_TICKS - campfire.burnTicks) + (firewood - 1) * CampfireBlockEntityNF.FIREWOOD_BURN_TICKS;
+        }
+        return 0;
+    }
+
+    @Override
     public NodeType adjustNodeType(NodeType type, BlockState state, LivingEntity entity) {
         return (!isIgnited(state) || entity.fireImmune()) ? type : (type.walkable ? NodeType.PASSABLE_DANGER_MINOR : NodeType.IMPASSABLE_DANGER_MINOR);
+    }
+
+    @Override
+    public void onBlockStateChange(LevelReader levelReader, BlockPos pos, BlockState oldState, BlockState newState) {
+        Level level = (Level) levelReader;
+        if(!level.isClientSide && !oldState.is(this) && LevelData.isPresent(level)) {
+            ChunkData.get(level.getChunkAt(pos)).addSimulatableBlock(TickPriority.NORMAL, pos);
+        }
+    }
+
+    @Override
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState pNewState, boolean pIsMoving) {
+        if(!pNewState.is(this)) {
+            if(level.getBlockEntity(pos) instanceof CampfireBlockEntityNF campfire) Containers.dropContents(level, pos, campfire.items);
+            super.onRemove(state, level, pos, pNewState, pIsMoving);
+            spreadHeat(level, pos, TieredHeat.NONE);
+            if(LevelData.isPresent(level)) ChunkData.get(level.getChunkAt(pos)).removeSimulatableBlock(TickPriority.NORMAL, pos);
+        }
+    }
+
+
+    @Override
+    public void simulateTime(ServerLevel level, LevelChunk chunk, IChunkData chunkData, BlockPos pos, BlockState state, long elapsedTime, long gameTime, long dayTime, long seasonTime, float seasonalTemp, double randomTickChance, Random random) {
+        if(level.getBlockEntity(pos) instanceof CampfireBlockEntityNF campfire) {
+            int ticks = (elapsedTime > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) elapsedTime);
+            boolean changed = false;
+            if(state.getValue(LIT)) {
+                int firewood = state.getValue(CampfireBlockNF.FIREWOOD);
+                int maxBurnTicks = (CampfireBlockEntityNF.FIREWOOD_BURN_TICKS - campfire.burnTicks) + (firewood - 1) * CampfireBlockEntityNF.FIREWOOD_BURN_TICKS;
+                int burnTicks = Math.min(ticks, maxBurnTicks);
+                campfire.burnTicks += burnTicks;
+                if(campfire.burnTicks >= CampfireBlockEntityNF.FIREWOOD_BURN_TICKS) {
+                    int newFirewood = firewood - (campfire.burnTicks / CampfireBlockEntityNF.FIREWOOD_BURN_TICKS);
+                    campfire.burnTicks %= CampfireBlockEntityNF.FIREWOOD_BURN_TICKS;
+                    if(firewood != newFirewood) level.setBlockAndUpdate(pos, state.setValue(CampfireBlockNF.FIREWOOD, newFirewood).setValue(CampfireBlockNF.LIT, newFirewood > 0));
+                }
+                for(int i = 0; i < campfire.items.size(); i++) {
+                    ItemStack item = campfire.items.get(i);
+                    if(!item.isEmpty() && !item.is(ItemsNF.BURNT_FOOD.get())) {
+                        changed = true;
+                        campfire.cookTicks[i] += burnTicks;
+                        RecipeWrapper container = new RecipeWrapper(new ItemStackHandler(NonNullList.of(ItemStack.EMPTY, item)));
+                        Optional<CampfireRecipe> campfireRecipe = level.getRecipeManager().getRecipeFor(CampfireRecipe.TYPE, container, level);
+                        int cookTime = campfireRecipe.map(SingleRecipe::getCookTime).orElse(CampfireBlockEntityNF.COOK_TIME);
+                        if(campfire.cookTicks[i] >= cookTime) {
+                            ItemStack cookedItem = (campfire.cookTicks[i] - cookTime >= CampfireBlockEntityNF.COOK_TIME) ? new ItemStack(ItemsNF.BURNT_FOOD.get()) :
+                                    campfireRecipe.map((recipe) -> recipe.assemble(container)).orElse(new ItemStack(ItemsNF.BURNT_FOOD.get()));
+                            campfire.cookTicks[i] = 0;
+                            campfire.items.set(i, cookedItem);
+                            level.sendBlockUpdated(pos, state, state, 3);
+                        }
+                    }
+                }
+            }
+            else {
+                for(int i = 0; i < campfire.items.size(); i++) {
+                    if(campfire.cookTicks[i] > 0) {
+                        changed = true;
+                        campfire.cookTicks[i] = Math.max(campfire.cookTicks[i] - 2 * ticks, 0);
+                    }
+                }
+                if(campfire.burnTicks > 0) {
+                    changed = true;
+                    campfire.burnTicks = Math.max(0, campfire.burnTicks - ticks);
+                }
+            }
+            if(changed) campfire.setChanged();
+        }
     }
 }

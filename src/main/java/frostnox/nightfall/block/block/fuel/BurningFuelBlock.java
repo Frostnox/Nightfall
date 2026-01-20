@@ -3,6 +3,9 @@ package frostnox.nightfall.block.block.fuel;
 import frostnox.nightfall.action.DamageTypeSource;
 import frostnox.nightfall.block.*;
 import frostnox.nightfall.block.BlockStatePropertiesNF;
+import frostnox.nightfall.capability.ChunkData;
+import frostnox.nightfall.capability.IChunkData;
+import frostnox.nightfall.capability.LevelData;
 import frostnox.nightfall.entity.ai.pathfinding.NodeType;
 import frostnox.nightfall.registry.forge.BlockEntitiesNF;
 import frostnox.nightfall.registry.forge.BlocksNF;
@@ -22,6 +25,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
@@ -31,8 +35,10 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.ticks.TickPriority;
 import net.minecraftforge.common.util.Lazy;
 import org.jetbrains.annotations.Nullable;
 
@@ -40,7 +46,7 @@ import java.util.Random;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
-public class BurningFuelBlock extends BaseEntityBlock implements IHeatSource, IAdjustableNodeType {
+public class BurningFuelBlock extends BaseEntityBlock implements IHeatSource, IAdjustableNodeType, ITimeSimulatedBlock {
     public static final IntegerProperty HEAT = BlockStatePropertiesNF.HEAT;
     public final @Nullable BiFunction<Level, BlockPos, Block> cookChecker;
     public final int burnTicks;
@@ -81,20 +87,12 @@ public class BurningFuelBlock extends BaseEntityBlock implements IHeatSource, IA
         return level.isRainingAt(pos.above()) ? -200 : 0;
     }
 
-    public boolean increaseHeat(Level level, BlockState state, BlockPos pos) {
-        if(state.getValue(HEAT) == 5 || LevelUtil.isTouchingWater(level, pos)) return false;
-        level.setBlockAndUpdate(pos, state.setValue(HEAT, state.getValue(HEAT) + 1));
-        scheduleHeatTick(level, pos, this);
-        return true;
-    }
-
-    public boolean decreaseHeat(Level level, BlockState state, BlockPos pos) {
-        if(state.getValue(HEAT) == 1) level.setBlockAndUpdate(pos, BlocksNF.ASH.get().defaultBlockState());
+    public void setHeat(Level level, BlockState state, BlockPos pos, TieredHeat heat) {
+        if(heat == TieredHeat.NONE) level.setBlockAndUpdate(pos, BlocksNF.ASH.get().defaultBlockState());
         else {
-            level.setBlockAndUpdate(pos, state.setValue(HEAT, state.getValue(HEAT) - 1));
+            level.setBlockAndUpdate(pos, state.setValue(HEAT, heat.getTier()));
             scheduleHeatTick(level, pos, this);
         }
-        return true;
     }
 
     @Override
@@ -152,12 +150,6 @@ public class BurningFuelBlock extends BaseEntityBlock implements IHeatSource, IA
     }
 
     @Override
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean pIsMoving) {
-        super.onRemove(state, level, pos, newState, pIsMoving);
-        if(!newState.is(this)) spreadHeat(level, pos, TieredHeat.NONE);
-    }
-
-    @Override
     public void onPlace(BlockState state, Level level, BlockPos pos, BlockState pOldState, boolean pIsMoving) {
         scheduleHeatTick(level, pos, this);
     }
@@ -200,6 +192,12 @@ public class BurningFuelBlock extends BaseEntityBlock implements IHeatSource, IA
     }
 
     @Override
+    public int getRemainingBurnTicks(Level level, BlockPos pos, BlockState state) {
+        if(level.getBlockEntity(pos) instanceof BurningFuelBlockEntity fuel) return fuel.burnTicks;
+        return 0;
+    }
+
+    @Override
     public float getTemperature(Level level, BlockPos pos, BlockState state) {
         if(level.getBlockEntity(pos) instanceof BurningFuelBlockEntity fuel) return fuel.temperature;
         else return getHeat(level, pos, state).getBaseTemp();
@@ -225,5 +223,57 @@ public class BurningFuelBlock extends BaseEntityBlock implements IHeatSource, IA
     @Override
     public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player) {
         return baseFuel.get().getCloneItemStack(target, level, pos, player);
+    }
+
+    @Override
+    public void onBlockStateChange(LevelReader levelReader, BlockPos pos, BlockState oldState, BlockState newState) {
+        Level level = (Level) levelReader;
+        if(!level.isClientSide && !oldState.is(this) && LevelData.isPresent(level)) {
+            ChunkData.get(level.getChunkAt(pos)).addSimulatableBlock(TickPriority.NORMAL, pos);
+        }
+    }
+
+    @Override
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState pNewState, boolean pIsMoving) {
+        super.onRemove(state, level, pos, pNewState, pIsMoving);
+        if(!pNewState.is(this)) {
+            spreadHeat(level, pos, TieredHeat.NONE);
+            if(LevelData.isPresent(level)) ChunkData.get(level.getChunkAt(pos)).removeSimulatableBlock(TickPriority.NORMAL, pos);
+        }
+    }
+
+    @Override
+    public void simulateTime(ServerLevel level, LevelChunk chunk, IChunkData chunkData, BlockPos pos, BlockState state, long elapsedTime, long gameTime, long dayTime, long seasonTime, float seasonalTemp, double randomTickChance, Random random) {
+        if(level.getBlockEntity(pos) instanceof BurningFuelBlockEntity entity) {
+            int ticks = (elapsedTime > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) elapsedTime);
+            BurningFuelBlock block = (BurningFuelBlock) state.getBlock();
+            if(block.cookChecker != null && block.cookChecker.apply(level, pos) != null) entity.cookTicks += ticks;
+            entity.burnTicks -= ticks;
+            if(entity.burnTicks <= 0) {
+                block.spreadHeat(level, pos, TieredHeat.NONE);
+                if(entity.cookTicks >= block.burnTicks * 0.9F && block.cookChecker != null) {
+                    Block cookBlock = block.cookChecker.apply(level, pos);
+                    if(cookBlock != null) {
+                        level.setBlock(pos, cookBlock.defaultBlockState(), 19); //Suppress neighbor updates so new fuel doesn't cook immediately
+                    }
+                    else level.setBlock(pos, BlocksNF.ASH.get().defaultBlockState(), 3);
+                }
+                else level.setBlock(pos, BlocksNF.ASH.get().defaultBlockState(), 3);
+            }
+            else {
+                if(LevelUtil.getNearbySmelterTier(level, pos) >= TieredHeat.fromTemp(block.burnTemp).getTier()) entity.structureTempBonus = 200F;
+                else entity.structureTempBonus = 0F;
+
+                float oldTemp = entity.temperature;
+                float targetTemp = block.getTargetTemperature(level, state, pos);
+                if(oldTemp < targetTemp) entity.temperature = Math.min(targetTemp, oldTemp + ticks);
+                else if(oldTemp > targetTemp) entity.temperature = Math.max(targetTemp, oldTemp - ticks);
+                if(entity.temperature != oldTemp) {
+                    TieredHeat heat = TieredHeat.fromTemp(entity.temperature);
+                    if(block.getHeat(level, pos, state) != heat) block.setHeat(level, state, pos, heat);
+                }
+            }
+            entity.setChanged();
+        }
     }
 }

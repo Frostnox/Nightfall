@@ -32,8 +32,8 @@ import java.util.Random;
 public class CampfireBlockEntityNF extends BlockEntity implements Clearable {
     public static final int CAPACITY = 3, COOK_TIME = 60 * 20, FIREWOOD_BURN_TICKS = 120 * 20;
     public final NonNullList<ItemStack> items = NonNullList.withSize(CAPACITY, ItemStack.EMPTY);
-    private final int[] cookTicks = new int[CAPACITY];
-    private int burnTicks;
+    protected final int[] cookTicks = new int[CAPACITY];
+    protected int burnTicks;
 
     public CampfireBlockEntityNF(BlockPos pos, BlockState pBlockState) {
         this(BlockEntitiesNF.CAMPFIRE.get(), pos, pBlockState);
@@ -82,10 +82,10 @@ public class CampfireBlockEntityNF extends BlockEntity implements Clearable {
                 changed = true;
                 campfire.cookTicks[i] = Mth.clamp(campfire.cookTicks[i] - 2, 0, COOK_TIME);
             }
-            if(campfire.burnTicks > 0) {
-                changed = true;
-                campfire.burnTicks--;
-            }
+        }
+        if(campfire.burnTicks > 0) {
+            changed = true;
+            campfire.burnTicks--;
         }
         if(changed) setChanged(level, pos, state);
     }

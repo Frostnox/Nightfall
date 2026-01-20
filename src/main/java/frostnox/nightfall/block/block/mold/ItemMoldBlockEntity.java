@@ -50,10 +50,14 @@ public class ItemMoldBlockEntity extends BlockEntity implements IHoldable, IDrop
     }
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, ItemMoldBlockEntity entity) {
+        serverTick(level, pos, state, entity, 1);
+    }
+
+    public static void serverTick(Level level, BlockPos pos, BlockState state, ItemMoldBlockEntity entity, int ticks) {
         if(entity.temperature > 0F) {
             TieredHeat oldHeat = TieredHeat.fromTemp(entity.temperature);
-            entity.temperature -= 0.5F;
-            if(oldHeat != TieredHeat.fromTemp(entity.temperature)) level.sendBlockUpdated(pos, state, state, 2);
+            entity.temperature = Math.max(0, entity.temperature - 0.5F * ticks);
+            if(ticks > 1 || oldHeat != TieredHeat.fromTemp(entity.temperature)) level.sendBlockUpdated(pos, state, state, 2);
         }
     }
 

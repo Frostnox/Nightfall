@@ -3,8 +3,13 @@ package frostnox.nightfall.block.block.fireable;
 import frostnox.nightfall.action.DamageTypeSource;
 import frostnox.nightfall.block.IAdjustableNodeType;
 import frostnox.nightfall.block.IIgnitable;
+import frostnox.nightfall.block.ITimeSimulatedBlock;
 import frostnox.nightfall.block.TieredHeat;
+import frostnox.nightfall.block.block.fuel.BurningFuelBlock;
 import frostnox.nightfall.block.block.fuel.BurningFuelBlockEntity;
+import frostnox.nightfall.capability.ChunkData;
+import frostnox.nightfall.capability.IChunkData;
+import frostnox.nightfall.capability.LevelData;
 import frostnox.nightfall.entity.ai.pathfinding.NodeType;
 import frostnox.nightfall.registry.forge.BlockEntitiesNF;
 import frostnox.nightfall.util.LevelUtil;
@@ -26,6 +31,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
@@ -36,6 +42,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -47,7 +54,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Random;
 
-public abstract class FireableBlock extends BaseEntityBlock implements IAdjustableNodeType {
+public abstract class FireableBlock extends BaseEntityBlock implements IAdjustableNodeType, ITimeSimulatedBlock {
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
     public static final VoxelShape COLLISION_SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 15.95D, 16.0D);
     public final int cookTicks;
@@ -221,5 +228,93 @@ public abstract class FireableBlock extends BaseEntityBlock implements IAdjustab
     @Override
     public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player) {
         return LevelUtil.pickCloneItem(state.getBlock(), player);
+    }
+
+    @Override
+    public void onBlockStateChange(LevelReader levelReader, BlockPos pos, BlockState oldState, BlockState newState) {
+        Level level = (Level) levelReader;
+        if(!level.isClientSide && (!oldState.is(this) || oldState.getValue(LIT) != newState.getValue(LIT)) && LevelData.isPresent(level)) {
+            if(!newState.getValue(LIT)) ChunkData.get(level.getChunkAt(pos)).removeSimulatableBlock(TickPriority.HIGH, pos);
+            else ChunkData.get(level.getChunkAt(pos)).addSimulatableBlock(TickPriority.HIGH, pos);
+        }
+    }
+
+    @Override
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState pNewState, boolean pIsMoving) {
+        super.onRemove(state, level, pos, pNewState, pIsMoving);
+        if(!pNewState.is(this) && state.getValue(LIT) && LevelData.isPresent(level)) {
+            ChunkData.get(level.getChunkAt(pos)).removeSimulatableBlock(TickPriority.HIGH, pos);
+        }
+    }
+
+    @Override
+    public TickPriority getTickPriority() {
+        return TickPriority.HIGH;
+    }
+
+    @Override
+    public void simulateTime(ServerLevel level, LevelChunk chunk, IChunkData chunkData, BlockPos pos, BlockState state, long elapsedTime, long gameTime, long dayTime, long seasonTime, float seasonalTemp, double randomTickChance, Random random) {
+        if(state.getValue(LIT) && level.getBlockEntity(pos) instanceof IFireableBlockEntity entity) {
+            FireableBlock fireable = (FireableBlock) state.getBlock();
+            entity.setInStructure(fireable.isStructureValid(level, pos, state));
+            int ticks = (elapsedTime > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) elapsedTime);
+            if(!entity.inStructure()) {
+                level.setBlockAndUpdate(pos, state.setValue(LIT, false));
+                entity.setCookTicks(Math.max(0, entity.getCookTicks() - 30 * ticks));
+                ((BlockEntity) entity).setChanged();
+            }
+            else {
+                BlockPos fuelPos = pos.below();
+                if(level.getBlockEntity(fuelPos) instanceof BurningFuelBlockEntity fuel) {
+                    int burnTime = Math.min(ticks, fuel.burnTicks);
+                    float cookTemp = fireable.cookHeat.getBaseTemp();
+                    float temp = fuel.temperature;
+                    float targetTemp = ((BurningFuelBlock) fuel.getBlockState().getBlock()).getTargetTemperature(level, fuel.getBlockState(), fuelPos);
+                    float finalTemp;
+                    if(temp < targetTemp) {
+                        finalTemp = Math.min(targetTemp, temp + burnTime);
+                        int coolTime = (int) (cookTemp - temp);
+                        if(coolTime > 0) {
+                            entity.setCookTicks(Math.max(0, entity.getCookTicks() - 30 * Math.min(burnTime, coolTime)));
+                            burnTime -= coolTime;
+                        }
+                    }
+                    else if(temp > targetTemp) {
+                        finalTemp = Math.max(targetTemp, temp - burnTime);
+                        int cookTime = (int) (temp - cookTemp);
+                        if(cookTime > 0) {
+                            entity.setCookTicks(entity.getCookTicks() + Math.min(burnTime, cookTime));
+                            if(entity.getCookTicks() >= fireable.cookTicks) {
+                                ((BlockEntity) entity).setChanged();
+                                level.setBlockAndUpdate(pos, fireable.getFiredBlock(level, pos, state));
+                                return;
+                            }
+                            burnTime -= cookTime;
+                        }
+                    }
+                    else finalTemp = temp;
+
+                    if(finalTemp < cookTemp) {
+                        entity.setCookTicks(Math.max(0, entity.getCookTicks() - 30 * burnTime));
+                        ((BlockEntity) entity).setChanged();
+                        if(entity.getCookTicks() == 0) level.setBlockAndUpdate(pos, state.setValue(LIT, false));
+                    }
+                    else {
+                        entity.setCookTicks(entity.getCookTicks() + burnTime);
+                        ((BlockEntity) entity).setChanged();
+                        if(entity.getCookTicks() >= fireable.cookTicks) level.setBlockAndUpdate(pos, fireable.getFiredBlock(level, pos, state));
+                        else if(ticks > burnTime) { //Cool ticks after fuel burned out
+                            entity.setCookTicks(Math.max(0, entity.getCookTicks() - 30 * (ticks - burnTime)));
+                            if(entity.getCookTicks() == 0) level.setBlockAndUpdate(pos, state.setValue(LIT, false));
+                        }
+                    }
+                }
+                else {
+                    entity.setCookTicks(Math.max(0, entity.getCookTicks() - 30 * ticks));
+                    ((BlockEntity) entity).setChanged();
+                    if(entity.getCookTicks() == 0) level.setBlockAndUpdate(pos, state.setValue(LIT, false));
+                }
+            }
+        }
     }
 }

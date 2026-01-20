@@ -1,22 +1,27 @@
 package frostnox.nightfall.block.block.crucible;
 
-import frostnox.nightfall.block.BlockStatePropertiesNF;
-import frostnox.nightfall.block.ICustomPathfindable;
-import frostnox.nightfall.block.IHeatable;
-import frostnox.nightfall.block.TieredHeat;
+import frostnox.nightfall.block.*;
 import frostnox.nightfall.block.block.WaterloggedEntityBlock;
+import frostnox.nightfall.capability.ChunkData;
+import frostnox.nightfall.capability.IChunkData;
+import frostnox.nightfall.capability.LevelData;
+import frostnox.nightfall.data.recipe.CrucibleRecipe;
 import frostnox.nightfall.entity.ai.pathfinding.NodeManager;
 import frostnox.nightfall.entity.ai.pathfinding.NodeType;
 import frostnox.nightfall.item.item.FilledBucketItem;
 import frostnox.nightfall.registry.forge.BlockEntitiesNF;
 import frostnox.nightfall.util.MathUtil;
+import frostnox.nightfall.world.inventory.ItemStackHandlerNF;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.world.Container;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -26,6 +31,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -36,6 +42,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
@@ -43,12 +50,16 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.ticks.TickPriority;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.items.wrapper.RecipeWrapper;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Random;
 
-public class CrucibleBlock extends WaterloggedEntityBlock implements ICustomPathfindable, IHeatable {
+public class CrucibleBlock extends WaterloggedEntityBlock implements ICustomPathfindable, IHeatable, ITimeSimulatedBlock {
     public static final IntegerProperty HEAT = BlockStatePropertiesNF.HEAT_FULL;
     public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.HORIZONTAL_AXIS;
     private static final VoxelShape SHAPE_Z = Shapes.join(Shapes.join(box(4D, 0.0D, 4D, 12D, 8.0D, 12D),
@@ -110,17 +121,6 @@ public class CrucibleBlock extends WaterloggedEntityBlock implements ICustomPath
             }
         }
         return InteractionResult.FAIL;
-    }
-
-    @Override
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean p_48717_) {
-        if(!state.is(newState.getBlock())) {
-            if(level.getBlockEntity(pos) instanceof CrucibleBlockEntity entity) {
-                Containers.dropContents(level, pos, entity.getContainerDrops());
-                level.updateNeighbourForOutputSignal(pos, this);
-            }
-        }
-        super.onRemove(state, level, pos, newState, p_48717_);
     }
 
     @Nullable
@@ -185,6 +185,86 @@ public class CrucibleBlock extends WaterloggedEntityBlock implements ICustomPath
     public void applyHeat(Level level, BlockPos pos, BlockState state, TieredHeat heat, Direction fromDir) {
         if(fromDir == Direction.DOWN && level.getBlockEntity(pos) instanceof CrucibleBlockEntity crucible) {
             crucible.targetTemperature = Math.min(heat.getBaseTemp(), maxTemp);
+        }
+    }
+
+    @Override
+    public void onBlockStateChange(LevelReader levelReader, BlockPos pos, BlockState oldState, BlockState newState) {
+        Level level = (Level) levelReader;
+        if(!level.isClientSide && !oldState.is(this) && LevelData.isPresent(level)) {
+            ChunkData.get(level.getChunkAt(pos)).addSimulatableBlock(TickPriority.HIGH, pos);
+        }
+    }
+
+    @Override
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState pNewState, boolean pIsMoving) {
+        if(!pNewState.is(this)) {
+            if(level.getBlockEntity(pos) instanceof Container container) {
+                Containers.dropContents(level, pos, container);
+                level.updateNeighbourForOutputSignal(pos, this);
+            }
+            if(LevelData.isPresent(level)) ChunkData.get(level.getChunkAt(pos)).removeSimulatableBlock(TickPriority.HIGH, pos);
+        }
+        super.onRemove(state, level, pos, pNewState, pIsMoving);
+    }
+
+    @Override
+    public TickPriority getTickPriority() {
+        return TickPriority.HIGH;
+    }
+
+    @Override
+    public void simulateTime(ServerLevel level, LevelChunk chunk, IChunkData chunkData, BlockPos pos, BlockState state, long elapsedTime, long gameTime, long dayTime, long seasonTime, float seasonalTemp, double randomTickChance, Random random) {
+        if(level.getBlockEntity(pos) instanceof CrucibleBlockEntity entity) {
+            //TODO:
+            boolean changed = false;
+            float targetTemp = entity.targetTemperature;
+            if(level.isRainingAt(pos.above())) targetTemp -= 200;
+            if(entity.temperature < targetTemp) {
+                entity.temperature = Math.min(entity.temperature + 2, targetTemp);
+                TieredHeat heat = TieredHeat.fromTemp(entity.temperature);
+                if(state.getValue(CrucibleBlock.HEAT) != heat.getTier()) {
+                    level.setBlock(pos, state.setValue(CrucibleBlock.HEAT, heat.getTier()), 2);
+                }
+                changed = true;
+            }
+            else if(entity.temperature > targetTemp) {
+                entity.temperature = Math.max(entity.temperature - 1, targetTemp);
+                TieredHeat heat = TieredHeat.fromTemp(entity.temperature);
+                if(state.getValue(CrucibleBlock.HEAT) != heat.getTier()) {
+                    level.setBlock(pos, state.setValue(CrucibleBlock.HEAT, heat.getTier()), 2);
+                }
+                changed = true;
+            }
+            for(int i = 0; i < CrucibleBlockEntity.ITEM_CAPACITY; i++) {
+                ResourceLocation recipeLocation = entity.recipeLocations.get(i);
+                if(recipeLocation != null) {
+                    CrucibleRecipe recipe = (CrucibleRecipe) level.getRecipeManager().byKey(recipeLocation).orElseThrow();
+                    if(entity.temperature >= recipe.getTemperature()) {
+                        int cookTicks = entity.cookTicks.getInt(i) + 1;
+                        entity.cookTicks.set(i, cookTicks);
+                        changed = true;
+                        if(cookTicks >= entity.cookDurations.getInt(i)) {
+                            RecipeWrapper inventory = new RecipeWrapper(new ItemStackHandlerNF(entity.inventory.getStackInSlot(i)));
+                            FluidStack fluid = recipe.assembleFluid(inventory);
+                            if(fluid.isEmpty() || entity.getFluidUnits() != entity.getFluidCapacity(entity.getBlockState())) {
+                                entity.addFluid(fluid, Integer.MAX_VALUE);
+                                entity.setItem(i, recipe.assemble(inventory));
+                                entity.tryAlloying();
+                                level.sendBlockUpdated(entity.getBlockPos(), entity.getBlockState(), entity.getBlockState(), 4 | 16);
+                            }
+                        }
+                    }
+                    else {
+                        int cookTicks = entity.cookTicks.getInt(i);
+                        if(cookTicks > 0) {
+                            entity.cookTicks.set(i, cookTicks - 1);
+                            changed = true;
+                        }
+                    }
+                }
+            }
+            if(changed) entity.setChanged();
         }
     }
 }

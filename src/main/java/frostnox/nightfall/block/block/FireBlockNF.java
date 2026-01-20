@@ -317,6 +317,11 @@ public class FireBlockNF extends BaseFireBlock implements IHeatSource {
     }
 
     @Override
+    public int getRemainingBurnTicks(Level level, BlockPos pos, BlockState state) {
+        return Integer.MAX_VALUE;
+    }
+
+    @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean pIsMoving) {
         super.onRemove(state, level, pos, newState, pIsMoving);
         if(!newState.is(this)) spreadHeat(level, pos, TieredHeat.NONE);

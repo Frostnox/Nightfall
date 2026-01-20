@@ -1,10 +1,12 @@
 package frostnox.nightfall.block.block.cauldron;
 
-import frostnox.nightfall.block.BlockStatePropertiesNF;
-import frostnox.nightfall.block.ICustomPathfindable;
-import frostnox.nightfall.block.IHeatable;
-import frostnox.nightfall.block.TieredHeat;
+import frostnox.nightfall.block.*;
 import frostnox.nightfall.block.block.WaterloggedEntityBlock;
+import frostnox.nightfall.block.block.campfire.CampfireBlockEntityNF;
+import frostnox.nightfall.capability.ChunkData;
+import frostnox.nightfall.capability.IChunkData;
+import frostnox.nightfall.capability.LevelData;
+import frostnox.nightfall.data.recipe.CauldronRecipe;
 import frostnox.nightfall.entity.ai.pathfinding.NodeManager;
 import frostnox.nightfall.entity.ai.pathfinding.NodeType;
 import frostnox.nightfall.item.item.ChangeOnUseFinishItem;
@@ -32,6 +34,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
@@ -43,6 +46,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.AABB;
@@ -50,13 +54,15 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.ticks.TickPriority;
+import net.minecraftforge.items.wrapper.RecipeWrapper;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Random;
 
-public class CauldronBlockNF extends WaterloggedEntityBlock implements IHeatable, ICustomPathfindable {
+public class CauldronBlockNF extends WaterloggedEntityBlock implements IHeatable, ICustomPathfindable, ITimeSimulatedBlock {
     private static final VoxelShape SHAPE_Z = Shapes.or(Block.box(3, 0, 3, 13, 8, 13),
             Block.box(6, 8, 7.5, 10, 9, 8.5), Block.box(13, 5, 6, 14, 6, 10),
             Block.box(2, 5, 6, 3, 6, 10));
@@ -111,14 +117,6 @@ public class CauldronBlockNF extends WaterloggedEntityBlock implements IHeatable
             }
             return InteractionResult.CONSUME;
         }
-    }
-
-    @Override
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState pNewState, boolean pIsMoving) {
-        if(!state.is(pNewState.getBlock()) && level.getBlockEntity(pos) instanceof Container container) {
-            Containers.dropContents(level, pos, container);
-        }
-        super.onRemove(state, level, pos, pNewState, pIsMoving);
     }
 
     @Override
@@ -256,5 +254,44 @@ public class CauldronBlockNF extends WaterloggedEntityBlock implements IHeatable
     @Override
     public List<AABB> getBottomFaceShape(BlockState state) {
         return state.hasProperty(TASK) ? (state.getValue(TASK) == Task.IDLE ? AABB : AABB_OPEN) : AABB;
+    }
+
+    @Override
+    public void onBlockStateChange(LevelReader levelReader, BlockPos pos, BlockState oldState, BlockState newState) {
+        Level level = (Level) levelReader;
+        if(!level.isClientSide && !oldState.is(this) && LevelData.isPresent(level)) {
+            ChunkData.get(level.getChunkAt(pos)).addSimulatableBlock(TickPriority.HIGH, pos);
+        }
+    }
+
+    @Override
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState pNewState, boolean pIsMoving) {
+        if(!pNewState.is(this)) {
+            if(level.getBlockEntity(pos) instanceof Container container) Containers.dropContents(level, pos, container);
+            if(LevelData.isPresent(level)) ChunkData.get(level.getChunkAt(pos)).removeSimulatableBlock(TickPriority.HIGH, pos);
+        }
+        super.onRemove(state, level, pos, pNewState, pIsMoving);
+    }
+
+    @Override
+    public TickPriority getTickPriority() {
+        return TickPriority.HIGH;
+    }
+
+    @Override
+    public void simulateTime(ServerLevel level, LevelChunk chunk, IChunkData chunkData, BlockPos pos, BlockState state, long elapsedTime, long gameTime, long dayTime, long seasonTime, float seasonalTemp, double randomTickChance, Random random) {
+        Task task = state.getValue(TASK);
+        if(task != Task.DONE && level.getBlockEntity(pos) instanceof CauldronBlockEntity entity) {
+            if(task == Task.COOK) {
+                BlockState belowState = level.getBlockState(pos.below());
+                if(belowState.getBlock() instanceof IHeatSource heatSource) {
+                    int ticks = (elapsedTime > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) elapsedTime);
+                    int burnTicks = heatSource.getRemainingBurnTicks(level, pos, belowState);
+                    CauldronBlockEntity.cookTick(level, pos, state, entity, Math.min(ticks, burnTicks));
+                    if(ticks > burnTicks) CauldronBlockEntity.idleTick(level, pos, state, entity, ticks - burnTicks);
+                }
+            }
+            else CauldronBlockEntity.idleTick(level, pos, state, entity, (elapsedTime > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) elapsedTime));
+        }
     }
 }

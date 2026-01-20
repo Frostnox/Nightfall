@@ -51,15 +51,14 @@ public class BurningFuelBlockEntity extends BlockEntity {
             if(entity.temperature < targetTemp) entity.temperature += 1F;
             else if(entity.temperature > targetTemp) entity.temperature -= 1F;
             if(entity.temperature != oldTemp) {
-                TieredHeat heat = block.getHeat(level, pos, state);
-                if(heat != TieredHeat.fromTemp(entity.temperature)) {
+                TieredHeat heat = TieredHeat.fromTemp(entity.temperature);
+                if(block.getHeat(level, pos, state) != heat) {
                     //TODO: extra particles explosion?
-                    if(entity.temperature < oldTemp) block.decreaseHeat(level, state, pos);
-                    else block.increaseHeat(level, state, pos);
+                    block.setHeat(level, state, pos, heat);
                 }
-                entity.setChanged();
             }
         }
+        entity.setChanged();
     }
 
     @Override

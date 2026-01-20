@@ -2,8 +2,11 @@ package frostnox.nightfall.block.block.barrel;
 
 import frostnox.nightfall.block.BlockStatePropertiesNF;
 import frostnox.nightfall.block.ICustomPathfindable;
+import frostnox.nightfall.block.ITimeSimulatedBlock;
 import frostnox.nightfall.block.block.WaterloggedEntityBlock;
-import frostnox.nightfall.block.block.crucible.CrucibleBlockEntity;
+import frostnox.nightfall.capability.ChunkData;
+import frostnox.nightfall.capability.IChunkData;
+import frostnox.nightfall.capability.LevelData;
 import frostnox.nightfall.entity.ai.pathfinding.NodeManager;
 import frostnox.nightfall.entity.ai.pathfinding.NodeType;
 import frostnox.nightfall.item.item.FilledBucketItem;
@@ -23,6 +26,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
@@ -36,18 +40,20 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.ticks.TickPriority;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Random;
 
-public class BarrelBlockNF extends WaterloggedEntityBlock implements ICustomPathfindable {
+public class BarrelBlockNF extends WaterloggedEntityBlock implements ICustomPathfindable, ITimeSimulatedBlock {
     public static final DirectionProperty FACING = BlockStatePropertiesNF.FACING_NOT_DOWN;
     public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
     protected static final VoxelShape SHAPE_X = Block.box(0, 0, 2, 16, 12, 14);
@@ -103,14 +109,6 @@ public class BarrelBlockNF extends WaterloggedEntityBlock implements ICustomPath
             case Y -> SHAPE_Y;
             case Z -> SHAPE_Z;
         };
-    }
-
-    @Override
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState pNewState, boolean pIsMoving) {
-        if(!state.is(pNewState.getBlock()) && level.getBlockEntity(pos) instanceof Container container) {
-            Containers.dropContents(level, pos, container);
-        }
-        super.onRemove(state, level, pos, pNewState, pIsMoving);
     }
 
     @Override
@@ -187,5 +185,30 @@ public class BarrelBlockNF extends WaterloggedEntityBlock implements ICustomPath
             case Y -> AABB_Y;
             case Z -> AABB_Z;
         };
+    }
+
+    @Override
+    public void onBlockStateChange(LevelReader levelReader, BlockPos pos, BlockState oldState, BlockState newState) {
+        Level level = (Level) levelReader;
+        if(!level.isClientSide && !oldState.is(this) && LevelData.isPresent(level)) {
+            ChunkData.get(level.getChunkAt(pos)).addSimulatableBlock(TickPriority.NORMAL, pos);
+        }
+    }
+
+    @Override
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState pNewState, boolean pIsMoving) {
+        if(!pNewState.is(this)) {
+            if(level.getBlockEntity(pos) instanceof Container container) Containers.dropContents(level, pos, container);
+            if(LevelData.isPresent(level)) ChunkData.get(level.getChunkAt(pos)).removeSimulatableBlock(TickPriority.NORMAL, pos);
+        }
+        super.onRemove(state, level, pos, pNewState, pIsMoving);
+    }
+
+
+    @Override
+    public void simulateTime(ServerLevel level, LevelChunk chunk, IChunkData chunkData, BlockPos pos, BlockState state, long elapsedTime, long gameTime, long dayTime, long seasonTime, float seasonalTemp, double randomTickChance, Random random) {
+        if(level.getBlockEntity(pos) instanceof BarrelBlockEntityNF barrel) {
+            BarrelBlockEntityNF.serverTick(level, pos, state, barrel, (elapsedTime > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) elapsedTime));
+        }
     }
 }

@@ -243,7 +243,7 @@ public class ClientEngine {
                 image(58, 12, imageLoc("item_in_water")), null, false);
         registerEntry(WYLDERY, EntriesNF.CAMPFIRE, 0, -2, new ItemStack(ItemsNF.CAMPFIRE.get()));
         registerEntry(WYLDERY, EntriesNF.POTTERY, 0, -4, new ItemStack(ItemsNF.POT.get()), null,
-                null, image(96, 36, imageLoc("kiln")), false);
+                null, image(36, 84, imageLoc("kiln")), false);
         registerEntry(WYLDERY, EntriesNF.COOKING, 0, -6, new ItemStack(ItemsNF.HEARTY_STEW.get()), null,
                 null, image(31, 31, imageLoc("stew")), false);
         registerEntry(WYLDERY, EntriesNF.WEAVING, -2, 1, new ItemStack(ItemsNF.LINEN.get()));
@@ -908,7 +908,6 @@ public class ClientEngine {
         List<ToolIngredientRecipe> recipes = tool.getRecipes(mc.level, mc.player, mc.player.getItemInHand(mainHand ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND));
         List<ItemStack> items = new ObjectArrayList<>(recipes.size());
         for(int i = 0; i < recipes.size(); i++) items.add(i, recipes.get(i).getResultItem());
-        System.out.println("CREATE SCREEN " + mainHand);
         ModifiableItemScreen.initSelection(mc, items, tool, mainHand);
     }
 

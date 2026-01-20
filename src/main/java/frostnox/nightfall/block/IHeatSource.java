@@ -15,6 +15,8 @@ import net.minecraft.world.ticks.TickPriority;
 public interface IHeatSource {
     TieredHeat getHeat(Level level, BlockPos pos, BlockState state);
 
+    int getRemainingBurnTicks(Level level, BlockPos pos, BlockState state);
+
     default void scheduleHeatTick(LevelAccessor level, BlockPos pos, Block block) {
         level.scheduleTick(pos, block, 4 + level.getRandom().nextInt(9), TickPriority.HIGH);
     }

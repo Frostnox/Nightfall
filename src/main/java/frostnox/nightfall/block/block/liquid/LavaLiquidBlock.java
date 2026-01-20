@@ -58,4 +58,9 @@ public class LavaLiquidBlock extends SizedLiquidBlock implements IHeatSource {
     public TieredHeat getHeat(Level level, BlockPos pos, BlockState state) {
         return TieredHeat.ORANGE;
     }
+
+    @Override
+    public int getRemainingBurnTicks(Level level, BlockPos pos, BlockState state) {
+        return Integer.MAX_VALUE;
+    }
 }

@@ -119,13 +119,17 @@ public class BarrelBlockEntityNF extends MenuContainerBlockEntity implements IHo
     }
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, BarrelBlockEntityNF entity) {
+        serverTick(level, pos, state, entity, 1);
+    }
+
+    public static void serverTick(Level level, BlockPos pos, BlockState state, BarrelBlockEntityNF entity, int ticks) {
         boolean changed = false;
         for(int i = 0; i < MAX_RECIPES; i++) {
             ResourceLocation recipeLocation = entity.activeRecipes.get(i);
             if(recipeLocation != null) {
                 Optional<? extends Recipe<?>> recipe = level.getRecipeManager().byKey(recipeLocation);
                 if(recipe.isPresent()) {
-                    int soakTicks = entity.soakTicks.getInt(i) + 1;
+                    int soakTicks = entity.soakTicks.getInt(i) + ticks;
                     entity.soakTicks.set(i, soakTicks);
                     changed = true;
                     if(soakTicks >= entity.soakDurations.getInt(i)) {

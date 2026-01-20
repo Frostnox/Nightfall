@@ -1,7 +1,11 @@
 package frostnox.nightfall.block.block.mold;
 
 import frostnox.nightfall.block.BlockStatePropertiesNF;
+import frostnox.nightfall.block.ITimeSimulatedBlock;
 import frostnox.nightfall.block.block.WaterloggedEntityBlock;
+import frostnox.nightfall.capability.ChunkData;
+import frostnox.nightfall.capability.IChunkData;
+import frostnox.nightfall.capability.LevelData;
 import frostnox.nightfall.registry.forge.BlockEntitiesNF;
 import frostnox.nightfall.util.LevelUtil;
 import net.minecraft.ChatFormatting;
@@ -9,6 +13,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
@@ -31,16 +36,18 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.items.ItemHandlerHelper;
+import net.minecraft.world.ticks.TickPriority;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Random;
 
-public class ItemMoldBlock extends WaterloggedEntityBlock {
+public class ItemMoldBlock extends WaterloggedEntityBlock implements ITimeSimulatedBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty TICKING = BlockStatePropertiesNF.TICKING;
     public final TagKey<Item> matchingItemTag;
@@ -113,17 +120,6 @@ public class ItemMoldBlock extends WaterloggedEntityBlock {
     }
 
     @Override
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean p_48717_) {
-        if(!state.is(newState.getBlock())) {
-            if(level.getBlockEntity(pos) instanceof ItemMoldBlockEntity entity) {
-                Containers.dropContents(level, pos, entity.getContainerDrops());
-                level.updateNeighbourForOutputSignal(pos, this);
-            }
-        }
-        super.onRemove(state, level, pos, newState, p_48717_);
-    }
-
-    @Override
     public BlockState rotate(BlockState state, Rotation pRotation) {
         return state.setValue(FACING, pRotation.rotate(state.getValue(FACING)));
     }
@@ -149,5 +145,33 @@ public class ItemMoldBlock extends WaterloggedEntityBlock {
         if(!state.getValue(TICKING)) return null;
         else if(level.isClientSide()) return createTickerHelper(entity, BlockEntitiesNF.ITEM_MOLD.get(), ItemMoldBlockEntity::clientTick);
         else return createTickerHelper(entity, BlockEntitiesNF.ITEM_MOLD.get(), ItemMoldBlockEntity::serverTick);
+    }
+
+    @Override
+    public void onBlockStateChange(LevelReader levelReader, BlockPos pos, BlockState oldState, BlockState newState) {
+        Level level = (Level) levelReader;
+        if(!level.isClientSide && (!oldState.is(this) || oldState.getValue(TICKING) != newState.getValue(TICKING)) && LevelData.isPresent(level)) {
+            if(!newState.getValue(TICKING)) ChunkData.get(level.getChunkAt(pos)).removeSimulatableBlock(TickPriority.NORMAL, pos);
+            else ChunkData.get(level.getChunkAt(pos)).addSimulatableBlock(TickPriority.NORMAL, pos);
+        }
+    }
+
+    @Override
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState pNewState, boolean pIsMoving) {
+        super.onRemove(state, level, pos, pNewState, pIsMoving);
+        if(!pNewState.is(this)) {
+            if(level.getBlockEntity(pos) instanceof ItemMoldBlockEntity entity) {
+                Containers.dropContents(level, pos, entity.getContainerDrops());
+                level.updateNeighbourForOutputSignal(pos, this);
+            }
+            if(state.getValue(TICKING) && LevelData.isPresent(level)) ChunkData.get(level.getChunkAt(pos)).removeSimulatableBlock(TickPriority.NORMAL, pos);
+        }
+    }
+
+    @Override
+    public void simulateTime(ServerLevel level, LevelChunk chunk, IChunkData chunkData, BlockPos pos, BlockState state, long elapsedTime, long gameTime, long dayTime, long seasonTime, float seasonalTemp, double randomTickChance, Random random) {
+        if(state.getValue(TICKING) && level.getBlockEntity(pos) instanceof ItemMoldBlockEntity mold) {
+            ItemMoldBlockEntity.serverTick(level, pos, state, mold, (elapsedTime > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) elapsedTime));
+        }
     }
 }

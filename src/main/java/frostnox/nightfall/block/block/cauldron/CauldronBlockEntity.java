@@ -43,7 +43,7 @@ public class CauldronBlockEntity extends MenuContainerBlockEntity implements IHo
     protected int cookTicks, cookTicksTotal = CauldronRecipe.COOK_TIME;
     public ItemStack meal = ItemStack.EMPTY;
     public boolean hot = false;
-    private boolean needsUpdate = false;
+    protected boolean needsUpdate = false;
     public int animTick, forceEntityRenderTick = -1;
     protected final ContainerData data = new ContainerData() {
         @Override
@@ -191,8 +191,12 @@ public class CauldronBlockEntity extends MenuContainerBlockEntity implements IHo
     }
 
     public static void cookTick(Level level, BlockPos pos, BlockState state, CauldronBlockEntity entity) {
+        cookTick(level, pos, state, entity, 1);
+    }
+
+    public static void cookTick(Level level, BlockPos pos, BlockState state, CauldronBlockEntity entity, int ticks) {
         if(!entity.hasMeal() && entity.canCookMeal()) {
-            entity.cookTicks++;
+            entity.cookTicks += ticks;
             entity.setChanged();
             if(entity.cookTicks >= entity.cookTicksTotal) {
                 RecipeWrapper container = new RecipeWrapper(entity.inventory);
@@ -214,8 +218,12 @@ public class CauldronBlockEntity extends MenuContainerBlockEntity implements IHo
     }
 
     public static void idleTick(Level level, BlockPos pos, BlockState state, CauldronBlockEntity entity) {
+        idleTick(level, pos, state, entity, 1);
+    }
+
+    public static void idleTick(Level level, BlockPos pos, BlockState state, CauldronBlockEntity entity, int ticks) {
         if(entity.cookTicks > 0) {
-            entity.cookTicks -= 2;
+            entity.cookTicks = Math.max(0, entity.cookTicks - ticks * 2);
             entity.setChanged();
         }
     }
