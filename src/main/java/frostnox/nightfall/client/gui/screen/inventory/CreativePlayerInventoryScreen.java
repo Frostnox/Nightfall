@@ -15,7 +15,6 @@ public class CreativePlayerInventoryScreen extends CreativeModeInventoryScreen {
     @Override
     protected void refreshSearchResults() {
         super.refreshSearchResults();
-        if(ClientEngine.get().isDevVersion()) return;
         //Remove all vanilla items
         menu.items.removeIf(itemStack -> itemStack.getItem().getRegistryName().getNamespace().equals("minecraft"));
         //Update container slots

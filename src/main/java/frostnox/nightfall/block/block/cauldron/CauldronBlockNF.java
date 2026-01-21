@@ -2,11 +2,9 @@ package frostnox.nightfall.block.block.cauldron;
 
 import frostnox.nightfall.block.*;
 import frostnox.nightfall.block.block.WaterloggedEntityBlock;
-import frostnox.nightfall.block.block.campfire.CampfireBlockEntityNF;
 import frostnox.nightfall.capability.ChunkData;
 import frostnox.nightfall.capability.IChunkData;
 import frostnox.nightfall.capability.LevelData;
-import frostnox.nightfall.data.recipe.CauldronRecipe;
 import frostnox.nightfall.entity.ai.pathfinding.NodeManager;
 import frostnox.nightfall.entity.ai.pathfinding.NodeType;
 import frostnox.nightfall.item.item.ChangeOnUseFinishItem;
@@ -55,7 +53,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.ticks.TickPriority;
-import net.minecraftforge.items.wrapper.RecipeWrapper;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 

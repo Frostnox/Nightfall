@@ -26,7 +26,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -98,7 +97,7 @@ public class ItemsNF {
         CreativeModeTab.TAB_HOTBAR = new CreativeModeTab(4, "hotbar") {
             @Override
             public ItemStack makeIcon() {
-                return new ItemStack(Blocks.BOOKSHELF); //TODO: Replace with something fitting later
+                return new ItemStack(ItemsNF.POUCH.get());
             }
 
             @Override
@@ -114,7 +113,7 @@ public class ItemsNF {
         CreativeModeTab.TAB_SEARCH = (new CreativeModeTab(5, "search") {
             @Override
             public ItemStack makeIcon() {
-                return new ItemStack(Items.COMPASS); //TODO: Replace with something fitting later
+                return new ItemStack(ItemsNF.BOOK.get());
             }
         }).setBackgroundSuffix("item_search.png");
         CreativeModeTab.TAB_INVENTORY = (new CreativeModeTab(11, "inventory") {
@@ -147,6 +146,7 @@ public class ItemsNF {
     public static final RegistryObject<Item> SULFUR = register("sulfur", () -> new SulfurItem(ingredient()));
     public static final RegistryObject<Item> LIME = register("lime", () -> new LimeItem(ingredient()));
     public static final RegistryObject<Item> SALT = ITEMS.register("salt", () -> new SaltItem(ingredient()));
+    public static final RegistryObject<Item> BOOK = register("book", 32, INGREDIENTS_TAB);
     public static final RegistryObject<Item> TIN_CHUNK = ITEMS.register("tin_chunk", () -> new Item(ingredient().stacksTo(16)));
     public static final RegistryObject<Item> COPPER_CHUNK = ITEMS.register("copper_chunk", () -> new Item(ingredient().stacksTo(16)));
     public static final RegistryObject<BuildingMaterialItem> AZURITE_CHUNK = ITEMS.register("azurite_chunk", () -> new BuildingMaterialItem(ingredient().stacksTo(16)));

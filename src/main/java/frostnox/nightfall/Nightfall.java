@@ -610,9 +610,7 @@ public class Nightfall {
                 event.addSprite(FluidsNF.METAL_STILL);
                 event.addSprite(FluidsNF.METAL_FLOW);
                 event.addSprite(FluidsNF.METAL_SOLID);
-                event.addSprite(PlayerInventoryContainer.EMPTY_ACCESSORY_SLOT_FACE);
-                event.addSprite(PlayerInventoryContainer.EMPTY_ACCESSORY_SLOT_NECK);
-                event.addSprite(PlayerInventoryContainer.EMPTY_ACCESSORY_SLOT_WAIST);
+                for(ResourceLocation texture : PlayerInventoryContainer.EMPTY_TEXTURE_SLOTS) event.addSprite(texture);
                 event.addSprite(PlayerInventoryContainer.EMPTY_RECIPE_SEARCH_SLOT);
                 event.addSprite(PuzzleContainer.UNKNOWN_ITEM);
                 event.addSprite(PuzzleContainer.FAILURE);

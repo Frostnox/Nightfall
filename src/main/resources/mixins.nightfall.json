@@ -43,7 +43,8 @@
     "CreateWorldScreenMixin",
     "MinecraftMixin",
     "ClientPacketListenerMixin",
-    "ItemInHandRendererMixin"
+    "ItemInHandRendererMixin",
+    "ModelBakeryMixin"
   ],
   "injectors": {
     "defaultRequire": 1

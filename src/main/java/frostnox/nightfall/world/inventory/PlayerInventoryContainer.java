@@ -30,7 +30,12 @@ public class PlayerInventoryContainer extends InventoryMenu {
     public static final ResourceLocation EMPTY_ACCESSORY_SLOT_NECK = ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "item/empty_accessory_slot_neck");
     public static final ResourceLocation EMPTY_ACCESSORY_SLOT_WAIST = ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "item/empty_accessory_slot_waist");
     public static final ResourceLocation EMPTY_RECIPE_SEARCH_SLOT = ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "item/empty_recipe_search_slot");
-    private static final ResourceLocation[] TEXTURE_EMPTY_SLOTS = new ResourceLocation[]{EMPTY_ARMOR_SLOT_BOOTS, EMPTY_ARMOR_SLOT_LEGGINGS, EMPTY_ARMOR_SLOT_CHESTPLATE, EMPTY_ARMOR_SLOT_HELMET, EMPTY_ACCESSORY_SLOT_FACE, EMPTY_ACCESSORY_SLOT_NECK, EMPTY_ACCESSORY_SLOT_WAIST};
+    public static final ResourceLocation EMPTY_ARMOR_SLOT_BOOTS = ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "item/empty_armor_slot_boots");
+    public static final ResourceLocation EMPTY_ARMOR_SLOT_LEGGINGS = ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "item/empty_armor_slot_leggings");
+    public static final ResourceLocation EMPTY_ARMOR_SLOT_CHESTPLATE = ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "item/empty_armor_slot_chestplate");
+    public static final ResourceLocation EMPTY_ARMOR_SLOT_HELMET = ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "item/empty_armor_slot_helmet");
+    public static final ResourceLocation EMPTY_ARMOR_SLOT_SHIELD = ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "item/empty_armor_slot_shield");
+    public static final ResourceLocation[] EMPTY_TEXTURE_SLOTS = new ResourceLocation[]{EMPTY_ARMOR_SLOT_BOOTS, EMPTY_ARMOR_SLOT_LEGGINGS, EMPTY_ARMOR_SLOT_CHESTPLATE, EMPTY_ARMOR_SLOT_HELMET, EMPTY_ACCESSORY_SLOT_FACE, EMPTY_ACCESSORY_SLOT_NECK, EMPTY_ACCESSORY_SLOT_WAIST};
     private static final EquipmentSlot[] SLOT_IDS = new EquipmentSlot[]{EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
     private final CraftingContainer craftSlots = new CraftingContainer(this, 3, 3);
     private final ResultContainer resultSlots = new ResultContainer();
@@ -103,7 +108,7 @@ public class PlayerInventoryContainer extends InventoryMenu {
                 }
 
                 public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
-                    return Pair.of(InventoryMenu.BLOCK_ATLAS, TEXTURE_EMPTY_SLOTS[equipmentslot.getIndex()]);
+                    return Pair.of(InventoryMenu.BLOCK_ATLAS, EMPTY_TEXTURE_SLOTS[equipmentslot.getIndex()]);
                 }
             });
         }
@@ -124,7 +129,7 @@ public class PlayerInventoryContainer extends InventoryMenu {
         //Offhand slot
         addSlot(new Slot(playerInv, 40, 75, 62) {
             public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
-                return Pair.of(InventoryMenu.BLOCK_ATLAS, InventoryMenu.EMPTY_ARMOR_SLOT_SHIELD);
+                return Pair.of(InventoryMenu.BLOCK_ATLAS, EMPTY_ARMOR_SLOT_SHIELD);
             }
         });
 
@@ -147,7 +152,7 @@ public class PlayerInventoryContainer extends InventoryMenu {
                 }
 
                 public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
-                    return Pair.of(InventoryMenu.BLOCK_ATLAS, TEXTURE_EMPTY_SLOTS[4 + accessorySlot.ordinal()]);
+                    return Pair.of(InventoryMenu.BLOCK_ATLAS, EMPTY_TEXTURE_SLOTS[4 + accessorySlot.ordinal()]);
                 }
             });
         }
