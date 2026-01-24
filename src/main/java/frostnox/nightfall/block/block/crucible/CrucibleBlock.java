@@ -2,6 +2,7 @@ package frostnox.nightfall.block.block.crucible;
 
 import frostnox.nightfall.block.*;
 import frostnox.nightfall.block.block.WaterloggedEntityBlock;
+import frostnox.nightfall.block.block.fuel.BurningFuelBlock;
 import frostnox.nightfall.capability.ChunkData;
 import frostnox.nightfall.capability.IChunkData;
 import frostnox.nightfall.capability.LevelData;
@@ -11,7 +12,10 @@ import frostnox.nightfall.entity.ai.pathfinding.NodeType;
 import frostnox.nightfall.item.item.FilledBucketItem;
 import frostnox.nightfall.registry.forge.BlockEntitiesNF;
 import frostnox.nightfall.util.MathUtil;
+import frostnox.nightfall.util.data.WrappedBool;
 import frostnox.nightfall.world.inventory.ItemStackHandlerNF;
+import it.unimi.dsi.fastutil.ints.IntIntPair;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -21,6 +25,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
@@ -56,6 +61,7 @@ import net.minecraftforge.items.wrapper.RecipeWrapper;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
@@ -216,55 +222,138 @@ public class CrucibleBlock extends WaterloggedEntityBlock implements ICustomPath
     @Override
     public void simulateTime(ServerLevel level, LevelChunk chunk, IChunkData chunkData, BlockPos pos, BlockState state, long elapsedTime, long gameTime, long dayTime, long seasonTime, float seasonalTemp, double randomTickChance, Random random) {
         if(level.getBlockEntity(pos) instanceof CrucibleBlockEntity entity) {
-            //TODO:
-            boolean changed = false;
-            float targetTemp = entity.targetTemperature;
+            WrappedBool changed = new WrappedBool(false);
+            int elapsedTicks = (elapsedTime > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) elapsedTime);
+            int burnTicks = elapsedTicks;
+            float heatTemp, targetHeatTemp;
+            BlockPos heatPos = pos.below();
+            BlockState heatBlock = level.getBlockState(heatPos);
+            if(heatBlock.getBlock() instanceof IHeatSource heatSource) {
+                burnTicks = Math.min(burnTicks, heatSource.getRemainingBurnTicks(level, heatPos, heatBlock));
+                heatTemp = heatSource.getTemperature(level, heatPos, state);
+                if(heatBlock.getBlock() instanceof BurningFuelBlock fuel) targetHeatTemp = fuel.getTargetTemperature(level, state, heatPos);
+                else targetHeatTemp = heatTemp;
+            }
+            else {
+                heatTemp = 0;
+                targetHeatTemp = 0;
+            }
+            float targetTemp = Math.max(entity.targetTemperature, targetHeatTemp);
             if(level.isRainingAt(pos.above())) targetTemp -= 200;
-            if(entity.temperature < targetTemp) {
-                entity.temperature = Math.min(entity.temperature + 2, targetTemp);
-                TieredHeat heat = TieredHeat.fromTemp(entity.temperature);
-                if(state.getValue(CrucibleBlock.HEAT) != heat.getTier()) {
-                    level.setBlock(pos, state.setValue(CrucibleBlock.HEAT, heat.getTier()), 2);
-                }
-                changed = true;
-            }
-            else if(entity.temperature > targetTemp) {
-                entity.temperature = Math.max(entity.temperature - 1, targetTemp);
-                TieredHeat heat = TieredHeat.fromTemp(entity.temperature);
-                if(state.getValue(CrucibleBlock.HEAT) != heat.getTier()) {
-                    level.setBlock(pos, state.setValue(CrucibleBlock.HEAT, heat.getTier()), 2);
-                }
-                changed = true;
-            }
+
+            List<IntIntPair> completedIndexes = new ObjectArrayList<>(CrucibleBlockEntity.ITEM_CAPACITY);
             for(int i = 0; i < CrucibleBlockEntity.ITEM_CAPACITY; i++) {
                 ResourceLocation recipeLocation = entity.recipeLocations.get(i);
                 if(recipeLocation != null) {
                     CrucibleRecipe recipe = (CrucibleRecipe) level.getRecipeManager().byKey(recipeLocation).orElseThrow();
-                    if(entity.temperature >= recipe.getTemperature()) {
-                        int cookTicks = entity.cookTicks.getInt(i) + 1;
-                        entity.cookTicks.set(i, cookTicks);
-                        changed = true;
-                        if(cookTicks >= entity.cookDurations.getInt(i)) {
-                            RecipeWrapper inventory = new RecipeWrapper(new ItemStackHandlerNF(entity.inventory.getStackInSlot(i)));
-                            FluidStack fluid = recipe.assembleFluid(inventory);
-                            if(fluid.isEmpty() || entity.getFluidUnits() != entity.getFluidCapacity(entity.getBlockState())) {
-                                entity.addFluid(fluid, Integer.MAX_VALUE);
-                                entity.setItem(i, recipe.assemble(inventory));
-                                entity.tryAlloying();
-                                level.sendBlockUpdated(entity.getBlockPos(), entity.getBlockState(), entity.getBlockState(), 4 | 16);
-                            }
-                        }
+                    float cookTemp = recipe.getTemperature();
+                    float temp = entity.temperature;
+                    int ticks = burnTicks;
+                    //Fast heat
+                    if(temp < heatTemp) {
+                        int heatTicks = Math.min(ticks, Mth.ceil((heatTemp - temp) / 2));
+                        int cookTicks = Math.max(0, heatTicks - Math.max(0, Mth.ceil(cookTemp - temp) / 2) + 1);
+                        if(tickItem(entity, heatTicks, cookTicks, heatTicks - cookTicks, true, recipe, i, changed, completedIndexes)) continue;
+                        temp = Math.min(heatTemp, temp + heatTicks * 2);
+                        ticks -= heatTicks;
                     }
-                    else {
-                        int cookTicks = entity.cookTicks.getInt(i);
-                        if(cookTicks > 0) {
-                            entity.cookTicks.set(i, cookTicks - 1);
-                            changed = true;
-                        }
+                    //Slow heat (throttled by heat source increasing slower)
+                    if(temp < targetTemp && ticks > 0) {
+                        int heatTicks = Math.min(ticks, (int) (targetTemp - temp));
+                        int cookTicks = Math.max(0, heatTicks - Math.max(0, Mth.ceil(cookTemp - temp)) + 1);
+                        if(tickItem(entity, burnTicks - ticks + heatTicks, cookTicks, heatTicks - cookTicks, true, recipe, i, changed, completedIndexes)) continue;
+                        temp = Math.min(targetTemp, temp + heatTicks);
+                        ticks -= heatTicks;
+                    }
+                    //Stable heat
+                    if(temp >= cookTemp && ticks > 0) {
+                        if(tickItem(entity, burnTicks, ticks, 0, true, recipe, i, changed, completedIndexes)) continue;
+                    }
+                    //Cool down
+                    if(burnTicks < elapsedTicks) {
+                        int coolTicks = Math.min(elapsedTicks - burnTicks, (int) (temp));
+                        int cookTicks = Math.max(0, Math.min(coolTicks, Mth.ceil(cookTemp - temp)) + 1);
+                        tickItem(entity, elapsedTicks, cookTicks, coolTicks - cookTicks, false, recipe, i, changed, completedIndexes);
                     }
                 }
             }
-            if(changed) entity.setChanged();
+            //Sort by completion time
+            completedIndexes.sort((p1, p2) -> p1.secondInt() == p2.secondInt() ? Integer.compare(p1.firstInt(), p2.firstInt()) : Integer.compare(p1.secondInt(), p2.secondInt()));
+            for(IntIntPair pair : completedIndexes) {
+                int i = pair.firstInt();
+                RecipeWrapper inventory = new RecipeWrapper(new ItemStackHandlerNF(entity.inventory.getStackInSlot(i)));
+                CrucibleRecipe recipe = (CrucibleRecipe) level.getRecipeManager().byKey(entity.recipeLocations.get(i)).orElseThrow();
+                FluidStack fluid = recipe.assembleFluid(inventory);
+                if(fluid.isEmpty() || entity.getFluidUnits() != entity.getFluidCapacity(entity.getBlockState())) {
+                    entity.addFluid(fluid, Integer.MAX_VALUE);
+                    entity.setItem(i, recipe.assemble(inventory));
+                    entity.tryAlloying();
+                }
+            }
+
+            float finalTemp = entity.temperature;
+            int ticks = burnTicks;
+            //Fast heat
+            if(finalTemp < heatTemp) {
+                int heatTicks = Math.min(ticks, Mth.ceil((heatTemp - finalTemp) / 2));
+                finalTemp = Math.min(heatTemp, finalTemp + heatTicks * 2);
+                ticks -= heatTicks;
+            }
+            //Slow heat (throttled by heat source increasing slower)
+            if(finalTemp < targetTemp && ticks > 0) {
+                int heatTicks = Math.min(ticks, (int) (targetTemp - finalTemp));
+                finalTemp = Math.min(targetTemp, finalTemp + heatTicks);
+            }
+            //Cool down
+            if(burnTicks < elapsedTicks) {
+                int coolTicks = Math.min(elapsedTicks - burnTicks, (int) (finalTemp));
+                finalTemp = Math.max(0, finalTemp - coolTicks);
+            }
+            if(entity.temperature != finalTemp) {
+                entity.temperature = finalTemp;
+                TieredHeat heat = TieredHeat.fromTemp(entity.temperature);
+                if(state.getValue(CrucibleBlock.HEAT) != heat.getTier()) {
+                    level.setBlock(pos, state.setValue(CrucibleBlock.HEAT, heat.getTier()), 2);
+                }
+                changed.val = true;
+            }
+
+            if(changed.val) entity.setChanged();
         }
+    }
+
+    private static boolean tickItem(CrucibleBlockEntity entity, int passedTicks, int cookTicks, int coolTicks, boolean coolFirst, CrucibleRecipe recipe, int i, WrappedBool changed, List<IntIntPair> completedIndexes) {
+        if(coolFirst) {
+            if(coolTicks > 0) {
+                int newTicks = entity.cookTicks.getInt(i);
+                if(newTicks > 0) {
+                    entity.cookTicks.set(i, Math.max(0, newTicks - coolTicks));
+                    changed.val = true;
+                }
+            }
+        }
+        if(cookTicks > 0) {
+            int newTicks = entity.cookTicks.getInt(i) + cookTicks;
+            entity.cookTicks.set(i, newTicks);
+            changed.val = true;
+            if(newTicks >= entity.cookDurations.getInt(i)) {
+                RecipeWrapper inventory = new RecipeWrapper(new ItemStackHandlerNF(entity.inventory.getStackInSlot(i)));
+                FluidStack fluid = recipe.assembleFluid(inventory);
+                if(fluid.isEmpty() || entity.getFluidUnits() != entity.getFluidCapacity(entity.getBlockState())) {
+                    completedIndexes.add(IntIntPair.of(i, passedTicks - (newTicks - entity.cookDurations.getInt(i))));
+                    return true;
+                }
+            }
+        }
+        if(!coolFirst) {
+            if(coolTicks > 0) {
+                int newTicks = entity.cookTicks.getInt(i);
+                if(newTicks > 0) {
+                    entity.cookTicks.set(i, Math.max(0, newTicks - coolTicks));
+                    changed.val = true;
+                }
+            }
+        }
+        return false;
     }
 }
