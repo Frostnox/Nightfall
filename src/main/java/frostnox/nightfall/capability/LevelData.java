@@ -28,7 +28,7 @@ public class LevelData implements ILevelData {
     private final WeatherData[] weatherHistory = new WeatherData[HISTORY_LENGTH];
     private int historyIndex = -1;
     private int weatherDuration = 1, weatherTicks = 2;
-    private long windTime, seasonTime = Season.SEASON_LENGTH, seed;
+    private long windTime, seasonTime = Season.SPRING.getMiddleTime(), seed;
     private float rawWeatherIntensity, weatherIntensity, lastWeatherIntensity, windX, windZ, lastWindX = -10F, lastWindZ;
     private FractalSimplexNoiseFast vegetationNoise;
 
