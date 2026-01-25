@@ -253,6 +253,15 @@ public class Nightfall {
                 ItemProperties.register(bow.get(), ResourceLocation.fromNamespaceAndPath(MODID, "pull"), bowPull);
                 ItemProperties.register(bow.get(), ResourceLocation.fromNamespaceAndPath(MODID, "ammo"), bowAmmo);
             }
+            ItemPropertyFunction firing = (item, level, user, seed) -> {
+                if(user != null && ActionTracker.isPresent(user)) {
+                    IActionTracker capA = ActionTracker.get(user);
+                    InteractionHand hand = user instanceof Player player ? PlayerData.get(player).getActiveHand() : InteractionHand.MAIN_HAND;
+                    if(user.getItemInHand(hand) == item && capA.getAction().isStateDamaging(capA.getState())) return 1F;
+                }
+                return 0F;
+            };
+            ItemProperties.register(ItemsNF.FIRESTARTER.get(), ResourceLocation.fromNamespaceAndPath(MODID, "firing"), firing);
         });
 
         List<RegistryObject<? extends Block>> cutout = new ArrayList<>(), cutoutMipped = new ArrayList<>(), translucent = new ArrayList<>();
@@ -612,6 +621,7 @@ public class Nightfall {
                 event.addSprite(FluidsNF.METAL_SOLID);
                 for(ResourceLocation texture : PlayerInventoryContainer.EMPTY_TEXTURE_SLOTS) event.addSprite(texture);
                 event.addSprite(PlayerInventoryContainer.EMPTY_RECIPE_SEARCH_SLOT);
+                event.addSprite(PlayerInventoryContainer.EMPTY_ARMOR_SLOT_SHIELD);
                 event.addSprite(PuzzleContainer.UNKNOWN_ITEM);
                 event.addSprite(PuzzleContainer.FAILURE);
                 event.addSprite(PuzzleContainer.SUCCESS);
@@ -672,6 +682,7 @@ public class Nightfall {
             engine.register(ParticleTypesNF.SNOW.get(), SnowParticle.Provider::new);
             engine.register(ParticleTypesNF.FADING_CLOUD.get(), FadingCloudParticle.Provider::new);
             engine.register(ParticleTypesNF.SKARA.get(), SkaraParticle.Provider::new);
+            engine.register(ParticleTypesNF.FIRE_EXPLOSION.get(), FireExplosionParticle.Provider::new);
         }
 
         public static class WaterFallProvider implements ParticleProvider<SimpleParticleType> {

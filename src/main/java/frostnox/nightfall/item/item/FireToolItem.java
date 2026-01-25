@@ -28,12 +28,12 @@ import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.function.Supplier;
 
-public class FireStarterItem extends SimpleToolItem {
+public class FireToolItem extends SimpleToolItem {
     public final Map<TagKey<Item>, Integer> pairedItems;
     public final Supplier<SoundEvent> sound;
     public final float breakChance;
 
-    public FireStarterItem(Map<TagKey<Item>, Integer> pairedItems, Supplier<SoundEvent> sound, float breakChance, @Nullable RegistryObject<? extends Action> recipeAction, Properties properties) {
+    public FireToolItem(Map<TagKey<Item>, Integer> pairedItems, Supplier<SoundEvent> sound, float breakChance, @Nullable RegistryObject<? extends Action> recipeAction, Properties properties) {
         super(recipeAction, properties);
         this.pairedItems = pairedItems;
         this.sound = sound;
@@ -57,9 +57,9 @@ public class FireStarterItem extends SimpleToolItem {
             Level level = context.getLevel();
             BlockPos pos = context.getClickedPos();
             BlockState state = level.getBlockState(pos);
-            if(state.getBlock() instanceof IIgnitable burnable && !burnable.isIgnited(state)) {
+            if(state.getBlock() instanceof IIgnitable ignitable && !ignitable.isIgnited(state)) {
                 if(!level.isClientSide() && (randBound < 1 || level.getRandom().nextInt(randBound) == 0)) {
-                    if(burnable.tryToIgnite(level, pos, state, heldStack, TieredHeat.RED)) {
+                    if(ignitable.tryToIgnite(level, pos, state, heldStack, TieredHeat.RED)) {
                         level.gameEvent(player, GameEvent.BLOCK_PLACE, pos);
                     }
                 }

@@ -182,6 +182,7 @@ public class TagsNF {
     public static final TagKey<Item> RECIPE_TOOL_FLINT = itemTag("recipe_tool/flint");
     public static final TagKey<Item> RECIPE_TOOL_COCONUT = itemTag("recipe_tool/coconut");
     public static final TagKey<Item> SLING_AMMO = itemTag("sling_ammo");
+    public static final TagKey<Item> FIRESTARTER_AMMO = itemTag("firestarter_ammo");
     public static final TagKey<Item> NO_HITSTOP = itemTag("no_hitstop");
     public static final TagKey<Item> GRID_INTERACTABLE = itemTag("grid_interactable");
     public static final TagKey<Item> MIXTURE_INGREDIENT = itemTag("mixture_ingredient"); //Specifies unit amounts for items, additive

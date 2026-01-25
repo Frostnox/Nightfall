@@ -84,7 +84,7 @@ public class ItemsNF {
     public static final CreativeModeTab UTILITIES_TAB = new CreativeModeTab(9, Nightfall.MODID + ".utilities") {
         @Override
         public ItemStack makeIcon() {
-            return new ItemStack(ItemsNF.POUCH.get());
+            return new ItemStack(ItemsNF.ROPE.get());
         }
     };
     public static final CreativeModeTab CONSUMABLES_TAB = new CreativeModeTab(10, Nightfall.MODID + ".consumables") {
@@ -128,13 +128,13 @@ public class ItemsNF {
     private static final Random RANDOM = new Random(94814035);
     private static int ARROW_ID = 0;
     //Resources
-    public static final RegistryObject<FireStarterItem> FLINT = ITEMS.register("flint", () -> new FireStarterItem(
+    public static final RegistryObject<FireToolItem> FLINT = ITEMS.register("flint", () -> new FireToolItem(
             Map.of(TagsNF.FLINT_FIRE_STARTER_WEAK, 10, TagsNF.FLINT_FIRE_STARTER_STRONG, 0),
             () -> SoundEvents.FLINTANDSTEEL_USE, 1F/32F, ActionsNF.FLINT_KNAP, ingredient()));
     public static final RegistryObject<Item> BONE_SHARD = register("bone_shard", INGREDIENTS_TAB);
     public static final RegistryObject<Item> OBSIDIAN_SHARD = ITEMS.register("obsidian_shard", () -> new Item(ingredient()));
     public static final RegistryObject<Item> ANCHORING_RESIN = ITEMS.register("anchoring_resin", () -> new Item(ingredient()));
-    public static final RegistryObject<FireStarterItem> STICK = ITEMS.register("stick", () -> new FireStarterItem(Map.of(TagsNF.STICK_FIRE_STARTER, 20),
+    public static final RegistryObject<FireToolItem> STICK = ITEMS.register("stick", () -> new FireToolItem(Map.of(TagsNF.STICK_FIRE_STARTER, 20),
             SoundsNF.STICK_FIRE_STRIKE, 1F/16F, null, ingredient()));
     public static final RegistryObject<BuildingMaterialItem> PLANT_FIBERS = ITEMS.register("plant_fibers", () -> new BuildingMaterialItem(building()));
     public static final RegistryObject<Item> RAWHIDE = ITEMS.register("rawhide", () -> new Item(ingredient()));
@@ -635,6 +635,8 @@ public class ItemsNF {
     public static final RegistryObject<DyedShieldItem> IRONWOOD_SHIELD_DYED = ITEMS.register("ironwood_shield_dyed", () -> new DyedShieldItem(SHIELD_DEFENSES,
             ActionsNF.SHIELD_GUARD, new Item.Properties().durability((int) (Tree.IRONWOOD.getHardness() * 150))));
     public static final RegistryObject<WardingCharmItem> WARDING_CHARM = ITEMS.register("warding_charm", () -> new WardingCharmItem(utility().stacksTo(1)));
+    public static final RegistryObject<ActionableAmmoItem> FIRESTARTER = ITEMS.register("firestarter", () -> new ActionableAmmoItem(
+            ActionsNF.FIRESTARTER_SHOOT, ActionsNF.FIRESTARTER_RELOAD, TagsNF.FIRESTARTER_AMMO, 8, armament().durability(120)));
     //Metallurgy
     public static final Map<Metal, RegistryObject<BuildingMaterialItem>> INGOTS = DataUtil.mapEnum(Metal.class, metal ->
             register(metal.getName() + "_ingot", () -> new BuildingMaterialItem(ingredient().stacksTo(32))));

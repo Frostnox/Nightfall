@@ -714,7 +714,7 @@ public class LootTableProviderNF extends LootTableProvider {
                     .withPool(pool(entry(ItemsNF.LIVING_BONE.get(), 0, 0, List.of(PerceptionCountFunction.with(1, 0.35F, 0.04F))))));
             add(EntitiesNF.DREG.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.ROTTEN_FLESH.get(), 0, 1)))
                     .withPool(pool(entry(ItemsNF.DREG_HEART.get(), 0, 0, List.of(PerceptionCountFunction.with(1, 0.25F, 0.02F))))));
-            add(EntitiesNF.CREEPER.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.SULFUR.get(), 2, 3))));
+            add(EntitiesNF.CREEPER.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.SULFUR.get(), 3, 5))));
             add(EntitiesNF.COCKATRICE.get(), LootTable.lootTable()
                     .withPool(pool(entry(ItemsNF.COCKATRICE_SKINS.get(CockatriceEntity.Type.BRONZE).get(), 1F, 1F, LootItemEntityCondition.of(LootItemEntityCondition.Test.COCKATRICE_BRONZE))))
                     .withPool(pool(entry(ItemsNF.COCKATRICE_SKINS.get(CockatriceEntity.Type.EMERALD).get(), 1F, 1F, LootItemEntityCondition.of(LootItemEntityCondition.Test.COCKATRICE_EMERALD))))

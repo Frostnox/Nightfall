@@ -412,6 +412,10 @@ public class ActionsNF {
                     return tooltips;
                 }
             });
+    public static final RegistryObject<FirestarterShoot> FIRESTARTER_SHOOT = ACTIONS.register("firestarter_shoot", () -> new FirestarterShoot(
+            new Action.Properties().setSound(SoundsNF.FIRESTARTER_STRIKE).setExtraSound(SoundsNF.FIRESTARTER_IGNITE), -0.25F, 6, 2, 4, 2, 6));
+    public static final RegistryObject<FirestarterReload> FIRESTARTER_RELOAD = ACTIONS.register("firestarter_reload", () -> new FirestarterReload(
+            new Action.Properties(), -0.25F, 8, 16, 8));
 
     //NPCs
     public static final RegistryObject<DeerGraze> DEER_GRAZE = ACTIONS.register("deer_graze", () ->

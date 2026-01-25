@@ -157,6 +157,7 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
         tag(TagsNF.TOOL).addTags(TagsNF.ADZE, TagsNF.AXE, TagsNF.CHISEL, TagsNF.KNIFE, TagsNF.HAMMER, TagsNF.PICKAXE, TagsNF.SICKLE, TagsNF.SHOVEL);
         tag(TagsNF.TOOL).add(ItemsNF.RUSTED_MAUL.get());
         tag(TagsNF.ARMAMENT).addTags(TagsNF.TOOL, TagsNF.MACE, TagsNF.SABRE, TagsNF.SPEAR, TagsNF.SWORD);
+        tag(TagsNF.ARMAMENT).add(ItemsNF.FIRESTARTER.get());
         tag(TagsNF.CHISEL_OR_HAMMER).addTags(TagsNF.CHISEL, TagsNF.HAMMER);
         tag(TagsNF.SABRE_OR_HEAD).addTags(TagsNF.SABRE, TagsNF.SABRE_HEAD);
         tag(TagsNF.SICKLE_OR_HEAD).addTags(TagsNF.SICKLE, TagsNF.SICKLE_HEAD);
@@ -172,6 +173,7 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
             else if(type.getType() == StoneType.METAMORPHIC) tag(TagsNF.METAMORPHIC).add(item.get());
             else tag(TagsNF.IGNEOUS).add(item.get());
         }
+        tag(TagsNF.FIRESTARTER_AMMO).add(ItemsNF.SULFUR.get());
         tag(TagsNF.NO_HITSTOP).addTags(TagsNF.KNIFE, TagsNF.SICKLE);
         tag(TagsNF.GRID_INTERACTABLE).addTag(TagsNF.HAMMER);
         tag(TagsNF.MIXTURE_1);

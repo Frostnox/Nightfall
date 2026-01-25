@@ -448,14 +448,16 @@ public class LevelUtil {
         return false;
     }
 
-    @Nullable
-    public static OrientedEntityHitResult getHitEntity(Level level, Entity projectile, Vec3 start, Vec3 end, AABB box, Predicate<Entity> filter) {
+    public static @Nullable OrientedEntityHitResult getHitEntity(Level level, Entity caster, Vec3 start, Vec3 end, AABB box, Predicate<Entity> filter) {
+        return getHitEntity(level, caster, start, end, box, filter, Math.max(caster.getBbWidth() * 0.5, caster.getBbHeight() * 0.5));
+    }
+
+    public static @Nullable OrientedEntityHitResult getHitEntity(Level level, @Nullable Entity caster, Vec3 start, Vec3 end, AABB box, Predicate<Entity> filter, double inflation) {
         double minDistSqr = Double.MAX_VALUE;
         Entity closestEntity = null;
         Vec3 collisionVec = null;
-        double inflation = Math.max(projectile.getBbWidth() * 0.5, projectile.getBbHeight() * 0.5);
         int boxIndex = -1;
-        for(Entity entity : level.getEntities(projectile, box.inflate(IOrientedHitBoxes.MAX_DIST_FROM_AABB), filter)) {
+        for(Entity entity : level.getEntities(caster, box.inflate(IOrientedHitBoxes.MAX_DIST_FROM_AABB), filter)) {
             if(!(entity instanceof IOrientedHitBoxes hitBoxesEntity) || hitBoxesEntity.includeAABB()) {
                 AABB aabb = entity.getBoundingBox().inflate(inflation);
                 Optional<Vec3> point = aabb.clip(start, end);
@@ -490,6 +492,17 @@ public class LevelUtil {
             }
         }
         return closestEntity == null ? null : new OrientedEntityHitResult(closestEntity, collisionVec, boxIndex);
+    }
+
+    public static HitResult getHitResult(Level level, @Nullable Entity caster, Vec3 start, Vec3 end, Predicate<Entity> filter, ClipContext.Block blockContext, ClipContext.Fluid fluidContext) {
+        return getHitResult(level, caster, start, end, new AABB(start, end), filter, blockContext, fluidContext, 0);
+    }
+
+    public static HitResult getHitResult(Level level, @Nullable Entity caster, Vec3 start, Vec3 end, AABB box, Predicate<Entity> filter, ClipContext.Block blockContext, ClipContext.Fluid fluidContext, double inflation) {
+        HitResult blockHit = level.clip(new ClipContext(start, end, blockContext, fluidContext, caster));
+        if(blockHit.getType() != HitResult.Type.MISS) end = blockHit.getLocation();
+        HitResult entityHit = getHitEntity(level, caster, start, end, box, filter, inflation);
+        return entityHit != null ? entityHit : blockHit;
     }
 
     public static HitResult getHitResult(Entity entity, Predicate<Entity> filter) {

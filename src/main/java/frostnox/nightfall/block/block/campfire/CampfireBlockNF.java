@@ -9,7 +9,7 @@ import frostnox.nightfall.capability.LevelData;
 import frostnox.nightfall.data.recipe.CampfireRecipe;
 import frostnox.nightfall.data.recipe.SingleRecipe;
 import frostnox.nightfall.entity.ai.pathfinding.NodeType;
-import frostnox.nightfall.item.item.FireStarterItem;
+import frostnox.nightfall.item.item.FireToolItem;
 import frostnox.nightfall.item.item.IgnitableItem;
 import frostnox.nightfall.item.item.TorchItem;
 import frostnox.nightfall.registry.forge.BlockEntitiesNF;
@@ -103,7 +103,7 @@ public class CampfireBlockNF extends WaterloggedEntityBlock implements IIgnitabl
                 }
                 return InteractionResult.sidedSuccess(level.isClientSide);
             }
-            else if(item.getItem() instanceof FireStarterItem || item.getItem() instanceof IgnitableItem || item.getItem() instanceof TorchItem) return InteractionResult.PASS;
+            else if(item.getItem() instanceof FireToolItem || item.getItem() instanceof IgnitableItem || item.getItem() instanceof TorchItem) return InteractionResult.PASS;
             else if((campfire.items.stream().noneMatch(ItemStack::isEmpty) ? Optional.empty() : level.getRecipeManager().getRecipeFor(CampfireRecipe.TYPE,
                     new RecipeWrapper(new ItemStackHandler(NonNullList.of(ItemStack.EMPTY, item))), level)).isPresent()) {
                 if(!level.isClientSide && campfire.placeFood(player.getAbilities().instabuild ? item.copy() : item)) return InteractionResult.SUCCESS;

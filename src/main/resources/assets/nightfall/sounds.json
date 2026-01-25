@@ -682,6 +682,14 @@
     "subtitle": "nightfall.item.metal_break",
     "sounds": ["nightfall:item/metal_break_0", "nightfall:item/metal_break_1"]
   },
+  "item.firestarter.strike": {
+    "subtitle": "nightfall.item.firestarter.strike",
+    "sounds": ["nightfall:item/firestarter_strike_0", "nightfall:item/firestarter_strike_1", "nightfall:item/firestarter_strike_2"]
+  },
+  "item.firestarter.ignite": {
+    "subtitle": "nightfall.item.firestarter.ignite",
+    "sounds": ["nightfall:item/firestarter_ignite_0", "nightfall:item/firestarter_ignite_1", "nightfall:item/firestarter_ignite_2"]
+  },
   "gui.encyclopedia_use": {
     "sounds": ["nightfall:gui/encyclopedia_use_0", "nightfall:gui/encyclopedia_use_1"]
   },

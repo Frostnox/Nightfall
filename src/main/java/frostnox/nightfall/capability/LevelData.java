@@ -41,7 +41,7 @@ public class LevelData implements ILevelData {
         lastWeatherIntensity = weatherIntensity;
         //Let fog hang around for extra time
         if(Weather.get(lastLastWeatherIntensity) != Weather.FOG && Weather.get(lastWeatherIntensity) == Weather.FOG) {
-            int time = (int) (20 * 60 * 3 * -weatherIntensity);
+            int time = (int) (20 * 90 * -weatherIntensity);
             weatherDuration = time + level.random.nextInt(time);
         }
         else {

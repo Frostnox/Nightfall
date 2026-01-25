@@ -476,6 +476,8 @@ public class LanguageProviderNF extends LanguageProvider {
         addSound(SoundsNF.STICK_FIRE_STRIKE, "Stick strikes");
         addSound(SoundsNF.QUENCH, "Hot item quenches");
         addSound(SoundsNF.METAL_BREAK, "Metal item breaks");
+        addSound(SoundsNF.FIRESTARTER_STRIKE, "Firestarter strikes");
+        addSound(SoundsNF.FIRESTARTER_IGNITE, "Firestarter ignites");
 
         add(EffectsNF.STARVATION_1.get(), "Starvation");
 
