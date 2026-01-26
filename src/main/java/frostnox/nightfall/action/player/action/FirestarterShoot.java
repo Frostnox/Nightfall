@@ -18,10 +18,17 @@ import frostnox.nightfall.registry.forge.ParticleTypesNF;
 import frostnox.nightfall.util.AnimationUtil;
 import frostnox.nightfall.util.CombatUtil;
 import frostnox.nightfall.util.LevelUtil;
+import frostnox.nightfall.util.RenderUtil;
 import frostnox.nightfall.util.animation.AnimationCalculator;
 import frostnox.nightfall.util.animation.AnimationData;
 import frostnox.nightfall.util.math.Easing;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -30,12 +37,16 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.*;
 
+import javax.annotation.Nullable;
 import java.util.EnumMap;
+import java.util.List;
 
 public class FirestarterShoot extends MoveSpeedPlayerAction {
     public FirestarterShoot(float speedMultiplier, int... duration) {
@@ -64,7 +75,7 @@ public class FirestarterShoot extends MoveSpeedPlayerAction {
             IPlayerData capP = PlayerData.get(player);
             InteractionHand hand = capP.getActiveHand();
             ItemStack item = user.getItemInHand(hand);
-            if(item.getItem() instanceof ActionableAmmoItem firestarter && !player.isUnderWater() && (player.getAbilities().instabuild)) {
+            if(item.getItem() instanceof ActionableAmmoItem firestarter && !player.isUnderWater() && (player.getAbilities().instabuild || firestarter.getAmmo(item) > 0)) {
                 Vec3 start = user.getEyePosition();
                 Vec3 look = user.getLookAngle();
                 Vec3 end = start.add(look.scale(2.5));
@@ -99,6 +110,7 @@ public class FirestarterShoot extends MoveSpeedPlayerAction {
                 level.playSound(null, user, getExtraSound().get(), SoundSource.PLAYERS, 1.0F, 0.95F + level.random.nextFloat() * 0.1F);
                 level.sendParticles(ParticleTypesNF.FIRE_EXPLOSION.get(), center.x, center.y, center.z, 1, 0, 0, 0, 0);
                 if(!player.getAbilities().instabuild) {
+                    firestarter.setAmmo(item, firestarter.getAmmo(item) - 1);
                     item.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(hand));
                 }
             }
@@ -171,5 +183,14 @@ public class FirestarterShoot extends MoveSpeedPlayerAction {
                 }
             }
         }
+    }
+
+    @Override
+    public List<Component> getTooltips(ItemStack stack, @Nullable Level level, TooltipFlag isAdvanced) {
+        List<Component> tooltips = new ObjectArrayList<>();
+        tooltips.add(new TranslatableComponent("action.ignite").setStyle(Style.EMPTY.withColor(ChatFormatting.BLUE)));
+        tooltips.add(new TextComponent(" 10.0 ").withStyle(ChatFormatting.DARK_GREEN).append(RenderUtil.getDamageTypeText(DamageType.FIRE)));
+        tooltips.add(new TextComponent(" 12s ").withStyle(ChatFormatting.DARK_GREEN).append(new TranslatableComponent("effect.burning")));
+        return tooltips;
     }
 }

@@ -1,7 +1,6 @@
 package frostnox.nightfall.action.player.action;
 
 import com.mojang.math.Vector3f;
-import frostnox.nightfall.capability.ActionTracker;
 import frostnox.nightfall.capability.IActionTracker;
 import frostnox.nightfall.entity.EntityPart;
 import frostnox.nightfall.util.AnimationUtil;
@@ -60,23 +59,16 @@ public class FirestarterReload extends ReloadAction {
             AnimationData leftHand = data.get(EntityPart.getSidedHand(-side));
             switch(state) {
                 case 0 -> {
-                    rightArm.rCalc.extend(0, 0, 0);
-                    leftArm.rCalc.extend(0, 0, 0);
-                    rightHand.rCalc.add(-50, -40, 0);
-                    leftHand.rCalc.add(-35, 25, 0);
+                    rightArm.rCalc.extend(rightArm.dRotation.x() * 0.15F, rightArm.dRotation.y() * 0.15F, rightArm.dRotation.z() * 0.15F);
+                    leftArm.rCalc.extend(leftArm.dRotation.x() * 0.1F, leftArm.dRotation.y() * 0.1F, leftArm.dRotation.z() * 0.1F);
+                    rightHand.rCalc.add(-45, -27, 0);
+                    leftHand.rCalc.add(-55, 27, 0);
                 }
                 case 1 -> {
                     rightArm.rCalc.freeze();
                     leftArm.rCalc.freeze();
-                    rightHand.rCalc.addWithCharge(-35, 0, 0, Math.min(1F, (ActionTracker.get(user).getCharge() % 10F) / 3F), Easing.outSine);
-                    if(charge == 0F) rightHand.rCalc.frame %= 10;
-                    if((charge > 0F ? ActionTracker.get(user).getCharge() : frame) % 10 > 3) {
-                        if(charge == 0F) rightHand.rCalc.frame -= 3;
-                        rightHand.rCalc.addWithCharge(35, 0, -0, Math.min(1F, ((ActionTracker.get(user).getCharge() % 10F) - 3) / 4F), Easing.outCubic);
-                        rightHand.rCalc.length = 4;
-                    }
-                    else rightHand.rCalc.length = 3;
-                    leftHand.rCalc.freeze();
+                    rightHand.rCalc.freeze();
+                    leftHand.rCalc.add(10, 0, 0, Easing.inSine);
                 }
                 case 2 -> {
                     rightArm.toDefaultRotation();
@@ -92,13 +84,15 @@ public class FirestarterReload extends ReloadAction {
     public void transformLayerSingle(int state, int frame, int duration, float charge, LivingEntity user, AnimationData data) {
         switch(state) {
             case 0 -> {
-                data.tCalc.add(0, -6F/16F, 1.1F/16F);
+                data.tCalc.add(-1.5F/16F, -2F/16F, 0);
+                data.rCalc.extend(90, 0, 90);
             }
             case 1 -> {
                 data.tCalc.freeze();
+                data.rCalc.freeze();
             }
             case 2 -> {
-                data.toDefaultTranslation();
+                data.toDefault();
             }
         }
     }

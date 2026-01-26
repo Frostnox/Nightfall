@@ -165,6 +165,7 @@ public class LanguageProviderNF extends LanguageProvider {
         add("action.upset", "Upset");
         add("action.riposte", "Riposte");
         add("action.wrap", "Wrap");
+        add("action.ignite", "Ignite");
         add("action.control", " (%s)");
         add("action.control_held", " (Hold %s)");
         add("block.holdable", "Carriable");
@@ -185,6 +186,7 @@ public class LanguageProviderNF extends LanguageProvider {
         add("item.durability_penalty", "%s%% Durability Penalty");
         add("item.armor.style.survivor", "+10% Durability");
         add("item.armor.defense", "Defense");
+        add("item.ammo", "Ammo");
         add("action.guard.block", "Blocks %1$s %2$s");
         add("action.guard.riposte_1", "Perform basic after successful");
         add("action.guard.riposte_2", "block to trigger riposte");
@@ -234,6 +236,7 @@ public class LanguageProviderNF extends LanguageProvider {
         add("food.small", "Small");
         add("food.medium", "Medium");
         add("food.large", "Large");
+        add("effect.burning", "Burning");
 
         add(EntryCommand.FORGET_SELF, "Forgot entry %s");
         add(EntryCommand.FORGET, "You forgot entry %s");

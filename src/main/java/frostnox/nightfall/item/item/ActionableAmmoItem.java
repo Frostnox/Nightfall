@@ -7,7 +7,10 @@ import frostnox.nightfall.capability.PlayerData;
 import frostnox.nightfall.item.IActionableItem;
 import frostnox.nightfall.network.NetworkHandler;
 import frostnox.nightfall.network.message.capability.ActionToServer;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -18,10 +21,12 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Optional;
 
 public class ActionableAmmoItem extends ItemNF implements IActionableItem {
     public final RegistryObject<? extends Action> useAction, reloadAction;
@@ -37,7 +42,11 @@ public class ActionableAmmoItem extends ItemNF implements IActionableItem {
     }
 
     public int getAmmo(ItemStack item) {
-        return item.getOrCreateTag().contains("ammo") ? item.getTag().getInt("ammo") : 0;
+        return item.getTag().contains("ammo") ? item.getTag().getInt("ammo") : 0;
+    }
+
+    public void setAmmo(ItemStack item, int ammo) {
+        item.getTag().putInt("ammo", ammo);
     }
 
     public boolean shouldReload(ItemStack item, ItemStack otherItem) {
@@ -46,6 +55,11 @@ public class ActionableAmmoItem extends ItemNF implements IActionableItem {
 
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
+        int ammo = getAmmo(pStack);
+        Optional<Item> ammoItem = ForgeRegistries.ITEMS.tags().getTag(this.ammo).stream().findFirst();
+        MutableComponent ammoComponent = new TextComponent(ammo + " ").withStyle(ammo == 0 ? ChatFormatting.DARK_RED : ChatFormatting.BLUE).append(new TranslatableComponent("item.ammo"));
+        if(ammoItem.isPresent()) ammoComponent.append(new TextComponent(" (").withStyle(ChatFormatting.AQUA).append(ammoItem.get().getDescription()).append(")"));
+        pTooltipComponents.add(ammoComponent);
         List<Component> actionComponents = useAction.get().getTooltips(pStack, pLevel, pIsAdvanced);
         for(int i = 0; i < actionComponents.size(); i++) {
             if(i == 0) pTooltipComponents.add(new TranslatableComponent("item.on_use").append(actionComponents.get(i)));
@@ -79,5 +93,15 @@ public class ActionableAmmoItem extends ItemNF implements IActionableItem {
             return InteractionResultHolder.fail(pPlayer.getItemInHand(pHand));
         }
         return super.use(level, pPlayer, pHand);
+    }
+
+    @Override
+    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+        if(!newStack.is(this)) return true;
+        else if(newStack == oldStack) return false;
+        else {
+            int newAmmo = getAmmo(newStack);
+            return newAmmo != maxAmmo && getAmmo(oldStack) - 1 != newAmmo;
+        }
     }
 }

@@ -15,7 +15,7 @@ public class FireExplosionParticle extends TextureSheetParticle {
         this.sprite = sprite;
         this.setSpriteFromAge(sprite);
         this.gravity = -0.006F;
-        this.lifetime = random.nextBoolean() ? 8 : 7;
+        this.lifetime = 7;
         this.quadSize = 0.5F + this.random.nextFloat(0.05F);
         this.xd = xSpeed;
         this.yd = ySpeed;
@@ -41,8 +41,8 @@ public class FireExplosionParticle extends TextureSheetParticle {
     @Override
     public void remove() {
         super.remove();
-        for(int i = 0; i < (random.nextBoolean() ? 8 : 9); i++) {
-            level.addParticle(ParticleTypes.SMOKE.getType(), x - 0.25 + random.nextFloat() * 0.5F, y - 0.1 + random.nextFloat() * 0.5F, z - 0.25 + random.nextFloat() * 0.5F, 0, 0, 0);
+        for(int i = 0; i < (random.nextBoolean() ? 9 : 10); i++) {
+            level.addParticle(ParticleTypes.SMOKE.getType(), x - 0.35 + random.nextFloat() * 0.7F, y - 0.1 + random.nextFloat() * 0.5F, z - 0.35 + random.nextFloat() * 0.7F, 0, 0, 0);
         }
     }
 
