@@ -89,6 +89,12 @@ public class EntriesNF {
             new Puzzle(List.of(knowledge(ItemsNF.CLAY)),
                     List.of(Ingredient.of(TagsNF.HEAT_RESISTANT_MATERIAL_1)),
                     List.of(WorldConditionsNF.HEAT_SOURCE))));
+    public static final RegistryObject<Entry> FIRESTARTER = ENTRIES.register("firestarter", () -> Entry.create(
+            List.of(POTTERY, WOODEN_SHIELD),
+            Set.of(),
+            new Puzzle(List.of(KnowledgeNF.STARTED_FIRE_IRON_ORE),
+                    List.of(Ingredient.of(TagsNF.FIRESTARTER_AMMO)),
+                    List.of())));
     public static final RegistryObject<Entry> COOKING = ENTRIES.register("cooking", () -> Entry.create(
             List.of(POTTERY),
             Set.of(),

@@ -551,6 +551,8 @@ public class LanguageProviderNF extends LanguageProvider {
         addKnowledgeClues(EntriesNF.POTTERY, "Find wet clay");
         addItemClues(EntriesNF.POTTERY, "An earthy material resistant to at least tier 1 heat");
         addConditionClues(EntriesNF.POTTERY, "A nearby heat source");
+        addKnowledgeClues(EntriesNF.FIRESTARTER, "Spark a fire with a hard metal");
+        addItemClues(EntriesNF.FIRESTARTER, "Flammable earths");
         addKnowledgeClues(EntriesNF.COOKING, "Collect water", "Roast a meat", "Roast a vegetable");
         addItemClues(EntriesNF.WEAVING, "Hardy plant fibers");
         addItemClues(EntriesNF.MEDICINAL_BANDAGE, "A flowery herb, crushed");

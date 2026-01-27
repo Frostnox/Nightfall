@@ -107,7 +107,7 @@ public class EncyclopediaTab extends GuiComponent {
                         int u = 0;
                         if(connectorX == cEntry.x && connectorY == pEntry.y) {
                             if(cEntry.x > pEntry.x) {
-                                if(cEntry.y > pEntry.y) u = GRID_SLOT_SIZE * 5;
+                                if(cEntry.y < pEntry.y) u = GRID_SLOT_SIZE * 5;
                                 else u = GRID_SLOT_SIZE * 3;
                             }
                             else {

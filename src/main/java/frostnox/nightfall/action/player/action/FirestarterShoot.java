@@ -98,6 +98,7 @@ public class FirestarterShoot extends MoveSpeedPlayerAction {
                                 level.setBlock(adjPos, fire, 11);
                                 level.gameEvent(player, GameEvent.BLOCK_PLACE, adjPos);
                                 capP.addKnowledge(KnowledgeNF.STARTED_FIRE.getId());
+                                capP.addKnowledge(KnowledgeNF.STARTED_FIRE_IRON_ORE.getId());
                             }
                         }
                     }

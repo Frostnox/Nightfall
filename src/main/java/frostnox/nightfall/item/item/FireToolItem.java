@@ -5,6 +5,7 @@ import frostnox.nightfall.block.IIgnitable;
 import frostnox.nightfall.block.TieredHeat;
 import frostnox.nightfall.block.block.FireBlockNF;
 import frostnox.nightfall.capability.PlayerData;
+import frostnox.nightfall.data.TagsNF;
 import frostnox.nightfall.registry.KnowledgeNF;
 import frostnox.nightfall.registry.forge.BlocksNF;
 import frostnox.nightfall.util.LevelUtil;
@@ -74,6 +75,7 @@ public class FireToolItem extends SimpleToolItem {
                         level.setBlock(adjPos, BlocksNF.FIRE.get().getStateForPlacement(new BlockPlaceContext(context)), 11);
                         level.gameEvent(player, GameEvent.BLOCK_PLACE, adjPos);
                         PlayerData.get(player).addKnowledge(KnowledgeNF.STARTED_FIRE.getId());
+                        if(otherStack.is(TagsNF.FIRESTARTER_IRON_INGREDIENT)) PlayerData.get(player).addKnowledge(KnowledgeNF.STARTED_FIRE_IRON_ORE.getId());
                     }
                     if(level.random.nextFloat() < breakChance) LevelUtil.breakItem(heldStack, player, context.getHand());
                     level.playSound(player, pos, sound.get(), SoundSource.BLOCKS, 1.0F, level.getRandom().nextFloat() * 0.4F + 0.8F);

@@ -245,6 +245,7 @@ public class RecipeProviderNF extends RecipeProvider {
         CraftingRecipeBuilder.base(ItemsNF.SLING_REINFORCED.get(), EntriesNF.REINFORCED_SLING).define('F', ItemsNF.ROPE.get()).define('L', ItemsNF.LEATHER.get()).pattern(" FL").pattern("F F").pattern(" F ").save(consumer);
         CraftingRecipeBuilder.base(ItemsNF.WARDING_CHARM.get(), EntriesNF.WARDING_CHARM).define('F', ItemsNF.PLANT_FIBERS.get()).define('B', ItemsNF.LIVING_BONE.get()).pattern(" F ").pattern("F F").pattern(" B ").save(consumer);
         CraftingRecipeBuilder.base(ItemsNF.WARDING_EFFIGY.get(), EntriesNF.WARDING_EFFIGY).define('F', ItemsNF.ROTTEN_FLESH.get()).define('B', ItemsNF.LIVING_BONE.get()).define('H', ItemsNF.DREG_HEART.get()).pattern("FFF").pattern("BHB").pattern("FBF").save(consumer);
+        CraftingRecipeBuilder.base(ItemsNF.FIRESTARTER.get(), EntriesNF.FIRESTARTER).define('F', ItemsNF.FLINT.get()).define('I', TagsNF.FIRESTARTER_IRON_INGREDIENT).define('P', ItemsNF.PLANKS.get(Tree.IRONWOOD).get()).define('T', ItemsNF.TERRACOTTA_SHARD.get()).pattern(" F ").pattern(" I ").pattern("PTP").save(consumer);
         for(TieredItemMaterial material : ItemsNF.METAL_ARMAMENTS.keySet()) {
             var armaments = ItemsNF.METAL_ARMAMENTS.get(material);
             for(Armament armament : armaments.keySet()) {

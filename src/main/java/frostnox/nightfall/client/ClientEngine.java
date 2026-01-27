@@ -244,6 +244,7 @@ public class ClientEngine {
         registerEntry(WYLDERY, EntriesNF.CAMPFIRE, 0, -2, new ItemStack(ItemsNF.CAMPFIRE.get()));
         registerEntry(WYLDERY, EntriesNF.POTTERY, 0, -4, new ItemStack(ItemsNF.POT.get()), null,
                 null, image(36, 84, imageLoc("kiln")), false);
+        registerEntry(WYLDERY, EntriesNF.FIRESTARTER, -2, -4, new ItemStack(ItemsNF.FIRESTARTER.get()));
         registerEntry(WYLDERY, EntriesNF.COOKING, 0, -6, new ItemStack(ItemsNF.HEARTY_STEW.get()), null,
                 null, image(31, 31, imageLoc("stew")), false);
         registerEntry(WYLDERY, EntriesNF.WEAVING, -2, 1, new ItemStack(ItemsNF.LINEN.get()));

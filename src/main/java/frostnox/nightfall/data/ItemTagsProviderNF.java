@@ -174,6 +174,7 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
             else tag(TagsNF.IGNEOUS).add(item.get());
         }
         tag(TagsNF.FIRESTARTER_AMMO).add(ItemsNF.SULFUR.get());
+        tag(TagsNF.FIRESTARTER_IRON_INGREDIENT).add(ItemsNF.HEMATITE_CHUNK.get(), ItemsNF.INGOTS.get(Metal.IRON).get(), ItemsNF.INGOTS.get(Metal.STEEL).get());
         tag(TagsNF.NO_HITSTOP).addTags(TagsNF.KNIFE, TagsNF.SICKLE);
         tag(TagsNF.GRID_INTERACTABLE).addTag(TagsNF.HAMMER);
         tag(TagsNF.MIXTURE_1);
@@ -216,11 +217,12 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
         tag(TagsNF.WAIST_OFFSET_NONE).add(ItemsNF.BACKPACK.get());
         tag(TagsNF.STICK_FIRE_STARTER).add(ItemsNF.STICK.get());
         tag(TagsNF.FLINT_FIRE_STARTER_WEAK).add(ItemsNF.OBSIDIAN_SHARD.get(), ItemsNF.ROCKS.get(Stone.DEEPSLATE).get(), ItemsNF.ROCKS.get(Stone.STYGFEL).get(),
-                ItemsNF.ROCKS.get(Stone.GRANITE).get(), ItemsNF.ROCKS.get(Stone.MOONSTONE).get(), ItemsNF.HEMATITE_CHUNK.get());
+                ItemsNF.ROCKS.get(Stone.GRANITE).get(), ItemsNF.ROCKS.get(Stone.MOONSTONE).get());
         tag(TagsNF.FLINT_FIRE_STARTER_STRONG).add(ItemsNF.INGOTS.get(Metal.IRON).get(), ItemsNF.INGOTS.get(Metal.STEEL).get(), ItemsNF.BILLETS.get(Metal.IRON).get(),
                 ItemsNF.BILLETS.get(Metal.STEEL).get(), ItemsNF.PLATES.get(Metal.IRON).get(), ItemsNF.PLATES.get(Metal.STEEL).get(),
                 ItemsNF.METAL_ARMAMENTS.get(TieredItemMaterial.IRON).get(Armament.CHISEL).get(), ItemsNF.METAL_ARMAMENTS.get(TieredItemMaterial.STEEL).get(Armament.CHISEL).get(),
                 ItemsNF.METAL_ARMAMENTS.get(TieredItemMaterial.IRON).get(Armament.KNIFE).get(), ItemsNF.METAL_ARMAMENTS.get(TieredItemMaterial.STEEL).get(Armament.KNIFE).get());
+        tag(TagsNF.FLINT_FIRE_STARTER_STRONG).addTag(TagsNF.IRON_ORE);
         tag(TagsNF.RACK_ITEM).addTags(TagsNF.ARMAMENT, TagsNF.BOW, TagsNF.SHIELD);
         for(var item : ItemsNF.ROCKS.values()) tag(TagsNF.ROCK).add(item.get());
         tag(TagsNF.STONE).addTags(TagsNF.ROCK, TagsNF.CRUSHABLE_TO_BONE_SHARD);

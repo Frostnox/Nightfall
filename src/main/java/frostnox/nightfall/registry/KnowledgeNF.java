@@ -40,6 +40,7 @@ public class KnowledgeNF {
     public static final RegistryObject<ItemTagKnowledge> LOG_TAG = KNOWLEDGE.register("log_item_tag", () -> new ItemTagKnowledge(ItemsNF.LOGS.get(Tree.OAK).get(), ItemTags.LOGS));
 
     public static final RegistryObject<Knowledge> STARTED_FIRE = KNOWLEDGE.register("started_fire", () -> new Knowledge());
+    public static final RegistryObject<Knowledge> STARTED_FIRE_IRON_ORE = KNOWLEDGE.register("started_fire_iron_ore", () -> new Knowledge());
     public static final RegistryObject<Knowledge> COLLECTED_WATER = KNOWLEDGE.register("collected_water", () -> new Knowledge());
     public static final RegistryObject<Knowledge> TAMED_ANIMAL = KNOWLEDGE.register("tamed_animal", () -> new Knowledge());
     public static final RegistryObject<Knowledge> ESSENCE = KNOWLEDGE.register("essence_knowledge", () -> new ItemKnowledge(ItemsNF.METEORITE_CHUNK.get()));
