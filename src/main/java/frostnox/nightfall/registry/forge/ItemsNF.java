@@ -448,6 +448,8 @@ public class ItemsNF {
             stone -> register(BlocksNF.COAL_ORES.get(stone), NATURAL_TAB));
     public static final Map<Stone, RegistryObject<BlockItemNF>> HALITE_ORES = DataUtil.mapEnum(Stone.class, stone -> !BlocksNF.HALITE_ORES.containsKey(stone),
             stone -> register(BlocksNF.HALITE_ORES.get(stone), NATURAL_TAB));
+    public static final Map<Stone, RegistryObject<BlockItemNF>> SULFUR_ORES = DataUtil.mapEnum(Stone.class, stone -> !BlocksNF.SULFUR_ORES.containsKey(stone),
+            stone -> register(BlocksNF.SULFUR_ORES.get(stone), NATURAL_TAB));
     public static final RegistryObject<BlockItemNF> METEORITE_ORE = register(BlocksNF.METEORITE_ORE, NATURAL_TAB);
 
     public static final RegistryObject<BlockItemNF> OBSIDIAN = register(BlocksNF.OBSIDIAN, NATURAL_TAB);

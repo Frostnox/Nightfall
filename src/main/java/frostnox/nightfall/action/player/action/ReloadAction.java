@@ -5,6 +5,7 @@ import frostnox.nightfall.capability.IActionTracker;
 import frostnox.nightfall.capability.IPlayerData;
 import frostnox.nightfall.capability.PlayerData;
 import frostnox.nightfall.item.item.ActionableAmmoItem;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -23,14 +24,17 @@ public abstract class ReloadAction extends MoveSpeedPlayerAction {
     public void onTick(LivingEntity user) {
         super.onTick(user);
         IActionTracker capA = ActionTracker.get(user);
-        if(!user.level.isClientSide && capA.getState() == getTotalStates() - 1 && capA.getFrame() == 1 && !capA.isStunned() && user instanceof Player player) {
-            IPlayerData capP = PlayerData.get(player);
-            InteractionHand hand = capP.getActiveHand();
-            ItemStack item = user.getItemInHand(hand);
-            ItemStack ammo = user.getItemInHand(capP.getOppositeActiveHand());
-            if(item.getItem() instanceof ActionableAmmoItem ammoItem && ammoItem.shouldReload(item, ammo)) {
-                ammoItem.setAmmo(item, ammoItem.maxAmmo);
-                if(!player.getAbilities().instabuild) ammo.shrink(1);
+        if(!user.level.isClientSide && capA.getFrame() == 1 && !capA.isStunned() && user instanceof Player player) {
+            if(capA.getState() == 1) user.level.playSound(null, player, getSound().get(), SoundSource.PLAYERS, 1F, 1F);
+            else if(capA.getState() == getTotalStates() - 1) {
+                IPlayerData capP = PlayerData.get(player);
+                InteractionHand hand = capP.getActiveHand();
+                ItemStack item = user.getItemInHand(hand);
+                ItemStack ammo = user.getItemInHand(capP.getOppositeActiveHand());
+                if(item.getItem() instanceof ActionableAmmoItem ammoItem && ammoItem.shouldReload(item, ammo)) {
+                    ammoItem.setAmmo(item, ammoItem.maxAmmo);
+                    if(!player.getAbilities().instabuild) ammo.shrink(1);
+                }
             }
         }
     }

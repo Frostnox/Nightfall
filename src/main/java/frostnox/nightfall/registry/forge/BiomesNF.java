@@ -135,6 +135,7 @@ public class BiomesNF {
                 .addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, FeaturesNF.HEMATITE_VEIN)
                 .addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, FeaturesNF.COAL_VEIN)
                 .addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, FeaturesNF.HALITE_VEIN)
+                .addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, FeaturesNF.SULFUR_VEIN)
                 .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, FeaturesNF.SURFACE_ROCKS)
                 .addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, FeaturesNF.SEASHELLS)
                 .addFeature(GenerationStep.Decoration.RAW_GENERATION, FeaturesNF.METEORITE)

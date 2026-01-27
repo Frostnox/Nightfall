@@ -213,6 +213,7 @@ public class TextureProviderNF extends TextureProvider {
                     if(BlocksNF.HEMATITE_ORES.containsKey(type)) ores.add(BlocksNF.HEMATITE_ORES.get(type));
                     if(BlocksNF.COAL_ORES.containsKey(type)) ores.add(BlocksNF.COAL_ORES.get(type));
                     if(BlocksNF.HALITE_ORES.containsKey(type)) ores.add(BlocksNF.HALITE_ORES.get(type));
+                    if(BlocksNF.SULFUR_ORES.containsKey(type)) ores.add(BlocksNF.SULFUR_ORES.get(type));
                 }
                 for(var ore : ores) {
                     String metal = ore.getId().getPath().replace(type.getName() + "_", "");

@@ -185,6 +185,7 @@ public class SoundsNF {
     public static final RegistryObject<SoundEvent> METAL_BREAK = generic("item.metal_break");
     public static final RegistryObject<SoundEvent> FIRESTARTER_STRIKE = generic("item.firestarter.strike");
     public static final RegistryObject<SoundEvent> FIRESTARTER_IGNITE = generic("item.firestarter.ignite");
+    public static final RegistryObject<SoundEvent> FIRESTARTER_RELOAD = generic("item.firestarter.reload");
     public static final RegistryObject<SoundEvent> ENCYCLOPEDIA_USE = generic("gui.encyclopedia_use");
     public static final RegistryObject<SoundEvent> CATEGORY_REVEALED = generic("gui.category_revealed");
     public static final RegistryObject<SoundEvent> ENTRY_UPDATED = generic("gui.entry_updated");

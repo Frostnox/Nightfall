@@ -161,6 +161,13 @@ public class FeaturesNF {
                     0.25F, 10, 7, 2, 3, 0.014, 0.014));
     public static final Holder<PlacedFeature> HALITE_VEIN = register("halite_vein", HALITE_VEIN_CONFIG,
             orePlacement(0, 2, HeightRangePlacement.uniform(VerticalAnchor.absolute(300), VerticalAnchor.absolute(800))));
+
+    private static final List<BlockState> SULFUR_ORE_VALUES = BlocksNF.SULFUR_ORES.values().stream().map(block -> block.get().defaultBlockState()).toList();
+    public static final Holder<ConfiguredFeature<OreVeinFeature.Configuration, ?>> SULFUR_VEIN_CONFIG = register("sulfur_vein", ORE_VEIN_FEATURE,
+            new OreVeinFeature.Configuration(getOreKeys(BlocksNF.SULFUR_ORES.keySet()), SULFUR_ORE_VALUES, 0.105 * 0.105, 0.45F,
+                    0.2F, 10, 7, 2, 9, 0.03, 0.03));
+    public static final Holder<PlacedFeature> SULFUR_VEIN = register("sulfur_vein", SULFUR_VEIN_CONFIG,
+            orePlacement(0, 3, HeightRangePlacement.uniform(VerticalAnchor.absolute(0), VerticalAnchor.absolute(832))));
     //Underground
     public static final RuleTest NATURAL_STONE = new TagMatchTest(TagsNF.NATURAL_STONE);
     public static final Holder<ConfiguredFeature<OreConfiguration, ?>> FIRE_CLAY_CONFIG = FeatureUtils.register("fire_clay", Feature.ORE,

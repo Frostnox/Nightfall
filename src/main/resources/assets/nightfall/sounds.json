@@ -690,6 +690,10 @@
     "subtitle": "nightfall.item.firestarter.ignite",
     "sounds": ["nightfall:item/firestarter_ignite_0", "nightfall:item/firestarter_ignite_1", "nightfall:item/firestarter_ignite_2"]
   },
+  "item.firestarter.reload": {
+    "subtitle": "nightfall.item.firestarter.reload",
+    "sounds": ["nightfall:item/firestarter_reload_0", "nightfall:item/firestarter_reload_1", "nightfall:item/firestarter_reload_2"]
+  },
   "gui.encyclopedia_use": {
     "sounds": ["nightfall:gui/encyclopedia_use_0", "nightfall:gui/encyclopedia_use_1"]
   },

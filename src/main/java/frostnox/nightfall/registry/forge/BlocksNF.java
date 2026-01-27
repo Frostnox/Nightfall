@@ -234,8 +234,9 @@ public class BlocksNF {
             register(stone.getName() + "_coal_ore", () -> new Block(BlockBehaviour.Properties.copy(STONE_BLOCKS.get(stone).get()))));
     public static final Map<Stone, RegistryObject<Block>> HALITE_ORES = DataUtil.mapEnum(Stone.class, stone -> stone.getType() != StoneType.SEDIMENTARY, stone ->
             register(stone.getName() + "_halite_ore", () -> new Block(BlockBehaviour.Properties.copy(STONE_BLOCKS.get(stone).get()))));
-    public static final RegistryObject<Block> METEORITE_ORE = BLOCKS.register("meteorite_ore", () -> new Block(BlockBehaviour.Properties
-            .copy(STONE_BLOCKS.get(Stone.MOONSTONE).get())));
+    public static final Map<Stone, RegistryObject<Block>> SULFUR_ORES = DataUtil.mapEnum(Stone.class, stone -> stone == Stone.PUMICE || (stone != Stone.LIMESTONE && stone.getType() != StoneType.IGNEOUS), stone ->
+            register(stone.getName() + "_sulfur_ore", () -> new Block(BlockBehaviour.Properties.copy(STONE_BLOCKS.get(stone).get()).noOcclusion())));
+    public static final RegistryObject<Block> METEORITE_ORE = BLOCKS.register("meteorite_ore", () -> new Block(BlockBehaviour.Properties.copy(STONE_BLOCKS.get(Stone.MOONSTONE).get())));
 
     public static final RegistryObject<Block> OBSIDIAN = BLOCKS.register("obsidian", () -> new Block(BlockBehaviour.Properties.of(Material.STONE,
             MaterialColor.COLOR_BLACK).requiresCorrectToolForDrops().strength(55.0F, 1200.0F)));
@@ -749,7 +750,7 @@ public class BlocksNF {
     }
 
     public static Set<RegistryObject<? extends Block>> getOres() {
-        return Stream.of(TIN_ORES.values(), COPPER_ORES.values(), AZURITE_ORES.values(), HEMATITE_ORES.values(), COAL_ORES.values(), HALITE_ORES.values(), List.of(METEORITE_ORE))
+        return Stream.of(TIN_ORES.values(), COPPER_ORES.values(), AZURITE_ORES.values(), HEMATITE_ORES.values(), COAL_ORES.values(), HALITE_ORES.values(), SULFUR_ORES.values(), List.of(METEORITE_ORE))
                 .flatMap(Collection::stream).collect(Collectors.toSet());
     }
 
