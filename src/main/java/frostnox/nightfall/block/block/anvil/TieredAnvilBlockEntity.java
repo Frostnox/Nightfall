@@ -61,6 +61,7 @@ public class TieredAnvilBlockEntity extends MenuContainerBlockEntity implements 
     private final ItemStackHandlerNF result;
     public final boolean[][][] grid = new boolean[GRID_X][GRID_Y][GRID_Z];
     public final boolean[][][] slag = new boolean[GRID_X][GRID_Y][GRID_Z];
+    public final int[] work = new int[8];
     private ResourceLocation recipeLocation;
     private TieredHeat cachedHeat = TieredHeat.NONE;
     private int heatTicks, tickCount;

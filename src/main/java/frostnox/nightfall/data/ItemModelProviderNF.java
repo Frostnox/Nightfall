@@ -331,6 +331,7 @@ public class ItemModelProviderNF extends ModelProvider<AnimatedItemModelBuilder>
             spear(set.get(Armament.SPEAR).get());
             sword(set.get(Armament.SWORD).get());
         }
+        for(var item : ItemsNF.TONGS.values()) doubleModelAnimatedItem(item.get(), "tongs");
         for(RegistryObject<TieredArmorItem> item : ItemsNF.getTieredArmors()) {
             TieredArmorMaterial material = (TieredArmorMaterial) item.get().material;
             if(material == TieredArmorMaterial.LEATHER ||

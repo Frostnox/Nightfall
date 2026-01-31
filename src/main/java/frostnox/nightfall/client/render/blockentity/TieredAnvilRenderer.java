@@ -2,6 +2,7 @@ package frostnox.nightfall.client.render.blockentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
+import frostnox.nightfall.block.Metal;
 import frostnox.nightfall.block.block.anvil.TieredAnvilBlockEntity;
 import frostnox.nightfall.client.ClientEngine;
 import frostnox.nightfall.data.TagsNF;
@@ -15,6 +16,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.InventoryMenu;
@@ -39,6 +41,39 @@ public class TieredAnvilRenderer implements BlockEntityRenderer<TieredAnvilBlock
             stack.mulPose(Vector3f.YP.rotationDegrees(entity.getRotationDegrees()));
             stack.translate(-0.5, -0.5, -0.5);
         }
+        TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(FluidsNF.METAL_SOLID);
+        Color color = RenderUtil.getHeatedMetalColor(0, Metal.COPPER.getColor().getRGB());
+        double center = 0.5; //0.25 0.5 0.75
+        float draw = 1 * 1F/2F;
+        float centerY = draw/2/16F;
+        float rightPunch = -2 * 0.5F / 16F;
+        float rightDraw = 1 * 1F/2F;
+        float rightY = rightPunch + rightDraw/2/16F;
+        float leftDraw = 1 * 1F/2F;
+        float leftPunch = -2 * 0.5F / 16F;
+        float leftY = leftPunch + leftDraw/2/16F;
+        if(center == 0.25) stack.translate(center, 1 - Math.min(rightY, centerY), 0.5);
+        else stack.translate(center, 1 - Math.min(Math.min(centerY, leftY), rightY), 0.5);
+        float baseWidth = 2F/16F, baseHeight = 2F/16F, baseDepth = 3F/16F;
+        //Center
+        float spread = 0 * 0.5F/2F;
+        float centerWidth = baseWidth * (1F + spread / 2 + draw);
+        float height = baseHeight * (1F - spread - draw/2);
+        float depth = baseDepth * (1F + spread / 2 - draw/2);
+        if(height > 0) RenderUtil.drawBox(stack, buffers, color, LightTexture.FULL_BRIGHT, centerWidth, height, depth, -centerWidth/2, centerY, -depth/2, sprite, 5, 0);
+        //Left end
+        spread = 0 * 0.5F/2F;
+        float width = baseWidth * (1F + spread/2 + leftDraw);
+        height = baseHeight * (1F - spread - leftDraw/2);
+        depth = baseDepth * (1F + spread/2 - leftDraw/2);
+        if(height > 0) RenderUtil.drawBox(stack, buffers, color, LightTexture.FULL_BRIGHT, width, height, depth, -width - centerWidth/2, leftY, -depth/2, sprite, 0, 0);
+        //Right end
+        spread = 0 * 0.5F/2F;
+        width = baseWidth * (1F + spread/2 + rightDraw);
+        height = baseHeight * (1F - spread - rightDraw/2);
+        depth = baseDepth * (1F + spread/2 - rightDraw/2);
+        if(height > 0) RenderUtil.drawBox(stack, buffers, color, LightTexture.FULL_BRIGHT, width, height, depth, centerWidth/2, rightY, -depth/2, sprite, 10, 0);
+
         if(!entity.getResult().isEmpty()) {
             if(entity.getResult().getItem() instanceof BlockItem) {
                 stack.translate(0.5, 1 + 8D/64D, 0.5);
@@ -94,8 +129,8 @@ public class TieredAnvilRenderer implements BlockEntityRenderer<TieredAnvilBlock
                                     double cubeY = y/16D;
                                     double cubeZ = z/16D;
                                     VoxelShape cube = Shapes.create(cubeX, cubeY, cubeZ, cubeX + 1/16F, cubeY + 1/16F, cubeZ + 1/16F);
-                                    Color color = entity.grid[x][y][z] ? Color.RED : Color.WHITE;
-                                    RenderUtil.drawMicroGridCubeOutline(stack, buffers, color, cube, hitNull);
+                                    Color outlineColor = entity.grid[x][y][z] ? Color.RED : Color.WHITE;
+                                    RenderUtil.drawMicroGridCubeOutline(stack, buffers, outlineColor, cube, hitNull);
                                 }
                             }
                         }

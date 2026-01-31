@@ -502,6 +502,11 @@ public class TextureProviderNF extends TextureProvider {
                         handle, head, wrapping);
             }
         }
+        for(TieredItemMaterial mat : ItemsNF.TONGS.keySet()) {
+            Metal metal = (Metal) Metal.fromString(mat.getName());
+            replaceImagePalette(item(ItemsNF.TONGS.get(mat)), item("tongs"), subset(METAL_PALETTES.get(metal), 6, 1));
+            replaceImagePalette(itemInv(ItemsNF.TONGS.get(mat)), item("tongs_inventory"), subset(METAL_PALETTES.get(metal), 6, 1));
+        }
 
         for(Style type : Style.values()) {
             for(String material : type.getMaterials()) {

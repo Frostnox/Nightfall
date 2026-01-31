@@ -10,6 +10,7 @@ import com.mojang.math.Matrix3f;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import frostnox.nightfall.action.DamageType;
+import frostnox.nightfall.block.TieredHeat;
 import frostnox.nightfall.client.ClientEngine;
 import frostnox.nightfall.client.render.RenderTypeNF;
 import frostnox.nightfall.data.TagsNF;
@@ -103,6 +104,40 @@ public class RenderUtil {
             return new Color(255 - (int) (69 * p), 250 - (int) (21 * p), 240 + (int) (3 * p), 255);
         }
         else return new Color(186, 229, 243, 255);
+    }
+
+    public static Color getHeatedMetalColor(float temperature, int metalColor) {
+        int r, g, b;
+        TieredHeat heat = TieredHeat.fromTemp(temperature);
+        if(temperature >= TieredHeat.ORANGE.getBaseTemp()) {
+            TieredHeat fromHeat = TieredHeat.fromTier(heat.getTier() + 1);
+            Color toColor = heat.color;
+            Color fromColor = fromHeat.color;
+            float progress = 1F - (temperature - heat.getBaseTemp()) / (fromHeat.getBaseTemp() - heat.getBaseTemp());
+            r = (int) Mth.lerp(progress, fromColor.getRed(), toColor.getRed());
+            g = (int) Mth.lerp(progress, fromColor.getGreen(), toColor.getGreen());
+            b = (int) Mth.lerp(progress, fromColor.getBlue(), toColor.getBlue());
+        }
+        else if(temperature >= 500) {
+            TieredHeat fromHeat = TieredHeat.fromTier(heat.getTier() + 1);
+            Color fromColor = fromHeat.color;
+            float progress = 1F - (temperature - 500) / (fromHeat.getBaseTemp() - 500);
+            r = (int) Mth.lerp(progress, fromColor.getRed(), heat.color.getRed());
+            g = (int) Mth.lerp(progress, fromColor.getGreen(), heat.color.getGreen());
+            b = (int) Mth.lerp(progress, fromColor.getBlue(), heat.color.getBlue());
+        }
+        else {
+            r = (metalColor & 0x00FF0000) >> 16;
+            g = (metalColor & 0x0000FF00) >> 8;
+            b = metalColor & 0x000000FF;
+            if(heat == TieredHeat.RED) {
+                float progress = 1F - (temperature - 100) / (500 - 100);
+                r = (int) Mth.lerp(progress, heat.color.getRed(), r);
+                g = (int) Mth.lerp(progress, heat.color.getGreen(), g);
+                b = (int) Mth.lerp(progress, heat.color.getBlue(), b);
+            }
+        }
+        return new Color(r, g, b);
     }
 
     public static void renderGradient(PoseStack pPoseStack, int x, int pY, int xSize, int ySize, int pBlitOffset, int slotColor) {
@@ -205,6 +240,21 @@ public class RenderUtil {
         if(x == maxX || !grid[x+1][y][z]) drawFace(Direction.EAST, matrix, normal, builder, color, translation.add(size, size/2D, size/2D), size, size, UV, 1F/ClientEngine.get().atlasWidth, 1F/ClientEngine.get().atlasHeight, combinedLight);
         if(y == maxY || !grid[x][y+1][z]) drawFace(Direction.UP, matrix, normal, builder, color, translation.add(size/2D, size, size/2D), size, size, UV, 1F/ClientEngine.get().atlasWidth, 1F/ClientEngine.get().atlasHeight, combinedLight);
         if(y != 0 && !grid[x][y-1][z]) drawFace(Direction.DOWN, matrix, normal, builder, color, translation.add(size/2D, 0, size/2D), size, size, UV, 1F/ClientEngine.get().atlasWidth, 1F/ClientEngine.get().atlasHeight, combinedLight);
+    }
+
+    public static void drawBox(PoseStack stack, MultiBufferSource buffer, Color color, int combinedLight, float width, float height, float depth, double x, double y, double z, TextureAtlasSprite sprite, int uOff, int vOff) {
+        VertexConsumer builder = buffer.getBuffer(RenderType.entitySolid(sprite.atlas().location()));
+        Vec2 UV = new Vec2(sprite.getU0() + (float) uOff/ClientEngine.get().atlasWidth, sprite.getV0() + (float) vOff/ClientEngine.get().atlasHeight);
+        Vec3 translation = new Vec3(x, y, z);
+        Matrix4f matrix = stack.last().pose();
+        Matrix3f normal = stack.last().normal();
+        float iWidth = Math.round(width * 16), iHeight = Math.round(height * 16), iDepth = Math.round(depth * 16);
+        drawFace(Direction.NORTH, matrix, normal, builder, color, translation.add(width/2D, height/2D, 0), width, height, UV, iWidth/ClientEngine.get().atlasWidth, iHeight/ClientEngine.get().atlasHeight, combinedLight);
+        drawFace(Direction.SOUTH, matrix, normal, builder, color, translation.add(width/2D, height/2D, depth), width, height, UV, iWidth/ClientEngine.get().atlasWidth, iHeight/ClientEngine.get().atlasHeight, combinedLight);
+        drawFace(Direction.WEST, matrix, normal, builder, color, translation.add(0, height/2D, depth/2D), depth, height, UV, iDepth/ClientEngine.get().atlasWidth, iHeight/ClientEngine.get().atlasHeight, combinedLight);
+        drawFace(Direction.EAST, matrix, normal, builder, color, translation.add(width, height/2D, depth/2D), depth, height, UV, iDepth/ClientEngine.get().atlasWidth, iHeight/ClientEngine.get().atlasHeight, combinedLight);
+        drawFace(Direction.UP, matrix, normal, builder, color, translation.add(width/2D, height, depth/2D), width, depth, UV, iWidth/ClientEngine.get().atlasWidth, iDepth/ClientEngine.get().atlasHeight, combinedLight);
+        drawFace(Direction.DOWN, matrix, normal, builder, color, translation.add(width/2D, 0, depth/2D), width, depth, UV, iWidth/ClientEngine.get().atlasWidth, iDepth/ClientEngine.get().atlasHeight, combinedLight);
     }
 
     public static void drawFace(Direction face, Matrix4f matrix, Matrix3f normal, VertexConsumer builder, Color color, Vec3 center, float width, float height, Vec2 UV, float UVwidth, float UVheight, int combinedLight) {

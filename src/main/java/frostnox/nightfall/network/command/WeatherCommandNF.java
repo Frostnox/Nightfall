@@ -2,7 +2,6 @@ package frostnox.nightfall.network.command;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.FloatArgumentType;
-import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import frostnox.nightfall.capability.ChunkData;
 import frostnox.nightfall.capability.ILevelData;
@@ -17,7 +16,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 
 import java.text.DecimalFormat;
@@ -43,9 +41,6 @@ public class WeatherCommandNF {
                 })).then(Commands.literal("query").executes((context) -> {
                     return queryWeather(context.getSource());
                 }))
-                .then(Commands.literal("add").then(Commands.argument("amount", IntegerArgumentType.integer(0)).executes((context) -> {
-                    return addWeather(context.getSource(), IntegerArgumentType.getInteger(context, "amount"));
-                })))
         );
     }
 
@@ -61,23 +56,6 @@ public class WeatherCommandNF {
         source.sendSuccess(new TranslatableComponent(QUERY, weather.toTranslatable(),
                 FORMAT.format(capL.getGlobalWeatherIntensity()), FORMAT.format(capL.getLastWeatherIntensity()),
                 FORMAT.format(capL.getTargetWeatherIntensity())), false);
-        return 1;
-    }
-
-    private static int addWeather(CommandSourceStack source, int amount) throws CommandSyntaxException {
-        ServerLevel level = source.getLevel();
-        ILevelData capL = LevelData.get(level);
-        capL.setGlobalWeatherIntensity(Mth.clamp(capL.getGlobalWeatherIntensity() + amount, -1F, 1F));
-
-        Object message = new LevelDataToClient(capL.writeNBTSync(new CompoundTag()));
-        for(ServerPlayer player : level.players()) NetworkHandler.toClient(player, message);
-        Weather weather;
-        if(source.getEntity() != null) {
-            BlockPos pos = source.getEntityOrException().eyeBlockPosition();
-            weather = capL.getWeather(ChunkData.get(level.getChunkAt(pos)), pos);
-        }
-        else weather = capL.getGlobalWeather();
-        source.sendSuccess(new TranslatableComponent(SET, weather.toTranslatable(), capL.getGlobalWeatherIntensity()), true);
         return 1;
     }
 
