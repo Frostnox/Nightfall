@@ -20,7 +20,7 @@ public abstract class AbstractContainerMenuMixin {
 
     @Inject(method = "doClick", at = @At("HEAD"))
     private void nightfall$doClick(int pSlotId, int pButton, ClickType pClickType, Player pPlayer, CallbackInfo callbackInfo) {
-        if(!pPlayer.level.isClientSide && pSlotId != -999) {
+        if(!pPlayer.level.isClientSide && pSlotId > 0) {
             Slot slot = slots.get(pSlotId);
             ItemStack stack = slot.getItem();
             if(stack.getItem() instanceof IContainerChanger changer) {
