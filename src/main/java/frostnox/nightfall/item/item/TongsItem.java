@@ -2,13 +2,14 @@ package frostnox.nightfall.item.item;
 
 import frostnox.nightfall.block.IHeatSource;
 import frostnox.nightfall.data.TagsNF;
-import frostnox.nightfall.item.IServerSwapBehavior;
+import frostnox.nightfall.item.IContainerChanger;
 import frostnox.nightfall.item.ITieredItemMaterial;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -20,7 +21,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
 
-public class TongsItem extends ItemNF implements IServerSwapBehavior {
+public class TongsItem extends ItemNF implements IContainerChanger {
     public final ITieredItemMaterial material;
 
     public TongsItem(ITieredItemMaterial material, Properties properties) {
@@ -97,18 +98,25 @@ public class TongsItem extends ItemNF implements IServerSwapBehavior {
     }
 
     @Override
+    public void inventoryTick(ItemStack stack, Level worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
+        if(!worldIn.isClientSide && entityIn instanceof Player player) {
+            if((isSelected && player.getMainHandItem() == stack) || (itemSlot == 0 && player.getOffhandItem() == stack)) {
+                float temperature = getTemperature(stack);
+                if(temperature > 0) temperature = Math.max(0, temperature - 0.5F);
+                stack.getTag().putFloat("temperature", temperature);
+            }
+            else stack.getTag().putFloat("temperature", 0);
+        }
+    }
+
+    @Override
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
         if(!newStack.is(this)) return true;
-        else return newStack != oldStack;
+        else return hasWorkpiece(newStack) != hasWorkpiece(oldStack);
     }
 
     @Override
-    public void swapToServer(ItemStack item, Player player, boolean mainHand) {
-        System.out.println("TO");
-    }
-
-    @Override
-    public void swapFromServer(ItemStack item, Player player, boolean mainHand) {
-        System.out.println("FROM");
+    public void containerChanged(ItemStack item) {
+        item.getTag().putFloat("temperature", 0);
     }
 }

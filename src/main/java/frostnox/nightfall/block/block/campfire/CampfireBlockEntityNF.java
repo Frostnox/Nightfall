@@ -6,6 +6,7 @@ import frostnox.nightfall.registry.forge.BlockEntitiesNF;
 import frostnox.nightfall.registry.forge.ItemsNF;
 import frostnox.nightfall.registry.forge.ParticleTypesNF;
 import frostnox.nightfall.registry.forge.SoundsNF;
+import frostnox.nightfall.world.inventory.ItemStackHandlerNF;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -50,7 +51,7 @@ public class CampfireBlockEntityNF extends BlockEntity implements Clearable {
             if(!item.isEmpty() && !item.is(ItemsNF.BURNT_FOOD.get())) {
                 changed = true;
                 campfire.cookTicks[i]++;
-                RecipeWrapper container = new RecipeWrapper(new ItemStackHandler(NonNullList.of(ItemStack.EMPTY, item)));
+                RecipeWrapper container = new RecipeWrapper(new ItemStackHandlerNF(NonNullList.of(ItemStack.EMPTY, item)));
                 Optional<CampfireRecipe> campfireRecipe = level.getRecipeManager().getRecipeFor(CampfireRecipe.TYPE, container, level);
                 if(campfire.cookTicks[i] >= campfireRecipe.map(SingleRecipe::getCookTime).orElse(COOK_TIME)) {
                     campfire.cookTicks[i] = 0;
@@ -177,7 +178,7 @@ public class CampfireBlockEntityNF extends BlockEntity implements Clearable {
                 index = i;
                 //Exit early if cooked
                 if(level.getRecipeManager().getRecipeFor(CampfireRecipe.TYPE,
-                        new RecipeWrapper(new ItemStackHandler(NonNullList.of(ItemStack.EMPTY, item))), level).isEmpty()) break;
+                        new RecipeWrapper(new ItemStackHandlerNF(NonNullList.of(ItemStack.EMPTY, item))), level).isEmpty()) break;
             }
         }
         if(!bestItem.isEmpty()) {

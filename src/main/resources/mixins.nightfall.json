@@ -21,7 +21,8 @@
     "DerivedLevelDataMixin",
     "LevelChunkMixin",
     "MobEffectInstanceMixin",
-    "ClientboundUpdateMobEffectPacketMixin"
+    "ClientboundUpdateMobEffectPacketMixin",
+    "AbstractContainerMenuMixin"
   ],
   "client": [
     "KeyboardHandlerMixin",

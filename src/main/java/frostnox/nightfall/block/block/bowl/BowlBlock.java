@@ -7,6 +7,7 @@ import frostnox.nightfall.data.recipe.BowlCrushingRecipe;
 import frostnox.nightfall.registry.forge.BlockEntitiesNF;
 import frostnox.nightfall.registry.forge.SoundsNF;
 import frostnox.nightfall.util.LevelUtil;
+import frostnox.nightfall.world.inventory.ItemStackHandlerNF;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -85,7 +86,7 @@ public class BowlBlock extends WaterloggedEntityBlock {
                 else {
                     IPlayerData capP = PlayerData.get(player);
                     capP.setHeldItemForRecipe(heldItem);
-                    RecipeWrapper container = new RecipeWrapper(new ItemStackHandler(NonNullList.of(ItemStack.EMPTY, bowl.item)));
+                    RecipeWrapper container = new RecipeWrapper(new ItemStackHandlerNF(NonNullList.of(ItemStack.EMPTY, bowl.item)));
                     ForgeHooks.setCraftingPlayer(player);
                     Optional<BowlCrushingRecipe> recipe = level.getRecipeManager().getRecipeFor(BowlCrushingRecipe.TYPE, container, level);
                     ForgeHooks.setCraftingPlayer(null);

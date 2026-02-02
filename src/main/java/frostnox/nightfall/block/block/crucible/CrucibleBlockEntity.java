@@ -85,6 +85,7 @@ public class CrucibleBlockEntity extends MenuContainerBlockEntity implements Men
         this.inventory = new ItemStackHandlerNF(ITEM_CAPACITY) {
             @Override
             protected void onContentsChanged(int slot) {
+                super.onContentsChanged(slot);
                 if(level == null || level.isClientSide()) return;
                 setChanged();
                 ItemStack item = inventory.getStackInSlot(slot);

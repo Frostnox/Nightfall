@@ -17,6 +17,7 @@ import frostnox.nightfall.registry.forge.ItemsNF;
 import frostnox.nightfall.registry.forge.ParticleTypesNF;
 import frostnox.nightfall.registry.forge.SoundsNF;
 import frostnox.nightfall.util.LevelUtil;
+import frostnox.nightfall.world.inventory.ItemStackHandlerNF;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -105,7 +106,7 @@ public class CampfireBlockNF extends WaterloggedEntityBlock implements IIgnitabl
             }
             else if(item.getItem() instanceof FireToolItem || item.getItem() instanceof IgnitableItem || item.getItem() instanceof TorchItem) return InteractionResult.PASS;
             else if((campfire.items.stream().noneMatch(ItemStack::isEmpty) ? Optional.empty() : level.getRecipeManager().getRecipeFor(CampfireRecipe.TYPE,
-                    new RecipeWrapper(new ItemStackHandler(NonNullList.of(ItemStack.EMPTY, item))), level)).isPresent()) {
+                    new RecipeWrapper(new ItemStackHandlerNF(NonNullList.of(ItemStack.EMPTY, item))), level)).isPresent()) {
                 if(!level.isClientSide && campfire.placeFood(player.getAbilities().instabuild ? item.copy() : item)) return InteractionResult.SUCCESS;
                 else return InteractionResult.CONSUME;
             }
@@ -370,7 +371,7 @@ public class CampfireBlockNF extends WaterloggedEntityBlock implements IIgnitabl
                     if(!item.isEmpty() && !item.is(ItemsNF.BURNT_FOOD.get())) {
                         changed = true;
                         campfire.cookTicks[i] += burnTicks;
-                        RecipeWrapper container = new RecipeWrapper(new ItemStackHandler(NonNullList.of(ItemStack.EMPTY, item)));
+                        RecipeWrapper container = new RecipeWrapper(new ItemStackHandlerNF(NonNullList.of(ItemStack.EMPTY, item)));
                         Optional<CampfireRecipe> campfireRecipe = level.getRecipeManager().getRecipeFor(CampfireRecipe.TYPE, container, level);
                         int cookTime = campfireRecipe.map(SingleRecipe::getCookTime).orElse(CampfireBlockEntityNF.COOK_TIME);
                         if(campfire.cookTicks[i] >= cookTime) {

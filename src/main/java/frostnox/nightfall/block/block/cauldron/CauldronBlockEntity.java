@@ -73,6 +73,7 @@ public class CauldronBlockEntity extends MenuContainerBlockEntity implements IHo
         inventory = new ItemStackHandlerNF(4) {
             @Override
             protected void onContentsChanged(int slot) {
+                super.onContentsChanged(slot);
                 if(level == null || level.isClientSide()) return;
                 setChanged();
                 if(getBlockState().getValue(CauldronBlockNF.TASK) == Task.IDLE && canCookMeal())  {

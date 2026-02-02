@@ -18,8 +18,8 @@ import frostnox.nightfall.data.recipe.MixtureRecipe;
 import frostnox.nightfall.entity.ITamable;
 import frostnox.nightfall.entity.entity.ActionableEntity;
 import frostnox.nightfall.item.IActionableItem;
+import frostnox.nightfall.item.IContainerChanger;
 import frostnox.nightfall.item.IInsulator;
-import frostnox.nightfall.item.IServerSwapBehavior;
 import frostnox.nightfall.item.IWeaponItem;
 import frostnox.nightfall.item.item.AttributeAccessoryItem;
 import frostnox.nightfall.item.item.MeleeWeaponItem;
@@ -95,6 +95,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.EntityMountEvent;
+import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -796,6 +797,17 @@ public class CommonEventHandler {
     }
 
     @SubscribeEvent
+    public static void onItemTossEvent(ItemTossEvent event) {
+        if(!event.getPlayer().level.isClientSide) {
+            ItemStack item = event.getEntityItem().getItem();
+            if(item.getItem() instanceof IContainerChanger changer) {
+                changer.containerChanged(item);
+                event.getEntityItem().setItem(item);
+            }
+        }
+    }
+
+    @SubscribeEvent
     public static void onPlayerTickEvent(TickEvent.PlayerTickEvent event) {
         Player player = event.player;
         if(player == null) return;
@@ -822,18 +834,6 @@ public class CommonEventHandler {
             //Reverse hurt animation
             if(player.animationSpeed == 1.5F) player.animationSpeed = player.animationSpeedOld;
             if(!level.isClientSide()) {
-                //Record hand items
-                ItemStack mainItem = player.getMainHandItem(), offItem = player.getOffhandItem();
-                if(!ItemStack.isSameItemSameTags(mainItem, capP.getLastMainItem())) { //TODO: Comparison function
-                    if(capP.getLastMainItem().getItem() instanceof IServerSwapBehavior swap) swap.swapFromServer(capP.getLastMainItem(), player, true);
-                    if(mainItem.getItem() instanceof IServerSwapBehavior swap) swap.swapToServer(mainItem, player, true);
-                    capP.setLastMainItem();
-                }
-                if(!capP.getLastOffItem().sameItemStackIgnoreDurability(offItem)) {
-                    if(capP.getLastOffItem().getItem() instanceof IServerSwapBehavior swap) swap.swapFromServer(capP.getLastOffItem(), player, false);
-                    if(offItem.getItem() instanceof IServerSwapBehavior swap) swap.swapToServer(offItem, player, false);
-                    capP.setLastOffItem();
-                }
                 if(!player.getAbilities().invulnerable) player.causeFoodExhaustion(0.00125F); //1.5 exhaustion per min
             }
             //Force out of charge state if player weapon is missing

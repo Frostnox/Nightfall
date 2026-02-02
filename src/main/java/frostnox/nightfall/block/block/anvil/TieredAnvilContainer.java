@@ -30,6 +30,7 @@ public class TieredAnvilContainer extends PartialInventoryContainer {
         this.inventory = new ItemStackHandlerNF(3) {
             @Override
             protected void onContentsChanged(int slot) {
+                super.onContentsChanged(slot);
                 if(entity.getLevel() == null || !entity.getLevel().isClientSide) return;
                 setupRecipes(playerInv.player);
             }
