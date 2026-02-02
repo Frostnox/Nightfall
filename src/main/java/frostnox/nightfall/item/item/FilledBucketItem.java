@@ -128,10 +128,10 @@ public class FilledBucketItem extends ItemNF {
         return true;
     }
 
-    public void playEmptySound(@Nullable Player pPlayer, LevelAccessor level, BlockPos pos) {
+    public void playEmptySound(@Nullable Player player, LevelAccessor level, BlockPos pos) {
         SoundEvent soundevent = heldFluid.get().getAttributes().getEmptySound();
         if(soundevent == null) soundevent = SoundEvents.BUCKET_EMPTY;
-        level.playSound(pPlayer, pos, soundevent, SoundSource.BLOCKS, 1.0F, 1.0F);
-        level.gameEvent(pPlayer, GameEvent.FLUID_PLACE, pos);
+        level.playSound(player, pos, soundevent, SoundSource.BLOCKS, 1.0F, 1.0F);
+        level.gameEvent(player, GameEvent.FLUID_PLACE, pos);
     }
 }

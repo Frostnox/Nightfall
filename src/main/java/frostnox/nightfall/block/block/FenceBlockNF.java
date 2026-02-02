@@ -50,12 +50,12 @@ public class FenceBlockNF extends CrossCollisionBlockNF {
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult pHit) {
         if(level.isClientSide) {
-            ItemStack itemstack = pPlayer.getItemInHand(pHand);
+            ItemStack itemstack = player.getItemInHand(hand);
             return itemstack.is(ItemsNF.ROPE.get()) ? InteractionResult.SUCCESS : InteractionResult.PASS;
         }
-        else return RopeBlockItem.bindPlayerMobs(pPlayer, level, pos);
+        else return RopeBlockItem.bindPlayerMobs(player, level, pos);
     }
 
     @Override

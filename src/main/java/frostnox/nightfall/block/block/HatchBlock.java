@@ -141,11 +141,11 @@ public class HatchBlock extends BlockNF implements IWaterloggedBlock, ICustomPat
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult pHit) {
         state = state.cycle(OPEN);
         level.setBlock(pos, state, 3);
         tickLiquid(state, pos, level);
-        playSound(pPlayer, level, pos, state.getValue(OPEN));
+        playSound(player, level, pos, state.getValue(OPEN));
         return InteractionResult.sidedSuccess(level.isClientSide);
     }
 

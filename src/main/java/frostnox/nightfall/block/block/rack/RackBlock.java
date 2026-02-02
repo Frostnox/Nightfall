@@ -63,11 +63,11 @@ public class RackBlock extends WaterloggedEntityBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult pHit) {
         if(level.getBlockEntity(pos) instanceof RackBlockEntity rack) {
             if(level.isClientSide) return InteractionResult.SUCCESS;
             else {
-                ItemStack heldItem = pPlayer.getItemInHand(pHand);
+                ItemStack heldItem = player.getItemInHand(hand);
                 double y = Math.abs(pHit.getLocation().y) % 1D;
                 int index;
                 if(y < 5D/16D) index = 0;
@@ -75,7 +75,7 @@ public class RackBlock extends WaterloggedEntityBlock {
                 else index = 2;
                 ItemStack item = rack.items.get(index);
                 if(!item.isEmpty()) {
-                    pPlayer.getInventory().placeItemBackInInventory(item.copy());
+                    player.getInventory().placeItemBackInInventory(item.copy());
                     rack.items.set(index, ItemStack.EMPTY);
                     rack.setChanged();
                     level.sendBlockUpdated(pos, state, state, 2);
@@ -83,7 +83,7 @@ public class RackBlock extends WaterloggedEntityBlock {
                 }
                 else if(heldItem.is(TagsNF.RACK_ITEM)) {
                     rack.items.set(index, heldItem.copy());
-                    if(!pPlayer.getAbilities().instabuild) pPlayer.setItemInHand(pHand, ItemStack.EMPTY);
+                    if(!player.getAbilities().instabuild) player.setItemInHand(hand, ItemStack.EMPTY);
                     rack.setChanged();
                     level.sendBlockUpdated(pos, state, state, 2);
                     return InteractionResult.CONSUME;

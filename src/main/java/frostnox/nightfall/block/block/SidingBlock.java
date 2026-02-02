@@ -432,8 +432,8 @@ public class SidingBlock extends BlockNF implements IWaterloggedBlock, ICustomPa
     }
 
     @Override
-    public void attack(BlockState state, Level level, BlockPos pos, Player pPlayer) {
-        baseState.attack(level, pos, pPlayer);
+    public void attack(BlockState state, Level level, BlockPos pos, Player player) {
+        baseState.attack(level, pos, player);
     }
 
     @Override
@@ -477,8 +477,8 @@ public class SidingBlock extends BlockNF implements IWaterloggedBlock, ICustomPa
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        return baseState.use(level, pPlayer, pHand, pHit);
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult pHit) {
+        return baseState.use(level, player, hand, pHit);
     }
 
     @Override

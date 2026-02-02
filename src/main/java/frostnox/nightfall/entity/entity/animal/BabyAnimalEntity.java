@@ -54,12 +54,12 @@ public abstract class BabyAnimalEntity extends ActionableEntity {
     }
 
     @Override
-    public boolean canBeLeashed(Player pPlayer) {
+    public boolean canBeLeashed(Player player) {
         return !isLeashed();
     }
 
     @Override
-    protected InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
+    protected InteractionResult mobInteract(Player player, InteractionHand hand) {
         return InteractionResult.PASS;
     }
 

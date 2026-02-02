@@ -702,7 +702,7 @@ public abstract class ActionableEntity extends PathfinderMob {
     }
 
     @Override
-    public boolean canBeLeashed(Player pPlayer) {
+    public boolean canBeLeashed(Player player) {
         return false;
     }
 

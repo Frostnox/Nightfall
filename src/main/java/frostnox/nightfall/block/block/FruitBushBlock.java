@@ -74,13 +74,13 @@ public class FruitBushBlock extends BushBlock implements EntityBlock, ITimeSimul
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult pHit) {
         int stage = state.getValue(STAGE);
-        if(stage < 3 || pPlayer.getItemInHand(pHand).is(Items.DEBUG_STICK)) return InteractionResult.PASS;
+        if(stage < 3 || player.getItemInHand(hand).is(Items.DEBUG_STICK)) return InteractionResult.PASS;
         else {
             if(level instanceof ServerLevel serverLevel) {
-                getDrops(state, serverLevel, pos, null, pPlayer, ItemStack.EMPTY).forEach((drop) -> {
-                    if(drop.is(fruitItem.get())) LevelUtil.giveItemToPlayer(drop, pPlayer, true);
+                getDrops(state, serverLevel, pos, null, player, ItemStack.EMPTY).forEach((drop) -> {
+                    if(drop.is(fruitItem.get())) LevelUtil.giveItemToPlayer(drop, player, true);
                 });
             }
             level.playSound(null, pos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1F, 0.9F + level.random.nextFloat() * 0.2F);

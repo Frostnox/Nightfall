@@ -37,9 +37,9 @@ public class TreeSeedBlock extends BushBlock implements ITimeSimulatedBlock {
     }
 
     @Override
-    public float getDestroyProgress(BlockState state, Player pPlayer, BlockGetter level, BlockPos pos) {
+    public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
         if(state.getValue(STAGE) == 0) return Float.POSITIVE_INFINITY;
-        else return super.getDestroyProgress(state, pPlayer, level, pos);
+        else return super.getDestroyProgress(state, player, level, pos);
     }
 
     @Override

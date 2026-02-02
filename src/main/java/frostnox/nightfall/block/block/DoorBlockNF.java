@@ -63,13 +63,13 @@ public class DoorBlockNF extends HatchBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult pHit) {
         state = state.cycle(OPEN);
         level.setBlock(pos, state, 11);
         tickLiquid(state, pos, level);
         Direction updateDirection = state.getValue(HALF) == DoubleBlockHalf.UPPER ? Direction.DOWN : Direction.UP;
         level.updateNeighborsAtExceptFromFacing(pos.relative(updateDirection), this, updateDirection.getOpposite());
-        playSound(pPlayer, level, pos, state.getValue(OPEN));
+        playSound(player, level, pos, state.getValue(OPEN));
         return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
@@ -91,9 +91,9 @@ public class DoorBlockNF extends HatchBlock {
     }
 
     @Override
-    public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player pPlayer) {
-        if(!level.isClientSide && pPlayer.isCreative()) LevelUtil.preventBlockLowerHalfDrop(level, pos, state, pPlayer);
-        super.playerWillDestroy(level, pos, state, pPlayer);
+    public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+        if(!level.isClientSide && player.isCreative()) LevelUtil.preventBlockLowerHalfDrop(level, pos, state, player);
+        super.playerWillDestroy(level, pos, state, player);
     }
 
     @Override

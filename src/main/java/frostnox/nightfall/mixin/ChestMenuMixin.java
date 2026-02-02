@@ -22,7 +22,7 @@ public abstract class ChestMenuMixin extends AbstractContainerMenu {
     }
 
     @Inject(method = "<init>(Lnet/minecraft/world/inventory/MenuType;ILnet/minecraft/world/entity/player/Inventory;Lnet/minecraft/world/Container;I)V", at = @At("TAIL"))
-    private void nightfall$alterInventorySlots(MenuType<?> pType, int pContainerId, Inventory pPlayerInventory, Container pContainer, int pRows, CallbackInfo callbackInfo) {
+    private void nightfall$alterInventorySlots(MenuType<?> pType, int pContainerId, Inventory playerInventory, Container pContainer, int pRows, CallbackInfo callbackInfo) {
         int yOff = (pRows - 4) * 18;
         int chestSize = pRows * 9;
         for(int i = 0; i < chestSize; i++) {
@@ -36,14 +36,14 @@ public abstract class ChestMenuMixin extends AbstractContainerMenu {
                 int position = c + r * 9;
                 int index = chestSize + position;
                 Slot slot;
-                if(c >= 5) slot = new CapacitySlot(r * 4 + c - 5, pPlayerInventory, position + 9, 8 + c * 18, 84 + r * 18 + yOff);
-                else slot = new Slot(pPlayerInventory, position + 9, 8 + c * 18, 84 + r * 18 + yOff);
+                if(c >= 5) slot = new CapacitySlot(r * 4 + c - 5, playerInventory, position + 9, 8 + c * 18, 84 + r * 18 + yOff);
+                else slot = new Slot(playerInventory, position + 9, 8 + c * 18, 84 + r * 18 + yOff);
                 slot.index = index;
                 slots.set(index, slot);
             }
         }
         for(int i = 0; i < 9; ++i) {
-            Slot newSlot = new Slot(pPlayerInventory, i, 8 + i * 18, 142 + yOff);
+            Slot newSlot = new Slot(playerInventory, i, 8 + i * 18, 142 + yOff);
             newSlot.index = chestSize + 27 + i;
             slots.set(newSlot.index, newSlot);
         }
@@ -54,8 +54,8 @@ public abstract class ChestMenuMixin extends AbstractContainerMenu {
      * @reason Replace vanilla screen to support inventory changes
      */
     @Overwrite
-    public static ChestMenu threeRows(int pContainerId, Inventory pPlayerInventory, Container pContainer) {
-        return new ChestMenu(ContainersNF.CHEST_9x3.get(), pContainerId, pPlayerInventory, pContainer, 3);
+    public static ChestMenu threeRows(int pContainerId, Inventory playerInventory, Container pContainer) {
+        return new ChestMenu(ContainersNF.CHEST_9x3.get(), pContainerId, playerInventory, pContainer, 3);
     }
 
     /**
@@ -63,7 +63,7 @@ public abstract class ChestMenuMixin extends AbstractContainerMenu {
      * @reason Replace vanilla screen to support inventory changes
      */
     @Overwrite
-    public static ChestMenu sixRows(int pContainerId, Inventory pPlayerInventory, Container pContainer) {
-        return new ChestMenu(ContainersNF.CHEST_9x6.get(), pContainerId, pPlayerInventory, pContainer, 6);
+    public static ChestMenu sixRows(int pContainerId, Inventory playerInventory, Container pContainer) {
+        return new ChestMenu(ContainersNF.CHEST_9x6.get(), pContainerId, playerInventory, pContainer, 6);
     }
 }

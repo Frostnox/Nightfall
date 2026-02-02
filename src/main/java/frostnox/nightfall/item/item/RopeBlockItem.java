@@ -63,11 +63,11 @@ public class RopeBlockItem extends BlockItemNF {
     }
 
     @Override
-    public InteractionResult interactLivingEntity(ItemStack item, Player pPlayer, LivingEntity pInteractionTarget, InteractionHand pUsedHand) {
-        if(item.is(ItemsNF.ROPE.get()) && pInteractionTarget.isAlive() && pInteractionTarget instanceof Mob mob && mob.canBeLeashed(pPlayer)) {
-            mob.setLeashedTo(pPlayer, true);
+    public InteractionResult interactLivingEntity(ItemStack item, Player player, LivingEntity pInteractionTarget, InteractionHand pUsedHand) {
+        if(item.is(ItemsNF.ROPE.get()) && pInteractionTarget.isAlive() && pInteractionTarget instanceof Mob mob && mob.canBeLeashed(player)) {
+            mob.setLeashedTo(player, true);
             item.shrink(1);
-            return InteractionResult.sidedSuccess(pPlayer.level.isClientSide);
+            return InteractionResult.sidedSuccess(player.level.isClientSide);
         }
         else return InteractionResult.PASS;
     }
@@ -85,14 +85,14 @@ public class RopeBlockItem extends BlockItemNF {
         return super.useOn(pContext);
     }
 
-    public static InteractionResult bindPlayerMobs(Player pPlayer, Level pLevel, BlockPos pPos) {
+    public static InteractionResult bindPlayerMobs(Player player, Level pLevel, BlockPos pPos) {
         LeashFenceKnotEntity knot = null;
         boolean flag = false;
         int i = pPos.getX();
         int j = pPos.getY();
         int k = pPos.getZ();
         for(Mob mob : pLevel.getEntitiesOfClass(Mob.class, new AABB((double)i - 7.0D, (double)j - 7.0D, (double)k - 7.0D, (double)i + 7.0D, (double)j + 7.0D, (double)k + 7.0D))) {
-            if(mob.getLeashHolder() == pPlayer) {
+            if(mob.getLeashHolder() == player) {
                 if(knot == null) {
                     knot = RopeKnotEntity.getOrCreateKnot(pLevel, pPos);
                     knot.playPlacementSound();

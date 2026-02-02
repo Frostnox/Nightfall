@@ -96,9 +96,9 @@ public class ChestBlockNF extends ChestBlock implements IWaterloggedBlock, ICust
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        if(pPlayer.isCrouching() && pPlayer.getItemInHand(pHand).isEmpty()) return InteractionResult.PASS;
-        return super.use(state, level, pos, pPlayer, pHand, pHit);
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult pHit) {
+        if(player.isCrouching() && player.getItemInHand(hand).isEmpty()) return InteractionResult.PASS;
+        return super.use(state, level, pos, player, hand, pHit);
     }
 
     @Override

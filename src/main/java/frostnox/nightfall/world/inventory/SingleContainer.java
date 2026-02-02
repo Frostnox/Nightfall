@@ -45,7 +45,7 @@ public class SingleContainer implements Container {
     }
 
     @Override
-    public boolean stillValid(Player pPlayer) {
+    public boolean stillValid(Player player) {
         return true;
     }
 

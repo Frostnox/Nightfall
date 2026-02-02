@@ -49,14 +49,14 @@ public class StorageContainer extends PartialInventoryContainer {
     }
 
     @Override
-    public void removed(Player pPlayer) {
-        super.removed(pPlayer);
-        entity.stopOpen(pPlayer);
+    public void removed(Player player) {
+        super.removed(player);
+        entity.stopOpen(player);
     }
 
     @Override
-    public boolean stillValid(Player pPlayer) {
-        return entity.stillValid(pPlayer);
+    public boolean stillValid(Player player) {
+        return entity.stillValid(player);
     }
 
     public static StorageContainer createBarrelContainer(int windowID, Inventory playerInv, FriendlyByteBuf extraData) {

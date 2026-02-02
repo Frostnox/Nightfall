@@ -5,15 +5,20 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 import frostnox.nightfall.block.IHoldable;
+import frostnox.nightfall.block.Metal;
 import frostnox.nightfall.capability.IPlayerData;
 import frostnox.nightfall.capability.PlayerData;
 import frostnox.nightfall.client.model.ModelRegistryNF;
 import frostnox.nightfall.client.model.entity.PlayerModelNF;
+import frostnox.nightfall.client.render.blockentity.TieredAnvilRenderer;
 import frostnox.nightfall.client.render.entity.layer.ArmorLayer;
 import frostnox.nightfall.client.render.entity.layer.PlayerEquipmentLayer;
+import frostnox.nightfall.item.item.TongsItem;
+import frostnox.nightfall.registry.forge.FluidsNF;
 import frostnox.nightfall.registry.forge.ItemsNF;
 import frostnox.nightfall.util.AnimationUtil;
 import frostnox.nightfall.util.CombatUtil;
+import frostnox.nightfall.util.RenderUtil;
 import frostnox.nightfall.util.animation.AnimationCalculator;
 import frostnox.nightfall.util.data.Vec3f;
 import frostnox.nightfall.util.math.Easing;
@@ -32,6 +37,7 @@ import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.*;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -42,6 +48,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.PlayerModelPart;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.CrossbowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -49,6 +56,8 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+
+import java.awt.*;
 
 /**
  * Re-renders the vanilla player model with extra animations.
@@ -88,7 +97,7 @@ public class PlayerRendererNF extends PlayerRenderer {
                 i--;
             }
         }
-        layers.add(new HeldBlockEntityLayer<>(this));
+        layers.add(new PlayerExtraLayer<>(this));
     }
 
     @Override
@@ -317,8 +326,8 @@ public class PlayerRendererNF extends PlayerRenderer {
         }
     }
 
-    private static class HeldBlockEntityLayer<T extends Player, M extends EntityModel<T> & HeadedModel & ArmedModel> extends PlayerItemInHandLayer<T, M> {
-        public HeldBlockEntityLayer(RenderLayerParent<T, M> p_i50934_1_) {
+    private static class PlayerExtraLayer<T extends Player, M extends EntityModel<T> & HeadedModel & ArmedModel> extends PlayerItemInHandLayer<T, M> {
+        public PlayerExtraLayer(RenderLayerParent<T, M> p_i50934_1_) {
             super(p_i50934_1_);
         }
 
@@ -343,6 +352,20 @@ public class PlayerRendererNF extends PlayerRenderer {
                         renderer.render(blockEntity, pPartialTicks, stack, pBuffer, light, OverlayTexture.NO_OVERLAY);
                     }
                     Minecraft.getInstance().getBlockRenderer().renderSingleBlock(state, stack, pBuffer, light, OverlayTexture.NO_OVERLAY, blockEntity.getModelData());
+                    stack.popPose();
+                }
+            }
+            //Tongs
+            for(InteractionHand hand : InteractionHand.values()) {
+                ItemStack item = player.getItemInHand(hand);
+                if(item.getItem() instanceof TongsItem tongs && tongs.hasWorkpiece(item)) {
+                    TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(FluidsNF.METAL_SOLID);
+                    Color color = RenderUtil.getHeatedMetalColor(0, Metal.COPPER.getColor().getRGB());
+                    int light = LightTexture.FULL_BRIGHT;
+                    stack.pushPose();
+                    getParentModel().translateToHand(hand == InteractionHand.MAIN_HAND ? HumanoidArm.RIGHT : HumanoidArm.LEFT, stack);
+                    stack.translate(0, 7.5D/16D, -0.625D);
+                    TieredAnvilRenderer.renderWorkpiece(stack, pBuffer, color, light, sprite, 0.5, tongs.getTemperature(item), tongs.getWork(item));
                     stack.popPose();
                 }
             }

@@ -169,13 +169,13 @@ public class BarrelBlockEntityNF extends MenuContainerBlockEntity implements IHo
     }
 
     @Override
-    public void startOpen(Player pPlayer) {
-        if(!remove && !pPlayer.isSpectator()) opener.incrementOpeners(pPlayer, getLevel(), getBlockPos(), getBlockState());
+    public void startOpen(Player player) {
+        if(!remove && !player.isSpectator()) opener.incrementOpeners(player, getLevel(), getBlockPos(), getBlockState());
     }
 
     @Override
-    public void stopOpen(Player pPlayer) {
-        if(!remove && !pPlayer.isSpectator()) opener.decrementOpeners(pPlayer, getLevel(), getBlockPos(), getBlockState());
+    public void stopOpen(Player player) {
+        if(!remove && !player.isSpectator()) opener.decrementOpeners(player, getLevel(), getBlockPos(), getBlockState());
     }
 
     public void recheckOpen() {

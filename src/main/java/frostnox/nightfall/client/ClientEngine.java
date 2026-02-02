@@ -35,7 +35,7 @@ import frostnox.nightfall.item.Armament;
 import frostnox.nightfall.item.TieredArmorMaterial;
 import frostnox.nightfall.item.TieredItemMaterial;
 import frostnox.nightfall.item.client.IHeldClientTick;
-import frostnox.nightfall.item.client.ISwapBehavior;
+import frostnox.nightfall.item.client.IClientSwapBehavior;
 import frostnox.nightfall.item.item.ToolItem;
 import frostnox.nightfall.network.NetworkHandler;
 import frostnox.nightfall.network.message.capability.EntryNotificationToServer;
@@ -563,13 +563,13 @@ public class ClientEngine {
             if(!capP.getLastMainItem().sameItemStackIgnoreDurability(mainItem) || firstTick) {
                 optionalMainItem = ItemStack.EMPTY;
                 canUseModifiableMain = true;
-                if(!mainItem.isEmpty() && mainItem.getItem() instanceof ISwapBehavior swapItem) swapItem.swapClient(mc, mainItem, player, true);
+                if(!mainItem.isEmpty() && mainItem.getItem() instanceof IClientSwapBehavior swapItem) swapItem.swapClient(mc, mainItem, player, true);
                 capP.setLastMainItem();
             }
             if(!capP.getLastOffItem().sameItemStackIgnoreDurability(offItem) || firstTick) {
                 optionalOffItem = ItemStack.EMPTY;
                 canUseModifiableOff = true;
-                if(!offItem.isEmpty() && offItem.getItem() instanceof ISwapBehavior swapItem) swapItem.swapClient(mc, offItem, player, false);
+                if(!offItem.isEmpty() && offItem.getItem() instanceof IClientSwapBehavior swapItem) swapItem.swapClient(mc, offItem, player, false);
                 capP.setLastOffItem();
             }
             if(mainItem.getItem() instanceof IHeldClientTick tickItem) tickItem.onHeldTickClient(mc, mainItem, player, true);

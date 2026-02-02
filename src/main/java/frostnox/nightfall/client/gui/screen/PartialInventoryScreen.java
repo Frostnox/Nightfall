@@ -19,12 +19,12 @@ public abstract class PartialInventoryScreen<T extends AbstractContainerMenu> ex
     public static final int WIDTH = 176, HEIGHT = 90;
     protected final int xOff, yOff;
 
-    public PartialInventoryScreen(T pMenu, Inventory pPlayerInventory, Component pTitle) {
-        this(pMenu, pPlayerInventory, pTitle, 0, 0);
+    public PartialInventoryScreen(T pMenu, Inventory playerInventory, Component pTitle) {
+        this(pMenu, playerInventory, pTitle, 0, 0);
     }
 
-    public PartialInventoryScreen(T pMenu, Inventory pPlayerInventory, Component pTitle, int xOff, int yOff) {
-        super(pMenu, pPlayerInventory, pTitle);
+    public PartialInventoryScreen(T pMenu, Inventory playerInventory, Component pTitle, int xOff, int yOff) {
+        super(pMenu, playerInventory, pTitle);
         this.xOff = xOff;
         this.yOff = yOff;
     }

@@ -30,17 +30,17 @@ public class BoatItemNF extends ItemNF {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pHand) {
-        ItemStack itemstack = pPlayer.getItemInHand(pHand);
-        HitResult hitresult = getPlayerPOVHitResult(pLevel, pPlayer, ClipContext.Fluid.ANY);
+    public InteractionResultHolder<ItemStack> use(Level pLevel, Player player, InteractionHand hand) {
+        ItemStack itemstack = player.getItemInHand(hand);
+        HitResult hitresult = getPlayerPOVHitResult(pLevel, player, ClipContext.Fluid.ANY);
         if (hitresult.getType() == HitResult.Type.MISS) {
             return InteractionResultHolder.pass(itemstack);
         } else {
-            Vec3 vec3 = pPlayer.getViewVector(1.0F);
+            Vec3 vec3 = player.getViewVector(1.0F);
             double d0 = 5.0D;
-            List<Entity> list = pLevel.getEntities(pPlayer, pPlayer.getBoundingBox().expandTowards(vec3.scale(5.0D)).inflate(1.0D), ENTITY_PREDICATE);
+            List<Entity> list = pLevel.getEntities(player, player.getBoundingBox().expandTowards(vec3.scale(5.0D)).inflate(1.0D), ENTITY_PREDICATE);
             if (!list.isEmpty()) {
-                Vec3 vec31 = pPlayer.getEyePosition();
+                Vec3 vec31 = player.getEyePosition();
 
                 for(Entity entity : list) {
                     AABB aabb = entity.getBoundingBox().inflate((double)entity.getPickRadius());
@@ -53,19 +53,19 @@ public class BoatItemNF extends ItemNF {
             if (hitresult.getType() == HitResult.Type.BLOCK) {
                 BoatEntity boat = new BoatEntity(pLevel, hitresult.getLocation().x, hitresult.getLocation().y, hitresult.getLocation().z);
                 boat.setMaterial(sourceMaterial);
-                boat.setYRot(pPlayer.getYRot());
+                boat.setYRot(player.getYRot());
                 if (!pLevel.noCollision(boat, boat.getBoundingBox())) {
                     return InteractionResultHolder.fail(itemstack);
                 } else {
                     if (!pLevel.isClientSide) {
                         pLevel.addFreshEntity(boat);
-                        pLevel.gameEvent(pPlayer, GameEvent.ENTITY_PLACE, new BlockPos(hitresult.getLocation()));
-                        if (!pPlayer.getAbilities().instabuild && itemstack.is(this)) {
+                        pLevel.gameEvent(player, GameEvent.ENTITY_PLACE, new BlockPos(hitresult.getLocation()));
+                        if (!player.getAbilities().instabuild && itemstack.is(this)) {
                             itemstack.shrink(1);
                         }
                     }
 
-                    pPlayer.awardStat(Stats.ITEM_USED.get(this));
+                    player.awardStat(Stats.ITEM_USED.get(this));
                     return InteractionResultHolder.sidedSuccess(itemstack, pLevel.isClientSide());
                 }
             } else {

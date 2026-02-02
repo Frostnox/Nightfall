@@ -165,9 +165,9 @@ public class ChairBlock extends WaterloggedBlock implements ICustomPathfindable 
     }
 
     @Override
-    public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player pPlayer) {
-        if(!level.isClientSide && pPlayer.isCreative()) LevelUtil.preventBlockLowerHalfDrop(level, pos, state, pPlayer);
-        super.playerWillDestroy(level, pos, state, pPlayer);
+    public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+        if(!level.isClientSide && player.isCreative()) LevelUtil.preventBlockLowerHalfDrop(level, pos, state, player);
+        super.playerWillDestroy(level, pos, state, player);
     }
 
     @Nullable
@@ -245,16 +245,16 @@ public class ChairBlock extends WaterloggedBlock implements ICustomPathfindable 
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult pHit) {
         if(state.getValue(HALF) == DoubleBlockHalf.UPPER) return InteractionResult.PASS;
         if(level.isClientSide) return InteractionResult.SUCCESS;
-        if(!pPlayer.isPassenger() && pos.distToCenterSqr(pPlayer.getX(), pPlayer.getY() + pPlayer.getBbHeight() / 2, pPlayer.getZ()) <= 2.5 * 2.5) {
+        if(!player.isPassenger() && pos.distToCenterSqr(player.getX(), player.getY() + player.getBbHeight() / 2, player.getZ()) <= 2.5 * 2.5) {
             List<SeatEntity> seats = level.getEntitiesOfClass(SeatEntity.class, new AABB(pos));
             if(seats.isEmpty()) {
-                SeatEntity seat = new SeatEntity(level, pos.getX() + 0.5, pos.getY() - pPlayer.getMyRidingOffset(), pos.getZ() + 0.5,
+                SeatEntity seat = new SeatEntity(level, pos.getX() + 0.5, pos.getY() - player.getMyRidingOffset(), pos.getZ() + 0.5,
                         state.getValue(FACING).toYRot());
                 level.addFreshEntity(seat);
-                pPlayer.startRiding(seat);
+                player.startRiding(seat);
                 return InteractionResult.SUCCESS;
             }
         }

@@ -58,13 +58,13 @@ public class PotBlock extends WaterloggedEntityBlock implements ICustomPathfinda
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult pHit) {
         if(level.isClientSide) return InteractionResult.SUCCESS;
         else {
             BlockPos abovePos = pos.above();
             if(!level.getBlockState(abovePos).isFaceSturdy(level, abovePos, Direction.DOWN, SupportType.CENTER) &&
                     level.getBlockEntity(pos) instanceof PotBlockEntity pot) {
-                NetworkHooks.openGui((ServerPlayer) pPlayer, pot, pos);
+                NetworkHooks.openGui((ServerPlayer) player, pot, pos);
             }
             return InteractionResult.CONSUME;
         }

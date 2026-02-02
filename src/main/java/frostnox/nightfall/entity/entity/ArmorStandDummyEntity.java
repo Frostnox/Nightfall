@@ -229,12 +229,12 @@ public class ArmorStandDummyEntity extends LivingEntity implements IEntityWithIt
 
     //The Forge event will always fire this on the server despite respecting cancellation on the client
     @Override
-    public InteractionResult interactAt(Player pPlayer, Vec3 pVec, InteractionHand pHand) {
-        if(!ActionTracker.get(pPlayer).isInactive()) return InteractionResult.FAIL;
+    public InteractionResult interactAt(Player player, Vec3 pVec, InteractionHand hand) {
+        if(!ActionTracker.get(player).isInactive()) return InteractionResult.FAIL;
         else {
-            InteractionResult result = tryItemSwap(pPlayer, pVec, pHand);
+            InteractionResult result = tryItemSwap(player, pVec, hand);
             //Should return success so client doesn't start action when server would swing the hand later anyways
-            if(pPlayer.level.isClientSide() && result == InteractionResult.CONSUME) return InteractionResult.SUCCESS;
+            if(player.level.isClientSide() && result == InteractionResult.CONSUME) return InteractionResult.SUCCESS;
             else return result;
         }
     }
@@ -455,19 +455,19 @@ public class ArmorStandDummyEntity extends LivingEntity implements IEntityWithIt
         else return super.isInWall();
     }
 
-    protected InteractionResult tryItemSwap(Player pPlayer, Vec3 pVec, InteractionHand pHand) {
-        ItemStack itemstack = pPlayer.getItemInHand(pHand);
+    protected InteractionResult tryItemSwap(Player player, Vec3 pVec, InteractionHand hand) {
+        ItemStack itemstack = player.getItemInHand(hand);
         if (!isMarker() && !itemstack.is(Items.NAME_TAG)) {
-            if (pPlayer.isSpectator()) {
+            if (player.isSpectator()) {
                 return InteractionResult.SUCCESS;
-            } else if (pPlayer.level.isClientSide) {
+            } else if (player.level.isClientSide) {
                 return InteractionResult.CONSUME;
             } else {
                 EquipmentSlot equipmentslot = Mob.getEquipmentSlotForItem(itemstack);
                 if (itemstack.isEmpty()) {
                     EquipmentSlot equipmentslot1 = getClickedSlot(pVec);
                     EquipmentSlot equipmentslot2 = isDisabled(equipmentslot1) ? equipmentslot : equipmentslot1;
-                    if (hasItemInSlot(equipmentslot2) && swapItem(pPlayer, equipmentslot2, itemstack, pHand)) {
+                    if (hasItemInSlot(equipmentslot2) && swapItem(player, equipmentslot2, itemstack, hand)) {
                         return InteractionResult.SUCCESS;
                     }
                 } else {
@@ -479,7 +479,7 @@ public class ArmorStandDummyEntity extends LivingEntity implements IEntityWithIt
                         return InteractionResult.FAIL;
                     }
 
-                    if (swapItem(pPlayer, equipmentslot, itemstack, pHand)) {
+                    if (swapItem(player, equipmentslot, itemstack, hand)) {
                         return InteractionResult.SUCCESS;
                     }
                 }
@@ -515,13 +515,13 @@ public class ArmorStandDummyEntity extends LivingEntity implements IEntityWithIt
         return (disabledSlots & 1 << pSlot.getFilterFlag()) != 0 || pSlot.getType() == EquipmentSlot.Type.HAND && !isShowArms();
     }
 
-    private boolean swapItem(Player pPlayer, EquipmentSlot pSlot, ItemStack pStack, InteractionHand pHand) {
+    private boolean swapItem(Player player, EquipmentSlot pSlot, ItemStack pStack, InteractionHand hand) {
         ItemStack itemstack = getItemBySlot(pSlot);
         if (!itemstack.isEmpty() && (disabledSlots & 1 << pSlot.getFilterFlag() + DISABLE_TAKING_OFFSET) != 0) {
             return false;
         } else if (itemstack.isEmpty() && (disabledSlots & 1 << pSlot.getFilterFlag() + DISABLE_PUTTING_OFFSET) != 0) {
             return false;
-        } else if (pPlayer.getAbilities().instabuild && itemstack.isEmpty() && !pStack.isEmpty()) {
+        } else if (player.getAbilities().instabuild && itemstack.isEmpty() && !pStack.isEmpty()) {
             ItemStack itemstack2 = pStack.copy();
             itemstack2.setCount(1);
             setItemSlot(pSlot, itemstack2);
@@ -538,7 +538,7 @@ public class ArmorStandDummyEntity extends LivingEntity implements IEntityWithIt
             }
         } else {
             setItemSlot(pSlot, pStack);
-            pPlayer.setItemInHand(pHand, itemstack);
+            player.setItemInHand(hand, itemstack);
             return true;
         }
     }

@@ -8,19 +8,22 @@ import frostnox.nightfall.action.Attack;
 import frostnox.nightfall.action.player.IClientAction;
 import frostnox.nightfall.block.IHoldable;
 import frostnox.nightfall.block.IMicroGrid;
+import frostnox.nightfall.block.Metal;
 import frostnox.nightfall.capability.*;
 import frostnox.nightfall.client.ClientEngine;
 import frostnox.nightfall.client.EntityLightEngine;
 import frostnox.nightfall.client.gui.screen.AttributeSelectionScreen;
 import frostnox.nightfall.client.model.entity.PlayerModelNF;
 import frostnox.nightfall.client.model.AnimatedItemModel;
+import frostnox.nightfall.client.render.blockentity.TieredAnvilRenderer;
 import frostnox.nightfall.client.render.entity.PlayerRendererNF;
 import frostnox.nightfall.entity.entity.ActionableEntity;
 import frostnox.nightfall.entity.EntityPart;
 import frostnox.nightfall.entity.IOrientedHitBoxes;
-import frostnox.nightfall.item.IWeaponItem;
+import frostnox.nightfall.item.item.TongsItem;
 import frostnox.nightfall.registry.ActionsNF;
 import frostnox.nightfall.registry.forge.EffectsNF;
+import frostnox.nightfall.registry.forge.FluidsNF;
 import frostnox.nightfall.util.*;
 import frostnox.nightfall.util.animation.AnimationCalculator;
 import frostnox.nightfall.util.animation.AnimationData;
@@ -37,16 +40,17 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
@@ -278,22 +282,6 @@ public class RenderEventHandler {
                 }
             }
             float modifiedPartial = capA.modifyPartialTick(ClientEngine.get().getPartialTick());
-            //Replacement of vanilla item swap animation
-            ItemInHandRenderer renderer = Minecraft.getInstance().getItemInHandRenderer();
-            float swapYOffsetMain = Minecraft.getInstance().getItemRenderer().getModel(ClientEngine.get().mainHandItem, player.level, player, 0) instanceof AnimatedItemModel.Model model ? (float) model.swapYOffset : 0;
-            float mainSwap = (1F - Mth.lerp(event.getPartialTicks(), ClientEngine.get().oMainHandHeight, ClientEngine.get().mainHandHeight)) * (-0.8F + swapYOffsetMain) + (1F - Mth.lerp(event.getPartialTicks(), renderer.oMainHandHeight, renderer.mainHandHeight)) * 0.6F;
-            mainSwap += -0.14F * Easing.inOutSine.apply(Mth.lerp(modifiedPartial, ClientEngine.get().lastMainHandLowerTime, ClientEngine.get().mainHandLowerTime) / 4F);
-            if(hand == InteractionHand.MAIN_HAND) {
-                renderer.mainHandItem = !capA.isInactive() && player.getMainHandItem().isEmpty() ? ItemStack.EMPTY : ClientEngine.get().mainHandItem;
-                stack.translate(0, mainSwap, 0);
-            }
-            else {
-                float swapYOffsetOff = Minecraft.getInstance().getItemRenderer().getModel(ClientEngine.get().offHandItem, player.level, player, 0) instanceof AnimatedItemModel.Model model ? (float) model.swapYOffset : 0;
-                float offSwap = (1F - Mth.lerp(event.getPartialTicks(), ClientEngine.get().oOffHandHeight, ClientEngine.get().offHandHeight)) * (-0.8F + swapYOffsetOff) + event.getEquipProgress() * 0.6F;
-                offSwap += -0.14F * Easing.inOutSine.apply(Mth.lerp(modifiedPartial, ClientEngine.get().lastOffHandLowerTime, ClientEngine.get().offHandLowerTime) / 4F);
-                renderer.offHandItem = !capA.isInactive() && player.getOffhandItem().isEmpty() ? ItemStack.EMPTY : ClientEngine.get().offHandItem;
-                stack.translate(0, offSwap - mainSwap, 0);
-            }
             //Block entity holding
             if(hand == InteractionHand.MAIN_HAND && capP.getHoldTicks() != -1) {
                 stack.translate(0, -0.35 * AnimationUtil.getHoldProgress(player, modifiedPartial), 0);
@@ -364,6 +352,52 @@ public class RenderEventHandler {
             //Shivering
             if(capP.isShivering()) {
                 stack.mulPose(Vector3f.YP.rotationDegrees((Mth.cos(player.tickCount * 3.25F) * MathUtil.PI * 0.03F)));
+            }
+            //Item swap animation values
+            ItemInHandRenderer renderer = Minecraft.getInstance().getItemInHandRenderer();
+            float swapYOffsetMain = Minecraft.getInstance().getItemRenderer().getModel(ClientEngine.get().mainHandItem, player.level, player, 0) instanceof AnimatedItemModel.Model model ? (float) model.swapYOffset : 0;
+            float mainSwap = (1F - Mth.lerp(event.getPartialTicks(), ClientEngine.get().oMainHandHeight, ClientEngine.get().mainHandHeight)) * (-0.8F + swapYOffsetMain) + (1F - Mth.lerp(event.getPartialTicks(), renderer.oMainHandHeight, renderer.mainHandHeight)) * 0.6F;
+            mainSwap += -0.14F * Easing.inOutSine.apply(Mth.lerp(modifiedPartial, ClientEngine.get().lastMainHandLowerTime, ClientEngine.get().mainHandLowerTime) / 4F);
+            //Tongs
+            ItemStack item = player.getItemInHand(hand);
+            if(item.getItem() instanceof TongsItem tongs && tongs.hasWorkpiece(item)) {
+                TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(FluidsNF.METAL_SOLID);
+                Color color = RenderUtil.getHeatedMetalColor(tongs.getTemperature(item), Metal.COPPER.getColor().getRGB());
+                stack.pushPose();
+                if(hand == InteractionHand.OFF_HAND) stack.translate(0, -mainSwap, 0);
+                stack.translate(hand == InteractionHand.MAIN_HAND ? 0.7 : -0.7, -4D/16, -19D/16);
+                if(hand == player.swingingArm) {
+                    stack.translate(0.2, -0.2, 0.25);
+                    int side = hand == InteractionHand.MAIN_HAND ? 1 : -1;
+                    float swing = player.getAttackAnim(ClientEngine.get().getPartialTick());
+                    float swingX = -0.4F * Mth.sin(Mth.sqrt(swing) * MathUtil.PI);
+                    float swingY = 0.3F * Mth.sin(Mth.sqrt(swing) * (MathUtil.PI * 2F));
+                    float swingZ = -0.2F * Mth.sin(swing * MathUtil.PI);
+                    stack.translate(side * swingX, swingY, swingZ);
+                    float f = Mth.sin(swing * swing * MathUtil.PI);
+                    stack.mulPose(Vector3f.YP.rotationDegrees(side * (45.0F + f * -20.0F)));
+                    float f1 = Mth.sin(Mth.sqrt(swing) * MathUtil.PI);
+                    stack.mulPose(Vector3f.ZP.rotationDegrees(side * f1 * -20.0F));
+                    stack.mulPose(Vector3f.XP.rotationDegrees(f1 * -80.0F));
+                    stack.mulPose(Vector3f.YP.rotationDegrees(side * -45.0F));
+                    stack.translate(-0.2, 0.2, -0.25);
+                }
+                stack.mulPose(Vector3f.XP.rotationDegrees(45));
+
+                TieredAnvilRenderer.renderWorkpiece(stack, event.getMultiBufferSource(), color, event.getPackedLight(), sprite, 0.5, tongs.getTemperature(item), tongs.getWork(item));
+                stack.popPose();
+            }
+            //Replacement of vanilla item swap animation
+            if(hand == InteractionHand.MAIN_HAND) {
+                renderer.mainHandItem = !capA.isInactive() && player.getMainHandItem().isEmpty() ? ItemStack.EMPTY : ClientEngine.get().mainHandItem;
+                stack.translate(0, mainSwap, 0);
+            }
+            else {
+                float swapYOffsetOff = Minecraft.getInstance().getItemRenderer().getModel(ClientEngine.get().offHandItem, player.level, player, 0) instanceof AnimatedItemModel.Model model ? (float) model.swapYOffset : 0;
+                float offSwap = (1F - Mth.lerp(event.getPartialTicks(), ClientEngine.get().oOffHandHeight, ClientEngine.get().offHandHeight)) * (-0.8F + swapYOffsetOff) + event.getEquipProgress() * 0.6F;
+                offSwap += -0.14F * Easing.inOutSine.apply(Mth.lerp(modifiedPartial, ClientEngine.get().lastOffHandLowerTime, ClientEngine.get().offHandLowerTime) / 4F);
+                renderer.offHandItem = !capA.isInactive() && player.getOffhandItem().isEmpty() ? ItemStack.EMPTY : ClientEngine.get().offHandItem;
+                stack.translate(0, offSwap - mainSwap, 0);
             }
         }
     }

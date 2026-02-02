@@ -64,7 +64,7 @@ public class ShelfBlock extends WaterloggedEntityBlock implements ICustomPathfin
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult pHit) {
         if(level.getBlockEntity(pos) instanceof ShelfBlockEntity shelf) {
             Vec3 loc = pHit.getLocation();
             double y = loc.y % 1D;
@@ -78,17 +78,17 @@ public class ShelfBlock extends WaterloggedEntityBlock implements ICustomPathfin
                 if(y < 0.5) index += 2;
                 ItemStack item = shelf.items.get(index);
                 if(!item.isEmpty()) {
-                    pPlayer.getInventory().placeItemBackInInventory(item.copy());
+                    player.getInventory().placeItemBackInInventory(item.copy());
                     shelf.items.set(index, ItemStack.EMPTY);
                     shelf.setChanged();
                     level.sendBlockUpdated(pos, state, state, 2);
                     return InteractionResult.CONSUME;
                 }
                 else {
-                    ItemStack heldItem = pPlayer.getItemInHand(pHand);
+                    ItemStack heldItem = player.getItemInHand(hand);
                     if(heldItem.getMaxStackSize() > 4) {
                         shelf.items.set(index, heldItem.copy());
-                        if(!pPlayer.getAbilities().instabuild) pPlayer.setItemInHand(pHand, ItemStack.EMPTY);
+                        if(!player.getAbilities().instabuild) player.setItemInHand(hand, ItemStack.EMPTY);
                         shelf.setChanged();
                         level.sendBlockUpdated(pos, state, state, 2);
                         return InteractionResult.CONSUME;

@@ -82,7 +82,7 @@ public class BarrelBlockNF extends WaterloggedEntityBlock implements ICustomPath
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult pHit) {
         if(level.isClientSide) return InteractionResult.SUCCESS;
         else {
             Direction facing = state.getValue(FACING);
@@ -90,10 +90,10 @@ public class BarrelBlockNF extends WaterloggedEntityBlock implements ICustomPath
             if(!level.getBlockState(facingPos).isFaceSturdy(level, facingPos, facing.getOpposite(), SupportType.FULL) &&
                     level.getBlockEntity(pos) instanceof BarrelBlockEntityNF barrel) {
                 //Try placing water directly before opening gui
-                ServerPlayer serverPlayer = (ServerPlayer) pPlayer;
-                ItemStack item = pPlayer.getItemInHand(pHand);
+                ServerPlayer serverPlayer = (ServerPlayer) player;
+                ItemStack item = player.getItemInHand(hand);
                 if(item.getItem() instanceof FilledBucketItem bucket) {
-                    barrel.createMenu(serverPlayer.containerCounter, pPlayer.getInventory()).quickMoveStack(pPlayer, 27 + pPlayer.getInventory().selected);
+                    barrel.createMenu(serverPlayer.containerCounter, player.getInventory()).quickMoveStack(player, 27 + player.getInventory().selected);
                     if(item.isEmpty()) bucket.playEmptySound(null, level, pos);
                 }
                 else NetworkHooks.openGui(serverPlayer, barrel, pos);

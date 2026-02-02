@@ -74,8 +74,8 @@ public class PuzzleContainerRequestToServer {
             }
 
             @Override
-            public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
-                return new PuzzleContainer(pPlayerInventory, pContainerId, msg.entryId);
+            public AbstractContainerMenu createMenu(int pContainerId, Inventory playerInventory, Player player) {
+                return new PuzzleContainer(playerInventory, pContainerId, msg.entryId);
             }
         }, buf -> buf.writeResourceLocation(msg.entryId));
     }

@@ -19,6 +19,7 @@ import frostnox.nightfall.entity.ITamable;
 import frostnox.nightfall.entity.entity.ActionableEntity;
 import frostnox.nightfall.item.IActionableItem;
 import frostnox.nightfall.item.IInsulator;
+import frostnox.nightfall.item.IServerSwapBehavior;
 import frostnox.nightfall.item.IWeaponItem;
 import frostnox.nightfall.item.item.AttributeAccessoryItem;
 import frostnox.nightfall.item.item.MeleeWeaponItem;
@@ -822,8 +823,17 @@ public class CommonEventHandler {
             if(player.animationSpeed == 1.5F) player.animationSpeed = player.animationSpeedOld;
             if(!level.isClientSide()) {
                 //Record hand items
-                if(!capP.getLastMainItem().sameItemStackIgnoreDurability(player.getMainHandItem())) capP.setLastMainItem();
-                if(!capP.getLastOffItem().sameItemStackIgnoreDurability(player.getOffhandItem())) capP.setLastOffItem();
+                ItemStack mainItem = player.getMainHandItem(), offItem = player.getOffhandItem();
+                if(!ItemStack.isSameItemSameTags(mainItem, capP.getLastMainItem())) { //TODO: Comparison function
+                    if(capP.getLastMainItem().getItem() instanceof IServerSwapBehavior swap) swap.swapFromServer(capP.getLastMainItem(), player, true);
+                    if(mainItem.getItem() instanceof IServerSwapBehavior swap) swap.swapToServer(mainItem, player, true);
+                    capP.setLastMainItem();
+                }
+                if(!capP.getLastOffItem().sameItemStackIgnoreDurability(offItem)) {
+                    if(capP.getLastOffItem().getItem() instanceof IServerSwapBehavior swap) swap.swapFromServer(capP.getLastOffItem(), player, false);
+                    if(offItem.getItem() instanceof IServerSwapBehavior swap) swap.swapToServer(offItem, player, false);
+                    capP.setLastOffItem();
+                }
                 if(!player.getAbilities().invulnerable) player.causeFoodExhaustion(0.00125F); //1.5 exhaustion per min
             }
             //Force out of charge state if player weapon is missing

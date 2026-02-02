@@ -9,7 +9,7 @@ import frostnox.nightfall.data.recipe.HeldToolRecipe;
 import frostnox.nightfall.data.recipe.ToolIngredientRecipe;
 import frostnox.nightfall.item.IActionableItem;
 import frostnox.nightfall.item.client.IModifiable;
-import frostnox.nightfall.item.client.ISwapBehavior;
+import frostnox.nightfall.item.client.IClientSwapBehavior;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public abstract class ToolItem extends ScreenCacheItem implements IModifiable, ISwapBehavior, IActionableItem {
+public abstract class ToolItem extends ScreenCacheItem implements IModifiable, IClientSwapBehavior, IActionableItem {
     public ToolItem(Properties properties) {
         super(properties);
     }

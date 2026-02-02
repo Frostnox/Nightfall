@@ -67,12 +67,12 @@ public class BowlBlock extends WaterloggedEntityBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand pHand, BlockHitResult pHit) {
-        if(player.isCrouching() && player.getItemInHand(pHand).isEmpty()) return InteractionResult.PASS;
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult pHit) {
+        if(player.isCrouching() && player.getItemInHand(hand).isEmpty()) return InteractionResult.PASS;
         if(level.getBlockEntity(pos) instanceof BowlBlockEntity bowl) {
             if(level.isClientSide) return InteractionResult.SUCCESS;
             else {
-                ItemStack heldItem = player.getItemInHand(pHand);
+                ItemStack heldItem = player.getItemInHand(hand);
                 if(bowl.item.isEmpty()) {
                     if(!heldItem.isEmpty()) {
                         bowl.item = player.getAbilities().instabuild ? new ItemStack(heldItem.getItem()) : heldItem.split(1);
@@ -93,7 +93,7 @@ public class BowlBlock extends WaterloggedEntityBlock {
                     if(recipe.isPresent() && recipe.get().isUnlocked(player)) {
                         bowl.crushes++;
                         if(heldItem.isDamageableItem() && bowl.crushes % 2 == 0) {
-                            heldItem.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(pHand));
+                            heldItem.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(hand));
                         }
                         level.playSound(null, pos, SoundsNF.WOODEN_BOWL_CRUSH.get(), SoundSource.PLAYERS, 1F, 0.97F + 0.06F * level.random.nextFloat());
                         ((ServerLevel) level).sendParticles(new ItemParticleOption(ParticleTypes.ITEM, bowl.item), pos.getX() + 0.5,

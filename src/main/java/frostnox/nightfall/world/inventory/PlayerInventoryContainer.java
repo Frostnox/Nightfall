@@ -50,17 +50,17 @@ public class PlayerInventoryContainer extends InventoryMenu {
         owner = playerInv.player;
         //Result slot
         addSlot(new ResultSlot(playerInv.player, craftSlots, resultSlots, 0, 151, 44) {
-            public void onTake(Player pPlayer, ItemStack pStack) {
+            public void onTake(Player player, ItemStack pStack) {
                 checkTakeAchievements(pStack);
-                net.minecraftforge.common.ForgeHooks.setCraftingPlayer(pPlayer);
-                NonNullList<ItemStack> remainders = pPlayer.level.getRecipeManager().getRemainingItemsFor(CraftingRecipeNF.TYPE, craftSlots, pPlayer.level);
+                net.minecraftforge.common.ForgeHooks.setCraftingPlayer(player);
+                NonNullList<ItemStack> remainders = player.level.getRecipeManager().getRemainingItemsFor(CraftingRecipeNF.TYPE, craftSlots, player.level);
                 net.minecraftforge.common.ForgeHooks.setCraftingPlayer(null);
                 for(int i = 0; i < remainders.size(); ++i) {
                     ItemStack input = craftSlots.getItem(i);
                     ItemStack remainder = remainders.get(i);
                     if(!input.isEmpty()) {
                         if(input.getTag() != null && input.getTag().contains("Damage")) {
-                            input.hurt(1, pPlayer.level.getRandom(), null);
+                            input.hurt(1, player.level.getRandom(), null);
                             if(input.getDamageValue() >= input.getMaxDamage()) craftSlots.removeItem(i, 1);
                         }
                         else craftSlots.removeItem(i, 1);
@@ -73,8 +73,8 @@ public class PlayerInventoryContainer extends InventoryMenu {
                         } else if (ItemStack.isSame(input, remainder) && ItemStack.tagMatches(input, remainder)) {
                             remainder.grow(input.getCount());
                             craftSlots.setItem(i, remainder);
-                        } else if (!pPlayer.getInventory().add(remainder)) {
-                            pPlayer.drop(remainder, false);
+                        } else if (!player.getInventory().add(remainder)) {
+                            player.drop(remainder, false);
                         }
                     }
                 }
@@ -220,12 +220,12 @@ public class PlayerInventoryContainer extends InventoryMenu {
     /**
      * Called when the container is closed.
      */
-    public void removed(Player pPlayer) {
-        super.removed(pPlayer);
+    public void removed(Player player) {
+        super.removed(player);
         resultSlots.clearContent();
-        if(!pPlayer.level.isClientSide) {
-            clearContainer(pPlayer, craftSlots);
-            clearContainer(pPlayer, searchSlots);
+        if(!player.level.isClientSide) {
+            clearContainer(player, craftSlots);
+            clearContainer(player, searchSlots);
         }
     }
 
@@ -236,7 +236,7 @@ public class PlayerInventoryContainer extends InventoryMenu {
     /**
      * Determines whether supplied player can use this container
      */
-    public boolean stillValid(Player pPlayer) {
+    public boolean stillValid(Player player) {
         return true;
     }
 
@@ -244,7 +244,7 @@ public class PlayerInventoryContainer extends InventoryMenu {
      * Handle when the stack in slot {@code index} is shift-clicked. Normally this moves the stack between the player
      * inventory and the other inventory(s).
      */
-    public ItemStack quickMoveStack(Player pPlayer, int pIndex) {
+    public ItemStack quickMoveStack(Player player, int pIndex) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = slots.get(pIndex);
         if (slot != null && slot.hasItem()) {
@@ -304,9 +304,9 @@ public class PlayerInventoryContainer extends InventoryMenu {
                 return ItemStack.EMPTY;
             }
 
-            slot.onTake(pPlayer, itemstack1);
+            slot.onTake(player, itemstack1);
             if (pIndex == 0) {
-                pPlayer.drop(itemstack1, false);
+                player.drop(itemstack1, false);
             }
         }
 

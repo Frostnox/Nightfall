@@ -15,8 +15,8 @@ public class SearchSlot extends Slot {
     }
 
     @Override
-    public void onTake(Player pPlayer, ItemStack pStack) {
-        super.onTake(pPlayer, pStack);
+    public void onTake(Player player, ItemStack pStack) {
+        super.onTake(player, pStack);
         if(onClient) ClientEngine.get().updateRecipeSearchItems();
     }
 

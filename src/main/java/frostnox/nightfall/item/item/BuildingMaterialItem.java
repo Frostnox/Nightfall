@@ -6,7 +6,7 @@ import frostnox.nightfall.client.gui.screen.item.BuildingMaterialItemScreen;
 import frostnox.nightfall.client.gui.screen.item.ModifiableItemScreen;
 import frostnox.nightfall.data.recipe.BuildingRecipe;
 import frostnox.nightfall.item.client.IModifiable;
-import frostnox.nightfall.item.client.ISwapBehavior;
+import frostnox.nightfall.item.client.IClientSwapBehavior;
 import frostnox.nightfall.util.LevelUtil;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.client.Minecraft;
@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class BuildingMaterialItem extends ScreenCacheItem implements IModifiable, ISwapBehavior {
+public class BuildingMaterialItem extends ScreenCacheItem implements IModifiable, IClientSwapBehavior {
     public BuildingMaterialItem(Properties pProperties) {
         super(pProperties);
     }

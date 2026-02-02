@@ -33,9 +33,9 @@ public class GodModeCommand {
         pDispatcher.register(builder);
     }
 
-    private static int setGodMode(CommandContext<CommandSourceStack> pSource, Collection<ServerPlayer> pPlayers) {
+    private static int setGodMode(CommandContext<CommandSourceStack> pSource, Collection<ServerPlayer> players) {
         int count = 0;
-        for(ServerPlayer player : pPlayers) {
+        for(ServerPlayer player : players) {
             if(!player.isAlive()) continue;
             logChange(pSource.getSource(), player, PlayerData.get(player).toggleGodMode());
             count++;

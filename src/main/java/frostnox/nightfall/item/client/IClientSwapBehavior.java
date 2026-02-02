@@ -4,7 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
-public interface ISwapBehavior {
+public interface IClientSwapBehavior {
     /**
      * Called on the client when the item is first held in hand
      */

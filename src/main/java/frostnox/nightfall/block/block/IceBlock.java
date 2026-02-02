@@ -37,8 +37,8 @@ public class IceBlock extends MeltableBlock {
     }
 
     @Override
-    public void playerDestroy(Level level, Player pPlayer, BlockPos pos, BlockState state, @Nullable BlockEntity pTe, ItemStack pStack) {
-        super.playerDestroy(level, pPlayer, pos, state, pTe, pStack);
+    public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity pTe, ItemStack pStack) {
+        super.playerDestroy(level, player, pos, state, pTe, pStack);
         if(level.dimensionType().ultraWarm()) level.removeBlock(pos, false);
         else level.setBlockAndUpdate(pos, meltBlock.get().defaultBlockState());
     }

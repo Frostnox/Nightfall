@@ -34,9 +34,9 @@ public class ReselectAttributesCommand {
         pDispatcher.register(builder);
     }
 
-    private static int reselect(CommandContext<CommandSourceStack> pSource, Collection<ServerPlayer> pPlayers) {
+    private static int reselect(CommandContext<CommandSourceStack> pSource, Collection<ServerPlayer> players) {
         int count = 0;
-        for(ServerPlayer player : pPlayers) {
+        for(ServerPlayer player : players) {
             if(!player.isAlive()) continue;
             IPlayerData capP = PlayerData.get(player);
             capP.setNeedsAttributeSelection(true);

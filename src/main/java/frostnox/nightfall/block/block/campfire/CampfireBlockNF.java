@@ -88,9 +88,9 @@ public class CampfireBlockNF extends WaterloggedEntityBlock implements IIgnitabl
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand pHand, BlockHitResult pHit) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult pHit) {
         if(level.getBlockEntity(pos) instanceof CampfireBlockEntityNF campfire) {
-            ItemStack item = player.getItemInHand(pHand);
+            ItemStack item = player.getItemInHand(hand);
             if(item.is(ItemsNF.FIREWOOD.get())) {
                 int firewood = state.getValue(FIREWOOD);
                 if(firewood < MAX_FUEL) {

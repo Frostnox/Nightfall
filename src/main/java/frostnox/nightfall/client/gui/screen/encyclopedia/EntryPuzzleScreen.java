@@ -39,8 +39,8 @@ public class EntryPuzzleScreen extends PartialInventoryScreen<PuzzleContainer> {
     private final EntryClient cEntry;
     private final String tipPrefix;
 
-    public EntryPuzzleScreen(PuzzleContainer pMenu, Inventory pPlayerInventory, Component pTitle) {
-        super(pMenu, pPlayerInventory, pTitle);
+    public EntryPuzzleScreen(PuzzleContainer pMenu, Inventory playerInventory, Component pTitle) {
+        super(pMenu, playerInventory, pTitle);
         mc = Minecraft.getInstance();
         cEntry = ClientEngine.get().getEntry(pMenu.entry.getRegistryName());
         tipPrefix = cEntry.entry.get().getDescriptionId();

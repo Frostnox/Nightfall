@@ -14,8 +14,8 @@ public class ChestScreen extends PartialInventoryScreen<ChestMenu> {
     private static final ResourceLocation CONTAINER_BACKGROUND = ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "textures/gui/screen/generic_54.png");
     private final int containerRows;
 
-    public ChestScreen(ChestMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
-        super(pMenu, pPlayerInventory, pTitle);
+    public ChestScreen(ChestMenu pMenu, Inventory playerInventory, Component pTitle) {
+        super(pMenu, playerInventory, pTitle);
         passEvents = false;
         containerRows = pMenu.getRowCount();
         imageHeight = 114 + containerRows * 18;

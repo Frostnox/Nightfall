@@ -309,6 +309,8 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
         for(var item : ItemsNF.BILLETS.values()) tag(TagsNF.BILLETS).add(item.get());
         tag(TagsNF.CRUCIBLE_METAL).addTags(Tags.Items.INGOTS, TagsNF.METAL_CHUNKS);
         tag(TagsNF.METAL_CHUNKS).add(ItemsNF.COPPER_CHUNK.get(), ItemsNF.AZURITE_CHUNK.get(), ItemsNF.TIN_CHUNK.get(), ItemsNF.HEMATITE_CHUNK.get(), ItemsNF.METEORITE_CHUNK.get());
+        tag(TagsNF.METAL_WORKPIECE).addTags(Tags.Items.INGOTS, TagsNF.NATIVE_METAL, TagsNF.PLATES);
+        tag(TagsNF.METAL_WORKPIECE).add(ItemsNF.IRON_BLOOM.get());
         tag(TagsNF.NATIVE_METAL).add(ItemsNF.COPPER_CHUNK.get(), ItemsNF.METEORITE_CHUNK.get(), ItemsNF.TIN_CHUNK.get());
         tag(TagsNF.NATIVE_METAL_INGOT).add(ItemsNF.INGOTS.get(Metal.COPPER).get(), ItemsNF.INGOTS.get(Metal.METEORITE).get(), ItemsNF.INGOTS.get(Metal.TIN).get());
         tag(TagsNF.IRON_ORE).add(ItemsNF.HEMATITE_CHUNK.get());

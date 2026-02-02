@@ -61,14 +61,14 @@ public class PuzzleContainer extends PartialInventoryContainer {
     }
 
     @Override
-    public boolean stillValid(Player pPlayer) {
+    public boolean stillValid(Player player) {
         return true;
     }
 
     @Override
-    public void removed(Player pPlayer) {
-        super.removed(pPlayer);
-        inventory.transferToPlayer(pPlayer);
+    public void removed(Player player) {
+        super.removed(player);
+        inventory.transferToPlayer(player);
     }
 
     public static PuzzleContainer createClientContainer(int windowID, Inventory playerInv, FriendlyByteBuf extraData) {

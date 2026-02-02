@@ -59,8 +59,8 @@ public class FluidSlot extends SlotItemHandler {
     }
 
     @Override
-    public void onTake(Player pPlayer, ItemStack pStack) {
-        super.onTake(pPlayer, pStack);
+    public void onTake(Player player, ItemStack pStack) {
+        super.onTake(player, pStack);
         //Remove fluid when moved out indirectly using hotkeys or quick move
         if(FluidsNF.getAsFluid(pStack.getItem()) != Fluids.EMPTY) pStack.setCount(0);
     }

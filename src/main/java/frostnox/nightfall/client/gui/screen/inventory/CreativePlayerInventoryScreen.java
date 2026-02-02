@@ -8,8 +8,8 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.CreativeModeTab;
 
 public class CreativePlayerInventoryScreen extends CreativeModeInventoryScreen {
-    public CreativePlayerInventoryScreen(Player pPlayer) {
-        super(pPlayer);
+    public CreativePlayerInventoryScreen(Player player) {
+        super(player);
     }
 
     @Override

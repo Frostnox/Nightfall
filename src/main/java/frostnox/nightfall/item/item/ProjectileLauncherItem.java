@@ -10,7 +10,7 @@ import frostnox.nightfall.client.gui.screen.item.SimpleModifiableItemScreen;
 import frostnox.nightfall.item.IActionableItem;
 import frostnox.nightfall.item.client.IHeldClientTick;
 import frostnox.nightfall.item.client.IModifiable;
-import frostnox.nightfall.item.client.ISwapBehavior;
+import frostnox.nightfall.item.client.IClientSwapBehavior;
 import frostnox.nightfall.network.NetworkHandler;
 import frostnox.nightfall.network.message.capability.ActionToServer;
 import frostnox.nightfall.util.LevelUtil;
@@ -33,7 +33,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class ProjectileLauncherItem extends ScreenCacheItem implements IActionableItem, IModifiable, ISwapBehavior, IHeldClientTick {
+public abstract class ProjectileLauncherItem extends ScreenCacheItem implements IActionableItem, IModifiable, IClientSwapBehavior, IHeldClientTick {
     public final RegistryObject<? extends Action> useAction;
     public final TagKey<Item> ammoTag;
 
@@ -81,20 +81,20 @@ public abstract class ProjectileLauncherItem extends ScreenCacheItem implements 
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player pPlayer, InteractionHand pHand) {
-        ItemStack item = pPlayer.getItemInHand(pHand);
-        if(!useAction.get().canStart(pPlayer)) return InteractionResultHolder.fail(item);
-        List<ItemStack> ammo = getAmmo(pPlayer);
-        if(!ammo.isEmpty() || pPlayer.getAbilities().instabuild) {
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        ItemStack item = player.getItemInHand(hand);
+        if(!useAction.get().canStart(player)) return InteractionResultHolder.fail(item);
+        List<ItemStack> ammo = getAmmo(player);
+        if(!ammo.isEmpty() || player.getAbilities().instabuild) {
             if(level.isClientSide()) {
-                IPlayerData capP = PlayerData.get(pPlayer);
-                if(capP.getActiveHand() == pHand) {
-                    ActionTracker.get(pPlayer).startAction(useAction.getId());
+                IPlayerData capP = PlayerData.get(player);
+                if(capP.getActiveHand() == hand) {
+                    ActionTracker.get(player).startAction(useAction.getId());
                     NetworkHandler.toServer(new ActionToServer(capP.isMainhandActive(), useAction.getId()));
                 }
             }
             else if(!ammo.isEmpty()) {
-                int index = LevelUtil.getModifiableItemIndex(level, pPlayer, pHand);
+                int index = LevelUtil.getModifiableItemIndex(level, player, hand);
                 if(index < 0 || index >= ammo.size()) return InteractionResultHolder.fail(item);
                 int id = getAmmoId(ammo.get(index));
                 if(id != 0) {

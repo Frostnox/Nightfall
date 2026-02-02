@@ -38,10 +38,10 @@ public class PotBlockEntity extends MenuContainerBlockEntity implements IHoldabl
     }
 
     @Override
-    public void startOpen(Player pPlayer) {
+    public void startOpen(Player player) {
         level.playSound(null, worldPosition.getX() + 0.5, worldPosition.getY() + 1, worldPosition.getZ() + 0.5,
                 SoundsNF.CERAMIC_OPEN_LARGE.get(), SoundSource.BLOCKS, 1F, 0.94F + level.random.nextFloat() * 0.12F);
-        level.gameEvent(pPlayer, GameEvent.CONTAINER_OPEN, worldPosition);
+        level.gameEvent(player, GameEvent.CONTAINER_OPEN, worldPosition);
     }
 
     @Override

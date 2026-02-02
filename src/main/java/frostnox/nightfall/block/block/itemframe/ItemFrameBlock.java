@@ -73,7 +73,7 @@ public class ItemFrameBlock extends WaterloggedEntityBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult pHit) {
         if(level.getBlockEntity(pos) instanceof ItemFrameBlockEntity frame) {
             if(level.isClientSide) return InteractionResult.SUCCESS;
             else {
@@ -84,10 +84,10 @@ public class ItemFrameBlock extends WaterloggedEntityBlock {
                     return InteractionResult.CONSUME;
                 }
                 else {
-                    ItemStack heldItem = pPlayer.getItemInHand(pHand);
+                    ItemStack heldItem = player.getItemInHand(hand);
                     if(!heldItem.isEmpty()) {
                         ItemStack copyItem;
-                        if(!pPlayer.getAbilities().instabuild) copyItem = heldItem.split(1);
+                        if(!player.getAbilities().instabuild) copyItem = heldItem.split(1);
                         else {
                             copyItem = heldItem.copy();
                             copyItem.setCount(1);

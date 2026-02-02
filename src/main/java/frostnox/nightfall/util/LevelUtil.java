@@ -410,7 +410,7 @@ public class LevelUtil {
         return minY <= blockBox.minY && maxY >= blockBox.maxY && minXZBest <= minXZ;
     }
 
-    public static void preventBlockLowerHalfDrop(Level level, BlockPos pos, BlockState state, Player pPlayer) {
+    public static void preventBlockLowerHalfDrop(Level level, BlockPos pos, BlockState state, Player player) {
         DoubleBlockHalf half = state.getValue(BlockStateProperties.DOUBLE_BLOCK_HALF);
         if(half == DoubleBlockHalf.UPPER) {
             BlockPos lowerPos = pos.below();
@@ -425,7 +425,7 @@ public class LevelUtil {
                     }
                 }
                 level.setBlock(lowerPos, newState, 35);
-                level.levelEvent(pPlayer, 2001, lowerPos, Block.getId(lowerState)); //Sound & breaking particles
+                level.levelEvent(player, 2001, lowerPos, Block.getId(lowerState)); //Sound & breaking particles
             }
         }
     }

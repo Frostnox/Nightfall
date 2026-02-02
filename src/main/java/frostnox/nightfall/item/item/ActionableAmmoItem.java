@@ -80,19 +80,19 @@ public class ActionableAmmoItem extends ItemNF implements IActionableItem {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player pPlayer, InteractionHand pHand) {
-        var action = shouldReload(pPlayer.getItemInHand(pHand), pPlayer.getItemInHand(pHand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND)) ? reloadAction : useAction;
-        if(action.get().canStart(pPlayer)) {
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        var action = shouldReload(player.getItemInHand(hand), player.getItemInHand(hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND)) ? reloadAction : useAction;
+        if(action.get().canStart(player)) {
             if(level.isClientSide()) {
-                IPlayerData capP = PlayerData.get(pPlayer);
-                if(capP.getActiveHand() == pHand) {
-                    ActionTracker.get(pPlayer).startAction(action.getId());
+                IPlayerData capP = PlayerData.get(player);
+                if(capP.getActiveHand() == hand) {
+                    ActionTracker.get(player).startAction(action.getId());
                     NetworkHandler.toServer(new ActionToServer(capP.isMainhandActive(), action.getId()));
                 }
             }
-            return InteractionResultHolder.fail(pPlayer.getItemInHand(pHand));
+            return InteractionResultHolder.fail(player.getItemInHand(hand));
         }
-        return super.use(level, pPlayer, pHand);
+        return super.use(level, player, hand);
     }
 
     @Override

@@ -49,17 +49,17 @@ public class ActionableItem extends ItemNF implements IActionableItem {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player pPlayer, InteractionHand pHand) {
-        if(useAction.get().canStart(pPlayer)) {
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        if(useAction.get().canStart(player)) {
             if(level.isClientSide()) {
-                IPlayerData capP = PlayerData.get(pPlayer);
-                if(capP.getActiveHand() == pHand) {
-                    ActionTracker.get(pPlayer).startAction(useAction.getId());
+                IPlayerData capP = PlayerData.get(player);
+                if(capP.getActiveHand() == hand) {
+                    ActionTracker.get(player).startAction(useAction.getId());
                     NetworkHandler.toServer(new ActionToServer(capP.isMainhandActive(), useAction.getId()));
                 }
             }
-            return InteractionResultHolder.fail(pPlayer.getItemInHand(pHand));
+            return InteractionResultHolder.fail(player.getItemInHand(hand));
         }
-        return super.use(level, pPlayer, pHand);
+        return super.use(level, player, hand);
     }
 }

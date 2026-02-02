@@ -96,7 +96,7 @@ public abstract class TamableAnimalEntity extends AnimalEntity implements ITamab
     public abstract ResourceLocation getBreedAction();
 
     @Override
-    public boolean canBeLeashed(Player pPlayer) {
+    public boolean canBeLeashed(Player player) {
         return !isLeashed() && isTamed();
     }
 
@@ -129,13 +129,13 @@ public abstract class TamableAnimalEntity extends AnimalEntity implements ITamab
     }
 
     @Override
-    protected InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
+    protected InteractionResult mobInteract(Player player, InteractionHand hand) {
         if(!isTamed()) {
             if(tamable) {
-                ItemStack item = pPlayer.getItemInHand(pHand);
+                ItemStack item = player.getItemInHand(hand);
                 if(isFeedItem(item)) {
                     if(!level.isClientSide) {
-                        PlayerData.get(pPlayer).addKnowledge(KnowledgeNF.TAMED_ANIMAL.getId());
+                        PlayerData.get(player).addKnowledge(KnowledgeNF.TAMED_ANIMAL.getId());
                         NetworkHandler.toAllTracking(this, new EatItemToClient(item.copy(), getId()));
                         item.shrink(1);
                         getEntityData().set(TAMED, true);
@@ -161,7 +161,7 @@ public abstract class TamableAnimalEntity extends AnimalEntity implements ITamab
             }
         }
         else if(breedTime == 0 && satiety == 0 && gestationTime == 0) {
-            ItemStack item = pPlayer.getItemInHand(pHand);
+            ItemStack item = player.getItemInHand(hand);
             if(isFeedItem(item)) {
                 if(!level.isClientSide) {
                     NetworkHandler.toAllTracking(this, new EatItemToClient(item.copy(), getId()));

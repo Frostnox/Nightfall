@@ -66,13 +66,13 @@ public abstract class EggNestBlock extends BaseEntityBlock implements ITimeSimul
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult pHit) {
         int eggs = state.getValue(EGGS);
-        if(eggs == 0 || pPlayer.isSecondaryUseActive() || pPlayer.getItemInHand(pHand).is(Items.DEBUG_STICK)) return InteractionResult.PASS;
+        if(eggs == 0 || player.isSecondaryUseActive() || player.getItemInHand(hand).is(Items.DEBUG_STICK)) return InteractionResult.PASS;
         else {
             level.setBlock(pos, state.setValue(EGGS, eggs - 1), 2);
             if(!level.isClientSide) {
-                LevelUtil.giveItemToPlayer(new ItemStack(eggItem.get()), pPlayer, true);
+                LevelUtil.giveItemToPlayer(new ItemStack(eggItem.get()), player, true);
                 if(level.getBlockEntity(pos) instanceof EggNestBlockEntity nest) {
                     int bestTime = 0, bestIndex = 0;
                     for(int i = 0; i < nest.hatchTimes.length; i++) {
