@@ -55,15 +55,11 @@ public class PlayerInventoryContainer extends InventoryMenu {
                 net.minecraftforge.common.ForgeHooks.setCraftingPlayer(player);
                 NonNullList<ItemStack> remainders = player.level.getRecipeManager().getRemainingItemsFor(CraftingRecipeNF.TYPE, craftSlots, player.level);
                 net.minecraftforge.common.ForgeHooks.setCraftingPlayer(null);
-                for(int i = 0; i < remainders.size(); ++i) {
+                for(int i = 0; i < remainders.size(); i++) {
                     ItemStack input = craftSlots.getItem(i);
                     ItemStack remainder = remainders.get(i);
                     if(!input.isEmpty()) {
-                        if(input.getTag() != null && input.getTag().contains("Damage")) {
-                            input.hurt(1, player.level.getRandom(), null);
-                            if(input.getDamageValue() >= input.getMaxDamage()) craftSlots.removeItem(i, 1);
-                        }
-                        else craftSlots.removeItem(i, 1);
+                        craftSlots.removeItem(i, 1);
                         input = craftSlots.getItem(i);
                     }
 

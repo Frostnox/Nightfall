@@ -1,9 +1,11 @@
 package frostnox.nightfall.data;
 
+import frostnox.nightfall.Nightfall;
 import frostnox.nightfall.block.*;
 import frostnox.nightfall.data.recipe.BowlCrushingRecipe;
 import frostnox.nightfall.data.recipe.CauldronRecipe;
 import frostnox.nightfall.data.recipe.HeldToolRecipe;
+import frostnox.nightfall.data.recipe.TongsEmptyRecipe;
 import frostnox.nightfall.data.recipe.builder.*;
 import frostnox.nightfall.encyclopedia.Entry;
 import frostnox.nightfall.item.*;
@@ -16,6 +18,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.data.recipes.SpecialRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
@@ -442,6 +445,8 @@ public class RecipeProviderNF extends RecipeProvider {
         }
         TieredAnvilRecipeBuilder.base(ItemsNF.INGOTS.get(Metal.IRON).get(), Metal.IRON.getWorkTier()).addIngredient(ItemsNF.IRON_BLOOM.get()).slagChance(0.7F).randRange(4, 10)
                 .addStartShape(MicroGridShape.CHUNK).addFinishShape(MicroGridShape.INGOT).requirement(itemKnowledge(ItemsNF.IRON_BLOOM)).save(consumer);
+
+        SpecialRecipeBuilder.special(TongsEmptyRecipe.SERIALIZER).save(consumer, Nightfall.MODID + ":tongs_empty");
     }
 
     private record AnvilEntry(Ingredient item, MicroGridShape shape, int randMin, int randMax) {}

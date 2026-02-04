@@ -215,6 +215,17 @@ public class ItemModelProviderNF extends ModelProvider<AnimatedItemModelBuilder>
         getBuilder(item.getRegistryName().getPath()).swapSpeed(1).swapYOffset(0).base(base).inventory(inventory).animatedLoader();
     }
 
+    protected void tongs(Item item) {
+        JsonObject base = getUnsavedBuilder(item.getRegistryName().getPath()).parent(getExistingFile(modLoc("item/tongs")))
+                .texture("base", itemLoc(item)).texture("particle", itemLoc(item, "_inventory")).toJson();
+        ModelFile inventoryWorkpiece = getBuilder(item.getRegistryName().getPath() + "_inventory_workpiece").parent(getExistingFile(modLoc("item/generated")))
+                .texture("layer0", itemLoc(item, "_inventory")).texture("layer1", modLoc("item/tongs_inventory_workpiece"));
+        JsonObject inventory = getUnsavedBuilder(item.getRegistryName().getPath()).itemModelBuilder().parent(getExistingFile(mcLoc("item/generated")))
+                .texture("layer0", itemLoc(item, "_inventory"))
+                .override().predicate(ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "workpiece"), 1).model(inventoryWorkpiece).end().toJson();
+        getBuilder(item.getRegistryName().getPath()).swapSpeed(1F).swapYOffset(0).base(base).inventory(inventory).animatedLoader();
+    }
+
     protected void doubleModelAnimatedItem(Item item, String baseModelName) {
         doubleModelAnimatedItem(item, baseModelName, 1F, 0F);
     }
@@ -331,7 +342,7 @@ public class ItemModelProviderNF extends ModelProvider<AnimatedItemModelBuilder>
             spear(set.get(Armament.SPEAR).get());
             sword(set.get(Armament.SWORD).get());
         }
-        for(var item : ItemsNF.TONGS.values()) doubleModelAnimatedItem(item.get(), "tongs");
+        for(var item : ItemsNF.TONGS.values()) tongs(item.get());
         for(RegistryObject<TieredArmorItem> item : ItemsNF.getTieredArmors()) {
             TieredArmorMaterial material = (TieredArmorMaterial) item.get().material;
             if(material == TieredArmorMaterial.LEATHER ||

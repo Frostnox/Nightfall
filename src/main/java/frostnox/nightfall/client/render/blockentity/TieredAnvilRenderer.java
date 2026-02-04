@@ -33,18 +33,19 @@ public class TieredAnvilRenderer implements BlockEntityRenderer<TieredAnvilBlock
 
     }
 
-    public static void renderWorkpiece(PoseStack stack, MultiBufferSource buffers, Color color, int light, TextureAtlasSprite sprite, double center, float temperature, int[] work) {
+    public static void renderWorkpiece(PoseStack stack, MultiBufferSource buffers, Color color, int light, double center, float temperature, int[] work) {
+        TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(FluidsNF.METAL_SOLID);
         if(temperature > 500) light = LightTexture.FULL_BRIGHT;
         else if(temperature > 100) {
             int blockLight = 15 - Math.round((500 - temperature) / (400F / 14F));
             light = LightTexture.pack(Math.max(blockLight, LightTexture.block(light)), LightTexture.sky(light));
         }
-        float draw = work[1] * 1F/2F;
+        float draw = work[1] * 0.5F/2F;
         float centerY = draw/2/16F;
         float rightPunch = work[7] * 0.5F / 16F;
-        float rightDraw = work[6] * 1F/2F;
+        float rightDraw = work[6] * 0.5F/2F;
         float rightY = rightPunch + rightDraw/2/16F;
-        float leftDraw = work[3] * 1F/2F;
+        float leftDraw = work[3] * 0.5F/2F;
         float leftPunch = work[4] * 0.5F / 16F;
         float leftY = leftPunch + leftDraw/2/16F;
         float yOff = center == 0.25 ? -Math.min(rightY, centerY) : -Math.min(Math.min(centerY, leftY), rightY);
@@ -77,12 +78,11 @@ public class TieredAnvilRenderer implements BlockEntityRenderer<TieredAnvilBlock
             stack.mulPose(Vector3f.YP.rotationDegrees(entity.getRotationDegrees()));
             stack.translate(-0.5, -0.5, -0.5);
         }
-        TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(FluidsNF.METAL_SOLID);
         Color color = RenderUtil.getHeatedMetalColor(0, Metal.COPPER.getColor().getRGB());
         int light = LightTexture.FULL_BRIGHT;
         double center = 0.5; //0.25 0.5 0.75
         stack.translate(center, 1, 0.5);
-        renderWorkpiece(stack, buffers, color, light, sprite, center, 0, entity.work);
+        renderWorkpiece(stack, buffers, color, light, center, 0, entity.work);
 
         if(!entity.getResult().isEmpty()) {
             if(entity.getResult().getItem() instanceof BlockItem) {

@@ -24,6 +24,7 @@ import frostnox.nightfall.item.item.TongsItem;
 import frostnox.nightfall.registry.ActionsNF;
 import frostnox.nightfall.registry.forge.EffectsNF;
 import frostnox.nightfall.registry.forge.FluidsNF;
+import frostnox.nightfall.registry.forge.ItemsNF;
 import frostnox.nightfall.util.*;
 import frostnox.nightfall.util.animation.AnimationCalculator;
 import frostnox.nightfall.util.animation.AnimationData;
@@ -367,8 +368,6 @@ public class RenderEventHandler {
             boolean mainHand = hand == InteractionHand.MAIN_HAND;
             ItemStack item = player.getItemInHand(hand);
             if(item.getItem() instanceof TongsItem tongs && tongs.hasWorkpiece(item) && (mainHand ? ClientEngine.get().mainHandItem.sameItem(item) : ClientEngine.get().offHandItem.sameItem(item))) {
-                TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(FluidsNF.METAL_SOLID);
-                Color color = RenderUtil.getHeatedMetalColor(tongs.getTemperature(item), Metal.COPPER.getColor().getRGB());
                 stack.pushPose();
                 if(mainHand) stack.translate(0, rawMainSwap, 0);
                 else stack.translate(0, rawOffSwap - mainSwap, 0);
@@ -390,7 +389,9 @@ public class RenderEventHandler {
                     stack.translate(-0.2, 0.2, -0.25);
                 }
                 stack.mulPose(Vector3f.XP.rotationDegrees(45));
-                TieredAnvilRenderer.renderWorkpiece(stack, event.getMultiBufferSource(), color, event.getPackedLight(), sprite, 0.5, tongs.getTemperature(item), tongs.getWork(item));
+                TieredAnvilRenderer.renderWorkpiece(stack, event.getMultiBufferSource(),
+                        tongs.getWorkpiece(item) == ItemsNF.IRON_BLOOM.get() ? new Color(tongs.getColor(item)) : RenderUtil.getHeatedMetalColor(tongs.getTemperature(item), tongs.getColor(item)),
+                        event.getPackedLight(), 0.5, tongs.getTemperature(item), tongs.getWork(item));
                 stack.popPose();
             }
             //Replacement of vanilla item swap animation

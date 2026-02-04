@@ -359,13 +359,12 @@ public class PlayerRendererNF extends PlayerRenderer {
             for(InteractionHand hand : InteractionHand.values()) {
                 ItemStack item = player.getItemInHand(hand);
                 if(item.getItem() instanceof TongsItem tongs && tongs.hasWorkpiece(item)) {
-                    TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(FluidsNF.METAL_SOLID);
-                    Color color = RenderUtil.getHeatedMetalColor(0, Metal.COPPER.getColor().getRGB());
-                    int light = LightTexture.FULL_BRIGHT;
                     stack.pushPose();
                     getParentModel().translateToHand(hand == InteractionHand.MAIN_HAND ? HumanoidArm.RIGHT : HumanoidArm.LEFT, stack);
                     stack.translate(0, 7.5D/16D, -0.625D);
-                    TieredAnvilRenderer.renderWorkpiece(stack, pBuffer, color, light, sprite, 0.5, tongs.getTemperature(item), tongs.getWork(item));
+                    TieredAnvilRenderer.renderWorkpiece(stack, pBuffer,
+                            tongs.getWorkpiece(item) == ItemsNF.IRON_BLOOM.get() ? new Color(tongs.getColor(item)) : RenderUtil.getHeatedMetalColor(tongs.getTemperature(item), tongs.getColor(item)),
+                            pPackedLight, 0.5, tongs.getTemperature(item), tongs.getWork(item));
                     stack.popPose();
                 }
             }

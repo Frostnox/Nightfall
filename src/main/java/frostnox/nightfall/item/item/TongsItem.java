@@ -1,11 +1,20 @@
 package frostnox.nightfall.item.item;
 
 import frostnox.nightfall.block.IHeatSource;
+import frostnox.nightfall.block.Metal;
+import frostnox.nightfall.block.TieredHeat;
 import frostnox.nightfall.data.TagsNF;
 import frostnox.nightfall.item.IContainerChanger;
 import frostnox.nightfall.item.ITieredItemMaterial;
+import frostnox.nightfall.registry.forge.ItemsNF;
+import frostnox.nightfall.registry.forge.SoundsNF;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -13,6 +22,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -20,6 +30,7 @@ import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 public class TongsItem extends ItemNF implements IContainerChanger {
     public final ITieredItemMaterial material;
@@ -29,8 +40,12 @@ public class TongsItem extends ItemNF implements IContainerChanger {
         this.material = material;
     }
 
+    public int getMaxHeatTier() {
+        return material.getMetal().getTier() + 1;
+    }
+
     public boolean hasWorkpiece(ItemStack item) {
-        return item.getTag().contains("item");
+        return item.getTag().contains("color");
     }
 
     public float getTemperature(ItemStack item) {
@@ -39,6 +54,10 @@ public class TongsItem extends ItemNF implements IContainerChanger {
 
     public @Nullable Item getWorkpiece(ItemStack item) {
         return ForgeRegistries.ITEMS.getValue(ResourceLocation.parse(item.getTag().getString("item")));
+    }
+
+    public int getColor(ItemStack item) {
+        return item.getTag().getInt("color");
     }
 
     public int[] getWork(ItemStack item) {
@@ -54,15 +73,19 @@ public class TongsItem extends ItemNF implements IContainerChanger {
                 ItemStack item = player.getItemInHand(oppHand);
                 if(item.is(Tags.Items.INGOTS) || item.is(TagsNF.PLATES) || item.is(TagsNF.METAL_WORKPIECE)) {
                     tongs.getTag().putString("item", ForgeRegistries.ITEMS.getKey(item.getItem()).toString());
+                    if(item.is(ItemsNF.IRON_BLOOM.get())) tongs.getTag().putInt("color", 0xFF302B32);
+                    else tongs.getTag().putInt("color", Metal.fromString(item.getItem().toString()).getColor().getRGB());
                     tongs.getTag().putFloat("temperature", 0);
                     int[] work = new int[8];
                     if(item.is(TagsNF.PLATES)) {
-                        work[0] = 3;
-                        work[2] = 3;
-                        work[5] = 3;
+                        work[0] = 2;
+                        work[2] = 2;
+                        work[5] = 2;
                     }
                     else if(!item.is(Tags.Items.INGOTS)) {
-
+                        work[1] = -2;
+                        work[3] = -2;
+                        work[6] = -2;
                     }
                     tongs.getTag().putIntArray("work", work);
                     if(!player.getAbilities().instabuild) item.shrink(1);
@@ -84,10 +107,14 @@ public class TongsItem extends ItemNF implements IContainerChanger {
             if(state.getBlock() instanceof IHeatSource heatSource) {
                 float temperature = heatSource.getTemperature(level, pos, state);
                 ItemStack tongs = context.getItemInHand();
-                if(temperature > 100 && temperature > getTemperature(tongs)) {
+                if(getMaxHeatTier() != 5) temperature = Math.min(TieredHeat.fromTier(getMaxHeatTier() + 1).getBaseTemp() - 100, temperature);
+                temperature = Math.min(temperature, Metal.fromString(getWorkpiece(tongs).toString()).getMeltTemp());
+                if(temperature > 100 && temperature >= getTemperature(tongs)) {
                     tongs.getTag().putFloat("temperature", temperature);
+                    tongs.getTag().putInt("stableTempTicks", 20 * 45);
                     if(player != null) {
                         player.swing(context.getHand(), true);
+                        level.playSound(null, player, SoundsNF.FIRE_WHOOSH.get(), SoundSource.PLAYERS, 1F, 1F);
                         tongs.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(context.getHand()));
                     }
                     return InteractionResult.CONSUME;
@@ -101,11 +128,15 @@ public class TongsItem extends ItemNF implements IContainerChanger {
     public void inventoryTick(ItemStack stack, Level worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
         if(!worldIn.isClientSide && entityIn instanceof Player player) {
             if((isSelected && player.getMainHandItem() == stack) || (itemSlot == 0 && player.getOffhandItem() == stack)) {
-                float temperature = getTemperature(stack);
-                if(temperature > 0) temperature = Math.max(0, temperature - 0.5F);
-                stack.getTag().putFloat("temperature", temperature);
+                int stableTicks = stack.getTag().getInt("stableTempTicks");
+                if(stableTicks > 0) stack.getTag().putInt("stableTempTicks", stableTicks - 1);
+                else {
+                    float temperature = getTemperature(stack);
+                    if(temperature > 0) temperature = Math.max(0, temperature - 0.5F);
+                    stack.getTag().putFloat("temperature", temperature);
+                }
             }
-            else stack.getTag().putFloat("temperature", 0);
+            else stack.getTag().remove("temperature");
         }
     }
 
@@ -116,7 +147,15 @@ public class TongsItem extends ItemNF implements IContainerChanger {
     }
 
     @Override
+    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
+        TieredHeat heat = TieredHeat.fromTier(getMaxHeatTier());
+        pTooltipComponents.add(new TranslatableComponent("block.heat_resistant." + heat.getTier()).withStyle(Style.EMPTY.withColor(heat.color.getRGB())));
+        pTooltipComponents.add(new TranslatableComponent("item.nightfall.tongs.info").withStyle(ChatFormatting.AQUA));
+    }
+
+    @Override
     public void containerChanged(ItemStack item) {
-        item.getTag().putFloat("temperature", 0);
+        item.getTag().remove("stableTempTicks");
+        item.getTag().remove("temperature");
     }
 }

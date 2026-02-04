@@ -262,6 +262,8 @@ public class Nightfall {
                 return 0F;
             };
             ItemProperties.register(ItemsNF.FIRESTARTER.get(), ResourceLocation.fromNamespaceAndPath(MODID, "firing"), firing);
+            for(var tongs : ItemsNF.TONGS.values()) ItemProperties.register(tongs.get(), ResourceLocation.fromNamespaceAndPath(MODID, "workpiece"),
+                    (item, level, user, seed) -> tongs.get().hasWorkpiece(item) ? 1F : 0F);
         });
 
         List<RegistryObject<? extends Block>> cutout = new ArrayList<>(), cutoutMipped = new ArrayList<>(), translucent = new ArrayList<>();
@@ -345,6 +347,7 @@ public class Nightfall {
         event.getRegistry().register(BuildingRecipe.SERIALIZER);
         event.getRegistry().register(CampfireRecipe.SERIALIZER);
         event.getRegistry().register(BarrelRecipe.SERIALIZER);
+        event.getRegistry().register(TongsEmptyRecipe.SERIALIZER);
     }
 
     @SubscribeEvent
@@ -521,6 +524,8 @@ public class Nightfall {
                     .filter((item) -> item instanceof DyeableLeatherItem).toList();
             event.getItemColors().register((stack, layer) -> layer > 0 ? -1 : ((DyeableLeatherItem) stack.getItem()).getColor(stack),
                     dyeableItems.toArray(ItemLike[]::new));
+
+            for(var tongs : ItemsNF.TONGS.values()) event.getItemColors().register((stack, layer) -> layer == 0 ? -1 : tongs.get().getColor(stack), tongs.get());
 
             /*event.getItemColors().register((stack, layer) -> {
                 if(layer <= 0) return -1;

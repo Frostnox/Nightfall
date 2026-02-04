@@ -218,6 +218,7 @@ public class LanguageProviderNF extends LanguageProvider {
         }
         add("item.nightfall.mask.info", "Hides name");
         add("item.nightfall.warding_charm.info", "Reduces nearby Undead occurrence");
+        add("item.nightfall.tongs.info", "Use with forgeable metal to hold");
         add("item.leading", "Use on tamed animals to lead");
         add(Nightfall.MODID + ".anvil", "Anvil");
         add(Nightfall.MODID + ".bowl_crushing", "Bowl");
