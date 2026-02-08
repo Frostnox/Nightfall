@@ -19,7 +19,7 @@ public class PlayerActionSet {
     public static final PlayerActionSet SPEAR = new PlayerActionSet("spear", ActionsNF.SPEAR_THROW, ActionsNF.SPEAR_BASIC_1, ActionsNF.SPEAR_ALTERNATE_1, ActionsNF.SPEAR_CRAWLING, null, 22, 0.6F);
     public static final PlayerActionSet KNIFE = new PlayerActionSet("knife", ActionsNF.EMPTY, ActionsNF.KNIFE_BASIC_1, ActionsNF.KNIFE_ALTERNATE_1, ActionsNF.KNIFE_CRAWLING, ActionsNF.KNIFE_CARVE, 20, 0.6F);
     public static final PlayerActionSet CHISEL = new PlayerActionSet("chisel", ActionsNF.EMPTY, ActionsNF.CHISEL_BASIC_1, ActionsNF.CHISEL_ALTERNATE_1, ActionsNF.CHISEL_CRAWLING, ActionsNF.CHISEL_CARVE, 15, 0.4F);
-    public static final PlayerActionSet HAMMER = new PlayerActionSet("hammer", ActionsNF.HAMMER_UPSET, ActionsNF.HAMMER_BASIC_1, ActionsNF.HAMMER_ALTERNATE_1, ActionsNF.HAMMER_CRAWLING, ActionsNF.HAMMER_BREAK, 25, 0.5F);
+    public static final PlayerActionSet HAMMER = new PlayerActionSet("hammer", ActionsNF.EMPTY, ActionsNF.HAMMER_BASIC_1, ActionsNF.HAMMER_ALTERNATE_1, ActionsNF.HAMMER_CRAWLING, ActionsNF.HAMMER_BREAK, 25, 0.5F);
     public static final PlayerActionSet AXE = new PlayerActionSet("axe", ActionsNF.AXE_THROW, ActionsNF.AXE_BASIC_1, ActionsNF.AXE_ALTERNATE_1, ActionsNF.AXE_CRAWLING, ActionsNF.AXE_CARVE, 25, 0.5F);
     public static final PlayerActionSet PICKAXE = new PlayerActionSet("pickaxe", ActionsNF.EMPTY, ActionsNF.PICKAXE_BASIC_1, ActionsNF.PICKAXE_ALTERNATE_1, ActionsNF.PICKAXE_CRAWLING, null, 25, 0.5F);
     public static final PlayerActionSet SHOVEL = new PlayerActionSet("shovel", ActionsNF.EMPTY, ActionsNF.SHOVEL_BASIC_1, ActionsNF.SHOVEL_ALTERNATE_1, ActionsNF.SHOVEL_CRAWLING, null, 25, 0.5F);

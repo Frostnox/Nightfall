@@ -219,7 +219,6 @@ public class Nightfall {
             MenuScreens.register(ContainersNF.CHEST_9x3.get(), ChestScreen::new);
             MenuScreens.register(ContainersNF.CHEST_9x6.get(), ChestScreen::new);
             MenuScreens.register(ContainersNF.CRUCIBLE.get(), CrucibleScreen::new);
-            MenuScreens.register(ContainersNF.TIERED_ANVIL.get(), TieredAnvilScreen::new);
             MenuScreens.register(ContainersNF.ENCYCLOPEDIA_PUZZLE.get(), EntryPuzzleScreen::new);
 
             ItemPropertyFunction slingSwinging = (item, level, user, seed) -> {

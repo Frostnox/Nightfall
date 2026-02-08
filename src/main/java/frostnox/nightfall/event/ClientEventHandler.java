@@ -7,6 +7,8 @@ import frostnox.nightfall.action.Action;
 import frostnox.nightfall.action.Attack;
 import frostnox.nightfall.action.HitData;
 import frostnox.nightfall.action.player.IClientAction;
+import frostnox.nightfall.block.block.anvil.AnvilAction;
+import frostnox.nightfall.block.block.anvil.TieredAnvilBlockEntity;
 import frostnox.nightfall.block.block.sign.StandingSignBlockNF;
 import frostnox.nightfall.block.block.sign.WallSignBlockNF;
 import frostnox.nightfall.capability.*;
@@ -23,8 +25,10 @@ import frostnox.nightfall.item.IActionableItem;
 import frostnox.nightfall.item.IWeaponItem;
 import frostnox.nightfall.item.client.IModifiable;
 import frostnox.nightfall.item.item.BuildingMaterialItem;
+import frostnox.nightfall.item.item.TongsItem;
 import frostnox.nightfall.network.NetworkHandler;
 import frostnox.nightfall.network.message.GenericToServer;
+import frostnox.nightfall.network.message.blockentity.AnvilActionToServer;
 import frostnox.nightfall.network.message.capability.ActionToServer;
 import frostnox.nightfall.network.message.capability.ModifiableIndexToServer;
 import frostnox.nightfall.network.message.entity.DodgeToServer;
@@ -825,8 +829,14 @@ public class ClientEventHandler {
         flagAttack = false;
         flagUse = false;
         if(ClientEngine.get().microHitResult != null) {
-            event.setSwingHand(false);
+            ItemStack item = player.getItemInHand(event.getHand());
             event.setCanceled(true);
+            event.setSwingHand(false);
+            if(item.getItem() instanceof TongsItem tongs && !tongs.hasWorkpiece(item) && player.level.getBlockEntity(ClientEngine.get().microBlockEntityPos) instanceof TieredAnvilBlockEntity) {
+                AnvilAction anvilAction = event.isUseItem() ? AnvilAction.TAKE : (AnvilAction.FLIP_XZ); //TODO:
+                NetworkHandler.toServer(new AnvilActionToServer(anvilAction, ClientEngine.get().microHitResult.getX(), ClientEngine.get().microBlockEntityPos));
+                player.swing(event.getHand()); //Do swing here to avoid block break particles from original hit result
+            }
         }
         else if(!capA.isInactive()) {
             event.setSwingHand(false);

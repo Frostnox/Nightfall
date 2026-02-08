@@ -1,7 +1,6 @@
 package frostnox.nightfall.registry.forge;
 
 import frostnox.nightfall.Nightfall;
-import frostnox.nightfall.block.block.anvil.TieredAnvilContainer;
 import frostnox.nightfall.block.block.crucible.CrucibleContainer;
 import frostnox.nightfall.encyclopedia.PuzzleContainer;
 import frostnox.nightfall.world.inventory.StorageContainer;
@@ -22,7 +21,6 @@ public class ContainersNF {
             IForgeMenuType.create(((windowId, inv, data) -> ChestMenu.sixRows(windowId, inv))));
     public static final RegistryObject<MenuType<CrucibleContainer>> CRUCIBLE = CONTAINERS.register("crucible", () -> IForgeMenuType.create(CrucibleContainer::createClientContainer));
     public static final RegistryObject<MenuType<StorageContainer>> POT = CONTAINERS.register("pot", () -> IForgeMenuType.create(StorageContainer::createPotContainer));
-    public static final RegistryObject<MenuType<TieredAnvilContainer>> TIERED_ANVIL = CONTAINERS.register("anvil", () -> IForgeMenuType.create(TieredAnvilContainer::createClientContainer));
     public static final RegistryObject<MenuType<PuzzleContainer>> ENCYCLOPEDIA_PUZZLE = CONTAINERS.register("encyclopedia_puzzle", () -> IForgeMenuType.create(PuzzleContainer::createClientContainer));
 
     public static void register() {

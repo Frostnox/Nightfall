@@ -40,8 +40,6 @@ import frostnox.nightfall.action.player.action.thrown.ThrowAxeTechnique;
 import frostnox.nightfall.action.player.action.thrown.ThrowKnifeTechnique;
 import frostnox.nightfall.action.player.action.thrown.ThrowSpearTechnique;
 import frostnox.nightfall.action.player.attack.*;
-import frostnox.nightfall.action.player.technique.HammerTechnique;
-import frostnox.nightfall.block.block.anvil.AnvilAction;
 import frostnox.nightfall.capability.ActionTracker;
 import frostnox.nightfall.capability.PlayerData;
 import frostnox.nightfall.data.TagsNF;
@@ -188,8 +186,8 @@ public class ActionsNF {
             new HammerStrike(DamageType.STRIKING.asArray(), HurtSphere.HAMMER, 1, CombatUtil.STUN_MEDIUM, new int[] {8, 6, 4, 7}, new Action.Properties().setChainFrom(HAMMER_BASIC_1).setChainTo(ActionsNF.HAMMER_BASIC_3).setChainState(2).setKnockback(HAMMER_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.SWING)));
     public static final RegistryObject<HammerStrike> HAMMER_BASIC_3 = ACTIONS.register("hammer_basic_3", () ->
             new HammerStrike(DamageType.STRIKING.asArray(), HurtSphere.HAMMER, 1, CombatUtil.STUN_MEDIUM, new int[] {8, 6, 4, 7}, new Action.Properties().setChainFrom(HAMMER_BASIC_2).setChainTo(HAMMER_BASIC_2).setChainState(2).setKnockback(HAMMER_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.SWING)));
-    public static final RegistryObject<HammerTechnique> HAMMER_ALTERNATE_1 = ACTIONS.register("hammer_alternate_1", () ->
-            new HammerTechnique(AnvilAction.DRAW, AnvilAction.DRAW_LINE, DamageType.STRIKING.asArray(), HurtSphere.HAMMER, 1, CombatUtil.STUN_MEDIUM, new int[] {24, 5, 4, 9}, new Action.Properties().setChargeState(0).setKnockback(HAMMER_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.SWING).setExtraSound(SoundsNF.SWING_CHARGED)));
+    public static final RegistryObject<HammerStrikeCharged> HAMMER_ALTERNATE_1 = ACTIONS.register("hammer_alternate_1", () ->
+            new HammerStrikeCharged(DamageType.STRIKING.asArray(), HurtSphere.HAMMER, 1, CombatUtil.STUN_MEDIUM, new int[] {24, 5, 4, 9}, new Action.Properties().setChargeState(0).setKnockback(HAMMER_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.SWING).setExtraSound(SoundsNF.SWING_CHARGED)));
     public static final RegistryObject<CrawlingSwing> HAMMER_CRAWLING = ACTIONS.register("hammer_crawling", () ->
             new CrawlingSwing(DamageType.STRIKING.asArray(), HurtSphere.HAMMER, 1, CombatUtil.STUN_MEDIUM, new int[] {8, 6, 4, 7}, new Action.Properties().setSprinting().setCrawling().setKnockback(HAMMER_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.SWING).setSound(SoundsNF.SWING)));
     public static final RegistryObject<HammerBreak> HAMMER_BREAK = ACTIONS.register("hammer_break", () ->
@@ -318,9 +316,6 @@ public class ActionsNF {
     public static final RegistryObject<ThrowAxeTechnique> AXE_THROW = ACTIONS.register("axe_throw", () ->
             new ThrowAxeTechnique(DamageType.SLASHING.asArray(), CombatUtil.STUN_MEDIUM, new int[] {28, 4, 2, 6}, new Action.Properties().setChargeState(0).setKnockback(AXE_KNOCKBACK).setImpact(Impact.MEDIUM).setSound(SoundsNF.HEAVY_BLADE_SWING).setExtraSound(SoundsNF.HEAVY_BLADE_SWING_CHARGED),
                     1.6F, 80, true));
-
-    public static final RegistryObject<HammerTechnique> HAMMER_UPSET = ACTIONS.register("hammer_upset", () ->
-            new HammerTechnique(AnvilAction.UPSET, AnvilAction.UPSET_LINE, DamageType.STRIKING.asArray(), HurtSphere.HAMMER, 2, CombatUtil.STUN_MEDIUM, new int[] {24, 5, 4, 9}, new Action.Properties().setChargeState(0).setSound(SoundsNF.SWING).setKnockback(HAMMER_KNOCKBACK).setImpact(Impact.MEDIUM).setExtraSound(SoundsNF.SWING_CHARGED)));
 
     //Items
     public static final RegistryObject<FlintKnap> FLINT_KNAP = ACTIONS.register("flint_knap", () ->

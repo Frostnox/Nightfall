@@ -147,6 +147,7 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
         tag(TagsNF.HAMMER).add(ItemsNF.FLINT_HAMMER.get());
         tag(TagsNF.SPEAR).add(ItemsNF.FLINT_SPEAR.get(), ItemsNF.RUSTED_SPEAR.get());
         tag(TagsNF.MACE).add(ItemsNF.WOODEN_CLUB.get());
+        for(var item : ItemsNF.TONGS.values()) tag(TagsNF.TONGS).add(item.get());
         for(var item : ItemsNF.BOWS.values()) tag(TagsNF.WOODEN_BOW).add(item.get());
         tag(TagsNF.BOW).addTag(TagsNF.WOODEN_BOW);
         tag(TagsNF.BOW).add(ItemsNF.TWISTED_BOW.get());
@@ -176,7 +177,7 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
         tag(TagsNF.FIRESTARTER_AMMO).add(ItemsNF.SULFUR.get());
         tag(TagsNF.FIRESTARTER_IRON_INGREDIENT).add(ItemsNF.HEMATITE_CHUNK.get(), ItemsNF.INGOTS.get(Metal.IRON).get(), ItemsNF.INGOTS.get(Metal.STEEL).get());
         tag(TagsNF.NO_HITSTOP).addTags(TagsNF.KNIFE, TagsNF.SICKLE);
-        tag(TagsNF.GRID_INTERACTABLE).addTag(TagsNF.HAMMER);
+        tag(TagsNF.GRID_INTERACTABLE).addTags(TagsNF.HAMMER, TagsNF.TONGS);
         tag(TagsNF.MIXTURE_1);
         tag(TagsNF.MIXTURE_2).add(ItemsNF.RAW_VENISON.get(), ItemsNF.COOKED_VENISON.get(), ItemsNF.APPLE.get());
         tag(TagsNF.MIXTURE_3);

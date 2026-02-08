@@ -16,10 +16,6 @@ public class ActionTagsProvider extends ForgeRegistryTagsProvider<Action> {
 
     @Override
     protected void addTags() {
-        tag(TagsNF.SMITHING_ACTION).add(ActionsNF.HAMMER_BASIC_1.get(), ActionsNF.HAMMER_BASIC_2.get(), ActionsNF.HAMMER_BASIC_3.get(), ActionsNF.HAMMER_ALTERNATE_1.get(),
-                ActionsNF.HAMMER_UPSET.get(), ActionsNF.CHISEL_AND_HAMMER_BASIC_1.get(), ActionsNF.CHISEL_AND_HAMMER_BASIC_2.get(), ActionsNF.CHISEL_AND_HAMMER_BASIC_3.get(),
-                ActionsNF.CHISEL_AND_HAMMER_ALTERNATE.get(), ActionsNF.FLINT_CHISEL_AND_HAMMER_BASIC_1.get(), ActionsNF.FLINT_CHISEL_AND_HAMMER_BASIC_2.get(),
-                ActionsNF.FLINT_CHISEL_AND_HAMMER_BASIC_3.get(), ActionsNF.FLINT_CHISEL_AND_HAMMER_ALTERNATE.get());
         tag(TagsNF.BOW_ACTION).add(ActionsNF.BOW_SHOOT.get(), ActionsNF.TWISTED_BOW_SHOOT.get(), ActionsNF.SKELETON_SHOOT.get());
         tag(TagsNF.SLING_ACTION).add(ActionsNF.SLING_THROW.get());
         tag(TagsNF.ADZE_ACTION).add(ActionsNF.ADZE_BASIC_1.get(), ActionsNF.ADZE_BASIC_2.get(), ActionsNF.ADZE_BASIC_3.get(),

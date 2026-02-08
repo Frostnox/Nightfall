@@ -65,7 +65,7 @@ public class GridUseToServer {
         ctx.setPacketHandled(true);
         //Handle by side
         if(sideReceived.isClient()) {
-            Nightfall.LOGGER.warn("SmithHitToServer received on client.");
+            Nightfall.LOGGER.warn("GridUseToServer received on client.");
         }
         else if(sideReceived.isServer()) {
             ServerPlayer player = ctx.getSender();

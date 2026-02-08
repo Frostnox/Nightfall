@@ -1,34 +1,9 @@
 package frostnox.nightfall.block;
 
-import frostnox.nightfall.block.block.anvil.TieredAnvilBlockEntity;
-
-
 /**
  * Shapes for micro-grids to use
  */
 public class MicroGridShape {
-    public static final MicroGridShape CHUNK = new MicroGridShape(TieredAnvilBlockEntity.GRID_Z, Levels.CHUNK_13, Levels.CHUNK_2, Levels.CHUNK_13, Levels.CHUNK_4);
-    public static final MicroGridShape INGOT = new MicroGridShape(TieredAnvilBlockEntity.GRID_Z, Levels.INGOT_LEVEL, Levels.INGOT_LEVEL);
-    public static final MicroGridShape PLATE = new MicroGridShape(TieredAnvilBlockEntity.GRID_Z, Levels.PLATE_LEVEL);
-    public static final MicroGridShape SCALES = new MicroGridShape(TieredAnvilBlockEntity.GRID_Z, Levels.SCALES_LEVEL);
-    public static final MicroGridShape WIRES = new MicroGridShape(TieredAnvilBlockEntity.GRID_Z, Levels.WIRES_LEVEL);
-    public static final MicroGridShape DOUBLE_INGOT_TALL = new MicroGridShape(TieredAnvilBlockEntity.GRID_Z, Levels.DOUBLE_INGOT_TALL_LEVEL, Levels.DOUBLE_INGOT_TALL_LEVEL);
-    public static final MicroGridShape BILLET = new MicroGridShape(TieredAnvilBlockEntity.GRID_Z, Levels.BILLET_LEVEL, Levels.BILLET_LEVEL, Levels.BILLET_LEVEL);
-    public static final MicroGridShape DOUBLE_BILLET_TALL = new MicroGridShape(TieredAnvilBlockEntity.GRID_Z, Levels.DOUBLE_BILLET_TALL_LEVEL, Levels.DOUBLE_BILLET_TALL_LEVEL, Levels.DOUBLE_BILLET_TALL_LEVEL);
-    public static final MicroGridShape BLOCK = new MicroGridShape(TieredAnvilBlockEntity.GRID_Z, Levels.BLOCK_LEVEL, Levels.BLOCK_LEVEL, Levels.BLOCK_LEVEL, Levels.BLOCK_LEVEL, Levels.BLOCK_LEVEL);
-    public static final MicroGridShape ANVIL = new MicroGridShape(TieredAnvilBlockEntity.GRID_Z, Levels.ANVIL_LEVEL_0, Levels.ANVIL_LEVEL_1, Levels.ANVIL_LEVEL_2, Levels.ANVIL_LEVEL_34, Levels.ANVIL_LEVEL_34);
-    public static final MicroGridShape ADZE = new MicroGridShape(TieredAnvilBlockEntity.GRID_Z, Levels.ADZE_BASE, Levels.ADZE_BASE);
-    public static final MicroGridShape AXE = new MicroGridShape(TieredAnvilBlockEntity.GRID_Z, Levels.AXE_BASE, Levels.AXE_TOP);
-    public static final MicroGridShape CHISEL = new MicroGridShape(TieredAnvilBlockEntity.GRID_Z, Levels.CHISEL_BASE);
-    public static final MicroGridShape KNIFE = new MicroGridShape(TieredAnvilBlockEntity.GRID_Z, Levels.KNIFE_BASE);
-    public static final MicroGridShape MACE = new MicroGridShape(TieredAnvilBlockEntity.GRID_Z, Levels.MACE_BASE, Levels.MACE_MIDDLE, Levels.MACE_BASE, Levels.MACE_TOP);
-    public static final MicroGridShape PICKAXE = new MicroGridShape(TieredAnvilBlockEntity.GRID_Z, Levels.PICKAXE_BASE, Levels.PICKAXE_TOP);
-    public static final MicroGridShape SABRE = new MicroGridShape(TieredAnvilBlockEntity.GRID_Z, Levels.SABRE_BASE);
-    public static final MicroGridShape SHOVEL = new MicroGridShape(TieredAnvilBlockEntity.GRID_Z, Levels.SHOVEL_BASE);
-    public static final MicroGridShape SICKLE = new MicroGridShape(TieredAnvilBlockEntity.GRID_Z, Levels.SICKLE_BASE);
-    public static final MicroGridShape SPEAR = new MicroGridShape(TieredAnvilBlockEntity.GRID_Z, Levels.SPEAR_BASE);
-    public static final MicroGridShape SWORD = new MicroGridShape(TieredAnvilBlockEntity.GRID_Z, Levels.SWORD_BASE);
-
     private final boolean[][][] grid;
     private final String[] levels;
 

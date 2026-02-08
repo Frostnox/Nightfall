@@ -13,6 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.text.WordUtils;
@@ -145,6 +146,19 @@ public class DataUtil {
         }
     }
 
+    public static Fluid fluidFromJson(JsonObject json) {
+        String name = GsonHelper.getAsString(json, "fluid");
+        ResourceLocation location = ResourceLocation.parse(name);
+        if(!ForgeRegistries.FLUIDS.containsKey(location)) throw new JsonSyntaxException("Unknown fluid '" + name + "'");
+        return Objects.requireNonNull(ForgeRegistries.FLUIDS.getValue(location));
+    }
+
+    public static JsonObject fluidToJson(Fluid fluid) {
+        JsonObject json = new JsonObject();
+        json.addProperty("fluid", ForgeRegistries.FLUIDS.getKey(fluid).toString());
+        return json;
+    }
+
     public static FluidStack fluidStackFromJson(JsonObject json) {
         String name = GsonHelper.getAsString(json, "fluid");
         ResourceLocation location = ResourceLocation.parse(name);
@@ -152,17 +166,17 @@ public class DataUtil {
         return new FluidStack(Objects.requireNonNull(ForgeRegistries.FLUIDS.getValue(location)), GsonHelper.getAsInt(json, "count", 1));
     }
 
-    public static JsonObject itemStackToJson(ItemStack item) {
-        JsonObject json = new JsonObject();
-        json.addProperty("item", ForgeRegistries.ITEMS.getKey(item.getItem()).toString());
-        if(item.getCount() > 1) json.addProperty("count", item.getCount());
-        return json;
-    }
-
     public static JsonObject fluidStackToJson(FluidStack fluid) {
         JsonObject json = new JsonObject();
         json.addProperty("fluid", ForgeRegistries.FLUIDS.getKey(fluid.getFluid()).toString());
         if(fluid.getAmount() > 1) json.addProperty("count", fluid.getAmount());
+        return json;
+    }
+
+    public static JsonObject itemStackToJson(ItemStack item) {
+        JsonObject json = new JsonObject();
+        json.addProperty("item", ForgeRegistries.ITEMS.getKey(item.getItem()).toString());
+        if(item.getCount() > 1) json.addProperty("count", item.getCount());
         return json;
     }
 

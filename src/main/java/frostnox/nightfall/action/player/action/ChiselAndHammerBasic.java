@@ -8,6 +8,7 @@ import frostnox.nightfall.capability.PlayerData;
 import frostnox.nightfall.client.ClientEngine;
 import frostnox.nightfall.entity.EntityPart;
 import frostnox.nightfall.network.NetworkHandler;
+import frostnox.nightfall.network.message.blockentity.AnvilActionToServer;
 import frostnox.nightfall.network.message.world.GridUseToServer;
 import frostnox.nightfall.registry.EntriesNF;
 import frostnox.nightfall.util.AnimationUtil;
@@ -239,7 +240,7 @@ public class ChiselAndHammerBasic extends MoveSpeedPlayerAction {
         IActionTracker capA = ActionTracker.get(player);
         if(isStateDamaging(capA.getState()) && !capA.isStunned()) {
             if(capA.getFrame() == getBlockHitFrame(capA.getState(), player) && lookingAt != null && pos != null) {
-                NetworkHandler.toServer(new GridUseToServer(AnvilAction.PUNCH.ordinal(), lookingAt, pos));
+                NetworkHandler.toServer(new AnvilActionToServer(AnvilAction.CUT, lookingAt.getX(), pos));
                 PlayerData.get(player).setHitStopFrame(capA.getFrame());
             }
         }
@@ -251,7 +252,7 @@ public class ChiselAndHammerBasic extends MoveSpeedPlayerAction {
         if(ClientEngine.get().isShiftHeld() && ClientEngine.get().getPlayer() != null && PlayerData.get(ClientEngine.get().getPlayer()).hasCompletedEntry(EntriesNF.SMITHING.getId())) {
             tooltips.add(new TextComponent(""));
             tooltips.add(new TextComponent(" ").append(new TranslatableComponent("anvil.action.context").withStyle(ChatFormatting.GRAY))
-                    .append(new TranslatableComponent("anvil.action." + AnvilAction.PUNCH.name().toLowerCase() + ".info").withStyle(ChatFormatting.DARK_AQUA)));
+                    .append(new TranslatableComponent("anvil.action." + AnvilAction.CUT.name().toLowerCase() + ".info").withStyle(ChatFormatting.DARK_AQUA)));
         }
         return tooltips;
     }

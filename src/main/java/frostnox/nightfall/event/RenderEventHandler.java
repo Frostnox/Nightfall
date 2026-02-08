@@ -9,6 +9,7 @@ import frostnox.nightfall.action.player.IClientAction;
 import frostnox.nightfall.block.IHoldable;
 import frostnox.nightfall.block.IMicroGrid;
 import frostnox.nightfall.block.Metal;
+import frostnox.nightfall.block.block.anvil.TieredAnvilBlockEntity;
 import frostnox.nightfall.capability.*;
 import frostnox.nightfall.client.ClientEngine;
 import frostnox.nightfall.client.EntityLightEngine;
@@ -185,17 +186,30 @@ public class RenderEventHandler {
         PoseStack poseStack = event.getPoseStack();
         MultiBufferSource.BufferSource buffer = mc.renderBuffers().bufferSource();
         Camera camera = mc.gameRenderer.getMainCamera();
+        //Force block overlay to render if in wall
+        if(!mc.options.getCameraType().isFirstPerson() && mc.cameraEntity.isInWall()) mc.options.setCameraType(CameraType.FIRST_PERSON);
+
         Vec3i hit = ClientEngine.get().microHitResult;
         BlockPos pos = ClientEngine.get().microBlockEntityPos;
-        if(hit != null && pos != null && level.getBlockEntity(pos) instanceof IMicroGrid gridEntity) {
+        if(hit != null && pos != null) {
+            BlockEntity blockEntity = level.getBlockEntity(pos);
+            float rot;
+            VoxelShape cube;
+            if(blockEntity instanceof IMicroGrid gridEntity) {
+                rot = -gridEntity.getRotationDegrees();
+                Vector3f offset = MathUtil.rotatePointByYaw(gridEntity.getWorldGridOffset(), rot, new Vec2(-gridEntity.getGridXSize() / 32F - gridEntity.getWorldGridOffset().x(), -gridEntity.getGridZSize() / 32F - gridEntity.getWorldGridOffset().z()));
+                Vector3f hitPos = MathUtil.rotatePointByYaw(new Vector3f(hit.getX() / 16F, hit.getY() / 16F, hit.getZ() / 16F), rot);
+                double cubeX = pos.getX() + offset.x() + hitPos.x();
+                double cubeY = pos.getY() + offset.y() + hitPos.y();
+                double cubeZ = pos.getZ() + offset.z() + hitPos.z();
+                cube = Shapes.create(cubeX, cubeY, cubeZ, cubeX + 1 / 16F, cubeY + 1 / 16F, cubeZ + 1 / 16F);
+            }
+            else if(blockEntity instanceof TieredAnvilBlockEntity anvilEntity) {
+                rot = 0;
+                cube = Shapes.create(anvilEntity.getWorkpieceBoxes()[hit.getX()]);
+            }
+            else return;
             mc.gameRenderer.resetProjectionMatrix(event.getProjectionMatrix());
-            float rot = -gridEntity.getRotationDegrees();
-            Vector3f offset = MathUtil.rotatePointByYaw(gridEntity.getWorldGridOffset(), rot, new Vec2(-gridEntity.getGridXSize()/32F - gridEntity.getWorldGridOffset().x(), -gridEntity.getGridZSize()/32F - gridEntity.getWorldGridOffset().z()));
-            Vector3f hitPos = MathUtil.rotatePointByYaw(new Vector3f(hit.getX()/16F, hit.getY()/16F, hit.getZ()/16F), rot);
-            double cubeX = pos.getX() + offset.x() + hitPos.x();
-            double cubeY = pos.getY() + offset.y() + hitPos.y();
-            double cubeZ = pos.getZ() + offset.z() + hitPos.z();
-            VoxelShape cube = Shapes.create(cubeX, cubeY, cubeZ, cubeX + 1/16F, cubeY + 1/16F, cubeZ + 1/16F);
             poseStack.pushPose();
             poseStack.translate(-camera.getPosition().x, -camera.getPosition().y, -camera.getPosition().z);
             if(rot != 0) {
@@ -206,8 +220,6 @@ public class RenderEventHandler {
             RenderUtil.drawCubeOutlineWorld(poseStack, buffer, new Color(10, 10, 10, 255), cube);
             poseStack.popPose();
         }
-        //Force block overlay to render if in wall
-        if(!mc.options.getCameraType().isFirstPerson() && mc.cameraEntity.isInWall()) mc.options.setCameraType(CameraType.FIRST_PERSON);
     }
 
     /**

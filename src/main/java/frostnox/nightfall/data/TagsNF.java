@@ -22,7 +22,6 @@ import java.util.Map;
 public class TagsNF {
     public static final ObjectOpenHashSet<TagKey<Item>> ITEM_TAGS = new ObjectOpenHashSet<>(128);
 
-    public static final TagKey<Action> SMITHING_ACTION = actionTag("smithing");
     public static final TagKey<Action> BOW_ACTION = actionTag("bow");
     public static final TagKey<Action> SLING_ACTION = actionTag("sling");
     public static final TagKey<Action> ADZE_ACTION = actionTag("adze");
@@ -167,6 +166,7 @@ public class TagsNF {
     public static final TagKey<Item> SPEAR = itemTag("spear");
     public static final TagKey<Item> SABRE = itemTag("sabre");
     public static final TagKey<Item> MACE = itemTag("mace");
+    public static final TagKey<Item> TONGS = itemTag("tongs");
     public static final TagKey<Item> WOODEN_BOW = itemTag("wooden_bow");
     public static final TagKey<Item> BOW = itemTag("bow");
     public static final TagKey<Item> UNDYED_METAL_SHIELD = itemTag("undyed_metal_shield");

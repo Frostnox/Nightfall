@@ -379,72 +379,73 @@ public class RecipeProviderNF extends RecipeProvider {
         BarrelRecipeBuilder.base(ItemsNF.CURED_PALE_FLESH.get(), 1).input(ItemsNF.SALT.get()).input(ItemsNF.RAW_PALE_FLESH.get()).input(ItemsNF.SALT.get())
                 .soakTime(DAY_LENGTH).fixedSoakTime().requirement(EntriesNF.CURING.getId()).save(consumer);
 
-        for(TieredItemMaterial material : ItemsNF.ARMAMENT_HEADS.keySet()) {
-            Metal metal = (Metal) material.getMetal();
-            Ingredient chunk = switch(metal) {
-                case COPPER -> Ingredient.of(ItemsNF.COPPER_CHUNK.get());
-                case METEORITE -> Ingredient.of(ItemsNF.METEORITE_CHUNK.get());
-                default -> null;
-            };
-            Ingredient ingot = Ingredient.of(ItemsNF.INGOTS.get(metal).get());
-            List<AnvilEntry> entries = new ObjectArrayList<>();
-            entries.add(new AnvilEntry(ingot, MicroGridShape.INGOT, 0, 1024));
-            if(chunk != null) entries.add(new AnvilEntry(chunk, MicroGridShape.CHUNK, 4, 10));
-
-            for(var entry : entries) {
-                TieredAnvilRecipeBuilder.base(ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.ADZE).get(), material.getTier()).addIngredient(entry.item)
-                        .randRange(entry.randMin, entry.randMax).addStartShape(entry.shape).addFinishShape(MicroGridShape.ADZE).requirement(EntriesNF.SMITHING).save(consumer);
-                TieredAnvilRecipeBuilder.base(ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.AXE).get(), material.getTier()).addIngredient(entry.item)
-                        .randRange(entry.randMin, entry.randMax).addStartShape(entry.shape).addFinishShape(MicroGridShape.AXE).requirement(EntriesNF.SMITHING).save(consumer);
-                TieredAnvilRecipeBuilder.base(ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.CHISEL).get(), material.getTier()).addIngredient(entry.item)
-                        .randRange(entry.randMin, entry.randMax).addStartShape(entry.shape).addFinishShape(MicroGridShape.CHISEL).requirement(EntriesNF.SMITHING).save(consumer);
-                TieredAnvilRecipeBuilder.base(ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.KNIFE).get(), material.getTier()).addIngredient(entry.item)
-                        .randRange(entry.randMin, entry.randMax).addStartShape(entry.shape).addFinishShape(MicroGridShape.KNIFE).requirement(EntriesNF.SMITHING).save(consumer);
-                TieredAnvilRecipeBuilder.base(ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.MACE).get(), material.getTier()).addIngredient(entry.item)
-                        .randRange(entry.randMin, entry.randMax).addStartShape(entry.shape).addFinishShape(MicroGridShape.MACE).requirement(EntriesNF.MACE).save(consumer);
-                TieredAnvilRecipeBuilder.base(ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.PICKAXE).get(), material.getTier()).addIngredient(entry.item)
-                        .randRange(entry.randMin, entry.randMax).addStartShape(entry.shape).addFinishShape(MicroGridShape.PICKAXE).requirement(EntriesNF.SMITHING).save(consumer);
-                TieredAnvilRecipeBuilder.base(ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.SABRE).get(), material.getTier()).addIngredient(entry.item)
-                        .randRange(entry.randMin, entry.randMax).addStartShape(entry.shape).addFinishShape(MicroGridShape.SABRE).requirement(EntriesNF.SABRE).save(consumer);
-                TieredAnvilRecipeBuilder.base(ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.SHOVEL).get(), material.getTier()).addIngredient(entry.item)
-                        .randRange(entry.randMin, entry.randMax).addStartShape(entry.shape).addFinishShape(MicroGridShape.SHOVEL).requirement(EntriesNF.SMITHING).save(consumer);
-                TieredAnvilRecipeBuilder.base(ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.SICKLE).get(), material.getTier()).addIngredient(entry.item)
-                        .randRange(entry.randMin, entry.randMax).addStartShape(entry.shape).addFinishShape(MicroGridShape.SICKLE).requirement(EntriesNF.SICKLE_SMITHING).save(consumer);
-                TieredAnvilRecipeBuilder.base(ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.SPEAR).get(), material.getTier()).addIngredient(entry.item)
-                        .randRange(entry.randMin, entry.randMax).addStartShape(entry.shape).addFinishShape(MicroGridShape.SPEAR).requirement(EntriesNF.SMITHING).save(consumer);
-                TieredAnvilRecipeBuilder.base(ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.SWORD).get(), material.getTier()).addIngredient(entry.item)
-                        .randRange(entry.randMin, entry.randMax).addStartShape(entry.shape).addFinishShape(MicroGridShape.SWORD).requirement(EntriesNF.SMITHING).save(consumer);
-            }
-        }
-        for(Metal metal : Metal.values()) {
-            Ingredient chunk = switch(metal) {
-                case TIN -> Ingredient.of(ItemsNF.TIN_CHUNK.get());
-                case COPPER -> Ingredient.of(ItemsNF.COPPER_CHUNK.get());
-                case METEORITE -> Ingredient.of(ItemsNF.METEORITE_CHUNK.get());
-                default -> null;
-            };
-            if(chunk != null) TieredAnvilRecipeBuilder.base(ItemsNF.INGOTS.get(metal).get(), metal.getWorkTier()).addIngredient(chunk).randRange(4, 10)
-                    .addStartShape(MicroGridShape.CHUNK).addFinishShape(MicroGridShape.INGOT).requirement(EntriesNF.SMITHING).save(consumer);
-            Ingredient ingot = Ingredient.of(ItemsNF.INGOTS.get(metal).get());
-            Ingredient plate = Ingredient.of(ItemsNF.PLATES.get(metal).get());
-            Ingredient wire = Ingredient.of(ItemsNF.WIRES.get(metal).get());
-            Ingredient billet = Ingredient.of(ItemsNF.BILLETS.get(metal).get());
-            TieredAnvilRecipeBuilder.base(ItemsNF.PLATES.get(metal).get(), metal.getWorkTier()).addIngredient(ingot)
-                    .addStartShape(MicroGridShape.INGOT).addFinishShape(MicroGridShape.PLATE).requirement(EntriesNF.SMITHING).save(consumer);
-            TieredAnvilRecipeBuilder.base(ItemsNF.WIRES.get(metal).get(), 8, metal.getWorkTier()).addIngredient(plate)
-                    .addStartShape(MicroGridShape.PLATE).addFinishShape(MicroGridShape.WIRES).requirement(EntriesNF.SMITHING).save(consumer);
-            TieredAnvilRecipeBuilder.base(ItemsNF.BILLETS.get(metal).get(), metal.getWorkTier()).addIngredient(ingot).addIngredient(TagsNF.FLUX).addIngredient(ingot)
-                    .addStartShape(MicroGridShape.DOUBLE_INGOT_TALL).addFinishShape(MicroGridShape.BILLET).requirement(EntriesNF.SMITHING).save(consumer);
-            TieredAnvilRecipeBuilder.base(ItemsNF.METAL_BLOCKS.get(metal).get(), metal.getWorkTier()).addIngredient(billet).addIngredient(TagsNF.FLUX).addIngredient(billet)
-                    .addStartShape(MicroGridShape.DOUBLE_BILLET_TALL).addFinishShape(MicroGridShape.BLOCK).requirement(EntriesNF.SMITHING).save(consumer);
-            if(ItemsNF.ANVILS_METAL.containsKey(metal)) TieredAnvilRecipeBuilder.base(ItemsNF.ANVILS_METAL.get(metal).get(), metal.getWorkTier())
-                    .addIngredient(billet).addIngredient(TagsNF.FLUX).addIngredient(billet)
-                    .addStartShape(MicroGridShape.DOUBLE_BILLET_TALL).addFinishShape(MicroGridShape.ANVIL).requirement(EntriesNF.SMITHING).save(consumer);
-            if(ItemsNF.SCALES.containsKey(metal)) TieredAnvilRecipeBuilder.base(ItemsNF.SCALES.get(metal).get(), 2, metal.getWorkTier())
-                    .addIngredient(plate).addStartShape(MicroGridShape.PLATE).addFinishShape(MicroGridShape.SCALES).requirement(EntriesNF.SCALE_ARMOR).save(consumer);
-        }
-        TieredAnvilRecipeBuilder.base(ItemsNF.INGOTS.get(Metal.IRON).get(), Metal.IRON.getWorkTier()).addIngredient(ItemsNF.IRON_BLOOM.get()).slagChance(0.7F).randRange(4, 10)
-                .addStartShape(MicroGridShape.CHUNK).addFinishShape(MicroGridShape.INGOT).requirement(itemKnowledge(ItemsNF.IRON_BLOOM)).save(consumer);
+//        for(TieredItemMaterial material : ItemsNF.ARMAMENT_HEADS.keySet()) {
+//            Metal metal = (Metal) material.getMetal();
+//            Ingredient chunk = switch(metal) {
+//                case COPPER -> Ingredient.of(ItemsNF.COPPER_CHUNK.get());
+//                case METEORITE -> Ingredient.of(ItemsNF.METEORITE_CHUNK.get());
+//                default -> null;
+//            };
+//            Ingredient ingot = Ingredient.of(ItemsNF.INGOTS.get(metal).get());
+//            List<AnvilEntry> entries = new ObjectArrayList<>();
+//            entries.add(new AnvilEntry(ingot, MicroGridShape.INGOT, 0, 1024));
+//            if(chunk != null) entries.add(new AnvilEntry(chunk, MicroGridShape.CHUNK, 4, 10));
+//
+//            for(var entry : entries) {
+//                TieredAnvilRecipeBuilder.base(ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.ADZE).get(), material.getTier()).addIngredient(entry.item)
+//                        .randRange(entry.randMin, entry.randMax).addStartShape(entry.shape).addFinishShape(MicroGridShape.ADZE).requirement(EntriesNF.SMITHING).save(consumer);
+//                TieredAnvilRecipeBuilder.base(ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.AXE).get(), material.getTier()).addIngredient(entry.item)
+//                        .randRange(entry.randMin, entry.randMax).addStartShape(entry.shape).addFinishShape(MicroGridShape.AXE).requirement(EntriesNF.SMITHING).save(consumer);
+//                TieredAnvilRecipeBuilder.base(ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.CHISEL).get(), material.getTier()).addIngredient(entry.item)
+//                        .randRange(entry.randMin, entry.randMax).addStartShape(entry.shape).addFinishShape(MicroGridShape.CHISEL).requirement(EntriesNF.SMITHING).save(consumer);
+//                TieredAnvilRecipeBuilder.base(ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.KNIFE).get(), material.getTier()).addIngredient(entry.item)
+//                        .randRange(entry.randMin, entry.randMax).addStartShape(entry.shape).addFinishShape(MicroGridShape.KNIFE).requirement(EntriesNF.SMITHING).save(consumer);
+//                TieredAnvilRecipeBuilder.base(ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.MACE).get(), material.getTier()).addIngredient(entry.item)
+//                        .randRange(entry.randMin, entry.randMax).addStartShape(entry.shape).addFinishShape(MicroGridShape.MACE).requirement(EntriesNF.MACE).save(consumer);
+//                TieredAnvilRecipeBuilder.base(ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.PICKAXE).get(), material.getTier()).addIngredient(entry.item)
+//                        .randRange(entry.randMin, entry.randMax).addStartShape(entry.shape).addFinishShape(MicroGridShape.PICKAXE).requirement(EntriesNF.SMITHING).save(consumer);
+//                TieredAnvilRecipeBuilder.base(ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.SABRE).get(), material.getTier()).addIngredient(entry.item)
+//                        .randRange(entry.randMin, entry.randMax).addStartShape(entry.shape).addFinishShape(MicroGridShape.SABRE).requirement(EntriesNF.SABRE).save(consumer);
+//                TieredAnvilRecipeBuilder.base(ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.SHOVEL).get(), material.getTier()).addIngredient(entry.item)
+//                        .randRange(entry.randMin, entry.randMax).addStartShape(entry.shape).addFinishShape(MicroGridShape.SHOVEL).requirement(EntriesNF.SMITHING).save(consumer);
+//                TieredAnvilRecipeBuilder.base(ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.SICKLE).get(), material.getTier()).addIngredient(entry.item)
+//                        .randRange(entry.randMin, entry.randMax).addStartShape(entry.shape).addFinishShape(MicroGridShape.SICKLE).requirement(EntriesNF.SICKLE_SMITHING).save(consumer);
+//                TieredAnvilRecipeBuilder.base(ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.SPEAR).get(), material.getTier()).addIngredient(entry.item)
+//                        .randRange(entry.randMin, entry.randMax).addStartShape(entry.shape).addFinishShape(MicroGridShape.SPEAR).requirement(EntriesNF.SMITHING).save(consumer);
+//                TieredAnvilRecipeBuilder.base(ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.SWORD).get(), material.getTier()).addIngredient(entry.item)
+//                        .randRange(entry.randMin, entry.randMax).addStartShape(entry.shape).addFinishShape(MicroGridShape.SWORD).requirement(EntriesNF.SMITHING).save(consumer);
+//            }
+//        }
+//        for(Metal metal : Metal.values()) {
+//            Ingredient chunk = switch(metal) {
+//                case TIN -> Ingredient.of(ItemsNF.TIN_CHUNK.get());
+//                case COPPER -> Ingredient.of(ItemsNF.COPPER_CHUNK.get());
+//                case METEORITE -> Ingredient.of(ItemsNF.METEORITE_CHUNK.get());
+//                default -> null;
+//            };
+//            if(chunk != null) TieredAnvilRecipeBuilder.base(ItemsNF.INGOTS.get(metal).get(), metal.getWorkTier()).addIngredient(chunk).randRange(4, 10)
+//                    .addStartShape(MicroGridShape.CHUNK).addFinishShape(MicroGridShape.INGOT).requirement(EntriesNF.SMITHING).save(consumer);
+//            Ingredient ingot = Ingredient.of(ItemsNF.INGOTS.get(metal).get());
+//            Ingredient plate = Ingredient.of(ItemsNF.PLATES.get(metal).get());
+//            Ingredient wire = Ingredient.of(ItemsNF.WIRES.get(metal).get());
+//            Ingredient billet = Ingredient.of(ItemsNF.BILLETS.get(metal).get());
+//            TieredAnvilRecipeBuilder.base(ItemsNF.PLATES.get(metal).get(), metal.getWorkTier()).addIngredient(ingot)
+//                    .addStartShape(MicroGridShape.INGOT).addFinishShape(MicroGridShape.PLATE).requirement(EntriesNF.SMITHING).save(consumer);
+//            TieredAnvilRecipeBuilder.base(ItemsNF.WIRES.get(metal).get(), 8, metal.getWorkTier()).addIngredient(plate)
+//                    .addStartShape(MicroGridShape.PLATE).addFinishShape(MicroGridShape.WIRES).requirement(EntriesNF.SMITHING).save(consumer);
+//            TieredAnvilRecipeBuilder.base(ItemsNF.BILLETS.get(metal).get(), metal.getWorkTier()).addIngredient(ingot).addIngredient(TagsNF.FLUX).addIngredient(ingot)
+//                    .addStartShape(MicroGridShape.DOUBLE_INGOT_TALL).addFinishShape(MicroGridShape.BILLET).requirement(EntriesNF.SMITHING).save(consumer);
+//            TieredAnvilRecipeBuilder.base(ItemsNF.METAL_BLOCKS.get(metal).get(), metal.getWorkTier()).addIngredient(billet).addIngredient(TagsNF.FLUX).addIngredient(billet)
+//                    .addStartShape(MicroGridShape.DOUBLE_BILLET_TALL).addFinishShape(MicroGridShape.BLOCK).requirement(EntriesNF.SMITHING).save(consumer);
+//            if(ItemsNF.ANVILS_METAL.containsKey(metal)) TieredAnvilRecipeBuilder.base(ItemsNF.ANVILS_METAL.get(metal).get(), metal.getWorkTier())
+//                    .addIngredient(billet).addIngredient(TagsNF.FLUX).addIngredient(billet)
+//                    .addStartShape(MicroGridShape.DOUBLE_BILLET_TALL).addFinishShape(MicroGridShape.ANVIL).requirement(EntriesNF.SMITHING).save(consumer);
+//            if(ItemsNF.SCALES.containsKey(metal)) TieredAnvilRecipeBuilder.base(ItemsNF.SCALES.get(metal).get(), 2, metal.getWorkTier())
+//                    .addIngredient(plate).addStartShape(MicroGridShape.PLATE).addFinishShape(MicroGridShape.SCALES).requirement(EntriesNF.SCALE_ARMOR).save(consumer);
+//        }
+//        TieredAnvilRecipeBuilder.base(ItemsNF.INGOTS.get(Metal.IRON).get(), Metal.IRON.getWorkTier()).addIngredient(ItemsNF.IRON_BLOOM.get()).slagChance(0.7F).randRange(4, 10)
+//                .addStartShape(MicroGridShape.CHUNK).addFinishShape(MicroGridShape.INGOT).requirement(itemKnowledge(ItemsNF.IRON_BLOOM)).save(consumer);
+        TieredAnvilRecipeBuilder.base(Ingredient.of(ItemsNF.IRON_BLOOM.get()), new int[]{0, 0, 0, 0, 0, 0, 0, 0}, ItemsNF.INGOTS.get(Metal.IRON).get()).requirement(itemKnowledge(ItemsNF.IRON_BLOOM)).save(consumer);
 
         SpecialRecipeBuilder.special(TongsEmptyRecipe.SERIALIZER).save(consumer, Nightfall.MODID + ":tongs_empty");
     }

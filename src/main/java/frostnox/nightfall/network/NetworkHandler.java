@@ -65,7 +65,6 @@ public class NetworkHandler {
         INSTANCE.registerMessage(ID++, LevelDataToClient.class, LevelDataToClient::write, LevelDataToClient::read, LevelDataToClient::handle, Optional.of(PLAY_TO_CLIENT));
         INSTANCE.registerMessage(ID++, GenericEntityToClient.class, GenericEntityToClient::write, GenericEntityToClient::read, GenericEntityToClient::handle, Optional.of(PLAY_TO_CLIENT));
         INSTANCE.registerMessage(ID++, GenericToServer.class, GenericToServer::write, GenericToServer::read, GenericToServer::handle, Optional.of(PLAY_TO_SERVER));
-        INSTANCE.registerMessage(ID++, StartSmithingToServer.class, StartSmithingToServer::write, StartSmithingToServer::read, StartSmithingToServer::handle, Optional.of(PLAY_TO_SERVER));
         INSTANCE.registerMessage(ID++, StaminaChangedToClient.class, StaminaChangedToClient::write, StaminaChangedToClient::read, StaminaChangedToClient::handle, Optional.of(PLAY_TO_CLIENT));
         INSTANCE.registerMessage(ID++, ShiveringToClient.class, ShiveringToClient::write, ShiveringToClient::read, ShiveringToClient::handle, Optional.of(PLAY_TO_CLIENT));
         INSTANCE.registerMessage(ID++, StatusToClient.class, StatusToClient::write, StatusToClient::read, StatusToClient::handle, Optional.of(PLAY_TO_CLIENT));
@@ -89,9 +88,8 @@ public class NetworkHandler {
         INSTANCE.registerMessage(ID++, ChunkDigProgressToServer.class, ChunkDigProgressToServer::write, ChunkDigProgressToServer::read, ChunkDigProgressToServer::handle, Optional.of(PLAY_TO_SERVER));
         INSTANCE.registerMessage(ID++, DigBlockToClient.class, DigBlockToClient::write, DigBlockToClient::read, DigBlockToClient::handle, Optional.of(PLAY_TO_CLIENT));
         INSTANCE.registerMessage(ID++, DigBlockToServer.class, DigBlockToServer::write, DigBlockToServer::read, DigBlockToServer::handle, Optional.of(PLAY_TO_SERVER));
-        INSTANCE.registerMessage(ID++, GridUseToClient.class, GridUseToClient::write, GridUseToClient::read, GridUseToClient::handle, Optional.of(PLAY_TO_CLIENT));
-        INSTANCE.registerMessage(ID++, AnvilSlagToClient.class, AnvilSlagToClient::write, AnvilSlagToClient::read, AnvilSlagToClient::handle, Optional.of(PLAY_TO_CLIENT));
         INSTANCE.registerMessage(ID++, BlockEntityFluidToClient.class, BlockEntityFluidToClient::write, BlockEntityFluidToClient::read, BlockEntityFluidToClient::handle, Optional.of(PLAY_TO_CLIENT));
+        INSTANCE.registerMessage(ID++, AnvilActionToServer.class, AnvilActionToServer::write, AnvilActionToServer::read, AnvilActionToServer::handle, Optional.of(PLAY_TO_SERVER));
         INSTANCE.registerMessage(ID++, GridUseToServer.class, GridUseToServer::write, GridUseToServer::read, GridUseToServer::handle, Optional.of(PLAY_TO_SERVER));
         INSTANCE.registerMessage(ID++, SetAllyToClient.class, SetAllyToClient::write, SetAllyToClient::read, SetAllyToClient::handle, Optional.of(PLAY_TO_CLIENT));
         INSTANCE.registerMessage(ID++, MovingBlockToClient.class, MovingBlockToClient::write, MovingBlockToClient::read, MovingBlockToClient::handle, Optional.of(PLAY_TO_CLIENT));

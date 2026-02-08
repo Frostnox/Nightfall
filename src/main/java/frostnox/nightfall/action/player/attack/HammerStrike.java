@@ -10,7 +10,7 @@ import frostnox.nightfall.capability.IActionTracker;
 import frostnox.nightfall.capability.PlayerData;
 import frostnox.nightfall.client.ClientEngine;
 import frostnox.nightfall.network.NetworkHandler;
-import frostnox.nightfall.network.message.world.GridUseToServer;
+import frostnox.nightfall.network.message.blockentity.AnvilActionToServer;
 import frostnox.nightfall.registry.EntriesNF;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -47,7 +47,7 @@ public class HammerStrike extends VerticalSwing implements IClientAction {
         IActionTracker capA = ActionTracker.get(player);
         if(capA.getState() == 1 && !capA.isStunned()) {
             if(capA.getFrame() == getBlockHitFrame(1, player) && lookingAt != null && pos != null) {
-                NetworkHandler.toServer(new GridUseToServer(AnvilAction.BEND.ordinal(), lookingAt, pos));
+                NetworkHandler.toServer(new AnvilActionToServer(AnvilAction.STRIKE, lookingAt.getX(), pos));
                 PlayerData.get(player).setHitStopFrame(capA.getFrame());
             }
         }
@@ -58,7 +58,7 @@ public class HammerStrike extends VerticalSwing implements IClientAction {
         List<Component> tooltips = super.getTooltips(stack, level, isAdvanced);
         if(ClientEngine.get().isShiftHeld() && ClientEngine.get().getPlayer() != null && PlayerData.get(ClientEngine.get().getPlayer()).hasCompletedEntry(EntriesNF.SMITHING.getId())) {
             tooltips.add(new TextComponent(" ").append(new TranslatableComponent("anvil.action.context").withStyle(ChatFormatting.GRAY))
-                    .append(new TranslatableComponent("anvil.action." + AnvilAction.BEND.name().toLowerCase() + ".info").withStyle(ChatFormatting.DARK_AQUA)));
+                    .append(new TranslatableComponent("anvil.action." + AnvilAction.STRIKE.name().toLowerCase() + ".info").withStyle(ChatFormatting.DARK_AQUA)));
         }
         return tooltips;
     }

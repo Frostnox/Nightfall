@@ -14,6 +14,7 @@ import frostnox.nightfall.action.Attack;
 import frostnox.nightfall.block.IMicroGrid;
 import frostnox.nightfall.block.Metal;
 import frostnox.nightfall.block.Tree;
+import frostnox.nightfall.block.block.anvil.TieredAnvilBlockEntity;
 import frostnox.nightfall.capability.*;
 import frostnox.nightfall.client.gui.CategoryToast;
 import frostnox.nightfall.client.gui.EntryToast;
@@ -482,6 +483,23 @@ public class ClientEngine {
                         for(int z = -searchReach; z <= searchReach; z++) {
                             blockPos.set(startVec.x + x, startVec.y + y, startVec.z + z);
                             BlockEntity blockEntity = player.level.getBlockEntity(blockPos);
+                            if(blockEntity instanceof TieredAnvilBlockEntity anvil && anvil.hasWorkpiece()) {
+                                double closestDistSqr = Double.MAX_VALUE;
+                                AABB[] boxes = anvil.getWorkpieceBoxes();
+                                for(int i = 0; i < boxes.length; i++) {
+                                    if(boxes[i].getYsize() <= 0) continue;
+                                    Optional<Vec3> hitVec = boxes[i].clip(startVec, endVec);
+                                    if(hitVec.isPresent() && player.level.clip(new ClipContext(startVec, hitVec.get(), ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, player)).getType() == HitResult.Type.MISS) {
+                                        double distSqr = startVec.distanceToSqr(hitVec.get());
+                                        if(distSqr < closestDistSqr) {
+                                            microHitResult = new Vec3i(i, 0, 0);
+                                            microHitBox = boxes[i].move(-(blockPos.getX() + 0.5), -(blockPos.getY() + 1), -(blockPos.getZ() + 0.5)).inflate(0.001);
+                                            microBlockEntityPos = new BlockPos(blockPos);
+                                            closestDistSqr = distSqr;
+                                        }
+                                    }
+                                }
+                            }
                             if(blockEntity instanceof IMicroGrid gridEntity) {
                                 float rot = -gridEntity.getRotationDegrees();
                                 Vec3 gridPos = gridEntity.getWorldPos(blockPos, 0, 0, 0);
@@ -497,7 +515,6 @@ public class ClientEngine {
                                             Vector3f selectPos = MathUtil.rotatePointByYaw(new Vector3f(gridX/16F, gridY/16F, gridZ/16F), rot);
                                             Vector3f selectSize = MathUtil.rotatePointByYaw(new Vector3f(1/16F, 1/16F, 1/16F), rot);
                                             Vec3 finalPos = gridPos.add(selectPos.x(), selectPos.y(), selectPos.z());
-                                            //player.level.addParticle(ParticleTypes.FLAME, finalPos.x, finalPos.y, finalPos.z, 0, 0, 0);
                                             Optional<Vec3> hitVec = new AABB(finalPos, finalPos.add(selectSize.x(), selectSize.y(), selectSize.z())).clip(startVec, endVec);
                                             if(gridEntity.getGrid()[gridX][gridY][gridZ] && hitVec.isPresent()) {
                                                 double distSqr = startVec.distanceToSqr(hitVec.get());
