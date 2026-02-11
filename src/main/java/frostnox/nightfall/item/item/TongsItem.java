@@ -79,6 +79,11 @@ public class TongsItem extends ItemNF implements IContainerChanger {
         item.getTag().remove("work");
         item.getTag().remove("stableTempTicks");
         item.getTag().remove("temperature");
+        item.getTag().remove("slagCenter");
+        item.getTag().remove("slagLeft");
+        item.getTag().remove("slagRight");
+        item.getTag().remove("flipXZ");
+        item.getTag().remove("flipY");
     }
 
     @Override
@@ -90,8 +95,12 @@ public class TongsItem extends ItemNF implements IContainerChanger {
             if(item.is(Tags.Items.INGOTS) || item.is(TagsNF.PLATES) || item.is(TagsNF.METAL_WORKPIECE)) {
                 if(!level.isClientSide) {
                     tongs.getTag().putString("item", ForgeRegistries.ITEMS.getKey(item.getItem()).toString());
-                    if(item.is(ItemsNF.IRON_BLOOM.get())) tongs.getTag().putInt("color", 0xFF302B32);
-                    else tongs.getTag().putInt("color", Metal.fromString(item.getItem().toString()).getColor().getRGB());
+                    if(item.is(ItemsNF.IRON_BLOOM.get())) {
+                        tongs.getTag().putBoolean("slagCenter", true);
+                        tongs.getTag().putBoolean("slagLeft", true);
+                        tongs.getTag().putBoolean("slagRight", true);
+                    }
+                    tongs.getTag().putInt("color", Metal.fromString(item.getItem().toString()).getColor().getRGB());
                     tongs.getTag().putFloat("temperature", 0);
                     int[] work = new int[8];
                     if(item.is(TagsNF.PLATES)) {
@@ -138,7 +147,7 @@ public class TongsItem extends ItemNF implements IContainerChanger {
                 }
             }
         }
-        else if(state.getBlock() instanceof TieredAnvilBlock && context.getClickedFace() == Direction.UP && context.getClickLocation().y % 1D == 0) {
+        else if(state.getBlock() instanceof TieredAnvilBlock && context.getClickedFace() == Direction.UP && context.getClickLocation().y >= pos.getY() + 0.75) {
             if(level.isClientSide()) {
                 if(!state.getValue(TieredAnvilBlock.HAS_METAL)) {
                     return InteractionResult.SUCCESS;

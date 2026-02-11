@@ -2,13 +2,17 @@ package frostnox.nightfall.block.block.anvil;
 
 import frostnox.nightfall.block.BlockStatePropertiesNF;
 import frostnox.nightfall.block.IFallable;
+import frostnox.nightfall.block.ITimeSimulatedBlock;
+import frostnox.nightfall.capability.ChunkData;
+import frostnox.nightfall.capability.IChunkData;
+import frostnox.nightfall.capability.LevelData;
 import frostnox.nightfall.registry.forge.BlockEntitiesNF;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.*;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -18,16 +22,22 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.ticks.TickPriority;
 import org.jetbrains.annotations.Nullable;
 
-public class TieredAnvilBlock extends BaseEntityBlock implements IFallable {
+import java.util.Random;
+
+public class TieredAnvilBlock extends BaseEntityBlock implements IFallable, ITimeSimulatedBlock {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     public static final BooleanProperty HAS_METAL = BlockStatePropertiesNF.HAS_METAL;
     public final int tier;
+    public final boolean hasHorn;
 
-    public TieredAnvilBlock(int tier, BlockBehaviour.Properties properties) {
+    public TieredAnvilBlock(int tier, boolean hasHorn, BlockBehaviour.Properties properties) {
         super(properties);
         this.tier = tier;
+        this.hasHorn = hasHorn;
         registerDefaultState(defaultBlockState().setValue(FACING, Direction.NORTH).setValue(HAS_METAL, false));
     }
 
@@ -60,12 +70,35 @@ public class TieredAnvilBlock extends BaseEntityBlock implements IFallable {
 
     @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> entity) {
-        if(level.isClientSide()) return null;
-        else return state.getValue(HAS_METAL) ? createTickerHelper(entity, BlockEntitiesNF.ANVIL.get(), TieredAnvilBlockEntity::serverTick) : null;
+        return state.getValue(HAS_METAL) ? createTickerHelper(entity, BlockEntitiesNF.ANVIL.get(), TieredAnvilBlockEntity::tick) : null;
     }
 
     @Override
     public void onFall(BlockState state, ServerLevel level, BlockPos pos, @Nullable BlockEntity blockEntity) {
         if(blockEntity instanceof TieredAnvilBlockEntity anvil) anvil.destroyWorkpiece();
+    }
+
+    @Override
+    public void onBlockStateChange(LevelReader levelReader, BlockPos pos, BlockState oldState, BlockState newState) {
+        Level level = (Level) levelReader;
+        if(!level.isClientSide && (!oldState.is(this) || oldState.getValue(HAS_METAL) != newState.getValue(HAS_METAL)) && LevelData.isPresent(level)) {
+            if(!newState.getValue(HAS_METAL)) ChunkData.get(level.getChunkAt(pos)).removeSimulatableBlock(TickPriority.NORMAL, pos);
+            else ChunkData.get(level.getChunkAt(pos)).addSimulatableBlock(TickPriority.NORMAL, pos);
+        }
+    }
+
+    @Override
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState pNewState, boolean pIsMoving) {
+        super.onRemove(state, level, pos, pNewState, pIsMoving);
+        if(!pNewState.is(this)) {
+            if(state.getValue(HAS_METAL) && LevelData.isPresent(level)) ChunkData.get(level.getChunkAt(pos)).removeSimulatableBlock(TickPriority.NORMAL, pos);
+        }
+    }
+
+    @Override
+    public void simulateTime(ServerLevel level, LevelChunk chunk, IChunkData chunkData, BlockPos pos, BlockState state, long elapsedTime, long gameTime, long dayTime, long seasonTime, float seasonalTemp, double randomTickChance, Random random) {
+        if(state.getValue(HAS_METAL) && level.getBlockEntity(pos) instanceof TieredAnvilBlockEntity anvil) {
+            TieredAnvilBlockEntity.tick(level, pos, state, anvil, (elapsedTime > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) elapsedTime));
+        }
     }
 }

@@ -34,17 +34,23 @@ import java.util.List;
 public class MetalAnvilBlock extends TieredAnvilBlock implements ICustomPathfindable, IWaterloggedBlock {
     public static final IntegerProperty WATER_LEVEL = BlockStatePropertiesNF.WATER_LEVEL;
     public static final EnumProperty<WaterlogType> WATERLOG_TYPE = BlockStatePropertiesNF.WATERLOG_TYPE;
-    private static final VoxelShape BASE = Block.box(2.0D, 0.0D, 3.0D, 14.0D, 4.0D, 13.0D);
-    private static final VoxelShape LEG1 = Block.box(3.0D, 4.0D, 4.0D, 13.0D, 5.0D, 12.0D);
-    private static final VoxelShape LEG2 = Block.box(4.0D, 5.0D, 6.0D, 12.0D, 10.0D, 10.0D);
-    private static final VoxelShape TOP = Block.box(0.0D, 10.0D, 3.0D, 16.0D, 16.0D, 13.0D);
-    protected static final VoxelShape X_AXIS_SHAPE = Shapes.or(BASE, LEG1, LEG2, TOP);
-    protected static final VoxelShape Z_AXIS_SHAPE = MathUtil.rotate(X_AXIS_SHAPE, Rotation.CLOCKWISE_90);
-    protected static final List<AABB> X_TOP_FACE = X_AXIS_SHAPE.getFaceShape(Direction.UP).toAabbs();
-    protected static final List<AABB> Z_TOP_FACE = Z_AXIS_SHAPE.getFaceShape(Direction.UP).toAabbs();
+    private static final VoxelShape BASE = Block.box(2.0D, 0.0D, 3.0D, 14.0D, 3.0D, 13.0D);
+    private static final VoxelShape LEG1 = Block.box(3.0D, 3.0D, 4.0D, 13.0D, 5.0D, 12.0D);
+    private static final VoxelShape LEG2 = Block.box(5.0D, 5.0D, 6.0D, 11.0D, 10.0D, 10.0D);
+    private static final VoxelShape HORN = Block.box(0.0D, 10.0D, 5.0D, 4.0D, 15.0D, 11.0D);
+    private static final VoxelShape FLAT = Block.box(4.0D, 10.0D, 3.0D, 12.0D, 16.0D, 13.0D);
+    private static final VoxelShape EDGE = Block.box(12.0D, 13.0D, 3.0D, 16.0D, 16.0D, 13.0D);
+    protected static final VoxelShape SOUTH_SHAPE = MathUtil.rotate(Shapes.or(BASE, LEG1, LEG2, HORN, FLAT, EDGE), Rotation.CLOCKWISE_90);
+    protected static final VoxelShape NORTH_SHAPE = MathUtil.rotate(SOUTH_SHAPE, Rotation.CLOCKWISE_180);
+    protected static final VoxelShape EAST_SHAPE = MathUtil.rotate(SOUTH_SHAPE, Rotation.COUNTERCLOCKWISE_90);
+    protected static final VoxelShape WEST_SHAPE = MathUtil.rotate(SOUTH_SHAPE, Rotation.CLOCKWISE_90);
+    protected static final List<AABB> NORTH_FACE_Y = NORTH_SHAPE.getFaceShape(Direction.UP).toAabbs();
+    protected static final List<AABB> SOUTH_FACE_Y = SOUTH_SHAPE.getFaceShape(Direction.UP).toAabbs();
+    protected static final List<AABB> WEST_FACE_Y = WEST_SHAPE.getFaceShape(Direction.UP).toAabbs();
+    protected static final List<AABB> EAST_FACE_Y = EAST_SHAPE.getFaceShape(Direction.UP).toAabbs();
 
     public MetalAnvilBlock(int tier, Properties properties) {
-        super(tier, properties);
+        super(tier, true, properties);
         registerDefaultState(defaultBlockState().setValue(WATER_LEVEL, 0).setValue(WATERLOG_TYPE, WaterlogType.FRESH));
     }
 
@@ -65,9 +71,13 @@ public class MetalAnvilBlock extends TieredAnvilBlock implements ICustomPathfind
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter blockGetter, BlockPos pos, CollisionContext collisionContext) {
-        Direction direction = state.getValue(FACING);
-        return direction.getAxis() == Direction.Axis.X ? X_AXIS_SHAPE : Z_AXIS_SHAPE;
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext pContext) {
+        return switch(state.getValue(FACING)) {
+            case NORTH -> NORTH_SHAPE;
+            case EAST -> EAST_SHAPE;
+            case SOUTH -> SOUTH_SHAPE;
+            default -> WEST_SHAPE;
+        };
     }
 
     @Override
@@ -109,7 +119,12 @@ public class MetalAnvilBlock extends TieredAnvilBlock implements ICustomPathfind
 
     @Override
     public List<AABB> getTopFaceShape(BlockState state) {
-        return state.getValue(FACING).getAxis() == Direction.Axis.X ? X_TOP_FACE : Z_TOP_FACE;
+        return switch(state.getValue(FACING)) {
+            case NORTH -> NORTH_FACE_Y;
+            case SOUTH -> SOUTH_FACE_Y;
+            case WEST -> WEST_FACE_Y;
+            default -> EAST_FACE_Y;
+        };
     }
 
     @Override

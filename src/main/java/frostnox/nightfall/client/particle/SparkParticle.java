@@ -1,6 +1,7 @@
 package frostnox.nightfall.client.particle;
 
 import frostnox.nightfall.block.TieredHeat;
+import frostnox.nightfall.client.render.blockentity.TieredAnvilRenderer;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -119,6 +120,23 @@ public class SparkParticle extends TextureSheetParticle {
         public Particle createParticle(SimpleParticleType typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             SparkParticle particle = new SparkParticle(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, sprite);
             Color color = TieredHeat.BLUE.color;
+            particle.setColor(color.getRed() / 255F, color.getGreen() / 255F, color.getBlue() / 255F);
+            return particle;
+        }
+    }
+
+    public static class SlagProvider implements ParticleProvider<SimpleParticleType> {
+        private final SpriteSet sprite;
+
+        public SlagProvider(SpriteSet sprite) {
+            this.sprite = sprite;
+        }
+
+        @Nullable
+        @Override
+        public Particle createParticle(SimpleParticleType typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+            SparkParticle particle = new SparkParticle(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, sprite);
+            Color color = TieredAnvilRenderer.SLAG_COLOR;
             particle.setColor(color.getRed() / 255F, color.getGreen() / 255F, color.getBlue() / 255F);
             return particle;
         }

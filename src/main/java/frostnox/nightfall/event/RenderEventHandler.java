@@ -8,7 +8,7 @@ import frostnox.nightfall.action.Attack;
 import frostnox.nightfall.action.player.IClientAction;
 import frostnox.nightfall.block.IHoldable;
 import frostnox.nightfall.block.IMicroGrid;
-import frostnox.nightfall.block.Metal;
+import frostnox.nightfall.block.block.anvil.AnvilSection;
 import frostnox.nightfall.block.block.anvil.TieredAnvilBlockEntity;
 import frostnox.nightfall.capability.*;
 import frostnox.nightfall.client.ClientEngine;
@@ -24,8 +24,6 @@ import frostnox.nightfall.entity.IOrientedHitBoxes;
 import frostnox.nightfall.item.item.TongsItem;
 import frostnox.nightfall.registry.ActionsNF;
 import frostnox.nightfall.registry.forge.EffectsNF;
-import frostnox.nightfall.registry.forge.FluidsNF;
-import frostnox.nightfall.registry.forge.ItemsNF;
 import frostnox.nightfall.util.*;
 import frostnox.nightfall.util.animation.AnimationCalculator;
 import frostnox.nightfall.util.animation.AnimationData;
@@ -42,7 +40,6 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
@@ -52,7 +49,6 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
@@ -217,7 +213,7 @@ public class RenderEventHandler {
                 else if(rot == -180) poseStack.translate(-1/16F, 0, -1/16F);
                 else if(rot == -90) poseStack.translate(0, 0, -1/16F);
             }
-            RenderUtil.drawCubeOutlineWorld(poseStack, buffer, new Color(10, 10, 10, 255), cube);
+            RenderUtil.drawCubeOutlineWorld(poseStack, buffer, new Color(0, 0, 0, 0.5F), cube);
             poseStack.popPose();
         }
     }
@@ -401,9 +397,9 @@ public class RenderEventHandler {
                     stack.translate(-0.2, 0.2, -0.25);
                 }
                 stack.mulPose(Vector3f.XP.rotationDegrees(45));
-                TieredAnvilRenderer.renderWorkpiece(stack, event.getMultiBufferSource(),
-                        tongs.getWorkpiece(item) == ItemsNF.IRON_BLOOM.get() ? new Color(tongs.getColor(item)) : RenderUtil.getHeatedMetalColor(tongs.getTemperature(item), tongs.getColor(item)),
-                        event.getPackedLight(), 0.5, tongs.getTemperature(item), tongs.getWork(item));
+                TieredAnvilRenderer.renderWorkpiece(stack, event.getMultiBufferSource(), RenderUtil.getHeatedMetalColor(tongs.getTemperature(item), tongs.getColor(item)),
+                        event.getPackedLight(), AnvilSection.FLAT, tongs.getTemperature(item), tongs.getWork(item), item.getTag().getBoolean("flipXZ"), item.getTag().getBoolean("flipY"),
+                        item.getTag().getBoolean("slagCenter"), item.getTag().getBoolean("slagLeft"), item.getTag().getBoolean("slagRight"));
                 stack.popPose();
             }
             //Replacement of vanilla item swap animation

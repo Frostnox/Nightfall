@@ -92,7 +92,7 @@ public class AnvilActionToServer {
             if(item.getItem() instanceof IActionableItem actionable && !actionable.hasAction(capA.getActionID(), player)) {
                 Nightfall.LOGGER.warn("Player {} tried to use anvil with an invalid item.", player.getName().getString());
             }
-            else if(capP.hasInteracted()) {
+            else if(!capA.isInactive() && capP.hasInteracted()) {
                 Nightfall.LOGGER.warn("Player {} tried to use anvil multiple times during one action.", player.getName().getString());
             }
             else if((item.is(TagsNF.HAMMER) && msg.action != AnvilAction.STRIKE) || (item.is(TagsNF.CHISEL) && msg.action != AnvilAction.CUT) ||
@@ -101,8 +101,8 @@ public class AnvilActionToServer {
             }
             else {
                 anvil.actWorkpiece(msg.action, msg.index, player, item);
+                capP.setInteracted(true);
                 if(!capA.isInactive()) {
-                    capP.setInteracted(true);
                     capP.setHitStopFrame(capA.getFrame());
                     NetworkHandler.toAllTracking(player, new GenericEntityToClient(NetworkHandler.Type.HITSTOP_CLIENT, player.getId()));
                 }

@@ -1,11 +1,11 @@
 package frostnox.nightfall.block.block.anvil;
 
 public enum AnvilSection {
-    HORN(0.25), FLAT(0.5), EDGE(0.75);
+    HORN(0.25F), FLAT(0.5F), EDGE(0.75F);
 
-    public final double center;
+    public final float center;
 
-    AnvilSection(double center) {
+    AnvilSection(float center) {
         this.center = center;
     }
 }

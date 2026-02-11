@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 import frostnox.nightfall.block.IHoldable;
-import frostnox.nightfall.block.Metal;
+import frostnox.nightfall.block.block.anvil.AnvilSection;
 import frostnox.nightfall.capability.IPlayerData;
 import frostnox.nightfall.capability.PlayerData;
 import frostnox.nightfall.client.model.ModelRegistryNF;
@@ -14,7 +14,6 @@ import frostnox.nightfall.client.render.blockentity.TieredAnvilRenderer;
 import frostnox.nightfall.client.render.entity.layer.ArmorLayer;
 import frostnox.nightfall.client.render.entity.layer.PlayerEquipmentLayer;
 import frostnox.nightfall.item.item.TongsItem;
-import frostnox.nightfall.registry.forge.FluidsNF;
 import frostnox.nightfall.registry.forge.ItemsNF;
 import frostnox.nightfall.util.AnimationUtil;
 import frostnox.nightfall.util.CombatUtil;
@@ -37,7 +36,6 @@ import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.*;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -48,7 +46,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.PlayerModelPart;
-import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.CrossbowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -56,8 +53,6 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-
-import java.awt.*;
 
 /**
  * Re-renders the vanilla player model with extra animations.
@@ -362,9 +357,9 @@ public class PlayerRendererNF extends PlayerRenderer {
                     stack.pushPose();
                     getParentModel().translateToHand(hand == InteractionHand.MAIN_HAND ? HumanoidArm.RIGHT : HumanoidArm.LEFT, stack);
                     stack.translate(0, 7.5D/16D, -0.625D);
-                    TieredAnvilRenderer.renderWorkpiece(stack, pBuffer,
-                            tongs.getWorkpiece(item) == ItemsNF.IRON_BLOOM.get() ? new Color(tongs.getColor(item)) : RenderUtil.getHeatedMetalColor(tongs.getTemperature(item), tongs.getColor(item)),
-                            pPackedLight, 0.5, tongs.getTemperature(item), tongs.getWork(item));
+                    TieredAnvilRenderer.renderWorkpiece(stack, pBuffer, RenderUtil.getHeatedMetalColor(tongs.getTemperature(item), tongs.getColor(item)),
+                            pPackedLight, AnvilSection.FLAT, tongs.getTemperature(item), tongs.getWork(item), item.getTag().getBoolean("flipXZ"), item.getTag().getBoolean("flipY"),
+                            item.getTag().getBoolean("slagCenter"), item.getTag().getBoolean("slagLeft"), item.getTag().getBoolean("slagRight"));
                     stack.popPose();
                 }
             }

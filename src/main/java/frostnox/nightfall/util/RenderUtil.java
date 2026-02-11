@@ -242,22 +242,26 @@ public class RenderUtil {
         if(y != 0 && !grid[x][y-1][z]) drawFace(Direction.DOWN, matrix, normal, builder, color, translation.add(size/2D, 0, size/2D), size, size, UV, 1F/ClientEngine.get().atlasWidth, 1F/ClientEngine.get().atlasHeight, combinedLight);
     }
 
-    public static void drawBox(PoseStack stack, MultiBufferSource buffer, Color color, int combinedLight, float width, float height, float depth, double x, double y, double z, TextureAtlasSprite sprite, int uOff, int vOff) {
+    public static void drawBox(PoseStack stack, MultiBufferSource buffer, Color color, int combinedLight, float width, float height, float depth, double x, double y, double z, TextureAtlasSprite sprite, int uOff, int vOff, boolean flipUvX, boolean flipUvY) {
         VertexConsumer builder = buffer.getBuffer(RenderType.entitySolid(sprite.atlas().location()));
         Vec2 UV = new Vec2(sprite.getU0() + (float) uOff/ClientEngine.get().atlasWidth, sprite.getV0() + (float) vOff/ClientEngine.get().atlasHeight);
         Vec3 translation = new Vec3(x, y, z);
         Matrix4f matrix = stack.last().pose();
         Matrix3f normal = stack.last().normal();
         float iWidth = Math.round(width * 16), iHeight = Math.round(height * 16), iDepth = Math.round(depth * 16);
-        drawFace(Direction.NORTH, matrix, normal, builder, color, translation.add(width/2D, height/2D, 0), width, height, UV, iWidth/ClientEngine.get().atlasWidth, iHeight/ClientEngine.get().atlasHeight, combinedLight);
-        drawFace(Direction.SOUTH, matrix, normal, builder, color, translation.add(width/2D, height/2D, depth), width, height, UV, iWidth/ClientEngine.get().atlasWidth, iHeight/ClientEngine.get().atlasHeight, combinedLight);
-        drawFace(Direction.WEST, matrix, normal, builder, color, translation.add(0, height/2D, depth/2D), depth, height, UV, iDepth/ClientEngine.get().atlasWidth, iHeight/ClientEngine.get().atlasHeight, combinedLight);
-        drawFace(Direction.EAST, matrix, normal, builder, color, translation.add(width, height/2D, depth/2D), depth, height, UV, iDepth/ClientEngine.get().atlasWidth, iHeight/ClientEngine.get().atlasHeight, combinedLight);
-        drawFace(Direction.UP, matrix, normal, builder, color, translation.add(width/2D, height, depth/2D), width, depth, UV, iWidth/ClientEngine.get().atlasWidth, iDepth/ClientEngine.get().atlasHeight, combinedLight);
-        drawFace(Direction.DOWN, matrix, normal, builder, color, translation.add(width/2D, 0, depth/2D), width, depth, UV, iWidth/ClientEngine.get().atlasWidth, iDepth/ClientEngine.get().atlasHeight, combinedLight);
+        drawFace(Direction.NORTH, matrix, normal, builder, color, translation.add(width/2D, height/2D, 0), width, height, UV, iWidth/ClientEngine.get().atlasWidth, iHeight/ClientEngine.get().atlasHeight, combinedLight, flipUvX, flipUvY);
+        drawFace(Direction.SOUTH, matrix, normal, builder, color, translation.add(width/2D, height/2D, depth), width, height, UV, iWidth/ClientEngine.get().atlasWidth, iHeight/ClientEngine.get().atlasHeight, combinedLight, flipUvX, flipUvY);
+        drawFace(Direction.WEST, matrix, normal, builder, color, translation.add(0, height/2D, depth/2D), depth, height, UV, iDepth/ClientEngine.get().atlasWidth, iHeight/ClientEngine.get().atlasHeight, combinedLight, flipUvX, flipUvY);
+        drawFace(Direction.EAST, matrix, normal, builder, color, translation.add(width, height/2D, depth/2D), depth, height, UV, iDepth/ClientEngine.get().atlasWidth, iHeight/ClientEngine.get().atlasHeight, combinedLight, flipUvX, flipUvY);
+        drawFace(Direction.UP, matrix, normal, builder, color, translation.add(width/2D, height, depth/2D), width, depth, UV, iWidth/ClientEngine.get().atlasWidth, iDepth/ClientEngine.get().atlasHeight, combinedLight, flipUvX, flipUvY);
+        drawFace(Direction.DOWN, matrix, normal, builder, color, translation.add(width/2D, 0, depth/2D), width, depth, UV, iWidth/ClientEngine.get().atlasWidth, iDepth/ClientEngine.get().atlasHeight, combinedLight, flipUvX, flipUvY);
     }
 
     public static void drawFace(Direction face, Matrix4f matrix, Matrix3f normal, VertexConsumer builder, Color color, Vec3 center, float width, float height, Vec2 UV, float UVwidth, float UVheight, int combinedLight) {
+        drawFace(face, matrix, normal, builder, color, center, width, height, UV, UVwidth, UVheight, combinedLight, false, false);
+    }
+
+    public static void drawFace(Direction face, Matrix4f matrix, Matrix3f normal, VertexConsumer builder, Color color, Vec3 center, float width, float height, Vec2 BLUV, float UVwidth, float UVheight, int combinedLight, boolean flipUvX, boolean flipUvY) {
         //Adjusted directions
         Vector3f rightDirection = new Vector3f(0, 0, 1);
         Vector3f topDirection = new Vector3f(0, 1, 0);
@@ -303,14 +307,14 @@ public class RenderUtil {
         TRPos.add(rightDirection);
         TRPos.add(topDirection);
         //Adjusted UV
-        Vec2 BRUV = new Vec2(UV.x + UVwidth, UV.y);
-        Vec2 TLUV = new Vec2(UV.x, UV.y + UVheight);
-        Vec2 TRUV = new Vec2(UV.x + UVwidth, UV.y + UVheight);
+        Vec2 BRUV = new Vec2(BLUV.x + UVwidth, BLUV.y);
+        Vec2 TLUV = new Vec2(BLUV.x, BLUV.y + UVheight);
+        Vec2 TRUV = new Vec2(BLUV.x + UVwidth, BLUV.y + UVheight);
         Vector3f faceNormal = face.step();
-        drawVertex(matrix, normal, builder, BLPos, UV, faceNormal, color, combinedLight);
-        drawVertex(matrix, normal, builder, BRPos, BRUV, faceNormal, color, combinedLight);
-        drawVertex(matrix, normal, builder, TRPos, TRUV, faceNormal, color, combinedLight);
-        drawVertex(matrix, normal, builder, TLPos, TLUV, faceNormal, color, combinedLight);
+        drawVertex(matrix, normal, builder, BLPos, flipUvX ? (flipUvY ? TRUV : BRUV) : (flipUvY ? TLUV : BLUV), faceNormal, color, combinedLight);
+        drawVertex(matrix, normal, builder, BRPos, flipUvX ? (flipUvY ? TLUV : BLUV) : (flipUvY ? TRUV : BRUV), faceNormal, color, combinedLight);
+        drawVertex(matrix, normal, builder, TRPos, flipUvX ? (flipUvY ? BLUV : TLUV) : (flipUvY ? BRUV : TRUV), faceNormal, color, combinedLight);
+        drawVertex(matrix, normal, builder, TLPos, flipUvX ? (flipUvY ? BRUV : TRUV) : (flipUvY ? BLUV : TLUV), faceNormal, color, combinedLight);
     }
 
     private static void drawVertex(Matrix4f matrix, Matrix3f normal, VertexConsumer builder, Vector3f pos, Vec2 UV, Vector3f faceNormal, Color color, int combinedLight) {

@@ -31,6 +31,7 @@ public class ParticleTypesNF {
     public static final RegistryObject<SimpleParticleType> SPARK_YELLOW = PARTICLES.register("spark_yellow", () -> new SimpleParticleType(false));
     public static final RegistryObject<SimpleParticleType> SPARK_WHITE = PARTICLES.register("spark_white", () -> new SimpleParticleType(false));
     public static final RegistryObject<SimpleParticleType> SPARK_BLUE = PARTICLES.register("spark_blue", () -> new SimpleParticleType(false));
+    public static final RegistryObject<SimpleParticleType> SPARK_SLAG = PARTICLES.register("spark_slag", () -> new SimpleParticleType(false));
     public static final RegistryObject<SimpleParticleType> ESSENCE = PARTICLES.register("essence", () -> new SimpleParticleType(false));
     public static final RegistryObject<SimpleParticleType> ESSENCE_MOON = PARTICLES.register("essence_moon", () -> new SimpleParticleType(false));
     public static final RegistryObject<SimpleParticleType> BLOOD_RED = PARTICLES.register("blood_red", () -> new SimpleParticleType(false));

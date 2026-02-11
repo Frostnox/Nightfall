@@ -828,21 +828,27 @@ public class ClientEventHandler {
         if(flagUse) action.onUseInput(player);
         flagAttack = false;
         flagUse = false;
+        ItemStack item = player.getItemInHand(capP.getActiveHand());
         if(ClientEngine.get().microHitResult != null) {
-            ItemStack item = player.getItemInHand(event.getHand());
             event.setCanceled(true);
             event.setSwingHand(false);
             if(item.getItem() instanceof TongsItem tongs && !tongs.hasWorkpiece(item) && player.level.getBlockEntity(ClientEngine.get().microBlockEntityPos) instanceof TieredAnvilBlockEntity) {
-                AnvilAction anvilAction = event.isUseItem() ? AnvilAction.TAKE : (AnvilAction.FLIP_XZ); //TODO:
-                NetworkHandler.toServer(new AnvilActionToServer(anvilAction, ClientEngine.get().microHitResult.getX(), ClientEngine.get().microBlockEntityPos));
-                player.swing(event.getHand()); //Do swing here to avoid block break particles from original hit result
+                AnvilAction anvilAction = event.isUseItem() ? AnvilAction.TAKE : (ClientEngine.get().microHitResult.getX() == 0 ? AnvilAction.FLIP_Y : AnvilAction.FLIP_XZ);
+                if(anvilAction == AnvilAction.TAKE || (!player.swinging || player.swingingArm != capP.getActiveHand())) {
+                    NetworkHandler.toServer(new AnvilActionToServer(anvilAction, ClientEngine.get().microHitResult.getX(), ClientEngine.get().microBlockEntityPos));
+                    player.swing(capP.getActiveHand()); //Do swing here to avoid block break particles from original hit result
+                }
             }
         }
-        else if(!capA.isInactive()) {
-            event.setSwingHand(false);
-            if(event.isAttack() && (!capP.getHeldContents().isEmpty() || !(player.getItemInHand(capP.getActiveHand()).getItem() instanceof IWeaponItem))) event.setCanceled(true);
+        else if(event.isAttack() && mc.hitResult != null && mc.hitResult.getType() == HitResult.Type.BLOCK && item.getItem() instanceof TongsItem) {
+            if(player.swinging && player.swingingArm == capP.getActiveHand()) event.setSwingHand(false);
+            event.setCanceled(true);
         }
-        else if(event.isAttack() && (player.getItemInHand(capP.getActiveHand()).getItem() instanceof IWeaponItem || player.getMainHandItem().getItem() instanceof IWeaponItem)) event.setSwingHand(false);
+        if(!capA.isInactive()) {
+            event.setSwingHand(false);
+            if(event.isAttack() && (!capP.getHeldContents().isEmpty() || !(item.getItem() instanceof IWeaponItem))) event.setCanceled(true);
+        }
+        else if(event.isAttack() && (item.getItem() instanceof IWeaponItem || player.getMainHandItem().getItem() instanceof IWeaponItem)) event.setSwingHand(false);
         if(event.isUseItem() && mc.hitResult != null) {
             if(mc.hitResult.getType() == HitResult.Type.BLOCK) {
                 if(!event.shouldSwingHand() && capP.getHeldContents().isEmpty()) event.setCanceled(true);
@@ -854,19 +860,10 @@ public class ClientEventHandler {
                 }
             }
         }
-        if(event.isUseItem() && event.getHand() == capP.getActiveHand() && player.getItemInHand(capP.getActiveHand()).getItem() instanceof IModifiable) {
+        if(event.isUseItem() && event.getHand() == capP.getActiveHand() && item.getItem() instanceof IModifiable) {
             int index = event.getHand() == InteractionHand.MAIN_HAND ? ClientEngine.get().getModifiableIndexMain() : ClientEngine.get().getModifiableIndexOff();
             if(index >= 0) NetworkHandler.toServer(new ModifiableIndexToServer(index));
         }
-    }
-
-    @SubscribeEvent
-    public static void onRawMouseEvent(InputEvent.RawMouseEvent event) {
-        Minecraft mc = Minecraft.getInstance();
-        LocalPlayer player = mc.player;
-        if(player == null || !player.isAlive()) return;
-        IActionTracker capC = ActionTracker.get(player);
-        //if(capC.isStunned() && mc.screen == null) event.setCanceled(true);
     }
 
     @SubscribeEvent
