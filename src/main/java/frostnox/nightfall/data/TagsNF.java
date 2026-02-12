@@ -246,7 +246,7 @@ public class TagsNF {
     public static final TagKey<Item> PLATES = itemTag("plates");
     public static final TagKey<Item> CHAINMAIL = itemTag("chainmail");
     public static final TagKey<Item> SCALES = itemTag("scales");
-    public static final TagKey<Item> BILLETS = itemTag("billets");
+    public static final TagKey<Item> SCRAP = itemTag("scrap");
     public static final TagKey<Item> CRUCIBLE_METAL = itemTag("crucible_metal");
     public static final TagKey<Item> METAL_CHUNKS = itemTag("metal_chunks");
     public static final TagKey<Item> METAL_WORKPIECE = itemTag("metal_workpiece");

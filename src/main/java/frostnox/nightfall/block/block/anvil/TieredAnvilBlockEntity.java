@@ -239,6 +239,7 @@ public class TieredAnvilBlockEntity extends BlockEntity {
                 }
             }
             case FLIP_XZ -> {
+                level.playSound(null, player, SoundsNF.TONGS_HANDLE.get(), SoundSource.PLAYERS, 1F, 0.975F + level.random.nextFloat() * 0.05F);
                 TongsItem tongs = (TongsItem) tool.getItem();
                 if(!tongs.hasWorkpiece(tool) && temperature <= TieredHeat.fromTier(tongs.getMaxHeatTier() + 1).getBaseTemp()) {
                     flipXZ = !flipXZ;
@@ -257,6 +258,7 @@ public class TieredAnvilBlockEntity extends BlockEntity {
                 }
             }
             case FLIP_Y -> {
+                level.playSound(null, player, SoundsNF.TONGS_HANDLE.get(), SoundSource.PLAYERS, 1F, 0.975F + level.random.nextFloat() * 0.05F);
                 TongsItem tongs = (TongsItem) tool.getItem();
                 if(!tongs.hasWorkpiece(tool) && temperature <= TieredHeat.fromTier(tongs.getMaxHeatTier() + 1).getBaseTemp()) {
                     flipY = !flipY;
@@ -268,6 +270,7 @@ public class TieredAnvilBlockEntity extends BlockEntity {
                 }
             }
             case TAKE -> {
+                level.playSound(null, player, SoundsNF.TONGS_HANDLE.get(), SoundSource.PLAYERS, 1F, 0.975F + level.random.nextFloat() * 0.05F);
                 TongsItem tongs = (TongsItem) tool.getItem();
                 if(!tongs.hasWorkpiece(tool) && temperature <= TieredHeat.fromTier(tongs.getMaxHeatTier() + 1).getBaseTemp()) {
                     dirtyCache = true;

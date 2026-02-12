@@ -414,10 +414,8 @@ public class TextureProviderNF extends TextureProvider {
         replaceImagePalette(item(ItemsNF.IRONWOOD_SHIELD, "_overlay"), item("ironwood_shield_overlay"),
                 subset(WOOD_FULL_PALETTES.get(Tree.IRONWOOD), 6, 2));
 
-        for(Metal metal : ItemsNF.INGOTS.keySet()) {
-            replaceImagePalette(item(ItemsNF.INGOTS.get(metal)), item("ingot"), METAL_PALETTES.get(metal));
-            replaceImagePalette(item(ItemsNF.BILLETS.get(metal)), item("billet"), METAL_PALETTES.get(metal));
-        }
+        for(Metal metal : ItemsNF.INGOTS.keySet()) replaceImagePalette(item(ItemsNF.INGOTS.get(metal)), item("ingot"), METAL_PALETTES.get(metal));
+        for(Metal metal : ItemsNF.SCRAP.keySet()) replaceImagePalette(item(ItemsNF.SCRAP.get(metal)), item("scrap"), METAL_PALETTES.get(metal));
         for(Metal metal : ItemsNF.WIRES.keySet()) replaceImagePalette(item(ItemsNF.WIRES.get(metal)), item("wire"), METAL_PALETTES.get(metal));
         for(Metal metal : ItemsNF.PLATES.keySet()) replaceImagePalette(item(ItemsNF.PLATES.get(metal)), item("plate"), METAL_PALETTES.get(metal));
         for(Metal metal : ItemsNF.CHAINMAIL.keySet()) replaceImagePalette(item(ItemsNF.CHAINMAIL.get(metal)), item("chainmail"), METAL_PALETTES.get(metal));

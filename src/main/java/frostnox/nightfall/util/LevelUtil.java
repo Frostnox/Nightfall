@@ -20,6 +20,7 @@ import frostnox.nightfall.util.math.OBB;
 import frostnox.nightfall.world.ContinentalWorldType;
 import frostnox.nightfall.world.OrientedEntityHitResult;
 import frostnox.nightfall.world.inventory.AccessorySlot;
+import frostnox.nightfall.world.inventory.FluidSlot;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -41,6 +42,8 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -58,6 +61,7 @@ import net.minecraft.world.level.chunk.ChunkSource;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.Material;
@@ -727,5 +731,16 @@ public class LevelUtil {
 
     public static boolean isSkyUnobstructed(Level level, BlockPos pos) {
         return level.canSeeSky(pos) && level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, pos).getY() - 1 < pos.getY();
+    }
+
+    public static int getFirstFluidSlotIndex(AbstractContainerMenu menu) {
+        for(int i = 0; i < menu.slots.size(); i++) {
+            Slot slot = menu.slots.get(i);
+            if(slot instanceof FluidSlot fluidSlot) {
+                Fluid fluid = fluidSlot.getFluid();
+                if(fluid != Fluids.EMPTY) return i;
+            }
+        }
+        return -1;
     }
 }

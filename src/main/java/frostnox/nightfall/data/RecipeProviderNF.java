@@ -339,7 +339,7 @@ public class RecipeProviderNF extends RecipeProvider {
         SingleRecipeBuilder.base(FluidsNF.METAL.get(Metal.METEORITE).get(), 100).input(ItemsNF.METEORITE_CHUNK.get()).cookTime(20 * 20).saveCrucible(consumer);
         SingleRecipeBuilder.base(FluidsNF.METAL.get(Metal.STEEL).get(), 20).input(ItemsNF.STEEL_NUGGET.get()).cookTime(20 * 5).saveCrucible(consumer);
         for(Metal metal : ItemsNF.INGOTS.keySet()) SingleRecipeBuilder.base(FluidsNF.METAL.get(metal).get(), 100).input(ItemsNF.INGOTS.get(metal).get()).cookTime(20 * 20).saveCrucible(consumer);
-        for(Metal metal : ItemsNF.BILLETS.keySet()) SingleRecipeBuilder.base(FluidsNF.METAL.get(metal).get(), 200).input(ItemsNF.BILLETS.get(metal).get()).cookTime(20 * 60).saveCrucible(consumer);
+        for(Metal metal : ItemsNF.SCRAP.keySet()) SingleRecipeBuilder.base(FluidsNF.METAL.get(metal).get(), 50).input(ItemsNF.SCRAP.get(metal).get()).cookTime(20 * 30).saveCrucible(consumer);
         for(Metal metal : ItemsNF.PLATES.keySet()) SingleRecipeBuilder.base(FluidsNF.METAL.get(metal).get(), 100).input(ItemsNF.PLATES.get(metal).get()).cookTime(20 * 20).saveCrucible(consumer);
         for(Metal metal : ItemsNF.WIRES.keySet()) SingleRecipeBuilder.base(FluidsNF.METAL.get(metal).get(), 10).input(ItemsNF.WIRES.get(metal).get()).cookTime(20 * 3).saveCrucible(consumer);
         for(Metal metal : ItemsNF.CHAINMAIL.keySet()) SingleRecipeBuilder.base(FluidsNF.METAL.get(metal).get(), 40).input(ItemsNF.CHAINMAIL.get(metal).get()).cookTime(20 * 6).saveCrucible(consumer);

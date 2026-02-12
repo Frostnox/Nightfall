@@ -6,32 +6,48 @@ import frostnox.nightfall.block.TieredHeat;
 import frostnox.nightfall.block.block.anvil.TieredAnvilBlock;
 import frostnox.nightfall.block.block.anvil.TieredAnvilBlockEntity;
 import frostnox.nightfall.data.TagsNF;
+import frostnox.nightfall.data.recipe.TieredAnvilRecipe;
 import frostnox.nightfall.item.IContainerChanger;
 import frostnox.nightfall.item.ITieredItemMaterial;
 import frostnox.nightfall.registry.forge.ItemsNF;
 import frostnox.nightfall.registry.forge.SoundsNF;
+import frostnox.nightfall.util.LevelUtil;
+import frostnox.nightfall.world.inventory.FluidSlot;
+import frostnox.nightfall.world.inventory.ItemStackHandlerNF;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.items.wrapper.RecipeWrapper;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
@@ -87,6 +103,54 @@ public class TongsItem extends ItemNF implements IContainerChanger {
     }
 
     @Override
+    public InteractionResult onItemUseFirst(ItemStack tongs, UseOnContext context) {
+        Level level = context.getLevel();
+        Player player = context.getPlayer();
+        if(player != null && getTemperature(tongs) > 250) {
+            BlockHitResult hitResult = getPlayerPOVHitResult(level, player, ClipContext.Fluid.ANY);
+            Fluid quenchFluid = Fluids.EMPTY;
+            if(hitResult.getType() == HitResult.Type.BLOCK) {
+                BlockPos hitPos = hitResult.getBlockPos();
+                BlockState hitBlock = level.getBlockState(hitPos);
+                if(!level.isClientSide && level.getBlockEntity(hitPos) instanceof MenuProvider menuProvider) {
+                    AbstractContainerMenu menu = menuProvider.createMenu(0, player.getInventory(), player);
+                    int fluidIndex = LevelUtil.getFirstFluidSlotIndex(menu);
+                    if(fluidIndex >= 0) {
+                        Slot slot = menu.getSlot(fluidIndex);
+                        quenchFluid = ((FluidSlot) slot).getFluid();
+                        slot.getItem().shrink(1);
+                        slot.setChanged();
+                    }
+                }
+                if(quenchFluid == Fluids.EMPTY && !hitBlock.getFluidState().isEmpty()) quenchFluid = hitBlock.getFluidState().getType();
+            }
+            if(quenchFluid != Fluids.EMPTY) {
+                if(!level.isClientSide) {
+                    Item workpiece = getWorkpiece(tongs);
+                    int[] work = getWork(tongs);
+                    ItemStack resultItem = null;
+                    RecipeWrapper inventory = new RecipeWrapper(new ItemStackHandlerNF(new ItemStack(workpiece)));
+                    for(TieredAnvilRecipe recipe : level.getRecipeManager().getRecipesFor(TieredAnvilRecipe.TYPE, inventory, level)) {
+                        if(recipe.matchesWorkAndFluid(work, quenchFluid)) {
+                            resultItem = recipe.assemble(inventory);
+                            break;
+                        }
+                    }
+                    if(resultItem == null) resultItem = new ItemStack(Metal.fromString(workpiece.toString()).getMatchingItem(TagsNF.SCRAP));
+                    removeWorkpiece(tongs);
+                    player.setItemInHand(InteractionHand.MAIN_HAND, tongs.copy());
+                    LevelUtil.giveItemToPlayer(resultItem, player, true);
+                    Vec3 loc = hitResult.getLocation();
+                    ((ServerLevel) level).sendParticles(ParticleTypes.SMOKE, loc.x, loc.y, loc.z, 14, 0.15F, 0.05F, 0.15F, 0);
+                }
+                level.playSound(null, player, SoundsNF.QUENCH.get(), SoundSource.PLAYERS, 1F, 1F);
+                return InteractionResult.SUCCESS;
+            }
+        }
+        return InteractionResult.PASS;
+    }
+
+    @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack tongs = player.getItemInHand(hand);
         if(!hasWorkpiece(tongs)) {
@@ -117,6 +181,7 @@ public class TongsItem extends ItemNF implements IContainerChanger {
                     if(!player.getAbilities().instabuild) item.shrink(1);
                 }
                 player.swing(oppHand);
+                player.playSound(SoundsNF.TONGS_HANDLE.get(), 1F, 0.975F + level.random.nextFloat() * 0.05F);
                 return InteractionResultHolder.consume(tongs);
             }
         }
@@ -158,6 +223,7 @@ public class TongsItem extends ItemNF implements IContainerChanger {
                     if(!anvil.hasWorkpiece()) {
                         if(anvil.putWorkpiece(context.getItemInHand(), context.getClickLocation())) {
                             player.swing(context.getHand());
+                            level.playSound(null, player, SoundsNF.TONGS_HANDLE.get(), SoundSource.PLAYERS, 1F, 0.975F + level.random.nextFloat() * 0.05F);
                             return InteractionResult.CONSUME;
                         }
                     }

@@ -53,7 +53,6 @@ public class BurningFuelBlockEntity extends BlockEntity {
             if(entity.temperature != oldTemp) {
                 TieredHeat heat = TieredHeat.fromTemp(entity.temperature);
                 if(block.getHeat(level, pos, state) != heat) {
-                    //TODO: extra particles explosion?
                     block.setHeat(level, state, pos, heat);
                 }
             }

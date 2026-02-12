@@ -644,8 +644,8 @@ public class ItemsNF {
     //Metallurgy
     public static final Map<Metal, RegistryObject<BuildingMaterialItem>> INGOTS = DataUtil.mapEnum(Metal.class, metal ->
             register(metal.getName() + "_ingot", () -> new BuildingMaterialItem(ingredient().stacksTo(32))));
-    public static final Map<Metal, RegistryObject<Item>> BILLETS = DataUtil.mapEnum(Metal.class, metal ->
-            register(metal.getName() + "_billet", 16, INGREDIENTS_TAB));
+    public static final Map<Metal, RegistryObject<Item>> SCRAP = DataUtil.mapEnum(Metal.class, metal ->
+            register(metal.getName() + "_scrap", 32, INGREDIENTS_TAB));
     public static final Map<Metal, RegistryObject<Item>> WIRES = DataUtil.mapEnum(Metal.class, metal ->
             register(metal.getName() + "_wire", INGREDIENTS_TAB));
     public static final Map<Metal, RegistryObject<Item>> PLATES = DataUtil.mapEnum(Metal.class, metal ->

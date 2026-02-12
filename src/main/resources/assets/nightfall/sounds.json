@@ -694,6 +694,10 @@
     "subtitle": "nightfall.item.firestarter.reload",
     "sounds": ["nightfall:item/firestarter_reload_0", "nightfall:item/firestarter_reload_1", "nightfall:item/firestarter_reload_2"]
   },
+  "item.tongs.handle": {
+    "subtitle": "nightfall.item.tongs.handle",
+    "sounds": ["nightfall:item/tongs_handle_0", "nightfall:item/tongs_handle_1", "nightfall:item/tongs_handle_2"]
+  },
   "gui.encyclopedia_use": {
     "sounds": ["nightfall:gui/encyclopedia_use_0", "nightfall:gui/encyclopedia_use_1"]
   },

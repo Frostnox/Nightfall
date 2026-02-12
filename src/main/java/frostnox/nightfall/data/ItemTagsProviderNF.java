@@ -107,8 +107,16 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
         for(var item : ItemsNF.PLANK_SIGNS.values()) tag(ItemTags.SIGNS).add(item.get());
 
         for(Metal metal : ItemsNF.INGOTS.keySet()) tag(metal.getTag()).add(ItemsNF.INGOTS.get(metal).get());
+        for(Metal metal : ItemsNF.SCRAP.keySet()) tag(metal.getTag()).add(ItemsNF.SCRAP.get(metal).get());
+        for(Metal metal : ItemsNF.PLATES.keySet()) tag(metal.getTag()).add(ItemsNF.PLATES.get(metal).get());
+        for(Metal metal : ItemsNF.WIRES.keySet()) tag(metal.getTag()).add(ItemsNF.WIRES.get(metal).get());
+        for(Metal metal : ItemsNF.CHAINMAIL.keySet()) tag(metal.getTag()).add(ItemsNF.CHAINMAIL.get(metal).get());
+        for(Metal metal : ItemsNF.SCALES.keySet()) tag(metal.getTag()).add(ItemsNF.SCALES.get(metal).get());
         for(TieredItemMaterial material : ItemsNF.ARMAMENT_HEADS.keySet()) {
             for(var item : ItemsNF.ARMAMENT_HEADS.get(material).values()) tag(material.getMetal().getTag()).add(item.get());
+        }
+        for(TieredItemMaterial material : ItemsNF.METAL_ARROWHEADS.keySet()) {
+            tag(material.getMetal().getTag()).add(ItemsNF.METAL_ARROWHEADS.get(material).get());
         }
         for(var item : ItemsNF.METAL_ARROWHEADS.values()) tag(TagsNF.ARROWHEAD).add(item.get());
         for(var item : ItemsNF.METAL_ARROWS.values()) tag(TagsNF.METAL_ARROW).add(item.get());
@@ -175,7 +183,7 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
             else tag(TagsNF.IGNEOUS).add(item.get());
         }
         tag(TagsNF.FIRESTARTER_AMMO).add(ItemsNF.SULFUR.get());
-        tag(TagsNF.FIRESTARTER_IRON_INGREDIENT).add(ItemsNF.HEMATITE_CHUNK.get(), ItemsNF.INGOTS.get(Metal.IRON).get(), ItemsNF.INGOTS.get(Metal.STEEL).get());
+        tag(TagsNF.FIRESTARTER_IRON_INGREDIENT).add(ItemsNF.HEMATITE_CHUNK.get(), ItemsNF.INGOTS.get(Metal.IRON).get(), ItemsNF.INGOTS.get(Metal.STEEL).get(), ItemsNF.SCRAP.get(Metal.IRON).get(), ItemsNF.SCRAP.get(Metal.STEEL).get());
         tag(TagsNF.NO_HITSTOP).addTags(TagsNF.KNIFE, TagsNF.SICKLE);
         tag(TagsNF.GRID_INTERACTABLE).addTags(TagsNF.HAMMER, TagsNF.TONGS);
         tag(TagsNF.MIXTURE_1);
@@ -219,8 +227,8 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
         tag(TagsNF.STICK_FIRE_STARTER).add(ItemsNF.STICK.get());
         tag(TagsNF.FLINT_FIRE_STARTER_WEAK).add(ItemsNF.OBSIDIAN_SHARD.get(), ItemsNF.ROCKS.get(Stone.DEEPSLATE).get(), ItemsNF.ROCKS.get(Stone.STYGFEL).get(),
                 ItemsNF.ROCKS.get(Stone.GRANITE).get(), ItemsNF.ROCKS.get(Stone.MOONSTONE).get());
-        tag(TagsNF.FLINT_FIRE_STARTER_STRONG).add(ItemsNF.INGOTS.get(Metal.IRON).get(), ItemsNF.INGOTS.get(Metal.STEEL).get(), ItemsNF.BILLETS.get(Metal.IRON).get(),
-                ItemsNF.BILLETS.get(Metal.STEEL).get(), ItemsNF.PLATES.get(Metal.IRON).get(), ItemsNF.PLATES.get(Metal.STEEL).get(),
+        tag(TagsNF.FLINT_FIRE_STARTER_STRONG).add(ItemsNF.INGOTS.get(Metal.IRON).get(), ItemsNF.INGOTS.get(Metal.STEEL).get(), ItemsNF.SCRAP.get(Metal.IRON).get(),
+                ItemsNF.SCRAP.get(Metal.STEEL).get(), ItemsNF.PLATES.get(Metal.IRON).get(), ItemsNF.PLATES.get(Metal.STEEL).get(),
                 ItemsNF.METAL_ARMAMENTS.get(TieredItemMaterial.IRON).get(Armament.CHISEL).get(), ItemsNF.METAL_ARMAMENTS.get(TieredItemMaterial.STEEL).get(Armament.CHISEL).get(),
                 ItemsNF.METAL_ARMAMENTS.get(TieredItemMaterial.IRON).get(Armament.KNIFE).get(), ItemsNF.METAL_ARMAMENTS.get(TieredItemMaterial.STEEL).get(Armament.KNIFE).get());
         tag(TagsNF.FLINT_FIRE_STARTER_STRONG).addTag(TagsNF.IRON_ORE);
@@ -307,7 +315,7 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
         for(var item : ItemsNF.PLATES.values()) tag(TagsNF.PLATES).add(item.get());
         for(var item : ItemsNF.CHAINMAIL.values()) tag(TagsNF.CHAINMAIL).add(item.get());
         for(var item : ItemsNF.SCALES.values()) tag(TagsNF.SCALES).add(item.get());
-        for(var item : ItemsNF.BILLETS.values()) tag(TagsNF.BILLETS).add(item.get());
+        for(var item : ItemsNF.SCRAP.values()) tag(TagsNF.SCRAP).add(item.get());
         tag(TagsNF.CRUCIBLE_METAL).addTags(Tags.Items.INGOTS, TagsNF.METAL_CHUNKS);
         tag(TagsNF.METAL_CHUNKS).add(ItemsNF.COPPER_CHUNK.get(), ItemsNF.AZURITE_CHUNK.get(), ItemsNF.TIN_CHUNK.get(), ItemsNF.HEMATITE_CHUNK.get(), ItemsNF.METEORITE_CHUNK.get());
         tag(TagsNF.METAL_WORKPIECE).addTags(Tags.Items.INGOTS, TagsNF.NATIVE_METAL, TagsNF.PLATES);
@@ -316,7 +324,7 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
         tag(TagsNF.NATIVE_METAL_INGOT).add(ItemsNF.INGOTS.get(Metal.COPPER).get(), ItemsNF.INGOTS.get(Metal.METEORITE).get(), ItemsNF.INGOTS.get(Metal.TIN).get());
         tag(TagsNF.IRON_ORE).add(ItemsNF.HEMATITE_CHUNK.get());
         tag(TagsNF.CORROSION_RESISTANT_METAL).add(ItemsNF.INGOTS.get(Metal.BRONZE).get(), ItemsNF.WIRES.get(Metal.BRONZE).get(), ItemsNF.PLATES.get(Metal.BRONZE).get(),
-                ItemsNF.CHAINMAIL.get(Metal.BRONZE).get(), ItemsNF.SCALES.get(Metal.BRONZE).get(), ItemsNF.BILLETS.get(Metal.BRONZE).get());
+                ItemsNF.CHAINMAIL.get(Metal.BRONZE).get(), ItemsNF.SCALES.get(Metal.BRONZE).get(), ItemsNF.SCRAP.get(Metal.BRONZE).get());
         tag(TagsNF.HEAT_RESISTANT_MATERIAL_1).add(ItemsNF.TERRACOTTA_SHARD.get(), ItemsNF.MUD_BRICK.get());
         tag(TagsNF.HEAT_RESISTANT_MATERIAL_2).add(ItemsNF.BRICK.get());
         tag(TagsNF.HEAT_RESISTANT_MATERIAL_3).add(ItemsNF.FIRE_BRICK.get());
@@ -370,7 +378,7 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
         tag(TagsNF.RECIPE_GROUP).addTags(ItemTags.WOODEN_DOORS, ItemTags.WOODEN_TRAPDOORS, Tags.Items.CHESTS, TagsNF.WOODEN_CHESTS_ITEM, TagsNF.ARMOR_STAND,
                 TagsNF.ROCK, TagsNF.PLANK, Tags.Items.INGOTS, TagsNF.ARROWHEAD, TagsNF.WOODEN_HATCHES_ITEM, TagsNF.WOODEN_LADDERS_ITEM, TagsNF.WOODEN_RACKS_ITEM,
                 TagsNF.WOODEN_SHELVES_ITEM, TagsNF.WOODEN_BARRELS_ITEM, ItemTags.WOODEN_FENCES, TagsNF.WOODEN_FENCE_GATES_ITEM, TagsNF.ANVILS_ITEM, TagsNF.METAL_ANVILS_ITEM,
-                TagsNF.METAL_BLOCKS_ITEM, TagsNF.WIRES, TagsNF.PLATES, TagsNF.CHAINMAIL, TagsNF.SCALES, TagsNF.BILLETS, TagsNF.ADZE_HEAD, TagsNF.AXE_HEAD, TagsNF.CHISEL_HEAD,
+                TagsNF.METAL_BLOCKS_ITEM, TagsNF.WIRES, TagsNF.PLATES, TagsNF.CHAINMAIL, TagsNF.SCALES, TagsNF.SCRAP, TagsNF.ADZE_HEAD, TagsNF.AXE_HEAD, TagsNF.CHISEL_HEAD,
                 TagsNF.KNIFE_HEAD, TagsNF.MACE_HEAD, TagsNF.PICKAXE_HEAD, TagsNF.SABRE_HEAD, TagsNF.SHOVEL_HEAD, TagsNF.SICKLE_HEAD, TagsNF.SPEAR_HEAD,
                 TagsNF.SWORD_HEAD, TagsNF.ADZE, TagsNF.AXE, TagsNF.CHISEL, TagsNF.KNIFE, TagsNF.HAMMER, TagsNF.MACE, TagsNF.PICKAXE, TagsNF.SABRE, TagsNF.SICKLE, TagsNF.SHOVEL,
                 TagsNF.SPEAR, TagsNF.SWORD, TagsNF.BOW, TagsNF.SHIELD, TagsNF.WOODEN_BOW, TagsNF.UNDYED_METAL_SHIELD, TagsNF.NATIVE_METAL, TagsNF.NATIVE_METAL_INGOT,
