@@ -10,6 +10,7 @@ import frostnox.nightfall.data.recipe.TieredAnvilRecipe;
 import frostnox.nightfall.item.IContainerChanger;
 import frostnox.nightfall.item.ITieredItemMaterial;
 import frostnox.nightfall.registry.forge.ItemsNF;
+import frostnox.nightfall.registry.forge.ParticleTypesNF;
 import frostnox.nightfall.registry.forge.SoundsNF;
 import frostnox.nightfall.util.LevelUtil;
 import frostnox.nightfall.world.inventory.FluidSlot;
@@ -17,7 +18,6 @@ import frostnox.nightfall.world.inventory.ItemStackHandlerNF;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -141,7 +141,7 @@ public class TongsItem extends ItemNF implements IContainerChanger {
                     player.setItemInHand(InteractionHand.MAIN_HAND, tongs.copy());
                     LevelUtil.giveItemToPlayer(resultItem, player, true);
                     Vec3 loc = hitResult.getLocation();
-                    ((ServerLevel) level).sendParticles(ParticleTypes.SMOKE, loc.x, loc.y, loc.z, 14, 0.15F, 0.05F, 0.15F, 0);
+                    ((ServerLevel) level).sendParticles(ParticleTypesNF.STEAM.get(), loc.x, loc.y, loc.z, 14, 0.15F, 0.05F, 0.15F, 0);
                 }
                 level.playSound(null, player, SoundsNF.QUENCH.get(), SoundSource.PLAYERS, 1F, 1F);
                 return InteractionResult.SUCCESS;

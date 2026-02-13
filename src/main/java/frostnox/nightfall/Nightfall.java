@@ -688,6 +688,7 @@ public class Nightfall {
             engine.register(ParticleTypesNF.FADING_CLOUD.get(), FadingCloudParticle.Provider::new);
             engine.register(ParticleTypesNF.SKARA.get(), SkaraParticle.Provider::new);
             engine.register(ParticleTypesNF.FIRE_EXPLOSION.get(), FireExplosionParticle.Provider::new);
+            engine.register(ParticleTypesNF.STEAM.get(), SteamParticle.Provider::new);
         }
 
         public static class WaterFallProvider implements ParticleProvider<SimpleParticleType> {

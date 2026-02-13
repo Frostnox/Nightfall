@@ -9,7 +9,6 @@ import frostnox.nightfall.capability.LevelData;
 import frostnox.nightfall.data.recipe.CrucibleRecipe;
 import frostnox.nightfall.entity.ai.pathfinding.NodeManager;
 import frostnox.nightfall.entity.ai.pathfinding.NodeType;
-import frostnox.nightfall.item.item.FilledBucketItem;
 import frostnox.nightfall.registry.forge.BlockEntitiesNF;
 import frostnox.nightfall.util.MathUtil;
 import frostnox.nightfall.util.data.WrappedBool;
@@ -61,7 +60,6 @@ import net.minecraftforge.items.wrapper.RecipeWrapper;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
@@ -115,14 +113,7 @@ public class CrucibleBlock extends WaterloggedEntityBlock implements ICustomPath
         if(level.isClientSide()) return InteractionResult.SUCCESS;
         else {
             if(level.getBlockEntity(pos) instanceof CrucibleBlockEntity blockEntity) {
-                //Try placing water directly before opening gui
-                ServerPlayer serverPlayer = (ServerPlayer) player;
-                ItemStack item = player.getItemInHand(hand);
-                if(item.getItem() instanceof FilledBucketItem bucket) {
-                    blockEntity.createMenu(serverPlayer.containerCounter, player.getInventory()).quickMoveStack(player, 27 + player.getInventory().selected);
-                    if(item.isEmpty()) bucket.playEmptySound(null, level, pos);
-                }
-                else NetworkHooks.openGui((ServerPlayer) player, blockEntity, pos);
+                NetworkHooks.openGui((ServerPlayer) player, blockEntity, pos);
                 return InteractionResult.SUCCESS;
             }
         }

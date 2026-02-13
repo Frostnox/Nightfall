@@ -11,9 +11,12 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -49,6 +52,22 @@ public class FilledBucketItem extends ItemNF {
 
     public Fluid getFluid() {
         return heldFluid.get();
+    }
+
+    @Override
+    public InteractionResult onItemUseFirst(ItemStack bucket, UseOnContext context) {
+        Player player = context.getPlayer();
+        if(player != null) {
+            Level level = context.getLevel();
+            if(level.getBlockEntity(context.getClickedPos()) instanceof MenuProvider menuProvider) {
+                menuProvider.createMenu(0, player.getInventory(), player).quickMoveStack(player, 27 + player.getInventory().selected);
+                if(bucket.isEmpty()) {
+                    playEmptySound(null, level, context.getClickedPos(), true);
+                    return InteractionResult.SUCCESS;
+                }
+            }
+        }
+        return InteractionResult.PASS;
     }
 
     @Override
@@ -100,13 +119,13 @@ public class FilledBucketItem extends ItemNF {
             if(placeSources) {
                 if(liquidBlock.canPlaceLiquid(level, pos, blockState, heldFluid.get())) {
                     liquidBlock.placeLiquid(level, pos, blockState, heldFluid.get().getSource(false));
-                    this.playEmptySound(player, level, pos);
+                    this.playEmptySound(player, level, pos, false);
                     return true;
                 }
             }
             else if(liquidBlock.canPlaceLiquid(level, pos, blockState, heldFluid.get().getFlowing())) {
                 liquidBlock.placeLiquid(level, pos, blockState, heldFluid.get().getFlowing().defaultFluidState());
-                this.playEmptySound(player, level, pos);
+                this.playEmptySound(player, level, pos, false);
                 return true;
             }
         }
@@ -124,14 +143,14 @@ public class FilledBucketItem extends ItemNF {
                 return false;
             }
         }
-        this.playEmptySound(player, level, pos);
+        this.playEmptySound(player, level, pos, false);
         return true;
     }
 
-    public void playEmptySound(@Nullable Player player, LevelAccessor level, BlockPos pos) {
+    public void playEmptySound(@Nullable Player player, LevelAccessor level, BlockPos pos, boolean forceSound) {
         SoundEvent soundevent = heldFluid.get().getAttributes().getEmptySound();
         if(soundevent == null) soundevent = SoundEvents.BUCKET_EMPTY;
-        level.playSound(player, pos, soundevent, SoundSource.BLOCKS, 1.0F, 1.0F);
+        level.playSound(forceSound ? null : player, pos, soundevent, SoundSource.BLOCKS, 1.0F, 1.0F);
         level.gameEvent(player, GameEvent.FLUID_PLACE, pos);
     }
 }

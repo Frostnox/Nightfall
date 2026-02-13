@@ -9,7 +9,6 @@ import frostnox.nightfall.capability.IChunkData;
 import frostnox.nightfall.capability.LevelData;
 import frostnox.nightfall.entity.ai.pathfinding.NodeManager;
 import frostnox.nightfall.entity.ai.pathfinding.NodeType;
-import frostnox.nightfall.item.item.FilledBucketItem;
 import frostnox.nightfall.registry.forge.BlockEntitiesNF;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -89,14 +88,7 @@ public class BarrelBlockNF extends WaterloggedEntityBlock implements ICustomPath
             BlockPos facingPos = pos.relative(facing);
             if(!level.getBlockState(facingPos).isFaceSturdy(level, facingPos, facing.getOpposite(), SupportType.FULL) &&
                     level.getBlockEntity(pos) instanceof BarrelBlockEntityNF barrel) {
-                //Try placing water directly before opening gui
-                ServerPlayer serverPlayer = (ServerPlayer) player;
-                ItemStack item = player.getItemInHand(hand);
-                if(item.getItem() instanceof FilledBucketItem bucket) {
-                    barrel.createMenu(serverPlayer.containerCounter, player.getInventory()).quickMoveStack(player, 27 + player.getInventory().selected);
-                    if(item.isEmpty()) bucket.playEmptySound(null, level, pos);
-                }
-                else NetworkHooks.openGui(serverPlayer, barrel, pos);
+                NetworkHooks.openGui((ServerPlayer) player, barrel, pos);
             }
             return InteractionResult.CONSUME;
         }

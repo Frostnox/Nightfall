@@ -1,9 +1,7 @@
 package frostnox.nightfall.client.particle;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.particles.SimpleParticleType;
 
 import javax.annotation.Nullable;
@@ -18,16 +16,6 @@ public class FloatingParticle extends TextureSheetParticle {
         this.xd *= 0.2D;
         this.yd *= 0.2D;
         this.zd *= 0.2D;
-    }
-
-    public void tick() {
-        super.tick();
-    }
-
-    protected boolean isCloseToPlayer() {
-        Minecraft mc = Minecraft.getInstance();
-        LocalPlayer player = mc.player;
-        return player != null && player.getEyePosition().distanceToSqr(this.x, this.y, this.z) <= 0.6D && mc.options.getCameraType().isFirstPerson();
     }
 
     @Override

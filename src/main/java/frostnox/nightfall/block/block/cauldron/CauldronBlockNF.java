@@ -8,10 +8,8 @@ import frostnox.nightfall.capability.LevelData;
 import frostnox.nightfall.entity.ai.pathfinding.NodeManager;
 import frostnox.nightfall.entity.ai.pathfinding.NodeType;
 import frostnox.nightfall.item.item.ChangeOnUseFinishItem;
-import frostnox.nightfall.item.item.FilledBucketItem;
 import frostnox.nightfall.registry.forge.BlockEntitiesNF;
 import frostnox.nightfall.registry.forge.BlocksNF;
-import frostnox.nightfall.registry.forge.ItemsNF;
 import frostnox.nightfall.util.LevelUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -101,16 +99,7 @@ public class CauldronBlockNF extends WaterloggedEntityBlock implements IHeatable
                     }
                     else LevelUtil.giveItemToPlayer(cauldron.takeMeal(), player, true);
                 }
-                else {
-                    //Try placing water directly before opening gui
-                    ServerPlayer serverPlayer = (ServerPlayer) player;
-                    ItemStack item = player.getItemInHand(hand);
-                    if(item.getItem() instanceof FilledBucketItem bucket) {
-                        cauldron.createMenu(serverPlayer.containerCounter, player.getInventory()).quickMoveStack(player, 27 + player.getInventory().selected);
-                        if(item.isEmpty()) bucket.playEmptySound(null, level, pos);
-                    }
-                    else NetworkHooks.openGui((ServerPlayer) player, cauldron, pos);
-                }
+                else NetworkHooks.openGui((ServerPlayer) player, cauldron, pos);
             }
             return InteractionResult.CONSUME;
         }
