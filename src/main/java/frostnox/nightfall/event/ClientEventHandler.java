@@ -17,7 +17,7 @@ import frostnox.nightfall.client.EntityLightEngine;
 import frostnox.nightfall.client.gui.screen.SignEditScreenNF;
 import frostnox.nightfall.client.gui.screen.encyclopedia.EncyclopediaScreen;
 import frostnox.nightfall.client.gui.screen.encyclopedia.EntryPuzzleScreen;
-import frostnox.nightfall.client.gui.screen.item.ModifiableItemScreen;
+import frostnox.nightfall.client.gui.screen.item.ModifiableScreen;
 import frostnox.nightfall.data.TagsNF;
 import frostnox.nightfall.data.recipe.BuildingRecipe;
 import frostnox.nightfall.entity.IEntityWithItem;
@@ -765,7 +765,7 @@ public class ClientEventHandler {
         Minecraft mc = Minecraft.getInstance();
         LocalPlayer player = mc.player;
         if(player == null || !player.isAlive()) return;
-        if(mc.screen instanceof ModifiableItemScreen) {
+        if(mc.screen instanceof ModifiableScreen) {
             event.setSwingHand(false);
             event.setCanceled(true);
             return;
@@ -793,7 +793,7 @@ public class ClientEventHandler {
                             BuildingRecipe recipe = recipes.get(i);
                             if(recipe.output instanceof BlockItem blockItem && blockItem.getBlock() == block) {
                                 ClientEngine.get().setModifiableIndex(capP.isMainhandActive(), recipe.getResultItem(), i);
-                                buildingItem.setLastUsedItem(recipe.getResultItem().getItem());
+                                buildingItem.setLastUsedObject(recipe.getResultItem().getItem());
                                 break;
                             }
                         }
@@ -809,7 +809,7 @@ public class ClientEventHandler {
                                 BuildingRecipe recipe = recipes.get(i);
                                 if(recipe.output == armorStandItem) {
                                     ClientEngine.get().setModifiableIndex(capP.isMainhandActive(), recipe.getResultItem(), i);
-                                    buildingItem.setLastUsedItem(recipe.getResultItem().getItem());
+                                    buildingItem.setLastUsedObject(recipe.getResultItem().getItem());
                                     break;
                                 }
                             }
@@ -833,7 +833,7 @@ public class ClientEventHandler {
             event.setCanceled(true);
             event.setSwingHand(false);
             if(item.getItem() instanceof TongsItem tongs && !tongs.hasWorkpiece(item) && player.level.getBlockEntity(ClientEngine.get().microBlockEntityPos) instanceof TieredAnvilBlockEntity) {
-                AnvilAction anvilAction = event.isUseItem() ? AnvilAction.TAKE : (ClientEngine.get().microHitResult.getX() == 0 ? AnvilAction.FLIP_Y : AnvilAction.FLIP_XZ);
+                AnvilAction anvilAction = event.isUseItem() ? AnvilAction.TAKE : AnvilAction.FLIP;
                 if(anvilAction == AnvilAction.TAKE || (!player.swinging || player.swingingArm != capP.getActiveHand())) {
                     NetworkHandler.toServer(new AnvilActionToServer(anvilAction, ClientEngine.get().microHitResult.getX(), ClientEngine.get().microBlockEntityPos));
                     player.swing(capP.getActiveHand()); //Do swing here to avoid block break particles from original hit result
@@ -895,7 +895,7 @@ public class ClientEventHandler {
         /*if(event.getKey() == mc.options.keyJump.getKey().getValue()) {
 
         }*/
-        if((!capA.isInactive() && !action.isInterruptible()) || capA.isStunned() || mc.screen instanceof ModifiableItemScreen) {
+        if((!capA.isInactive() && !action.isInterruptible()) || capA.isStunned() || mc.screen instanceof ModifiableScreen) {
             //Prevent offhand swapping during attacks
             if(event.getKey() == mc.options.keySwapOffhand.getKey().getValue()) {
                 mc.options.keySwapOffhand.consumeClick();
@@ -973,7 +973,7 @@ public class ClientEventHandler {
         if(player == null || !player.isAlive()) return;
         IActionTracker capA = ActionTracker.get(player);
         if(capA.isStunned()) {
-            if(event.getScreen() instanceof AbstractContainerScreen || event.getScreen() instanceof ModifiableItemScreen) event.setCanceled(true);
+            if(event.getScreen() instanceof AbstractContainerScreen || event.getScreen() instanceof ModifiableScreen) event.setCanceled(true);
         }
         else if(event.getScreen() instanceof InventoryScreen) {
             event.setScreen(ClientEngine.get().getInventoryScreen(player));
@@ -1103,7 +1103,7 @@ public class ClientEventHandler {
         Minecraft mc = Minecraft.getInstance();
         IPlayerData capP = PlayerData.get(p);
         IActionTracker capA = ActionTracker.get(p);
-        return mc.getCameraEntity() != null && (mc.screen == null || (mc.screen instanceof ModifiableItemScreen modifiableItemScreen && modifiableItemScreen.allowMovementInputs()))
+        return mc.getCameraEntity() != null && (mc.screen == null || (mc.screen instanceof ModifiableScreen<?> modifiableItemScreen && modifiableItemScreen.allowMovementInputs()))
                 && !mc.options.keyJump.isDown() && capP.getStamina() > 0 && !p.isUsingItem() && p.isOnGround() && p.tickCount - capP.getLastDodgeTick() >= 5
                 && !p.isInWater() && !p.isInLava() &&!p.isCrouching() && p.getPose() != Pose.SWIMMING && capP.getHeldContents().isEmpty()
                 && capA.getAction().allowDodging(capA.getState());

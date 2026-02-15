@@ -25,7 +25,7 @@ public class RackRenderer<T extends RackBlockEntity> implements BlockEntityRende
 
     @Override
     public boolean shouldRender(RackBlockEntity rack, Vec3 camPos) {
-        return !rack.items.isEmpty();
+        return !rack.items.isEmpty() && Vec3.atCenterOf(rack.getBlockPos()).closerThan(camPos, getViewDistance());
     }
 
     @Override

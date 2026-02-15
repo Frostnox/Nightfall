@@ -52,6 +52,8 @@ import java.util.List;
 import java.util.Random;
 
 public class RenderUtil {
+    public static final Color WHITE_OUTLINE = new Color(1, 1, 1, 0.5F);
+    public static final Color BLACK_OUTLINE = new Color(0, 0, 0, 0.5F);
     public static final int COLOR_WHITE = 0xffffff;
     public static final int COLOR_BLACK = 0x34312e;
     public static final int COLOR_LEATHER = 0xcb814f;
@@ -205,12 +207,11 @@ public class RenderUtil {
         buffer.endBatch(RenderType.lines());
     }
 
-    //This could be further optimized to not draw lines that aren't visible
-    public static void drawMicroGridCubeOutline(PoseStack stack, MultiBufferSource buffer, Color color, VoxelShape cube, boolean skipHitBox) {
-        VertexConsumer builder = buffer.getBuffer(RenderTypeNF.LINES_DEPTH);
+    public static void drawShapeOutline(PoseStack stack, MultiBufferSource buffer, Color color, VoxelShape shape) {
+        VertexConsumer builder = buffer.getBuffer(RenderType.lines());
         Matrix4f matrix = stack.last().pose();
         Matrix3f normal = stack.last().normal();
-        cube.forAllEdges((xMin, yMin, zMin, xMax, yMax, zMax) -> {
+        shape.forAllEdges((xMin, yMin, zMin, xMax, yMax, zMax) -> {
             float xSize = (float)(xMax - xMin);
             float ySize = (float)(yMax - yMin);
             float zSize = (float)(zMax - zMin);
@@ -218,10 +219,8 @@ public class RenderUtil {
             xSize /= dist;
             ySize /= dist;
             zSize /= dist;
-            if(skipHitBox || !ClientEngine.get().microHitBox.contains(xMin, yMin, zMin) || !ClientEngine.get().microHitBox.contains(xMax, yMax, zMax)) {
-                builder.vertex(matrix, (float) (xMin), (float) (yMin), (float) (zMin)).color(color.getRed(), color.getBlue(), color.getGreen(), color.getAlpha()).normal(normal, xSize, ySize, zSize).endVertex();
-                builder.vertex(matrix, (float) (xMax), (float) (yMax), (float) (zMax)).color(color.getRed(), color.getBlue(), color.getGreen(), color.getAlpha()).normal(normal, xSize, ySize, zSize).endVertex();
-            }
+            builder.vertex(matrix, (float) (xMin), (float) (yMin), (float) (zMin)).color(color.getRed(), color.getBlue(), color.getGreen(), color.getAlpha()).normal(normal, xSize, ySize, zSize).endVertex();
+            builder.vertex(matrix, (float) (xMax), (float) (yMax), (float) (zMax)).color(color.getRed(), color.getBlue(), color.getGreen(), color.getAlpha()).normal(normal, xSize, ySize, zSize).endVertex();
         });
     }
 

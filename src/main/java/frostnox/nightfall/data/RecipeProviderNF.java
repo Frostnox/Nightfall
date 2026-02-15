@@ -14,6 +14,7 @@ import frostnox.nightfall.registry.KnowledgeNF;
 import frostnox.nightfall.registry.forge.FluidsNF;
 import frostnox.nightfall.registry.forge.ItemsNF;
 import frostnox.nightfall.world.ContinentalWorldType;
+import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
@@ -22,11 +23,15 @@ import net.minecraft.data.recipes.SpecialRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 public class RecipeProviderNF extends RecipeProvider {
     private static final int DAY_LENGTH = (int) ContinentalWorldType.DAY_LENGTH;
@@ -445,12 +450,38 @@ public class RecipeProviderNF extends RecipeProvider {
 //        }
 //        TieredAnvilRecipeBuilder.base(ItemsNF.INGOTS.get(Metal.IRON).get(), Metal.IRON.getWorkTier()).addIngredient(ItemsNF.IRON_BLOOM.get()).slagChance(0.7F).randRange(4, 10)
 //                .addStartShape(MicroGridShape.CHUNK).addFinishShape(MicroGridShape.INGOT).requirement(itemKnowledge(ItemsNF.IRON_BLOOM)).save(consumer);
-        TieredAnvilRecipeBuilder.base(Ingredient.of(ItemsNF.IRON_BLOOM.get()), new int[]{0, 0, 0, 0, 0, 0, 0, 0}, ItemsNF.INGOTS.get(Metal.IRON).get()).requirement(itemKnowledge(ItemsNF.IRON_BLOOM)).save(consumer);
+        Map<Metal, Ingredient> inputs = new Object2ObjectArrayMap<>(Metal.values().length), inputsPlates = new Object2ObjectArrayMap<>(Metal.values().length);
+        for(Metal metal : Metal.values()) {
+            List<ItemStack> items = new ArrayList<>(4);
+            items.add(new ItemStack(ItemsNF.INGOTS.get(metal).get()));
+            Item chunk = switch(metal) {
+                case TIN -> ItemsNF.TIN_CHUNK.get();
+                case COPPER -> ItemsNF.COPPER_CHUNK.get();
+                case METEORITE -> ItemsNF.METEORITE_CHUNK.get();
+                case IRON -> ItemsNF.IRON_BLOOM.get();
+                default -> null;
+            };
+            items.add(new ItemStack(chunk));
+            inputs.put(metal, Ingredient.of(items.stream()));
+            items.add(new ItemStack(ItemsNF.PLATES.get(metal).get()));
+            inputsPlates.put(metal, Ingredient.of(items.stream()));
+        }
+        for(TieredItemMaterial material : ItemsNF.ARMAMENT_HEADS.keySet()) {
+            TieredAnvilRecipeBuilder.base(inputs.get(material.getMetal()), new int[]{0, 0, 0, 1, 1, 2, 0, 0, 0, 0, 3}, ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.ADZE).get()).requirement(EntriesNF.SMITHING).save(consumer);
+            TieredAnvilRecipeBuilder.base(inputs.get(material.getMetal()), new int[]{0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 3}, ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.AXE).get()).requirement(EntriesNF.SMITHING).save(consumer);
+            TieredAnvilRecipeBuilder.base(inputs.get(material.getMetal()), new int[]{0, 2, 1, 0, 2, 0, 0, 0, 0, 0, 3}, ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.CHISEL).get()).requirement(EntriesNF.SMITHING).save(consumer);
+            TieredAnvilRecipeBuilder.base(inputs.get(material.getMetal()), new int[]{0, 2, 0, 0, 2, 0, 1, 0, 0, 0, 3}, ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.KNIFE).get()).requirement(EntriesNF.SMITHING).save(consumer);
+            TieredAnvilRecipeBuilder.base(inputs.get(material.getMetal()), new int[]{0, 0, 0, 0, 2, 0, 2, 0, 2, 0, 2}, ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.MACE).get()).requirement(EntriesNF.MACE).save(consumer);
+            TieredAnvilRecipeBuilder.base(inputs.get(material.getMetal()), new int[]{0, 1, 0, 0, 2, 2, 0, 0, 2, 2, 0}, ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.PICKAXE).get()).requirement(EntriesNF.SMITHING).save(consumer);
+            TieredAnvilRecipeBuilder.base(inputs.get(material.getMetal()), new int[]{0, 2, 0, 0, 2, 1, 1, 0, 2, 1, 0}, ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.SABRE).get()).requirement(EntriesNF.SABRE).save(consumer);
+            TieredAnvilRecipeBuilder.base(inputs.get(material.getMetal()), new int[]{2, 0, 0, 1, 1, 0, 1, 2, 0, 0, 0}, ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.SHOVEL).get()).requirement(EntriesNF.SMITHING).save(consumer);
+            TieredAnvilRecipeBuilder.base(inputs.get(material.getMetal()), new int[]{0, 2, 0, 0, 2, 2, 0, 0, 2, 0, 1}, ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.SICKLE).get()).requirement(EntriesNF.SICKLE_SMITHING).save(consumer);
+            TieredAnvilRecipeBuilder.base(inputs.get(material.getMetal()), new int[]{2, 0, 1, 0, 2, 0, 1, 0, 2, 0, 2}, ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.SPEAR).get()).requirement(EntriesNF.SMITHING).save(consumer);
+            TieredAnvilRecipeBuilder.base(inputs.get(material.getMetal()), new int[]{0, 2, 0, 0, 2, 0, 1, 0, 2, 0, 0}, ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.SWORD).get()).requirement(EntriesNF.SMITHING).save(consumer);
+        }
 
         SpecialRecipeBuilder.special(TongsEmptyRecipe.SERIALIZER).save(consumer, Nightfall.MODID + ":tongs_empty");
     }
-
-    private record AnvilEntry(Ingredient item, MicroGridShape shape, int randMin, int randMax) {}
 
     private static ResourceLocation itemKnowledge(RegistryObject<? extends Item> item) {
         return KnowledgeNF.ITEMS.get(item).getId();

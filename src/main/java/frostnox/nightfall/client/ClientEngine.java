@@ -24,7 +24,7 @@ import frostnox.nightfall.client.gui.screen.encyclopedia.EncyclopediaCategory;
 import frostnox.nightfall.client.gui.screen.encyclopedia.EncyclopediaScreen;
 import frostnox.nightfall.client.gui.screen.encyclopedia.EntryClient;
 import frostnox.nightfall.client.gui.screen.inventory.PlayerInventoryScreen;
-import frostnox.nightfall.client.gui.screen.item.ModifiableItemScreen;
+import frostnox.nightfall.client.gui.screen.item.ModifiableScreen;
 import frostnox.nightfall.client.model.AnimatedItemModel;
 import frostnox.nightfall.client.render.BlockEntityAsItemRenderer;
 import frostnox.nightfall.client.render.entity.PlayerRendererNF;
@@ -118,7 +118,7 @@ public class ClientEngine {
         @Override
         public boolean isActive() {
             Screen screen = Minecraft.getInstance().screen;
-            return screen == null || (screen instanceof ModifiableItemScreen modifiableItemScreen && modifiableItemScreen.allowMovementInputs());
+            return screen == null || (screen instanceof ModifiableScreen<?> modifiableItemScreen && modifiableItemScreen.allowMovementInputs());
         }
 
         @Override
@@ -187,9 +187,11 @@ public class ClientEngine {
     private boolean beiRendererCreated = false;
 
     //Optional items for use with modifiable items
-    private ItemStack optionalMainItem = ItemStack.EMPTY, optionalOffItem = ItemStack.EMPTY;
+    private @Nullable Object optionalMainObject = null, optionalOffObject = null;
     private int modifiableIndexMain = -1, modifiableIndexOff = -1;
     public boolean canUseModifiableMain, canUseModifiableOff;
+    private @Nullable Object lastVisualizedRecipe;
+    private int lastVisualizedRecipePage = 1;
 
     //Last
     public int lastDashTick = -100;
@@ -209,6 +211,7 @@ public class ClientEngine {
     public Vec3i microHitResult; //Position that look vector intersected with a gridded micro cube, local to grid
     public AABB microHitBox; //Box for microHitResult
     public BlockPos microBlockEntityPos; //Position of BlockEntity associated with microHitResult
+
 
     //Music
     public final Music MENU_MUSIC, SPRING_MUSIC, SUMMER_MUSIC, FALL_MUSIC, WINTER_MUSIC, NO_MUSIC;
@@ -493,7 +496,7 @@ public class ClientEngine {
                                         double distSqr = startVec.distanceToSqr(hitVec.get());
                                         if(distSqr < closestDistSqr) {
                                             microHitResult = new Vec3i(i, 0, 0);
-                                            microHitBox = boxes[i].move(-(blockPos.getX() + 0.5), -(blockPos.getY() + 1), -(blockPos.getZ() + 0.5)).inflate(0.001);
+                                            microHitBox = boxes[i].move(-(blockPos.getX() + 0.5 - (anvil.getRawSection().center - 0.5)), -(blockPos.getY() + 1), -(blockPos.getZ() + 0.5)).inflate(0.001);
                                             microBlockEntityPos = new BlockPos(blockPos);
                                             closestDistSqr = distSqr;
                                         }
@@ -520,7 +523,7 @@ public class ClientEngine {
                                                 double distSqr = startVec.distanceToSqr(hitVec.get());
                                                 if(distSqr < closestDistSqr) {
                                                     microHitResult = new Vec3i(gridX, gridY, gridZ);
-                                                    microHitBox = new AABB(gridX/16D - 0.001, gridY/16D - 0.001, gridZ/16D - 0.001, (gridX + 1)/16D + 0.001, (gridY + 1)/16D + 0.001, (gridZ + 1)/16D + 0.001);
+                                                    microHitBox = new AABB(gridX/16D, gridY/16D, gridZ/16D, (gridX + 1)/16D, (gridY + 1)/16D, (gridZ + 1)/16D).inflate(0.001);
                                                     microBlockEntityPos = new BlockPos(blockPos);
                                                     closestDistSqr = distSqr;
                                                 }
@@ -578,13 +581,13 @@ public class ClientEngine {
             if(this.offHandHeight < 0.05F) this.offHandItem = offItem;
 
             if(!capP.getLastMainItem().sameItemStackIgnoreDurability(mainItem) || firstTick) {
-                optionalMainItem = ItemStack.EMPTY;
+                optionalMainObject = null;
                 canUseModifiableMain = true;
                 if(!mainItem.isEmpty() && mainItem.getItem() instanceof IClientSwapBehavior swapItem) swapItem.swapClient(mc, mainItem, player, true);
                 capP.setLastMainItem();
             }
             if(!capP.getLastOffItem().sameItemStackIgnoreDurability(offItem) || firstTick) {
-                optionalOffItem = ItemStack.EMPTY;
+                optionalOffObject = null;
                 canUseModifiableOff = true;
                 if(!offItem.isEmpty() && offItem.getItem() instanceof IClientSwapBehavior swapItem) swapItem.swapClient(mc, offItem, player, false);
                 capP.setLastOffItem();
@@ -593,12 +596,12 @@ public class ClientEngine {
             if(offItem.getItem() instanceof IHeldClientTick tickItem) tickItem.onHeldTickClient(mc, offItem, player, false);
 
             lastMainHandLowerTime = mainHandLowerTime;
-            if(canUseModifiableMain || optionalMainItem.isEmpty() || getPlayer().getAbilities().instabuild) {
+            if(canUseModifiableMain || optionalMainObject == null || getPlayer().getAbilities().instabuild) {
                 if(mainHandLowerTime > 0) mainHandLowerTime--;
             }
             else if(mainHandLowerTime < 4) mainHandLowerTime++;
             lastOffHandLowerTime = offHandLowerTime;
-            if(canUseModifiableOff || optionalOffItem.isEmpty() || getPlayer().getAbilities().instabuild) {
+            if(canUseModifiableOff || optionalOffObject == null || getPlayer().getAbilities().instabuild) {
                 if(offHandLowerTime > 0) offHandLowerTime--;
             }
             else if(offHandLowerTime < 4) offHandLowerTime++;
@@ -662,12 +665,28 @@ public class ClientEngine {
         return lastPlayerTickCount;
     }
 
-    public ItemStack getOptionalMainItem() {
-        return optionalMainItem;
+    public @Nullable Object getOptionalMainObject() {
+        return optionalMainObject;
     }
 
-    public ItemStack getOptionalOffItem() {
-        return optionalOffItem;
+    public @Nullable Object getOptionalOffObject() {
+        return optionalOffObject;
+    }
+
+    public @Nullable Object getLastVisualizedRecipe() {
+        return lastVisualizedRecipe;
+    }
+
+    public void setLastVisualizedRecipe(@Nullable Object object) {
+        lastVisualizedRecipe = object;
+    }
+
+    public int getLastVisualizedRecipePage() {
+        return lastVisualizedRecipePage;
+    }
+
+    public void setLastVisualizedRecipePage(int page) {
+        lastVisualizedRecipePage = page;
     }
 
     /**
@@ -926,7 +945,7 @@ public class ClientEngine {
         List<ToolIngredientRecipe> recipes = tool.getRecipes(mc.level, mc.player, mc.player.getItemInHand(mainHand ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND));
         List<ItemStack> items = new ObjectArrayList<>(recipes.size());
         for(int i = 0; i < recipes.size(); i++) items.add(i, recipes.get(i).getResultItem());
-        ModifiableItemScreen.initSelection(mc, items, tool, mainHand);
+        ModifiableScreen.initSelection(mc, items, tool, mainHand);
     }
 
     public float getPartialTick() {
@@ -937,13 +956,13 @@ public class ClientEngine {
         return lastPartialTick;
     }
 
-    public void setModifiableIndex(boolean main, ItemStack item, int index) {
+    public void setModifiableIndex(boolean main, Object object, int index) {
         if(main) {
-            optionalMainItem = item;
+            optionalMainObject = object;
             modifiableIndexMain = index;
         }
         else {
-            optionalOffItem = item;
+            optionalOffObject = object;
             modifiableIndexOff = index;
         }
     }

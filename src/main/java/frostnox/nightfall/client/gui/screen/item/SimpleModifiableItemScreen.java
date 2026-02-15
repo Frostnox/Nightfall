@@ -11,7 +11,6 @@ import java.util.List;
 public class SimpleModifiableItemScreen extends ModifiableItemScreen {
     public SimpleModifiableItemScreen(boolean mainHand, IModifiable modifiableItem, List<ItemStack> items) {
         super(64, 12, mainHand, modifiableItem, items);
-        updatePages(modifiableItem, items.size());
     }
 
     @Override

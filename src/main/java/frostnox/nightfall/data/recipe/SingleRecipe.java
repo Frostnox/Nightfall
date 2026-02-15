@@ -152,7 +152,7 @@ public abstract class SingleRecipe extends EncyclopediaRecipe<RecipeWrapper> imp
         public T fromJson(ResourceLocation id, JsonObject json) {
             ResourceLocation requirement = null;
             if(json.has("requirement")) requirement = ResourceLocation.parse(json.get("requirement").getAsString());
-            Ingredient input = Ingredient.fromJson(GsonHelper.getAsJsonObject(json, "input"));
+            Ingredient input = Ingredient.fromJson(json.get("input"));
             ItemStack output = json.has("output") ? ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "output")) : ItemStack.EMPTY;
             FluidStack fluidOutput = json.has("fluidOutput") ? DataUtil.fluidStackFromJson(GsonHelper.getAsJsonObject(json, "fluidOutput")) : FluidStack.EMPTY;
             int cookTime = GsonHelper.getAsInt(json, "cookTime", 0);

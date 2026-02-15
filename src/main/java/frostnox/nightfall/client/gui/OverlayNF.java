@@ -16,12 +16,14 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodData;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
@@ -86,12 +88,12 @@ public abstract class OverlayNF extends GuiComponent {
                     renderCrosshair(poseStack);
                 }
             });
-            IIngameOverlay optionalItemsOverlay = OverlayRegistry.registerOverlayAbove(ForgeIngameGui.HOTBAR_ELEMENT, "OptionalItems",
+            IIngameOverlay optionalObjectsOverlay = OverlayRegistry.registerOverlayAbove(ForgeIngameGui.HOTBAR_ELEMENT, "OptionalObjects",
                     (gui, mStack, partialTicks, screenWidth, screenHeight) -> {
                         if(!mc.options.hideGui) {
                             if(mc.player != null && !mc.player.isSpectator()) {
                                 gui.setupOverlayRenderState(true, false);
-                                renderOptionalItems(mStack);
+                                renderOptionalObjects(mStack);
                             }
                         }
                     });
@@ -326,28 +328,30 @@ public abstract class OverlayNF extends GuiComponent {
     }
 
     //Renders optional items present in ClientEngine (used for items like building materials or bows)
-    protected static void renderOptionalItems(PoseStack stack) {
+    protected static void renderOptionalObjects(PoseStack stack) {
+        renderOptionalObject(stack, ClientEngine.get().getOptionalMainObject(), true);
+        renderOptionalObject(stack, ClientEngine.get().getOptionalOffObject(), false);
+    }
+
+    protected static void renderOptionalObject(PoseStack stack, Object object, boolean main) {
         Minecraft mc = Minecraft.getInstance();
         int width = mc.getWindow().getGuiScaledWidth() / 2;
         int height = mc.getWindow().getGuiScaledHeight();
-        ItemStack mainItem = ClientEngine.get().getOptionalMainItem(), offItem = ClientEngine.get().getOptionalOffItem();
-        boolean mainPresent = !mainItem.isEmpty(), offPresent = !offItem.isEmpty();
-        if(mainPresent || offPresent) {
+        if(object != null) {
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             RenderSystem.setShader(GameRenderer::getPositionTexShader);
             RenderSystem.setShaderTexture(0, TEXTURE);
-            if(mainPresent) draw(stack, width + 91 + 7, height - 22,
-                    mc.player.getMainHandItem().getItem() instanceof IModifiable modifiable ? modifiable.getBackgroundUOffset() : 0, 54, 22, 22);
-            if(offPresent) draw(stack, width - 91 - 48, height - 22,
-                    mc.player.getOffhandItem().getItem() instanceof IModifiable modifiable ? modifiable.getBackgroundUOffset() : 0, 54, 20, 22);
+            draw(stack, width + (main ? (91 + 7) : (-91 - 48)), height - 22,
+                    mc.player.getItemInHand(main ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND).getItem() instanceof IModifiable modifiable ? modifiable.getBackgroundUOffset() : 0,
+                    54, main ? 22 : 20, 22);
         }
-        if(mainPresent) {
-            mc.getItemRenderer().renderAndDecorateItem(mainItem, width + 91 + 10, height - 16 - 3);
-            mc.getItemRenderer().renderGuiItemDecorations(mc.font, mainItem, width + 91 + 10, height - 16 - 3);
+        if(object instanceof ItemStack item) {
+            mc.getItemRenderer().renderAndDecorateItem(item, width + (main ? (91 + 10) : (-91 - 45)), height - 16 - 3);
+            mc.getItemRenderer().renderGuiItemDecorations(mc.font, item, width + 91 + 10, height - 16 - 3);
         }
-        if(offPresent) {
-            mc.getItemRenderer().renderAndDecorateItem(offItem, width - 91 - 45, height - 16 - 3);
-            mc.getItemRenderer().renderGuiItemDecorations(mc.font, offItem, width - 91 - 45, height - 16 - 3);
+        else if(object instanceof Recipe<?> recipe) {
+            mc.getItemRenderer().renderAndDecorateItem(recipe.getResultItem(), width + (main ? (91 + 10) : (-91 - 45)), height - 16 - 3);
+            mc.getItemRenderer().renderGuiItemDecorations(mc.font, recipe.getResultItem(), width + 91 + 10, height - 16 - 3);
         }
     }
 }

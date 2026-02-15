@@ -73,7 +73,7 @@ public class TieredAnvilRecipeBuilder {
         }
         IDS.put(name, number);
         ResourceLocation id = ResourceLocation.fromNamespaceAndPath(namespace, name + "_" + number);
-        if(work.length != 8) throw new IllegalStateException("Work array is not 8 elements for anvil recipe " + id);
+        if(work.length != 11) throw new IllegalStateException("Work array is not 11 elements for anvil recipe " + id);
         consumer.accept(new TieredAnvilRecipeBuilder.Result(id, requirement, input, work, quenchFluid, result, count));
     }
     

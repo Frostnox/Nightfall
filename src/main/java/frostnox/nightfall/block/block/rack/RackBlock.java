@@ -120,7 +120,7 @@ public class RackBlock extends WaterloggedEntityBlock {
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         BlockState state = super.getStateForPlacement(context);
-        if(state != null) return state.setValue(FACING, context.getClickedFace());
+        if(state != null && context.getClickedFace().getAxis() != Direction.Axis.Y) return state.setValue(FACING, context.getClickedFace());
         else return state;
     }
 

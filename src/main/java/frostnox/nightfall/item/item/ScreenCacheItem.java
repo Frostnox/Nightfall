@@ -4,7 +4,7 @@ import frostnox.nightfall.item.client.IScreenCache;
 import net.minecraft.world.item.Item;
 
 public class ScreenCacheItem extends ItemNF implements IScreenCache {
-    private Item lastUsedItem;
+    private Object lastUsedItem;
     private int lastUsedPage = 1;
 
     public ScreenCacheItem(Properties properties) {
@@ -12,7 +12,7 @@ public class ScreenCacheItem extends ItemNF implements IScreenCache {
     }
 
     @Override
-    public Item getLastUsedItem() {
+    public Object getLastUsedObject() {
         return lastUsedItem;
     }
 
@@ -22,8 +22,8 @@ public class ScreenCacheItem extends ItemNF implements IScreenCache {
     }
 
     @Override
-    public void setLastUsedItem(Item item) {
-        lastUsedItem = item;
+    public void setLastUsedObject(Object object) {
+        lastUsedItem = object;
     }
 
     @Override

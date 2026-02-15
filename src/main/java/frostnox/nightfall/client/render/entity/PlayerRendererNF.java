@@ -358,7 +358,7 @@ public class PlayerRendererNF extends PlayerRenderer {
                     getParentModel().translateToHand(hand == InteractionHand.MAIN_HAND ? HumanoidArm.RIGHT : HumanoidArm.LEFT, stack);
                     stack.translate(0, 7.5D/16D, -0.625D);
                     TieredAnvilRenderer.renderWorkpiece(stack, pBuffer, RenderUtil.getHeatedMetalColor(tongs.getTemperature(item), tongs.getColor(item)),
-                            pPackedLight, AnvilSection.FLAT, tongs.getTemperature(item), tongs.getWork(item), item.getTag().getBoolean("flipXZ"), item.getTag().getBoolean("flipY"),
+                            pPackedLight, AnvilSection.FLAT, tongs.getTemperature(item), tongs.getWork(item), item.getTag().getBoolean("flip"),
                             item.getTag().getBoolean("slagCenter"), item.getTag().getBoolean("slagLeft"), item.getTag().getBoolean("slagRight"));
                     stack.popPose();
                 }

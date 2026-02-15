@@ -26,7 +26,7 @@ public class ItemFrameRenderer<T extends ItemFrameBlockEntity> implements BlockE
 
     @Override
     public boolean shouldRender(ItemFrameBlockEntity frame, Vec3 camPos) {
-        return !frame.items.isEmpty();
+        return !frame.items.isEmpty() && Vec3.atCenterOf(frame.getBlockPos()).closerThan(camPos, getViewDistance());
     }
 
     @Override

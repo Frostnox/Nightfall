@@ -35,14 +35,14 @@ import javax.annotation.Nullable;
 import java.awt.*;
 
 public class TieredAnvilBlockEntity extends BlockEntity {
-    public int[] work = new int[8];
+    public int[] work = new int[11];
     protected @Nullable Item item;
     protected AnvilSection section;
     protected float temperature;
     protected int stableTempTicks;
     protected Color color;
     protected AABB[] cachedBoxes = new AABB[3];
-    protected boolean slagCenter, slagLeft, slagRight, flipXZ, flipY;
+    protected boolean slagCenter, slagLeft, slagRight, flip;
     protected boolean dirtyCache = true;
 
     public TieredAnvilBlockEntity(BlockPos pos, BlockState state) {
@@ -51,6 +51,10 @@ public class TieredAnvilBlockEntity extends BlockEntity {
 
     protected TieredAnvilBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
         super(pType, pPos, pBlockState);
+    }
+
+    public ItemStack getWorkpiece() {
+        return hasWorkpiece() ? new ItemStack(item) : ItemStack.EMPTY;
     }
 
     public boolean hasWorkpiece() {
@@ -74,12 +78,8 @@ public class TieredAnvilBlockEntity extends BlockEntity {
         else return section;
     }
 
-    public boolean hasFlipY() {
-        return flipY;
-    }
-
-    public boolean hasFlipXZ() {
-        return flipXZ;
+    public boolean hasFlip() {
+        return flip;
     }
 
     public boolean hasSlagRight() {
@@ -107,8 +107,7 @@ public class TieredAnvilBlockEntity extends BlockEntity {
             slagCenter = tag.getBoolean("slagCenter");
             slagLeft = tag.getBoolean("slagLeft");
             slagRight = tag.getBoolean("slagRight");
-            flipXZ = tag.getBoolean("flipXZ");
-            flipY = tag.getBoolean("flipY");
+            flip = tag.getBoolean("flip");
         }
         else item = null;
         dirtyCache = true;
@@ -127,8 +126,7 @@ public class TieredAnvilBlockEntity extends BlockEntity {
             tag.putBoolean("slagCenter", slagCenter);
             tag.putBoolean("slagLeft", slagLeft);
             tag.putBoolean("slagRight", slagRight);
-            tag.putBoolean("flipXZ", flipXZ);
-            tag.putBoolean("flipY", flipY);
+            tag.putBoolean("flip", flip);
         }
         else tag.putBoolean("dummy", false);
     }
@@ -141,6 +139,17 @@ public class TieredAnvilBlockEntity extends BlockEntity {
     @Override
     public ClientboundBlockEntityDataPacket getUpdatePacket() {
         return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public AABB getRenderBoundingBox() {
+        AABB box = getBlockState().getShape(level, getBlockPos()).bounds().move(getBlockPos());
+        if(hasWorkpiece()) {
+            Direction dir = getBlockState().getValue(TieredAnvilBlock.FACING);
+            float x = Math.abs(dir.getStepX()) * 2F/16F, z = Math.abs(dir.getStepZ()) * 2F/16F;
+            return new AABB(box.minX - x, box.minY, box.minZ - z, box.maxX + x, box.maxY + 7F/16F, box.maxZ + z);
+        }
+        return box;
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, TieredAnvilBlockEntity entity) {
@@ -189,38 +198,73 @@ public class TieredAnvilBlockEntity extends BlockEntity {
                             switch(section) {
                                 case HORN -> {
                                     if(index == 0) {
-                                        if(work[0] < 2) work[0] = Math.min(2, work[0] + strength);
+                                        if(work[0] < 3) work[0] = Math.min(3, work[0] + strength);
                                     }
                                     else if(index == 1) {
-                                        if(work[4] > -2) work[4] = Math.max(-2, work[4] - strength);
+                                        if(work[5] < 2) work[5] = Math.min(2, work[5] + strength);
                                     }
-                                    else if(work[5] < 2) work[5] = Math.min(2, work[5] + strength);
+                                    else if(work[7] < 3) work[7] = Math.min(3, work[7] + strength);
                                 }
                                 case FLAT -> {
                                     if(index == 0) {
-                                        if(work[0] < 2) work[0] = Math.min(2, work[0] + strength);
+                                        if(work[0] < 3) work[0] = Math.min(3, work[0] + strength);
                                     }
                                     else if(index == 1) {
-                                        if(work[2] < 2) work[2] = Math.min(2, work[2] + strength);
+                                        if(work[3] < 3) work[3] = Math.min(3, work[3] + strength);
                                     }
-                                    else if(work[5] < 2) work[5] = Math.min(2, work[5] + strength);
+                                    else if(work[7] < 3) work[7] = Math.min(3, work[7] + strength);
                                 }
                                 case EDGE -> {
                                     if(index == 0) {
-                                        if(work[1] < 2) work[1] = Math.min(2, work[1] + strength);
+                                        if(work[1] < 3) work[1] = Math.min(3, work[1] + strength);
                                     }
                                     else if(index == 1) {
-                                        if(work[2] < 2) work[2] = Math.min(2, work[2] + strength);
+                                        if(work[3] < 3) work[3] = Math.min(3, work[3] + strength);
                                     }
-                                    else if(work[6] < 2) work[6] = Math.min(2, work[6] + strength);
+                                    else if(work[8] < 3) work[8] = Math.min(3, work[8] + strength);
+                                }
+                            }
+                            if(section != AnvilSection.HORN) {
+                                if(index == 0) {
+                                    if(work[0] + work[1] > 3) {
+                                        work[0] = 0;
+                                        work[1] = 0;
+                                        work[2] = 3;
+                                    }
+                                }
+                                else if(index == 1) {
+                                    if(work[2] + work[3] > 3) {
+                                        work[3] = 0;
+                                        work[4] = 0;
+                                        work[5] = 0;
+                                        work[6] = 3;
+                                    }
+                                }
+                                else {
+                                    if(work[5] + work[6] > 3) {
+                                        work[7] = 0;
+                                        work[8] = 0;
+                                        work[9] = 0;
+                                        work[10] = 3;
+                                    }
                                 }
                             }
                         }
                     }
                     else {
-                        if(index == 0) work[0] = 7;
-                        else if(index == 1) work[2] = 7;
-                        else work[5] = 7;
+                        //TODO: Cut op
+                        if(index == 0) {
+                            work[0] = 2;
+                            work[1] = 2;
+                        }
+                        else if(index == 1) {
+                            work[2] = 2;
+                            work[3] = 2;
+                        }
+                        else {
+                            work[5] = 2;
+                            work[6] = 2;
+                        }
                     }
                     dirtyCache = true;
                     boolean destroyed = true;
@@ -238,32 +282,23 @@ public class TieredAnvilBlockEntity extends BlockEntity {
                     else level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
                 }
             }
-            case FLIP_XZ -> {
+            case FLIP -> {
                 level.playSound(null, player, SoundsNF.TONGS_HANDLE.get(), SoundSource.PLAYERS, 1F, 0.975F + level.random.nextFloat() * 0.05F);
                 TongsItem tongs = (TongsItem) tool.getItem();
                 if(!tongs.hasWorkpiece(tool) && temperature <= TieredHeat.fromTier(tongs.getMaxHeatTier() + 1).getBaseTemp()) {
-                    flipXZ = !flipXZ;
-                    int leftSpread = work[2];
-                    int leftDraw = work[3];
-                    int leftPunch = work[4];
-                    work[2] = work[5];
-                    work[3] = work[6];
-                    work[4] = work[7];
-                    work[5] = leftSpread;
-                    work[6] = leftDraw;
-                    work[7] = leftPunch;
-                    dirtyCache = true;
-                    setChanged();
-                    level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
-                }
-            }
-            case FLIP_Y -> {
-                level.playSound(null, player, SoundsNF.TONGS_HANDLE.get(), SoundSource.PLAYERS, 1F, 0.975F + level.random.nextFloat() * 0.05F);
-                TongsItem tongs = (TongsItem) tool.getItem();
-                if(!tongs.hasWorkpiece(tool) && temperature <= TieredHeat.fromTier(tongs.getMaxHeatTier() + 1).getBaseTemp()) {
-                    flipY = !flipY;
-                    work[4] = -work[4];
-                    work[7] = -work[7];
+                    flip = !flip;
+                    int leftSpread = work[3];
+                    int leftDraw = work[4];
+                    int leftPunch = work[5];
+                    int leftCut = work[6];
+                    work[3] = work[7];
+                    work[4] = work[8];
+                    work[5] = work[9];
+                    work[6] = work[10];
+                    work[7] = leftSpread;
+                    work[8] = leftDraw;
+                    work[9] = leftPunch;
+                    work[10] = leftCut;
                     dirtyCache = true;
                     setChanged();
                     level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
@@ -282,8 +317,7 @@ public class TieredAnvilBlockEntity extends BlockEntity {
                     if(slagCenter) tool.getTag().putBoolean("slagCenter", true);
                     if(slagLeft) tool.getTag().putBoolean("slagLeft", true);
                     if(slagRight) tool.getTag().putBoolean("slagRight", true);
-                    if(flipXZ) tool.getTag().putBoolean("flipXZ", true);
-                    if(flipY) tool.getTag().putBoolean("flipY", true);
+                    if(flip) tool.getTag().putBoolean("flip", true);
                     item = null;
                     setChanged();
                     level.setBlock(worldPosition, getBlockState().setValue(TieredAnvilBlock.HAS_METAL, false), 2);
@@ -308,8 +342,7 @@ public class TieredAnvilBlockEntity extends BlockEntity {
         slagCenter = item.getTag().getBoolean("slagCenter");
         slagLeft = item.getTag().getBoolean("slagLeft");
         slagRight = item.getTag().getBoolean("slagRight");
-        flipXZ = item.getTag().getBoolean("flipXZ");
-        flipY = item.getTag().getBoolean("flipY");
+        flip = item.getTag().getBoolean("flip");
         tongs.removeWorkpiece(item);
         setChanged();
         level.setBlock(worldPosition, getBlockState().setValue(TieredAnvilBlock.HAS_METAL, true), 2);
@@ -349,42 +382,43 @@ public class TieredAnvilBlockEntity extends BlockEntity {
             Vector3f offset = MathUtil.rotatePointByYaw(new Vector3f(-(0.5F - section.center), 0, 0), rot);
             Vec3 pos = new Vec3(worldPosition.getX() + 0.5 + offset.x(), worldPosition.getY() + 1, worldPosition.getZ() + 0.5 + offset.z());
 
-            float spread = work[0] * 0.5F/2F;
-            float draw = work[1] * 0.5F/2F;
-            float centerY = draw/2/16F;
-            float height = Math.max(0, baseHeight * (1F - spread - draw/2));
+            float spread = work[0] * 0.5F;
+            float draw = work[1] * (work[1] < 0 ? 0.25F : 0.5F);
+            float cut = work[2] == 0 ? 1 : (work[2] == 1 ? 0.5F : 0.25F);
+            float height = work[2] > 2 ? 0 : Math.max(0, baseHeight * (1F - spread/2 - draw/2));
 
-            float leftDraw = work[3] * 0.5F/2F;
-            float leftPunch = work[4] * 0.5F / 16F;
-            float leftY = leftPunch + leftDraw/2/16F;
-            float leftSpread = work[2] * 0.5F/2F;
-            float leftHeight = Math.max(0, baseHeight * (1F - leftSpread - leftDraw/2));
+            float leftDraw = work[4] * (work[4] < 0 ? 0.25F : 0.5F);
+            float leftPunch = work[5] * -0.5F/16F;
+            float leftSpread = work[3] * 0.5F;
+            float leftCut = work[6] == 0 ? 1 : (work[6] == 1 ? 0.5F : 0.25F);
+            float leftHeight = work[6] > 2 ? 0 : Math.max(0, baseHeight * (1F - leftSpread/2 - leftDraw/2));
 
-            float rightDraw = work[6] * 0.5F/2F;
-            float rightPunch = work[7] * 0.5F / 16F;
-            float rightY = rightPunch + rightDraw/2/16F;
-            float rightSpread = work[5] * 0.5F/2F;
-            float rightHeight = Math.max(0, baseHeight * (1F - rightSpread - rightDraw/2));
+            float rightDraw = work[8] * (work[7] < 0 ? 0.25F : 0.5F);
+            float rightPunch = work[9] * -0.5F/16F;
+            float rightSpread = work[7] * 0.5F;
+            float rightCut = work[10] == 0 ? 1 : (work[10] == 1 ? 0.5F : 0.25F);
+            float rightHeight = work[10] > 2 ? 0 : Math.max(0, baseHeight * (1F - rightSpread/2 - rightDraw/2));
 
-            float yOff = -Math.min(Math.min(height > 0 ? centerY : 1, leftHeight > 0 ? (leftY + (getSection() == AnvilSection.HORN ? 1F/16F : 0)) : 1), rightHeight > 0 ? rightY : 1);
+            float yOff = -Math.min(Math.min(height > 0 ? 0 : 1, leftHeight > 0 ? (leftPunch + (getSection() == AnvilSection.HORN ? 1F/16F : 0)) : 1), rightHeight > 0 ? rightPunch : 1);
             //Center
             float centerWidth = baseWidth * (1F + draw);
-            float depth = baseDepth * (1F + spread - draw/2);
-            Vector3f rotPos = MathUtil.rotatePointByYaw(new Vector3f(-centerWidth/2, centerY + yOff, -depth/2), rot);
+            float depth = baseDepth * (1F + spread - draw/2) * cut;
+            Vector3f rotPos = MathUtil.rotatePointByYaw(new Vector3f(-centerWidth/2, 0 + yOff, -depth/2), rot);
             Vector3f rotSize = MathUtil.rotatePointByYaw(new Vector3f(centerWidth, height, depth), rot);
             Vec3 boxPos = pos.add(rotPos.x(), rotPos.y(), rotPos.z());
             cachedBoxes[0] = new AABB(boxPos, boxPos.add(rotSize.x(), rotSize.y(), rotSize.z()));
+            float spacing = height > 0 ? centerWidth/2 : 1F/32F;
             //Left end
-            float width = baseWidth * (1F + leftDraw);
+            float width = baseWidth * (1F + leftDraw) * leftCut;
             depth = baseDepth * (1F + leftSpread - leftDraw/2);
-            rotPos = MathUtil.rotatePointByYaw(new Vector3f(-width - centerWidth/2, leftY + yOff, -depth/2), rot);
+            rotPos = MathUtil.rotatePointByYaw(new Vector3f(-width - spacing, leftPunch + yOff, -depth/2), rot);
             rotSize = MathUtil.rotatePointByYaw(new Vector3f(width, leftHeight, depth), rot);
             boxPos = pos.add(rotPos.x(), rotPos.y(), rotPos.z());
             cachedBoxes[1] = new AABB(boxPos, boxPos.add(rotSize.x(), rotSize.y(), rotSize.z()));
             //Right end
-            width = baseWidth * (1F + rightDraw);
+            width = baseWidth * (1F + rightDraw) * rightCut;
             depth = baseDepth * (1F + rightSpread - rightDraw/2);
-            rotPos = MathUtil.rotatePointByYaw(new Vector3f(centerWidth/2, rightY + yOff, -depth/2), rot);
+            rotPos = MathUtil.rotatePointByYaw(new Vector3f(spacing, rightPunch + yOff, -depth/2), rot);
             rotSize = MathUtil.rotatePointByYaw(new Vector3f(width, rightHeight, depth), rot);
             boxPos = pos.add(rotPos.x(), rotPos.y(), rotPos.z());
             cachedBoxes[2] = new AABB(boxPos, boxPos.add(rotSize.x(), rotSize.y(), rotSize.z()));

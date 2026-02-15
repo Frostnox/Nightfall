@@ -5,10 +5,16 @@ import frostnox.nightfall.block.Metal;
 import frostnox.nightfall.block.TieredHeat;
 import frostnox.nightfall.block.block.anvil.TieredAnvilBlock;
 import frostnox.nightfall.block.block.anvil.TieredAnvilBlockEntity;
+import frostnox.nightfall.capability.PlayerData;
+import frostnox.nightfall.client.ClientEngine;
+import frostnox.nightfall.client.gui.screen.item.ModifiableScreen;
+import frostnox.nightfall.client.gui.screen.item.TongsVisualRecipeScreen;
 import frostnox.nightfall.data.TagsNF;
 import frostnox.nightfall.data.recipe.TieredAnvilRecipe;
 import frostnox.nightfall.item.IContainerChanger;
 import frostnox.nightfall.item.ITieredItemMaterial;
+import frostnox.nightfall.item.client.IClientSwapBehavior;
+import frostnox.nightfall.item.client.IModifiable;
 import frostnox.nightfall.registry.forge.ItemsNF;
 import frostnox.nightfall.registry.forge.ParticleTypesNF;
 import frostnox.nightfall.registry.forge.SoundsNF;
@@ -16,6 +22,8 @@ import frostnox.nightfall.util.LevelUtil;
 import frostnox.nightfall.world.inventory.FluidSlot;
 import frostnox.nightfall.world.inventory.ItemStackHandlerNF;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -46,14 +54,17 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
-public class TongsItem extends ItemNF implements IContainerChanger {
+public class TongsItem extends ItemNF implements IContainerChanger, IModifiable, IClientSwapBehavior {
     public final ITieredItemMaterial material;
 
     public TongsItem(ITieredItemMaterial material, Properties properties) {
@@ -98,8 +109,7 @@ public class TongsItem extends ItemNF implements IContainerChanger {
         item.getTag().remove("slagCenter");
         item.getTag().remove("slagLeft");
         item.getTag().remove("slagRight");
-        item.getTag().remove("flipXZ");
-        item.getTag().remove("flipY");
+        item.getTag().remove("flip");
     }
 
     @Override
@@ -142,8 +152,9 @@ public class TongsItem extends ItemNF implements IContainerChanger {
                     LevelUtil.giveItemToPlayer(resultItem, player, true);
                     Vec3 loc = hitResult.getLocation();
                     ((ServerLevel) level).sendParticles(ParticleTypesNF.STEAM.get(), loc.x, loc.y, loc.z, 14, 0.15F, 0.05F, 0.15F, 0);
+                    level.playSound(null, player, SoundsNF.QUENCH.get(), SoundSource.PLAYERS, 1F, 1F);
                 }
-                level.playSound(null, player, SoundsNF.QUENCH.get(), SoundSource.PLAYERS, 1F, 1F);
+                else setLastUsedObject(null);
                 return InteractionResult.SUCCESS;
             }
         }
@@ -166,16 +177,16 @@ public class TongsItem extends ItemNF implements IContainerChanger {
                     }
                     tongs.getTag().putInt("color", Metal.fromString(item.getItem().toString()).getColor().getRGB());
                     tongs.getTag().putFloat("temperature", 0);
-                    int[] work = new int[8];
+                    int[] work = new int[11];
                     if(item.is(TagsNF.PLATES)) {
                         work[0] = 2;
-                        work[2] = 2;
-                        work[5] = 2;
+                        work[3] = 2;
+                        work[7] = 2;
                     }
                     else if(!item.is(Tags.Items.INGOTS)) {
                         work[1] = -2;
-                        work[3] = -2;
-                        work[6] = -2;
+                        work[4] = -2;
+                        work[8] = -2;
                     }
                     tongs.getTag().putIntArray("work", work);
                     if(!player.getAbilities().instabuild) item.shrink(1);
@@ -261,6 +272,24 @@ public class TongsItem extends ItemNF implements IContainerChanger {
                 stack.getTag().remove("temperature");
             }
         }
+        if(worldIn.isClientSide) {
+            if(isSelected) {
+                if(entityIn instanceof Player player && PlayerData.isPresent(player) && player.getMainHandItem() == stack) {
+                    boolean hasWorkpiece = hasWorkpiece(stack);
+                    boolean oldCanUse = ClientEngine.get().canUseModifiableMain;
+                    ClientEngine.get().canUseModifiableMain = hasWorkpiece;
+                    if(oldCanUse != ClientEngine.get().canUseModifiableMain) ModifiableScreen.updateSelection(this, hasWorkpiece ? getVisualRecipes(player.level, player, getWorkpiece(stack)) : List.of(), true);
+                }
+            }
+            else if(itemSlot == 0) {
+                if(entityIn instanceof Player player && PlayerData.isPresent(player) && player.getOffhandItem() == stack) {
+                    boolean hasWorkpiece = hasWorkpiece(stack);
+                    boolean oldCanUse = ClientEngine.get().canUseModifiableOff;
+                    ClientEngine.get().canUseModifiableOff = hasWorkpiece;
+                    if(oldCanUse != ClientEngine.get().canUseModifiableOff) ModifiableScreen.updateSelection(this, hasWorkpiece ? getVisualRecipes(player.level, player, getWorkpiece(stack)) : List.of(), false);
+                }
+            }
+        }
     }
 
     @Override
@@ -280,5 +309,69 @@ public class TongsItem extends ItemNF implements IContainerChanger {
     public void containerChanged(ItemStack item) {
         item.getTag().remove("stableTempTicks");
         item.getTag().remove("temperature");
+    }
+
+    public List<TieredAnvilRecipe> getVisualRecipes(Level level, Player player, Item workpiece) {
+        ForgeHooks.setCraftingPlayer(player);
+        List<TieredAnvilRecipe> recipes = level.getRecipeManager().getRecipesFor(TieredAnvilRecipe.TYPE, new RecipeWrapper(new ItemStackHandlerNF(new ItemStack(workpiece))), level).stream()
+                .sorted((r1, r2) -> {
+                    if(r1.menuOrder < 0 && r2.menuOrder >= 0) return 1;
+                    else if(r2.menuOrder < 0 && r1.menuOrder >= 0) return -1;
+                    else if(r1.menuOrder == r2.menuOrder || r1.menuOrder < 0) return -r1.getResultItem().getDescriptionId().compareTo(r2.getResultItem().getDescriptionId());
+                    else return r1.menuOrder > r2.menuOrder ? 1 : -1;
+                })
+                .collect(Collectors.toList());
+        ForgeHooks.setCraftingPlayer(null);
+        return recipes;
+    }
+
+    @Override
+    public void swapClient(Minecraft mc, ItemStack item, Player player, boolean mainHand) {
+        if(hasWorkpiece(item)) ModifiableScreen.initSelection(mc, getVisualRecipes(player.level, player, getWorkpiece(item)), this, mainHand);
+    }
+
+    @Override
+    public Optional<Screen> modifyStartClient(Minecraft mc, ItemStack item, Player player, InteractionHand hand) {
+        if(hasWorkpiece(item)) {
+            List<TieredAnvilRecipe> recipes = getVisualRecipes(player.level, player, getWorkpiece(item));
+            if(recipes.isEmpty()) return Optional.empty();
+            else return Optional.of(new TongsVisualRecipeScreen(PlayerData.get(player).isMainhandActive(), this, recipes));
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<Screen> modifyContinueClient(Minecraft mc, ItemStack item, Player player, InteractionHand hand, int heldTime) {
+        return Optional.empty();
+    }
+
+    @Override
+    public void modifyReleaseClient(Minecraft mc, ItemStack item, Player player, InteractionHand hand, int heldTime) {
+        if(mc.screen instanceof TongsVisualRecipeScreen) mc.screen.onClose();
+    }
+
+    @Override
+    public int getBackgroundUOffset() {
+        return ModifiableScreen.BUILDING_BACKGROUND;
+    }
+
+    @Override
+    public @Nullable Object getLastUsedObject() {
+        return ClientEngine.get().getLastVisualizedRecipe();
+    }
+
+    @Override
+    public int getLastUsedPage() {
+        return ClientEngine.get().getLastVisualizedRecipePage();
+    }
+
+    @Override
+    public void setLastUsedObject(Object object) {
+        ClientEngine.get().setLastVisualizedRecipe(object);
+    }
+
+    @Override
+    public void setLastUsedPage(int page) {
+        ClientEngine.get().setLastVisualizedRecipePage(page);
     }
 }

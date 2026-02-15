@@ -1,0 +1,35 @@
+package frostnox.nightfall.client.gui.screen.item;
+
+import com.mojang.blaze3d.vertex.PoseStack;
+import frostnox.nightfall.data.recipe.TieredAnvilRecipe;
+import frostnox.nightfall.item.client.IModifiable;
+import frostnox.nightfall.util.RenderUtil;
+import net.minecraft.client.renderer.LightTexture;
+
+import java.util.List;
+
+public class TongsVisualRecipeScreen extends ModifiableScreen<TieredAnvilRecipe> {
+    public TongsVisualRecipeScreen(boolean mainHand, IModifiable modifiableItem, List<TieredAnvilRecipe> items) {
+        super(64, 12, mainHand, modifiableItem, items);
+    }
+
+    @Override
+    protected void renderObject(TieredAnvilRecipe object, int xPos, int yPos) {
+        mc.getItemRenderer().renderAndDecorateItem(object.getResultItem(), xPos, yPos);
+        mc.getItemRenderer().renderGuiItemDecorations(mc.font, object.getResultItem(), xPos, yPos);
+    }
+
+    @Override
+    protected void renderObjectTooltip(TieredAnvilRecipe object, PoseStack poseStack, int mouseX, int mouseY) {
+        renderTooltip(poseStack, object.getResultItem(), mouseX, mouseY);
+    }
+
+    @Override
+    public void render(PoseStack poseStack, int mouseX, int mouseY, float partial) {
+        super.render(poseStack, mouseX, mouseY, partial);
+        if(pageCount > 1) {
+            String pageText = page + "/" + pageCount;
+            RenderUtil.drawCenteredText(poseStack, mc.font, pageText, width/2, height/2, RenderUtil.COLOR_WHITE, true, LightTexture.FULL_BRIGHT);
+        }
+    }
+}

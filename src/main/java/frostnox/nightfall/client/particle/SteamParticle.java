@@ -10,6 +10,7 @@ import javax.annotation.Nullable;
 
 public class SteamParticle extends TextureSheetParticle {
     protected final SpriteSet spriteSet;
+    protected final boolean flip;
 
     protected SteamParticle(ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, SpriteSet sprite) {
         super(worldIn, x, y, z, xSpeed, ySpeed, zSpeed);
@@ -21,6 +22,7 @@ public class SteamParticle extends TextureSheetParticle {
         this.yd *= 0.2D;
         this.zd *= 0.2D;
         setSpriteFromAge(sprite);
+        flip = random.nextBoolean();
     }
 
     @Override
@@ -31,6 +33,16 @@ public class SteamParticle extends TextureSheetParticle {
         if(this.age >= fadeTime) {
             this.setAlpha(Mth.clamp(1F - ((float) this.age + ClientEngine.get().getPartialTick() - fadeTime) / (this.lifetime - fadeTime) * 1F, 0F, 1F));
         }
+    }
+
+    @Override
+    protected float getU0() {
+        return flip ? sprite.getU1() : sprite.getU0();
+    }
+
+    @Override
+    protected float getU1() {
+        return flip ? sprite.getU0() : sprite.getU1();
     }
 
     @Override

@@ -96,7 +96,7 @@ public class AnvilActionToServer {
                 Nightfall.LOGGER.warn("Player {} tried to use anvil multiple times during one action.", player.getName().getString());
             }
             else if((item.is(TagsNF.HAMMER) && msg.action != AnvilAction.STRIKE) || (item.is(TagsNF.CHISEL) && msg.action != AnvilAction.CUT) ||
-                    (item.is(TagsNF.TONGS) && msg.action != AnvilAction.FLIP_XZ && msg.action != AnvilAction.FLIP_Y && msg.action != AnvilAction.TAKE)) {
+                    (item.is(TagsNF.TONGS) && msg.action != AnvilAction.FLIP && msg.action != AnvilAction.TAKE)) {
                 Nightfall.LOGGER.warn("Player {} tried to use anvil with invalid action type for item.", player.getName().getString());
             }
             else {

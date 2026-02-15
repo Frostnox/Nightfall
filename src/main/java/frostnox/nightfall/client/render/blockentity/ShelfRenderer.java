@@ -25,7 +25,7 @@ public class ShelfRenderer<T extends ShelfBlockEntity> implements BlockEntityRen
 
     @Override
     public boolean shouldRender(ShelfBlockEntity shelf, Vec3 camPos) {
-        return !shelf.items.isEmpty();
+        return !shelf.items.isEmpty() && Vec3.atCenterOf(shelf.getBlockPos()).closerThan(camPos, getViewDistance());
     }
 
     @Override

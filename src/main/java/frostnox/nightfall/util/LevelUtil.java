@@ -85,6 +85,7 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 public class LevelUtil {
     public static final Predicate<Entity> ALIVE_ACTION_TRACKER_ENTITY = (entity) -> {
@@ -591,6 +592,16 @@ public class LevelUtil {
         if(items.isEmpty()) return ItemStack.EMPTY;
         else if(player == null) return items.get(0);
         else return items.get(player.tickCount / 24 % items.size());
+    }
+
+    public static ItemStack chooseUnlockedFluid(TagKey<Fluid> tagKey, @Nullable Player player) {
+        Stream.Builder<ItemStack> fluidItems = Stream.builder();
+        for(Iterator<Fluid> it = ForgeRegistries.FLUIDS.tags().getTag(tagKey).iterator(); it.hasNext();) {
+            Fluid fluid = it.next();
+            Item fluidItem = FluidsNF.getAsItem(fluid);
+            if(fluidItem != null) fluidItems.add(new ItemStack(fluidItem));
+        }
+        return chooseUnlockedIngredient(Ingredient.of(fluidItems.build()), player);
     }
 
     public static double getShortestDistanceSqrUndeadMinToPlayer(Level level, double x, double y, double z, boolean checkCharm) {

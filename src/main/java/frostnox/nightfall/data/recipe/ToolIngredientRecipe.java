@@ -141,8 +141,8 @@ public abstract class ToolIngredientRecipe extends EncyclopediaRecipe<RecipeWrap
         public T fromJson(ResourceLocation id, JsonObject json) {
             ResourceLocation requirement = null;
             if(json.has("requirement")) requirement = ResourceLocation.parse(json.get("requirement").getAsString());
-            Ingredient input = Ingredient.fromJson(GsonHelper.getAsJsonObject(json, "input"));
-            Ingredient tool = Ingredient.fromJson(GsonHelper.getAsJsonObject(json, "tool"));
+            Ingredient input = Ingredient.fromJson(json.get("input"));
+            Ingredient tool = Ingredient.fromJson(json.get("tool"));
             ItemStack output = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "output"));
             int menuOrder = GsonHelper.getAsInt(json, "menuOrder", -1);
             return factory.create(id, requirement, input, tool, output, menuOrder);

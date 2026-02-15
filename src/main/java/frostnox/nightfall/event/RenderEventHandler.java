@@ -213,7 +213,7 @@ public class RenderEventHandler {
                 else if(rot == -180) poseStack.translate(-1/16F, 0, -1/16F);
                 else if(rot == -90) poseStack.translate(0, 0, -1/16F);
             }
-            RenderUtil.drawCubeOutlineWorld(poseStack, buffer, new Color(0, 0, 0, 0.5F), cube);
+            RenderUtil.drawCubeOutlineWorld(poseStack, buffer, RenderUtil.BLACK_OUTLINE, cube);
             poseStack.popPose();
         }
     }
@@ -398,7 +398,7 @@ public class RenderEventHandler {
                 }
                 stack.mulPose(Vector3f.XP.rotationDegrees(45));
                 TieredAnvilRenderer.renderWorkpiece(stack, event.getMultiBufferSource(), RenderUtil.getHeatedMetalColor(tongs.getTemperature(item), tongs.getColor(item)),
-                        event.getPackedLight(), AnvilSection.FLAT, tongs.getTemperature(item), tongs.getWork(item), item.getTag().getBoolean("flipXZ"), item.getTag().getBoolean("flipY"),
+                        event.getPackedLight(), AnvilSection.FLAT, tongs.getTemperature(item), tongs.getWork(item), item.getTag().getBoolean("flip"),
                         item.getTag().getBoolean("slagCenter"), item.getTag().getBoolean("slagLeft"), item.getTag().getBoolean("slagRight"));
                 stack.popPose();
             }
