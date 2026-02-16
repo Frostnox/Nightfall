@@ -146,7 +146,7 @@ public class TieredAnvilBlockEntity extends BlockEntity {
         AABB box = getBlockState().getShape(level, getBlockPos()).bounds().move(getBlockPos());
         if(hasWorkpiece()) {
             Direction dir = getBlockState().getValue(TieredAnvilBlock.FACING);
-            float x = Math.abs(dir.getStepX()) * 2F/16F, z = Math.abs(dir.getStepZ()) * 2F/16F;
+            float x = Math.abs(dir.getStepX()) * 3.5F/16F, z = Math.abs(dir.getStepZ()) * 3.5F/16F;
             return new AABB(box.minX - x, box.minY, box.minZ - z, box.maxX + x, box.maxY + 7F/16F, box.maxZ + z);
         }
         return box;
@@ -252,18 +252,29 @@ public class TieredAnvilBlockEntity extends BlockEntity {
                         }
                     }
                     else {
-                        //TODO: Cut op
+                        int strength = ActionTracker.get(player).getCharge() > 0 ? 3 : 1;
                         if(index == 0) {
-                            work[0] = 2;
-                            work[1] = 2;
+                            if(work[2] < 3) work[2] = Math.min(3, work[2] + strength);
+                            if(work[2] == 3) {
+                                work[0] = 0;
+                                work[1] = 0;
+                            }
                         }
                         else if(index == 1) {
-                            work[2] = 2;
-                            work[3] = 2;
+                            if(work[6] < 3) work[6] = Math.min(3, work[2] + strength);
+                            if(work[6] == 3) {
+                                work[3] = 0;
+                                work[4] = 0;
+                                work[5] = 0;
+                            }
                         }
                         else {
-                            work[5] = 2;
-                            work[6] = 2;
+                            if(work[10] < 3) work[10] = Math.min(3, work[10] + strength);
+                            if(work[10] == 3) {
+                                work[7] = 0;
+                                work[8] = 0;
+                                work[9] = 0;
+                            }
                         }
                     }
                     dirtyCache = true;

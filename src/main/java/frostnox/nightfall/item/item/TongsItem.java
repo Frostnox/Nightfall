@@ -223,7 +223,7 @@ public class TongsItem extends ItemNF implements IContainerChanger, IModifiable,
                 }
             }
         }
-        else if(state.getBlock() instanceof TieredAnvilBlock && context.getClickedFace() == Direction.UP && context.getClickLocation().y >= pos.getY() + 0.75) {
+        else if(hasWorkpiece(context.getItemInHand()) && state.getBlock() instanceof TieredAnvilBlock && context.getClickedFace() == Direction.UP && context.getClickLocation().y >= pos.getY() + 0.75) {
             if(level.isClientSide()) {
                 if(!state.getValue(TieredAnvilBlock.HAS_METAL)) {
                     return InteractionResult.SUCCESS;
@@ -317,7 +317,7 @@ public class TongsItem extends ItemNF implements IContainerChanger, IModifiable,
                 .sorted((r1, r2) -> {
                     if(r1.menuOrder < 0 && r2.menuOrder >= 0) return 1;
                     else if(r2.menuOrder < 0 && r1.menuOrder >= 0) return -1;
-                    else if(r1.menuOrder == r2.menuOrder || r1.menuOrder < 0) return -r1.getResultItem().getDescriptionId().compareTo(r2.getResultItem().getDescriptionId());
+                    else if(r1.menuOrder == r2.menuOrder || r1.menuOrder < 0) return r1.getResultItem().getDescriptionId().compareTo(r2.getResultItem().getDescriptionId());
                     else return r1.menuOrder > r2.menuOrder ? 1 : -1;
                 })
                 .collect(Collectors.toList());

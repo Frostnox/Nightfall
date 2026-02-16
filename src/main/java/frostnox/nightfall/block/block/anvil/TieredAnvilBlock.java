@@ -3,13 +3,18 @@ package frostnox.nightfall.block.block.anvil;
 import frostnox.nightfall.block.BlockStatePropertiesNF;
 import frostnox.nightfall.block.IFallable;
 import frostnox.nightfall.block.ITimeSimulatedBlock;
+import frostnox.nightfall.block.Metal;
 import frostnox.nightfall.capability.ChunkData;
 import frostnox.nightfall.capability.IChunkData;
 import frostnox.nightfall.capability.LevelData;
+import frostnox.nightfall.data.TagsNF;
 import frostnox.nightfall.registry.forge.BlockEntitiesNF;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.Containers;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -89,10 +94,15 @@ public class TieredAnvilBlock extends BaseEntityBlock implements IFallable, ITim
 
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState pNewState, boolean pIsMoving) {
-        super.onRemove(state, level, pos, pNewState, pIsMoving);
         if(!pNewState.is(this)) {
-            if(state.getValue(HAS_METAL) && LevelData.isPresent(level)) ChunkData.get(level.getChunkAt(pos)).removeSimulatableBlock(TickPriority.NORMAL, pos);
+            if(state.getValue(HAS_METAL)) {
+                if(level.getBlockEntity(pos) instanceof TieredAnvilBlockEntity anvil && anvil.hasWorkpiece()) {
+                    Containers.dropContents(level, pos, NonNullList.of(ItemStack.EMPTY, new ItemStack(Metal.fromString(anvil.getWorkpiece().toString()).getMatchingItem(TagsNF.SCRAP))));
+                }
+                if(LevelData.isPresent(level)) ChunkData.get(level.getChunkAt(pos)).removeSimulatableBlock(TickPriority.NORMAL, pos);
+            }
         }
+        super.onRemove(state, level, pos, pNewState, pIsMoving);
     }
 
     @Override

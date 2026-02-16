@@ -37,7 +37,7 @@ public class TieredAnvilRenderer implements BlockEntityRenderer<TieredAnvilBlock
             light = LightTexture.pack(Math.max(blockLight, LightTexture.block(light)), LightTexture.sky(light));
         }
         float baseWidth = 2F/16F, baseHeight = 2F/16F, baseDepth = 3F/16F;
-        //work = new int[]{0, 2, 0, 0, 2, 0, 0, 0, 2, 0, 0};
+        //work = new int[]{0, 3, 0, 0, 3, 0, 0, 0, 3, 0, 0};
 
         float spread = work[0] * 0.5F;
         float draw = work[1] * (work[1] < 0 ? 0.25F : 0.5F);
@@ -90,6 +90,7 @@ public class TieredAnvilRenderer implements BlockEntityRenderer<TieredAnvilBlock
                 Player player = Minecraft.getInstance().player;
                 if(player != null && player.isAlive() && entity.getBlockPos().distToCenterSqr(player.getPosition(partialTicks)) < 2 * 2) {
                     stack.translate(0, 4F/16F, 0);
+                    if(entity.hasFlip()) stack.mulPose(Vector3f.YP.rotationDegrees(180));
                     float baseWidth = 2F/16F, baseHeight = 2F/16F, baseDepth = 3F/16F;
                     int[] work = recipe.work;
 

@@ -105,59 +105,15 @@ public class TieredAnvilRecipe extends EncyclopediaRecipe<RecipeWrapper> impleme
         return TYPE;
     }
 
-//    private static int getU(int spread, int draw) {
-//        if(spread == 0) {
-//            if(draw == 0) return 108;
-//            else if(draw == 1) return 135;
-//            else if(draw == 2) return 148;
-//        }
-//        else if(spread == 1) {
-//            if(draw == 0) return 117;
-//            else if(draw == 1) return 165;
-//        }
-//        return 126;
-//    }
-
     @Override
     public void render(PoseStack poseStack, Screen screen, int mouseX, int mouseY, float partial, int xOffset, int yOffset) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, RECIPE_VIEWER_LOCATION);
-        Screen.blit(poseStack, 0, 0, 0, 0, 107, RecipeViewerComponent.HEIGHT, 180, RecipeViewerComponent.HEIGHT);
-
-//        float spread = work[0] * 0.5F;
-//        float draw = work[1] * (work[1] < 0 ? 0.25F : 0.5F);
-//        float height = Math.max(0, 8 * (1F - spread/2 - draw/2));
-//        int width = (int) (8 * (1F + draw));
-//        int u = getU(work[0], work[1]);
-//
-//        float leftDraw = work[3] * (work[3] < 0 ? 0.25F : 0.5F);
-//        int leftPunch = work[4] * 2;
-//        float leftSpread = work[2] * 0.5F;
-//        float leftHeight = Math.max(0, 8 * (1F - leftSpread/2 - leftDraw/2));
-//        int leftWidth = (int) (8 * (1F + leftDraw));
-//        int leftU = getU(work[2], work[3]);
-//
-//        float rightDraw = work[6] * (work[6] < 0 ? 0.25F : 0.5F);
-//        int rightPunch = work[7] * 2;
-//        float rightSpread = work[5] * 0.5F;
-//        float rightHeight = Math.max(0, 8 * (1F - rightSpread/2 - rightDraw/2));
-//        int rightWidth = (int) (8 * (1F + rightDraw));
-//        int rightU = getU(work[5], work[6]);
-//
-//        int offY = Math.min(0, Math.min(leftPunch, rightPunch));
-//        int centerX = 71, topY = 16 + offY;
-//        if(leftHeight > 0) Screen.blit(poseStack, centerX - leftWidth - (width - 8)/2, topY, leftU, 9, leftWidth, 24, 180, RecipeViewerComponent.HEIGHT);
-//        if(height > 0) Screen.blit(poseStack, centerX - (width - 8)/2, topY, u, 9, width, 24, 180, RecipeViewerComponent.HEIGHT);
-//        if(rightHeight > 0) Screen.blit(poseStack, centerX + width - (width - 8)/2, topY, rightU, 9, rightWidth, 24, 180, RecipeViewerComponent.HEIGHT);
-//
-//        int sideY = 37 + offY;
-//        if(leftHeight > 0) Screen.blit(poseStack, centerX - leftWidth - (width - 8)/2, sideY - leftPunch, leftU, 0, leftWidth, 8, 180, RecipeViewerComponent.HEIGHT);
-//        if(height > 0) Screen.blit(poseStack, centerX - (width - 8)/2, sideY, u, 0, width, 8, 180, RecipeViewerComponent.HEIGHT);
-//        if(rightHeight > 0) Screen.blit(poseStack, centerX + width - (width - 8)/2, sideY - rightPunch, rightU, 0, rightWidth, 8, 180, RecipeViewerComponent.HEIGHT);
+        Screen.blit(poseStack, 0, 0, 0, 0, RecipeViewerComponent.WIDTH, RecipeViewerComponent.HEIGHT, RecipeViewerComponent.WIDTH, RecipeViewerComponent.HEIGHT);
 
         int xPos = xOffset + 10;
-        int yPos = yOffset + 23;
+        int yPos = yOffset + 34;
         ItemStack item = LevelUtil.chooseUnlockedIngredient(input, ClientEngine.get().getPlayer());
         Minecraft.getInstance().getItemRenderer().renderAndDecorateItem(item, xPos, yPos);
         if(onItem(xPos, yPos, mouseX, mouseY)) {
@@ -165,7 +121,6 @@ public class TieredAnvilRecipe extends EncyclopediaRecipe<RecipeWrapper> impleme
         }
         ItemStack fluid = LevelUtil.chooseUnlockedFluid(quenchFluid, null);
         xPos = xOffset + 50;
-        yPos = yOffset + 54;
         Minecraft.getInstance().getItemRenderer().renderAndDecorateItem(fluid, xPos, yPos);
         if(onItem(xPos, yPos, mouseX, mouseY)) {
             screen.renderTooltip(poseStack, screen.getTooltipFromItem(fluid), fluid.getTooltipImage(), mouseX - xOffset, mouseY - yOffset);
@@ -179,13 +134,13 @@ public class TieredAnvilRecipe extends EncyclopediaRecipe<RecipeWrapper> impleme
 
     @Override
     public ItemStack clickItem(Screen screen, int mouseX, int mouseY) {
-        if(onItem(10, 23, mouseX, mouseY)) {
+        if(onItem(10, 34, mouseX, mouseY)) {
             return LevelUtil.chooseUnlockedIngredient(input, ClientEngine.get().getPlayer());
         }
-        if(onItem(50, 54, mouseX, mouseY)) {
+        if(onItem(50, 34, mouseX, mouseY)) {
             return LevelUtil.chooseUnlockedFluid(quenchFluid, null);
         }
-        if(onItem(90, 54, mouseX, mouseY)) {
+        if(onItem(90, 34, mouseX, mouseY)) {
             return output;
         }
         return ItemStack.EMPTY;
