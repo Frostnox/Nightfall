@@ -31,18 +31,19 @@ public class TieredAnvilRecipe extends EncyclopediaRecipe<RecipeWrapper> impleme
     public static final RecipeType<TieredAnvilRecipe> TYPE = RecipeType.register(Nightfall.MODID + ":anvil");
     public static final Serializer SERIALIZER = new Serializer();
     public static final ResourceLocation RECIPE_VIEWER_LOCATION = ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "textures/gui/screen/recipe_anvil.png");
-    public final int menuOrder = 1; //TODO:
+    public final int menuOrder;
     public final Ingredient input;
     public final int[] work;
     public final TagKey<Fluid> quenchFluid;
     private final ItemStack output;
 
-    public TieredAnvilRecipe(ResourceLocation id, ResourceLocation requirement, Ingredient input, int[] work, TagKey<Fluid> quenchFluid, ItemStack output) {
+    public TieredAnvilRecipe(ResourceLocation id, ResourceLocation requirement, Ingredient input, int[] work, TagKey<Fluid> quenchFluid, ItemStack output, int menuOrder) {
         super(id, requirement);
         this.input = input;
         this.work = work;
         this.quenchFluid = quenchFluid;
         this.output = output;
+        this.menuOrder = menuOrder;
     }
 
     public boolean matchesWorkAndFluid(int[] testWork, Fluid testFluid) {
@@ -172,7 +173,8 @@ public class TieredAnvilRecipe extends EncyclopediaRecipe<RecipeWrapper> impleme
             for(int i = 0; i < work.length; i++) work[i] = workArray.get(i).getAsInt();
             TagKey<Fluid> quenchFluid = json.has("quenchFluid") ? TagKey.create(ForgeRegistries.FLUIDS.getRegistryKey(), ResourceLocation.parse(json.get("quenchFluid").getAsString())) : TagsNF.FRESHWATER;
             ItemStack result = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "result"));
-            return new TieredAnvilRecipe(id, requirement, input, work, quenchFluid, result);
+            int menuOrder = GsonHelper.getAsInt(json, "menuOrder", -1);
+            return new TieredAnvilRecipe(id, requirement, input, work, quenchFluid, result, menuOrder);
         }
 
         @Override
@@ -183,7 +185,8 @@ public class TieredAnvilRecipe extends EncyclopediaRecipe<RecipeWrapper> impleme
             for(int i = 0; i < work.length; i++) work[i] = buf.readVarInt();
             TagKey<Fluid> quenchFluid = TagKey.create(ForgeRegistries.FLUIDS.getRegistryKey(), buf.readResourceLocation());
             ItemStack result = buf.readItem();
-            return new TieredAnvilRecipe(id, requirement.getPath().equals("empty") ? null : requirement, input, work, quenchFluid, result);
+            int menuOrder = buf.readVarInt();
+            return new TieredAnvilRecipe(id, requirement.getPath().equals("empty") ? null : requirement, input, work, quenchFluid, result, menuOrder);
         }
 
         @Override
@@ -193,6 +196,7 @@ public class TieredAnvilRecipe extends EncyclopediaRecipe<RecipeWrapper> impleme
             for(int i : recipe.work) buf.writeVarInt(i);
             buf.writeResourceLocation(recipe.quenchFluid.location());
             buf.writeItem(recipe.getResultItem());
+            buf.writeVarInt(recipe.menuOrder);
         }
     }
 }

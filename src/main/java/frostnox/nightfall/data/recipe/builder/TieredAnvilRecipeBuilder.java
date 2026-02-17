@@ -29,6 +29,7 @@ public class TieredAnvilRecipeBuilder {
     private final int[] work;
     private TagKey<Fluid> quenchFluid = TagsNF.FRESHWATER;
     private @Nullable ResourceLocation requirement;
+    private int menuOrder = -1;
 
     public TieredAnvilRecipeBuilder(Ingredient input, int[] work, ItemLike result, int count) {
         this.input = input;
@@ -60,6 +61,11 @@ public class TieredAnvilRecipeBuilder {
         return this;
     }
 
+    public TieredAnvilRecipeBuilder order(int menuOrder) {
+        this.menuOrder = menuOrder;
+        return this;
+    }
+
     public void save(Consumer<FinishedRecipe> consumer) {
         save(consumer, Nightfall.MODID);
     }
@@ -74,7 +80,7 @@ public class TieredAnvilRecipeBuilder {
         IDS.put(name, number);
         ResourceLocation id = ResourceLocation.fromNamespaceAndPath(namespace, name + "_" + number);
         if(work.length != 11) throw new IllegalStateException("Work array is not 11 elements for anvil recipe " + id);
-        consumer.accept(new TieredAnvilRecipeBuilder.Result(id, requirement, input, work, quenchFluid, result, count));
+        consumer.accept(new TieredAnvilRecipeBuilder.Result(id, requirement, input, work, quenchFluid, result, count, menuOrder));
     }
     
     public static class Result implements FinishedRecipe {
@@ -84,8 +90,9 @@ public class TieredAnvilRecipeBuilder {
         private final TagKey<Fluid> fluid;
         private final Item result;
         private final int count;
+        private final int menuOrder;
         
-        public Result(ResourceLocation id, ResourceLocation requirement, Ingredient input, int[] work, TagKey<Fluid> fluid, Item result, int count) {
+        public Result(ResourceLocation id, ResourceLocation requirement, Ingredient input, int[] work, TagKey<Fluid> fluid, Item result, int count, int menuOrder) {
             this.id = id;
             this.requirement = requirement;
             this.input = input;
@@ -93,6 +100,7 @@ public class TieredAnvilRecipeBuilder {
             this.fluid = fluid;
             this.result = result;
             this.count = count;
+            this.menuOrder = menuOrder;
         }
 
         @Override
@@ -111,6 +119,8 @@ public class TieredAnvilRecipeBuilder {
             result.addProperty("item", ForgeRegistries.ITEMS.getKey(this.result).toString());
             if(this.count > 1) result.addProperty("count", this.count);
             json.add("result", result);
+
+            if(menuOrder >= 0) json.addProperty("menuOrder", menuOrder);
 
             if(requirement != null) json.addProperty("requirement", requirement.toString());
         }
