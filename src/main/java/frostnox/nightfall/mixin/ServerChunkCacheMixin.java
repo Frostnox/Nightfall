@@ -4,6 +4,7 @@ import frostnox.nightfall.capability.*;
 import frostnox.nightfall.registry.forge.BlocksNF;
 import frostnox.nightfall.registry.forge.EntitiesNF;
 import frostnox.nightfall.util.LevelUtil;
+import frostnox.nightfall.util.data.TickingChunk;
 import frostnox.nightfall.world.MoonPhase;
 import frostnox.nightfall.world.Season;
 import frostnox.nightfall.world.Weather;
@@ -50,23 +51,6 @@ public abstract class ServerChunkCacheMixin extends ChunkSource {
     @Shadow boolean spawnFriendlies;
     @Unique private static final int RANDOM_SECTIONS_DIVISOR = 4;
     @Unique private static final BlockState SNOW_LAYER = BlocksNF.SNOW.get().defaultBlockState();
-
-    @Unique
-    private static class TickingChunk {
-        private final LevelChunk chunk;
-        private final ChunkHolder holder;
-        private final ChunkPos chunkPos;
-        private final IChunkData chunkData;
-        private final IGlobalChunkData globalChunkData;
-
-        private TickingChunk(LevelChunk chunk, ChunkHolder holder, IChunkData chunkData, IGlobalChunkData globalChunkData) {
-            this.chunk = chunk;
-            this.holder = holder;
-            this.chunkPos = chunk.getPos();
-            this.chunkData = chunkData;
-            this.globalChunkData = globalChunkData;
-        }
-    }
 
     /**
      * Replace chunk ticking for Nightfall levels with custom function since layering on top via events has a big impact
