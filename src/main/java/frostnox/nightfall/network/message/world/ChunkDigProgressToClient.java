@@ -92,7 +92,7 @@ public class ChunkDigProgressToClient {
                     }
                     else {
                         ClientEngine.get().visuallyDestroyBlock(pos, (int) (progress * 10F) - 1);
-                        chunkData.setBreakProgress(pos, progress);
+                        chunkData.setBreakProgress(pos, progress, block);
                     }
                 }
             });

@@ -74,7 +74,7 @@ public class DigBlockToClient {
                 }
                 else {
                     ClientEngine.get().visuallyDestroyBlock(pos, (int) (msg.progress * 10F) - 1);
-                    chunkData.setBreakProgress(pos, msg.progress);
+                    chunkData.setBreakProgress(pos, msg.progress, block);
                 }
             });
         }

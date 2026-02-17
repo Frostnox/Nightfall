@@ -557,7 +557,7 @@ public class ClientEventHandler {
                                         }
                                         else {
                                             ClientEngine.get().visuallyDestroyBlock(pos, (int) (progress * 10F) - 1);
-                                            chunkData.setBreakProgress(pos.immutable(), progress);
+                                            chunkData.setBreakProgress(pos.immutable(), progress, block);
                                         }
                                         if(pos.equals(center)) {
                                             if(progress < 1F && !block.getMaterial().isReplaceable() && !stack.is(TagsNF.NO_HITSTOP)) capP.setHitStopFrame(capA.getFrame());

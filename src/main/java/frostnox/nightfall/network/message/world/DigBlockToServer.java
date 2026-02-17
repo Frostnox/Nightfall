@@ -134,7 +134,7 @@ public class DigBlockToServer {
                             capP.setHitStopFrame(capA.getFrame());
                             NetworkHandler.toAllTracking(player, new GenericEntityToClient(NetworkHandler.Type.HITSTOP_CLIENT, player.getId()));
                         }
-                        chunkData.setBreakProgress(pos.immutable(), progress);
+                        chunkData.setBreakProgress(pos.immutable(), progress, block);
                     }
                     if(isCenter) {
                         SoundType sound = block.getSoundType(player.level, pos, player);

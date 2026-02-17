@@ -167,7 +167,7 @@ public class CommonEventHandler {
             }
             else {
                 if(level.isClientSide) ClientEngine.get().visuallyDestroyBlock(pos, (int) (progress * 10F) - 1);
-                chunkData.setBreakProgress(pos, progress);
+                chunkData.setBreakProgress(pos, progress, block);
             }
             if(block.getDestroySpeed(level, pos) > 0F) {
                 SoundType sound = block.getSoundType(player.level, pos, player);

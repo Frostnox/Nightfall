@@ -168,7 +168,7 @@ public abstract class ActionableEntity extends PathfinderMob {
         else {
             SoundType sound = block.getSoundType(level, pos, this);
             level.playSound(null, pos, sound.getHitSound(), SoundSource.BLOCKS, (sound.getVolume() + 1.0F) / 2F, sound.getPitch() * 0.75F);
-            chunkData.setBreakProgress(pos, progress);
+            chunkData.setBreakProgress(pos, progress, block);
             NetworkHandler.toAllTrackingChunk(level.getChunkAt(pos), new DigBlockToClient(pos.getX(), pos.getY(), pos.getZ(), progress));
             return false;
         }
