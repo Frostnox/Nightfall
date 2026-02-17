@@ -1,6 +1,7 @@
 package frostnox.nightfall.client.render.entity.layer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import frostnox.nightfall.Nightfall;
 import frostnox.nightfall.client.ClientEngine;
 import frostnox.nightfall.client.model.AnimatedModel;
 import frostnox.nightfall.entity.entity.monster.UndeadEntity;
@@ -11,6 +12,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 
 public class GlowingLayer<T extends LivingEntity, M extends AnimatedModel<T>> extends RenderLayer<T, M> {
@@ -29,6 +31,9 @@ public class GlowingLayer<T extends LivingEntity, M extends AnimatedModel<T>> ex
         Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
         //Cull if far away so pixels don't flicker
         if(pLivingEntity.getEyePosition(pPartialTicks).distanceToSqr(camera.getPosition()) * ClientEngine.get().getNormalizedFov() > cullDistSqr) return;
+        pMatrixStack.pushPose();
+        pMatrixStack.scale(1.01F, 1.01F, 1.01F);
         getParentModel().renderToBuffer(pMatrixStack, pBuffer.getBuffer(renderType), 0xf000f0, OverlayTexture.NO_OVERLAY, 1F, 1F, 1F, 1F);
+        pMatrixStack.popPose();
     }
 }

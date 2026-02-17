@@ -16,7 +16,7 @@ public class SpiderRenderer extends AnimatedMobRenderer<SpiderEntity, SpiderMode
 
     public SpiderRenderer(EntityRendererProvider.Context renderer) {
         super(renderer, new SpiderModel(renderer.bakeLayer(ModelRegistryNF.SPIDER)), 0.25F);
-        this.addLayer(new GlowingLayer<>(this, 75, RenderTypeNF.EYES.apply(ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "textures/entity/spider/spider_eyes.png"))));
+        this.addLayer(new GlowingLayer<>(this, 75, RenderTypeNF.ENTITY_EYES.apply(ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "textures/entity/spider/spider_eyes.png"))));
     }
 
     @Override

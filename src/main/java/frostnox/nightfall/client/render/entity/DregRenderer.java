@@ -19,7 +19,7 @@ public class DregRenderer extends UndeadMobRenderer<DregEntity, DregModel> {
     public DregRenderer(EntityRendererProvider.Context renderer) {
         super(renderer, new DregModel(renderer.bakeLayer(ModelRegistryNF.DREG)), 0.375F);
         this.addLayer(new HeldItemLayer<>(this));
-        this.addLayer(new GlowingLayer<>(this, 95, RenderTypeNF.EYES.apply(ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "textures/entity/dreg/dreg_eyes.png"))));
+        this.addLayer(new GlowingLayer<>(this, 95, RenderTypeNF.ENTITY_EYES.apply(ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "textures/entity/dreg/dreg_eyes.png"))));
         this.addLayer(new ArmorLayer<>(this, renderer));
         this.addLayer(new EquipmentLayer<>(this, renderer));
     }

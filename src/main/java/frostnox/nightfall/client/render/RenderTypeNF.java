@@ -16,19 +16,21 @@ import java.util.OptionalDouble;
 import java.util.function.Function;
 
 public class RenderTypeNF extends RenderType {
-    private static ShaderInstance positionColorNormalShader, entityOffsetShader;
+    private static ShaderInstance positionColorNormalShader, entityOffsetShader, entityEyesShader;
 
     public static final RenderType LINES_DEPTH = create(Nightfall.MODID + ":lines_depth", DefaultVertexFormat.POSITION_COLOR_NORMAL, VertexFormat.Mode.LINES, 256,
             false, false, CompositeState.builder().setTransparencyState(TRANSLUCENT_TRANSPARENCY)
                     .setShaderState(RENDERTYPE_LINES_SHADER).setLineState(new LineStateShard(OptionalDouble.empty())).setLayeringState(VIEW_OFFSET_Z_LAYERING)
                     .setOutputState(ITEM_ENTITY_TARGET).setWriteMaskState(COLOR_DEPTH_WRITE).setCullState(NO_CULL).createCompositeState(false));
-    //Same as vanilla eyes but write to depth so it doesn't render behind translucent entities
-    public static final Function<ResourceLocation, RenderType> EYES = Util.memoize((loc) -> {
-        RenderStateShard.TextureStateShard shard = new RenderStateShard.TextureStateShard(loc, false, false);
-        return create("eyes", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, false, true,
-                RenderType.CompositeState.builder().setShaderState(RENDERTYPE_EYES_SHADER).setTextureState(shard).setTransparencyState(TRANSLUCENT_TRANSPARENCY).setWriteMaskState(COLOR_DEPTH_WRITE).createCompositeState(false));
-    });
+
     public static final ShaderStateShard ENTITY_OFFSET_SHADER_SHARD = new ShaderStateShard(RenderTypeNF::getEntityOffsetShader);
+
+    public static final ShaderStateShard ENTITY_EYES_SHADER = new ShaderStateShard(RenderTypeNF::getEntityEyesShader);
+    public static final Function<ResourceLocation, RenderType> ENTITY_EYES = Util.memoize((loc) -> {
+        RenderType.CompositeState state = RenderType.CompositeState.builder().setShaderState(ENTITY_EYES_SHADER).setTextureState(new RenderStateShard.TextureStateShard(loc, false, false))
+                .setTransparencyState(TRANSLUCENT_TRANSPARENCY).createCompositeState(false);
+        return create("entity_cutout", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, true, false, state);
+    });
 
     public RenderTypeNF(String pName, VertexFormat pFormat, VertexFormat.Mode pMode, int pBufferSize, boolean pAffectsCrumbling, boolean pSortOnUpload, Runnable pSetupState, Runnable pClearState) {
         super(pName, pFormat, pMode, pBufferSize, pAffectsCrumbling, pSortOnUpload, pSetupState, pClearState);
@@ -37,12 +39,16 @@ public class RenderTypeNF extends RenderType {
     /**
      * Unused vanilla shader, updated to work with current version
      */
-    public static @Nullable ShaderInstance getPositionColorNormalShader() {
+    private static @Nullable ShaderInstance getPositionColorNormalShader() {
         return positionColorNormalShader;
     }
 
-    public static @Nullable ShaderInstance getEntityOffsetShader() {
+    private static @Nullable ShaderInstance getEntityOffsetShader() {
         return entityOffsetShader;
+    }
+
+    private static @Nullable ShaderInstance getEntityEyesShader() {
+        return entityEyesShader;
     }
 
     public static RenderType entityOffset(ResourceLocation loc, float u, float v) {
@@ -56,5 +62,7 @@ public class RenderTypeNF extends RenderType {
                 (instance) -> positionColorNormalShader = instance);
         event.registerShader(new ShaderInstance(event.getResourceManager(), ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "entity_offset"), DefaultVertexFormat.NEW_ENTITY),
                 (instance) -> entityOffsetShader = instance);
+        event.registerShader(new ShaderInstance(event.getResourceManager(), ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "entity_eyes"), DefaultVertexFormat.NEW_ENTITY),
+                (instance) -> entityEyesShader = instance);
     }
 }

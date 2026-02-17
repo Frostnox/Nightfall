@@ -371,7 +371,7 @@ public class RecipeProviderNF extends RecipeProvider {
         for(Metal metal : ItemsNF.INGOTS.keySet()) SingleRecipeBuilder.base(FluidsNF.METAL.get(metal).get(), 100).input(ItemsNF.INGOTS.get(metal).get()).cookTime(20 * 20).saveCrucible(consumer);
         for(Metal metal : ItemsNF.SCRAP.keySet()) SingleRecipeBuilder.base(FluidsNF.METAL.get(metal).get(), 50).input(ItemsNF.SCRAP.get(metal).get()).cookTime(20 * 30).saveCrucible(consumer);
         for(Metal metal : ItemsNF.PLATES.keySet()) SingleRecipeBuilder.base(FluidsNF.METAL.get(metal).get(), 100).input(ItemsNF.PLATES.get(metal).get()).cookTime(20 * 20).saveCrucible(consumer);
-        for(Metal metal : ItemsNF.WIRES.keySet()) SingleRecipeBuilder.base(FluidsNF.METAL.get(metal).get(), 10).input(ItemsNF.WIRES.get(metal).get()).cookTime(20 * 3).saveCrucible(consumer);
+        for(Metal metal : ItemsNF.WIRES.keySet()) SingleRecipeBuilder.base(FluidsNF.METAL.get(metal).get(), 20).input(ItemsNF.WIRES.get(metal).get()).cookTime(20 * 3).saveCrucible(consumer);
         for(Metal metal : ItemsNF.CHAINMAIL.keySet()) SingleRecipeBuilder.base(FluidsNF.METAL.get(metal).get(), 40).input(ItemsNF.CHAINMAIL.get(metal).get()).cookTime(20 * 6).saveCrucible(consumer);
         for(Metal metal : ItemsNF.SCALES.keySet()) SingleRecipeBuilder.base(FluidsNF.METAL.get(metal).get(), 40).input(ItemsNF.SCALES.get(metal).get()).cookTime(20 * 10).saveCrucible(consumer);
         for(TieredItemMaterial material : ItemsNF.ARMAMENT_HEADS.keySet()) {
@@ -403,7 +403,7 @@ public class RecipeProviderNF extends RecipeProvider {
             TieredAnvilRecipeBuilder.base(inputs.get(metal), new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, ItemsNF.INGOTS.get(metal).get()).order(0).requirement(EntriesNF.SMITHING).save(consumer);
             TieredAnvilRecipeBuilder.base(inputsPlates.get(metal), new int[]{2, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0}, ItemsNF.PLATES.get(metal).get()).order(1).requirement(EntriesNF.SMITHING).save(consumer);
             //TieredAnvilRecipeBuilder.base(inputs.get(metal), new int[]{0, 2, 0, 0, 2, 0, 0, 0, 2, 0, 0}, ItemsNF.WIRES.get(metal).get()).requirement(EntriesNF.SMITHING).save(consumer); TODO: Rods
-            TieredAnvilRecipeBuilder.base(inputs.get(metal), new int[]{0, 3, 0, 0, 3, 0, 0, 0, 3, 0, 0}, ItemsNF.WIRES.get(metal).get()).requirement(EntriesNF.SMITHING).order(3).save(consumer);
+            TieredAnvilRecipeBuilder.base(inputs.get(metal), new int[]{0, 3, 0, 0, 3, 0, 0, 0, 3, 0, 0}, ItemsNF.WIRES.get(metal).get(), 4).requirement(EntriesNF.SMITHING).order(3).save(consumer);
             if(ItemsNF.SCALES.containsKey(metal)) TieredAnvilRecipeBuilder.base(inputsPlates.get(metal), new int[]{0, 0, 3, 2, 1, 0, 0, 2, 1, 0, 0}, ItemsNF.SCALES.get(metal).get()).order(4).requirement(EntriesNF.SCALE_ARMOR).save(consumer);
         }
         for(TieredItemMaterial material : ItemsNF.ARMAMENT_HEADS.keySet()) {

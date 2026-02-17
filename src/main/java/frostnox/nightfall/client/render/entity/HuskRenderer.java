@@ -19,7 +19,7 @@ public class HuskRenderer extends UndeadMobRenderer<HuskEntity, HuskModel> {
     public HuskRenderer(EntityRendererProvider.Context renderer) {
         super(renderer, new HuskModel(renderer.bakeLayer(ModelRegistryNF.HUSK)), 0.45F);
         this.addLayer(new HeldItemLayer<>(this));
-        this.addLayer(new GlowingLayer<>(this, 75, RenderTypeNF.EYES.apply(ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "textures/entity/husk/husk_eyes.png"))));
+        this.addLayer(new GlowingLayer<>(this, 75, RenderTypeNF.ENTITY_EYES.apply(ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "textures/entity/husk/husk_eyes.png"))));
         this.addLayer(new ArmorLayer<>(this, renderer));
         this.addLayer(new EquipmentLayer<>(this, renderer));
     }

@@ -22,7 +22,7 @@ public class SkeletonRenderer extends UndeadMobRenderer<SkeletonEntity, Skeleton
     public SkeletonRenderer(EntityRendererProvider.Context renderer) {
         super(renderer, new SkeletonModel(renderer.bakeLayer(ModelRegistryNF.SKELETON)), 0.45F);
         this.addLayer(new HeldItemLayer<>(this));
-        this.addLayer(new GlowingLayer<>(this, 97.5, RenderTypeNF.EYES.apply(ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "textures/entity/skeleton/skeleton_eyes.png"))));
+        this.addLayer(new GlowingLayer<>(this, 97.5, RenderTypeNF.ENTITY_EYES.apply(ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "textures/entity/skeleton/skeleton_eyes.png"))));
         this.addLayer(new ArmorLayer<>(this, renderer));
         this.addLayer(new EquipmentLayer<>(this, renderer));
     }

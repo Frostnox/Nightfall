@@ -55,8 +55,8 @@ public abstract class ProjectileLauncherItem extends ScreenCacheItem implements 
     }
 
     public @Nullable Entity launchProjectile(ItemStack item, Player user, InteractionHand hand, float velocity) {
-        int index = LevelUtil.getModifiableItemIndex(user.level, user, hand);
         List<ItemStack> ammo = getAmmo(user);
+        int index = getSelectedAmmoIndex(item, ammo, LevelUtil.getModifiableItemIndex(user.level, user, hand));
         if(ammo.isEmpty() && user.getAbilities().instabuild) {
             index = 0;
             ammo.add(new ItemStack(getDefaultItem()));
@@ -74,6 +74,21 @@ public abstract class ProjectileLauncherItem extends ScreenCacheItem implements 
             if(item.is(ammoTag)) ammo.add(item);
         }
         return ammo;
+    }
+
+    protected int getSelectedAmmoIndex(ItemStack launcher, List<ItemStack> ammo, int fallbackIndex) {
+        if(launcher.hasTag()) {
+            CompoundTag tag = launcher.getTag();
+            if(tag != null && tag.contains("ammo_item")) {
+                ResourceLocation ammoId = ResourceLocation.tryParse(tag.getString("ammo_item"));
+                if(ammoId != null) {
+                    for(int i = 0; i < ammo.size(); i++) {
+                        if(ammo.get(i).getItem().getRegistryName().equals(ammoId)) return i;
+                    }
+                }
+            }
+        }
+        return fallbackIndex;
     }
 
     public static int getAmmoByte(ItemStack item) {
@@ -97,10 +112,9 @@ public abstract class ProjectileLauncherItem extends ScreenCacheItem implements 
                 int index = LevelUtil.getModifiableItemIndex(level, player, hand);
                 if(index < 0 || index >= ammo.size()) return InteractionResultHolder.fail(item);
                 int id = getAmmoId(ammo.get(index));
-                if(id != 0) {
-                    CompoundTag tag = item.getOrCreateTag();
-                    tag.putByte("ammo", (byte) id);
-                }
+                CompoundTag tag = item.getOrCreateTag();
+                tag.putString("ammo_item", ammo.get(index).getItem().getRegistryName().toString());
+                if(id != 0) tag.putByte("ammo", (byte) id);
             }
         }
         return InteractionResultHolder.fail(item);
