@@ -322,6 +322,7 @@ public class TongsItem extends ItemNF implements IContainerChanger, IModifiable,
                 })
                 .collect(Collectors.toList());
         ForgeHooks.setCraftingPlayer(null);
+        recipes.add(0, null);
         return recipes;
     }
 
@@ -334,7 +335,7 @@ public class TongsItem extends ItemNF implements IContainerChanger, IModifiable,
     public Optional<Screen> modifyStartClient(Minecraft mc, ItemStack item, Player player, InteractionHand hand) {
         if(hasWorkpiece(item)) {
             List<TieredAnvilRecipe> recipes = getVisualRecipes(player.level, player, getWorkpiece(item));
-            if(recipes.isEmpty()) return Optional.empty();
+            if(recipes.size() <= 1) return Optional.empty();
             else return Optional.of(new TongsVisualRecipeScreen(PlayerData.get(player).isMainhandActive(), this, recipes));
         }
         return Optional.empty();

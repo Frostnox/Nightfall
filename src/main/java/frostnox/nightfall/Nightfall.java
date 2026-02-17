@@ -41,6 +41,7 @@ import frostnox.nightfall.registry.vanilla.GameEventsNF;
 import frostnox.nightfall.registry.vanilla.LootItemConditionTypesNF;
 import frostnox.nightfall.registry.vanilla.LootItemFunctionTypesNF;
 import frostnox.nightfall.registry.vanilla.PlacementModifierTypesNF;
+import frostnox.nightfall.util.DataUtil;
 import frostnox.nightfall.world.ContinentalWorldType;
 import frostnox.nightfall.world.FlatWorldType;
 import frostnox.nightfall.world.Season;
@@ -629,6 +630,7 @@ public class Nightfall {
                 event.addSprite(PuzzleContainer.UNKNOWN_ITEM);
                 event.addSprite(PuzzleContainer.FAILURE);
                 event.addSprite(PuzzleContainer.SUCCESS);
+                event.addSprite(DataUtil.NULL_ICON);
                 event.addSprite(ResourceLocation.fromNamespaceAndPath(MODID, "block/" + ItemsNF.MEAT_STEW.getId().getPath()));
                 event.addSprite(ResourceLocation.fromNamespaceAndPath(MODID, "block/" + ItemsNF.VEGETABLE_STEW.getId().getPath()));
                 event.addSprite(ResourceLocation.fromNamespaceAndPath(MODID, "block/" + ItemsNF.HEARTY_STEW.getId().getPath()));

@@ -56,7 +56,7 @@ public abstract class ModifiableScreen<T> extends Screen {
 
     public static int updateSelection(IScreenCache modifiableItem, List<?> objects, boolean mainHand) {
         if(objects.isEmpty()) {
-            ClientEngine.get().setModifiableIndex(mainHand, null, 0);
+            ClientEngine.get().setModifiableIndex(mainHand, null, -1);
             return -1;
         }
         int index = 0;
@@ -74,7 +74,7 @@ public abstract class ModifiableScreen<T> extends Screen {
         return index;
     }
 
-    protected abstract void renderObject(T object, int xPos, int yPos);
+    protected abstract void renderObject(T object, PoseStack poseStack, int xPos, int yPos);
 
     protected abstract void renderObjectTooltip(T object, PoseStack poseStack, int mouseX, int mouseY);
 
@@ -178,11 +178,11 @@ public abstract class ModifiableScreen<T> extends Screen {
                 modelStack.scale(scale, scale, 1F);
                 modelStack.translate(-itemX, -itemY, 0);
                 RenderSystem.applyModelViewMatrix();
-                renderObject(objects.get(i), xPos, yPos);
+                renderObject(objects.get(i), poseStack, xPos, yPos);
                 modelStack.popPose();
                 RenderSystem.applyModelViewMatrix();
             }
-            else renderObject(objects.get(i), xPos, yPos);
+            else renderObject(objects.get(i), poseStack, xPos, yPos);
         }
         for(int i = startIndex; i < objects.size() && (i == startIndex || i % slices != 0); i++) {
             Pair<Integer, Integer> pos = getPosition(i);

@@ -144,6 +144,7 @@ public class LanguageProviderNF extends LanguageProvider {
         add("commands.info.climb", "Start climbing by holding the jump key '%s' against a ledge.");
         add("commands.info.prioritize_offhand", "Hold '%s' to attack/use offhand items.");
         add("commands.info.modify_item_behavior", "Hold '%s' with certain items (such as building materials) to modify their use behavior.");
+        add("gui.empty", "Empty");
 
         add("debug.error", "Cannot execute command in %s mode");
         add("season.spring", "Spring");

@@ -2,6 +2,7 @@ package frostnox.nightfall.util;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
+import frostnox.nightfall.Nightfall;
 import frostnox.nightfall.world.Season;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
@@ -25,6 +26,7 @@ import java.util.function.Predicate;
 import java.util.regex.*;
 
 public class DataUtil {
+    public static final ResourceLocation NULL_ICON = ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "gui/icon/null");
     public static final Direction[] DIRECTIONS_EXCEPT_UP = new Direction[] {Direction.DOWN, Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST};
     public static final Direction[] DIRECTIONS_EXCEPT_DOWN = new Direction[] {Direction.UP, Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST};
     public static final Direction[] DIRECTIONS_EXCEPT_NORTH = new Direction[] {Direction.DOWN, Direction.UP, Direction.SOUTH, Direction.WEST, Direction.EAST};

@@ -12,7 +12,7 @@ public class ModifiableItemScreen extends ModifiableScreen<ItemStack> {
     }
 
     @Override
-    protected void renderObject(ItemStack object, int xPos, int yPos) {
+    protected void renderObject(ItemStack object, PoseStack poseStack, int xPos, int yPos) {
         mc.getItemRenderer().renderAndDecorateItem(object, xPos, yPos);
         mc.getItemRenderer().renderGuiItemDecorations(mc.font, object, xPos, yPos);
     }

@@ -8,11 +8,14 @@ import frostnox.nightfall.capability.PlayerData;
 import frostnox.nightfall.client.ClientEngine;
 import frostnox.nightfall.item.client.IModifiable;
 import frostnox.nightfall.registry.forge.AttributesNF;
+import frostnox.nightfall.util.DataUtil;
+import frostnox.nightfall.util.RenderUtil;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -329,22 +332,20 @@ public abstract class OverlayNF extends GuiComponent {
 
     //Renders optional items present in ClientEngine (used for items like building materials or bows)
     protected static void renderOptionalObjects(PoseStack stack) {
-        renderOptionalObject(stack, ClientEngine.get().getOptionalMainObject(), true);
-        renderOptionalObject(stack, ClientEngine.get().getOptionalOffObject(), false);
+        if(ClientEngine.get().getModifiableIndexMain() >= 0) renderOptionalObject(stack, ClientEngine.get().getOptionalMainObject(), true);
+        if(ClientEngine.get().getModifiableIndexOff() >= 0) renderOptionalObject(stack, ClientEngine.get().getOptionalOffObject(), false);
     }
 
     protected static void renderOptionalObject(PoseStack stack, Object object, boolean main) {
         Minecraft mc = Minecraft.getInstance();
         int width = mc.getWindow().getGuiScaledWidth() / 2;
         int height = mc.getWindow().getGuiScaledHeight();
-        if(object != null) {
-            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-            RenderSystem.setShader(GameRenderer::getPositionTexShader);
-            RenderSystem.setShaderTexture(0, TEXTURE);
-            draw(stack, width + (main ? (91 + 7) : (-91 - 48)), height - 22,
-                    mc.player.getItemInHand(main ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND).getItem() instanceof IModifiable modifiable ? modifiable.getBackgroundUOffset() : 0,
-                    54, main ? 22 : 20, 22);
-        }
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShaderTexture(0, TEXTURE);
+        draw(stack, width + (main ? (91 + 7) : (-91 - 48)), height - 22,
+                mc.player.getItemInHand(main ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND).getItem() instanceof IModifiable modifiable ? modifiable.getBackgroundUOffset() : 0,
+                54, main ? 22 : 20, 22);
         if(object instanceof ItemStack item) {
             mc.getItemRenderer().renderAndDecorateItem(item, width + (main ? (91 + 10) : (-91 - 45)), height - 16 - 3);
             mc.getItemRenderer().renderGuiItemDecorations(mc.font, item, width + 91 + 10, height - 16 - 3);
@@ -352,6 +353,10 @@ public abstract class OverlayNF extends GuiComponent {
         else if(object instanceof Recipe<?> recipe) {
             mc.getItemRenderer().renderAndDecorateItem(recipe.getResultItem(), width + (main ? (91 + 10) : (-91 - 45)), height - 16 - 3);
             mc.getItemRenderer().renderGuiItemDecorations(mc.font, recipe.getResultItem(), width + 91 + 10, height - 16 - 3);
+        }
+        else {
+            RenderSystem.setShaderTexture(0, TextureAtlas.LOCATION_BLOCKS);
+            RenderUtil.renderSprite(stack, width + (main ? (91 + 10) : (-91 - 45)), height - 16 - 3, DataUtil.NULL_ICON);
         }
     }
 }
