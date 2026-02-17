@@ -6,8 +6,6 @@ import frostnox.nightfall.network.message.world.DigBlockToClient;
 import frostnox.nightfall.util.DataUtil;
 import frostnox.nightfall.util.MathUtil;
 import it.unimi.dsi.fastutil.Hash;
-import it.unimi.dsi.fastutil.ints.IntFloatMutablePair;
-import it.unimi.dsi.fastutil.ints.IntFloatPair;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenCustomHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArraySet;
@@ -18,6 +16,7 @@ import net.minecraft.nbt.FloatTag;
 import net.minecraft.nbt.IntTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -31,7 +30,7 @@ public class GlobalChunkData implements IGlobalChunkData {
     public static final Capability<IGlobalChunkData> CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {}); //Reference to manager instance
     private final LevelChunk chunk;
     private final boolean isClientSide;
-    private final Object2ObjectMap<BlockPos, IntFloatPair> breakingBlocks;
+    private final Object2ObjectMap<BlockPos, BreakProgressData> breakingBlocks;
 
     public GlobalChunkData(LevelChunk chunk) {
         this.chunk = chunk;
@@ -56,17 +55,20 @@ public class GlobalChunkData implements IGlobalChunkData {
         if(breakingBlocks.isEmpty()) return;
         Set<BlockPos> removals = new ObjectArraySet<>(8);
         for(var entry : breakingBlocks.entrySet()) {
-            IntFloatPair data = entry.getValue();
+            BreakProgressData data = entry.getValue();
             int decay = data.firstInt();
-            if(decay == 1) {
-                BlockPos pos = entry.getKey();
+            BlockPos pos = entry.getKey();
+            if(!isBreakProgressValid(pos, data)) {
+                removals.add(pos);
+                NetworkHandler.toAllTrackingChunk(chunk, new DigBlockToClient(pos.getX(), pos.getY(), pos.getZ(), -1));
+            }
+            else if(decay == 1) {
                 removals.add(pos);
                 NetworkHandler.toAllTrackingChunk(chunk, new DigBlockToClient(pos.getX(), pos.getY(), pos.getZ(), -1));
             }
             else {
                 data.first(decay - 1);
                 if(decay <= 20 * 20 && decay % 40 == 0) {
-                    BlockPos pos = entry.getKey();
                     float progress = data.secondFloat() - 1F/10F;
                     if(progress <= 0F) {
                         removals.add(pos);
@@ -84,19 +86,23 @@ public class GlobalChunkData implements IGlobalChunkData {
 
     @Override
     public void setBreakProgress(BlockPos pos, int decay, float progress) {
-        breakingBlocks.put(pos, new IntFloatMutablePair(decay, progress));
+        breakingBlocks.put(pos, new BreakProgressData(decay, progress, Block.getId(chunk.getBlockState(pos))));
     }
 
     @Override
     public void setBreakProgress(BlockPos pos, float progress) {
-        breakingBlocks.put(pos, new IntFloatMutablePair(20 * 50, progress));
+        breakingBlocks.put(pos, new BreakProgressData(20 * 50, progress, Block.getId(chunk.getBlockState(pos))));
     }
 
     @Override
     public float getBreakProgress(BlockPos pos) {
-        IntFloatPair data = breakingBlocks.get(pos);
-        if(data != null) return data.secondFloat();
+        BreakProgressData data = breakingBlocks.get(pos);
+        if(data != null) {
+            if(isBreakProgressValid(pos, data)) return data.secondFloat();
+            breakingBlocks.remove(pos);
+        }
         else return 0;
+        return 0;
     }
 
     @Override
@@ -111,7 +117,11 @@ public class GlobalChunkData implements IGlobalChunkData {
         else {
             Set<BlockPos> removals = new ObjectArraySet<>(8);
             for(var entry : breakingBlocks.entrySet()) {
-                IntFloatPair data = entry.getValue();
+                BreakProgressData data = entry.getValue();
+                if(!isBreakProgressValid(entry.getKey(), data)) {
+                    removals.add(entry.getKey());
+                    continue;
+                }
                 int decay = data.firstInt();
                 int newDecay = decay - (int) elapsedTime;
                 if(newDecay <= 0) {
@@ -141,7 +151,7 @@ public class GlobalChunkData implements IGlobalChunkData {
             int i = 0;
             for(var entry : breakingBlocks.entrySet()) {
                 packedPositions[i] = DataUtil.packChunkPos(entry.getKey());
-                IntFloatPair data = entry.getValue();
+                BreakProgressData data = entry.getValue();
                 progress[i] = data.secondFloat();
                 i++;
             }
@@ -154,16 +164,19 @@ public class GlobalChunkData implements IGlobalChunkData {
     public CompoundTag writeNBT() {
         CompoundTag tag = new CompoundTag();
         if(!breakingBlocks.isEmpty()) {
-            ListTag hashes = new ListTag(), decay = new ListTag(), progress = new ListTag();
+            ListTag hashes = new ListTag(), decay = new ListTag(), progress = new ListTag(), stateID = new ListTag();
             for(var entry : breakingBlocks.entrySet()) {
                 BlockPos pos = entry.getKey();
                 hashes.add(IntTag.valueOf(((pos.getX() & 15) << 22) | ((pos.getZ() & 15) << 12) | (pos.getY() & 4095)));
-                decay.add(IntTag.valueOf(entry.getValue().firstInt()));
-                progress.add(FloatTag.valueOf(entry.getValue().secondFloat()));
+                BreakProgressData data = entry.getValue();
+                decay.add(IntTag.valueOf(data.firstInt()));
+                progress.add(FloatTag.valueOf(data.secondFloat()));
+                stateID.add(IntTag.valueOf(data.getStateID()));
             }
             tag.put("breakPositions", hashes);
             tag.put("breakDecay", decay);
             tag.put("breakProgress", progress);
+            tag.put("breakStateID", stateID);
         }
         return tag;
     }
@@ -175,12 +188,51 @@ public class GlobalChunkData implements IGlobalChunkData {
             ListTag hashes = tag.getList("breakPositions", ListTag.TAG_INT);
             ListTag decayTag = tag.getList("breakDecay", ListTag.TAG_INT);
             ListTag progressTag = tag.getList("breakProgress", ListTag.TAG_FLOAT);
+            ListTag stateIDTag = tag.contains("breakStateID") ? tag.getList("breakStateID", ListTag.TAG_INT) : null;
             for(int i = 0; i < hashes.size(); i++) {
                 int hash = ((IntTag) hashes.get(i)).getAsInt();
                 int decay = ((IntTag) decayTag.get(i)).getAsInt();
                 float progress = ((FloatTag) progressTag.get(i)).getAsFloat();
-                breakingBlocks.put(new BlockPos(minX + (hash >>> 22), hash & 4095, minZ + ((hash >>> 12) & 1023)), new IntFloatMutablePair(decay, progress));
+                BlockPos pos = new BlockPos(minX + (hash >>> 22), hash & 4095, minZ + ((hash >>> 12) & 1023));
+                int stateID = stateIDTag != null && i < stateIDTag.size() ? ((IntTag) stateIDTag.get(i)).getAsInt() : Block.getId(chunk.getBlockState(pos));
+                breakingBlocks.put(pos, new BreakProgressData(decay, progress, stateID));
             }
+        }
+    }
+
+    private boolean isBreakProgressValid(BlockPos pos, BreakProgressData data) {
+        return Block.getId(chunk.getBlockState(pos)) == data.getStateID();
+    }
+
+    private static class BreakProgressData {
+        private int decay;
+        private float progress;
+        private final int stateID;
+
+        private BreakProgressData(int decay, float progress, int stateID) {
+            this.decay = decay;
+            this.progress = progress;
+            this.stateID = stateID;
+        }
+
+        private int getStateID() {
+            return stateID;
+        }
+
+        public int firstInt() {
+            return decay;
+        }
+
+        public void first(int first) {
+            decay = first;
+        }
+
+        public float secondFloat() {
+            return progress;
+        }
+
+        public void second(float second) {
+            progress = second;
         }
     }
 
