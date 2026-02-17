@@ -7,7 +7,6 @@ import frostnox.nightfall.util.LevelUtil;
 import frostnox.nightfall.world.MoonPhase;
 import frostnox.nightfall.world.Season;
 import frostnox.nightfall.world.Weather;
-import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -52,6 +51,23 @@ public abstract class ServerChunkCacheMixin extends ChunkSource {
     @Unique private static final int RANDOM_SECTIONS_DIVISOR = 4;
     @Unique private static final BlockState SNOW_LAYER = BlocksNF.SNOW.get().defaultBlockState();
 
+    @Unique
+    private static class TickingChunk {
+        private final LevelChunk chunk;
+        private final ChunkHolder holder;
+        private final ChunkPos chunkPos;
+        private final IChunkData chunkData;
+        private final IGlobalChunkData globalChunkData;
+
+        private TickingChunk(LevelChunk chunk, ChunkHolder holder, IChunkData chunkData, IGlobalChunkData globalChunkData) {
+            this.chunk = chunk;
+            this.holder = holder;
+            this.chunkPos = chunk.getPos();
+            this.chunkData = chunkData;
+            this.globalChunkData = globalChunkData;
+        }
+    }
+
     /**
      * Replace chunk ticking for Nightfall levels with custom function since layering on top via events has a big impact
      * on performance. Random ticks are altered to always run if the chunk is loaded (instead of only when players are near) and
@@ -85,29 +101,31 @@ public abstract class ServerChunkCacheMixin extends ChunkSource {
             boolean mobSpawning = level.getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING);
             boolean spawnEnemies = mobSpawning && this.spawnEnemies, spawnFriendlies = mobSpawning && this.spawnFriendlies;
             int loadedChunks = getLoadedChunksCount();
-            List<Pair<LevelChunk, ChunkHolder>> chunks = new ObjectArrayList<>(loadedChunks);
+            List<TickingChunk> chunks = new ObjectArrayList<>(loadedChunks);
             for(ChunkHolder chunkHolder : level.getChunkSource().chunkMap.getChunks()) {
                 LevelChunk tickingChunk = chunkHolder.getTickingChunk();
-                if(tickingChunk != null) chunks.add(Pair.of(tickingChunk, chunkHolder));
+                if(tickingChunk != null) {
+                    chunks.add(new TickingChunk(tickingChunk, chunkHolder, ChunkData.get(tickingChunk), GlobalChunkData.get(tickingChunk)));
+                }
             }
             Collections.shuffle(chunks);
             //Simulate time for chunks that started ticking again
-            for(Pair<LevelChunk, ChunkHolder> chunkAndHolder : chunks) {
-                LevelChunk chunk = chunkAndHolder.left();
+            for(TickingChunk tickingChunk : chunks) {
+                LevelChunk chunk = tickingChunk.chunk;
                 chunk.incrementInhabitedTime(timePassed);
-                IChunkData capC = ChunkData.get(chunk);
+                IChunkData capC = tickingChunk.chunkData;
                 long lastTickTime = capC.getLastTickingGameTime();
                 long elapsedTime = lastTickTime == Long.MAX_VALUE ? lastTickTime : (simGameTime - lastTickTime);
                 if(elapsedTime > 0L) capC.simulateTime(elapsedTime, simGameTime, simDayTime, simSeasonTime, seasonalTemp, randomTickChance, random);
                 capC.setLastTickingGameTime(gameTime);
             }
             //Tick chunks
-            for(Pair<LevelChunk, ChunkHolder> chunkAndHolder : chunks) {
-                LevelChunk chunk = chunkAndHolder.left();
-                ChunkPos chunkPos = chunk.getPos();
+            for(TickingChunk tickingChunk : chunks) {
+                LevelChunk chunk = tickingChunk.chunk;
+                ChunkPos chunkPos = tickingChunk.chunkPos;
                 int minX = chunkPos.getMinBlockX(), minZ = chunkPos.getMinBlockZ();
-                IChunkData capC = ChunkData.get(chunk);
-                GlobalChunkData.get(chunk).tick();
+                IChunkData capC = tickingChunk.chunkData;
+                tickingChunk.globalChunkData.tick();
                 //Physics ticks
                 capC.tickPhysics();
                 //Weather effects
@@ -192,7 +210,7 @@ public abstract class ServerChunkCacheMixin extends ChunkSource {
                     double maxDist = LevelUtil.getShortestDistanceSqrUndeadMaxToPlayer(level, spawnX, spawnY, spawnZ, fullMoon);
                     if(maxDist < LevelUtil.UNDEAD_MAX_SPAWN_DIST_SQR &&
                             LevelUtil.getShortestDistanceSqrUndeadMinToPlayer(level, spawnX, spawnY, spawnZ, !fullMoon) > LevelUtil.UNDEAD_MIN_SPAWN_DIST_SQR) {
-                        if(!capC.hasSpawnedUndead() && random.nextFloat() < (fullMoon ? 0.87F : 0.9F) || (!fullMoon && isUndeadSpawnBlocked(centerPos, chunk, chunkPos))) {
+                        if(!capC.hasSpawnedUndead() && random.nextFloat() < (fullMoon ? 0.87F : 0.9F) || (!fullMoon && isUndeadSpawnBlocked(centerPos, capC, chunkPos))) {
                             capC.setSpawnedUndead(true);
                             chunk.setUnsaved(true);
                         }
@@ -266,14 +284,14 @@ public abstract class ServerChunkCacheMixin extends ChunkSource {
                     }
                 }
             }
-            for(Pair<LevelChunk, ChunkHolder> chunkAndHolder : chunks) chunkAndHolder.right().broadcastChanges(chunkAndHolder.left());
+            for(TickingChunk tickingChunk : chunks) tickingChunk.holder.broadcastChanges(tickingChunk.chunk);
             chunkMap.tick();
         }
     }
 
     @Unique
-    private boolean isUndeadSpawnBlocked(BlockPos spawnPos, LevelChunk centerChunk, ChunkPos chunkPos) {
-        if(ChunkData.get(centerChunk).isUndeadSpawnBlocked(spawnPos)) return true;
+    private boolean isUndeadSpawnBlocked(BlockPos spawnPos, IChunkData centerChunkData, ChunkPos chunkPos) {
+        if(centerChunkData.isUndeadSpawnBlocked(spawnPos)) return true;
         for(int x = -1; x <= 1; x++) {
             for(int z = -1; z <= 1; z++) {
                 if(x == 0 && z == 0) continue;
