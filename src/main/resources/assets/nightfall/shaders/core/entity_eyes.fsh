@@ -25,6 +25,6 @@ float linear_fog_fade(float vertexDistance, float fogStart, float fogEnd) {
 
 void main() {
     vec4 color = texture(Sampler0, texCoord0);
-    if(color.a < 0.1) {discard;
+    if(color.a < 0.1) discard;
     fragColor = color * vertexColor * ColorModulator * linear_fog_fade(vertexDistance, FogStart, FogEnd);
 }
