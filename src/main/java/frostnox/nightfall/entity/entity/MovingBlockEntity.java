@@ -45,6 +45,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -290,7 +291,8 @@ public class MovingBlockEntity extends Entity {
                     //Compensate for falling inside of landing block
                     if(tickCount > 0 && !noPhysics) {
                         Vec3 entityPos = getPosition(1F);
-                        if(onGround || !LevelUtil.canFallThrough(level.getBlockState(new BlockPos(entityPos)))) {
+                        BlockState collidingBlock = level.getBlockState(new BlockPos(entityPos));
+                        if(onGround || (blockState.is(TagsNF.FLOATS) && collidingBlock.getBlock() instanceof LiquidBlock) || !LevelUtil.canFallThrough(collidingBlock)) {
                             tryPlacement();
                             setPos(entityPos.x, Math.ceil(entityPos.y), entityPos.z);
                         }

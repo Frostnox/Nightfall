@@ -39,6 +39,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.NaturalSpawner;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -247,7 +248,7 @@ public class ChunkData implements IChunkData {
                 if(!state.getCollisionShape(level, pos).getFaceShape(Direction.DOWN).isEmpty()) {
                     BlockPos belowPos = pos.below();
                     BlockState belowState = chunk.getBlockState(belowPos);
-                    if(!LevelUtil.canFallThrough(belowState) || (floats && belowState.getFluidState().isSource())) fell.val = false;
+                    if(!LevelUtil.canFallThrough(belowState) || (floats && belowState.getBlock() instanceof LiquidBlock)) fell.val = false;
                 }
             }
             else {
@@ -581,7 +582,7 @@ public class ChunkData implements IChunkData {
         BlockPos belowPos = pos.below();
         VoxelShape shape = state.getCollisionShape(level, pos);
         if(!visited.containsKey(belowPos) && !shape.getFaceShape(Direction.DOWN).isEmpty()) {
-            if(floats && level.getFluidState(belowPos).isSource()) {
+            if(floats && level.getBlockState(belowPos).getBlock() instanceof LiquidBlock) {
                 fell.val = false;
                 return;
             }
