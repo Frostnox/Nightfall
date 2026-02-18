@@ -167,7 +167,7 @@ public class TongsItem extends ItemNF implements IContainerChanger, IModifiable,
         if(!hasWorkpiece(tongs)) {
             InteractionHand oppHand = hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND;
             ItemStack item = player.getItemInHand(oppHand);
-            if(item.is(Tags.Items.INGOTS) || item.is(TagsNF.PLATES) || item.is(TagsNF.METAL_WORKPIECE)) {
+            if(item.is(TagsNF.METAL_WORKPIECE)) {
                 if(!level.isClientSide) {
                     tongs.getTag().putString("item", ForgeRegistries.ITEMS.getKey(item.getItem()).toString());
                     if(item.is(ItemsNF.IRON_BLOOM.get())) {
@@ -182,6 +182,11 @@ public class TongsItem extends ItemNF implements IContainerChanger, IModifiable,
                         work[0] = 2;
                         work[3] = 2;
                         work[7] = 2;
+                    }
+                    else if(item.is(TagsNF.METAL_RODS)) {
+                        work[1] = 2;
+                        work[4] = 2;
+                        work[8] = 2;
                     }
                     else if(!item.is(Tags.Items.INGOTS)) {
                         work[1] = -2;

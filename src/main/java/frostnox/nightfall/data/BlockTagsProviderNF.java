@@ -229,6 +229,7 @@ public class BlockTagsProviderNF extends BlockTagsProvider {
                     BlocksNF.PLANK_STAIRS.get(type), BlocksNF.PLANK_SLABS.get(type), BlocksNF.PLANK_SIDINGS.get(type),
                     BlocksNF.PLANK_FENCES.get(type));
         }
+        for(Metal type : BlocksNF.METAL_BARS.keySet()) sup.put(BlocksNF.METAL_BARS.get(type), 8);
         for(Metal type : BlocksNF.METAL_BLOCKS.keySet()) sup.put(BlocksNF.METAL_BLOCKS.get(type), 1);
         for(Metal type : BlocksNF.INGOT_PILES.keySet()) sup.put(BlocksNF.INGOT_PILES.get(type), 0);
         for(var block : BlocksNF.ANVILS_LOG.values()) sup.put(block, 0);

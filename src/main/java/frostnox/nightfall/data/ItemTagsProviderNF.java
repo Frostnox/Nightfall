@@ -107,6 +107,7 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
         for(var item : ItemsNF.PLANK_SIGNS.values()) tag(ItemTags.SIGNS).add(item.get());
 
         for(Metal metal : ItemsNF.INGOTS.keySet()) tag(metal.getTag()).add(ItemsNF.INGOTS.get(metal).get());
+        for(Metal metal : ItemsNF.RODS.keySet()) tag(metal.getTag()).add(ItemsNF.RODS.get(metal).get());
         for(Metal metal : ItemsNF.SCRAP.keySet()) tag(metal.getTag()).add(ItemsNF.SCRAP.get(metal).get());
         for(Metal metal : ItemsNF.PLATES.keySet()) tag(metal.getTag()).add(ItemsNF.PLATES.get(metal).get());
         for(Metal metal : ItemsNF.WIRES.keySet()) tag(metal.getTag()).add(ItemsNF.WIRES.get(metal).get());
@@ -183,7 +184,7 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
             else tag(TagsNF.IGNEOUS).add(item.get());
         }
         tag(TagsNF.FIRESTARTER_AMMO).add(ItemsNF.SULFUR.get());
-        tag(TagsNF.FIRESTARTER_IRON_INGREDIENT).add(ItemsNF.HEMATITE_CHUNK.get(), ItemsNF.INGOTS.get(Metal.IRON).get(), ItemsNF.INGOTS.get(Metal.STEEL).get(), ItemsNF.SCRAP.get(Metal.IRON).get(), ItemsNF.SCRAP.get(Metal.STEEL).get());
+        tag(TagsNF.FIRESTARTER_IRON_INGREDIENT).add(ItemsNF.HEMATITE_CHUNK.get(), ItemsNF.PLATES.get(Metal.IRON).get(), ItemsNF.PLATES.get(Metal.STEEL).get(), ItemsNF.SCRAP.get(Metal.IRON).get(), ItemsNF.SCRAP.get(Metal.STEEL).get());
         tag(TagsNF.NO_HITSTOP).addTags(TagsNF.KNIFE, TagsNF.SICKLE);
         tag(TagsNF.GRID_INTERACTABLE).addTags(TagsNF.HAMMER, TagsNF.TONGS);
         tag(TagsNF.MIXTURE_1);
@@ -228,7 +229,7 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
         tag(TagsNF.FLINT_FIRE_STARTER_WEAK).add(ItemsNF.OBSIDIAN_SHARD.get(), ItemsNF.ROCKS.get(Stone.DEEPSLATE).get(), ItemsNF.ROCKS.get(Stone.STYGFEL).get(),
                 ItemsNF.ROCKS.get(Stone.GRANITE).get(), ItemsNF.ROCKS.get(Stone.MOONSTONE).get());
         tag(TagsNF.FLINT_FIRE_STARTER_STRONG).add(ItemsNF.INGOTS.get(Metal.IRON).get(), ItemsNF.INGOTS.get(Metal.STEEL).get(), ItemsNF.SCRAP.get(Metal.IRON).get(),
-                ItemsNF.SCRAP.get(Metal.STEEL).get(), ItemsNF.PLATES.get(Metal.IRON).get(), ItemsNF.PLATES.get(Metal.STEEL).get(),
+                ItemsNF.SCRAP.get(Metal.STEEL).get(), ItemsNF.PLATES.get(Metal.IRON).get(), ItemsNF.PLATES.get(Metal.STEEL).get(), ItemsNF.RODS.get(Metal.IRON).get(), ItemsNF.RODS.get(Metal.STEEL).get(),
                 ItemsNF.METAL_ARMAMENTS.get(TieredItemMaterial.IRON).get(Armament.CHISEL).get(), ItemsNF.METAL_ARMAMENTS.get(TieredItemMaterial.STEEL).get(Armament.CHISEL).get(),
                 ItemsNF.METAL_ARMAMENTS.get(TieredItemMaterial.IRON).get(Armament.KNIFE).get(), ItemsNF.METAL_ARMAMENTS.get(TieredItemMaterial.STEEL).get(Armament.KNIFE).get());
         tag(TagsNF.FLINT_FIRE_STARTER_STRONG).addTag(TagsNF.IRON_ORE);
@@ -311,6 +312,7 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
         copy(TagsNF.METAL_BLOCKS, TagsNF.METAL_BLOCKS_ITEM);
 
         for(var item : ItemsNF.INGOTS.values()) tag(Tags.Items.INGOTS).add(item.get());
+        for(var item : ItemsNF.RODS.values()) tag(TagsNF.METAL_RODS).add(item.get());
         for(var item : ItemsNF.WIRES.values()) tag(TagsNF.WIRES).add(item.get());
         for(var item : ItemsNF.PLATES.values()) tag(TagsNF.PLATES).add(item.get());
         for(var item : ItemsNF.CHAINMAIL.values()) tag(TagsNF.CHAINMAIL).add(item.get());
@@ -318,13 +320,13 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
         for(var item : ItemsNF.SCRAP.values()) tag(TagsNF.SCRAP).add(item.get());
         tag(TagsNF.CRUCIBLE_METAL).addTags(Tags.Items.INGOTS, TagsNF.METAL_CHUNKS);
         tag(TagsNF.METAL_CHUNKS).add(ItemsNF.COPPER_CHUNK.get(), ItemsNF.AZURITE_CHUNK.get(), ItemsNF.TIN_CHUNK.get(), ItemsNF.HEMATITE_CHUNK.get(), ItemsNF.METEORITE_CHUNK.get());
-        tag(TagsNF.METAL_WORKPIECE).addTags(Tags.Items.INGOTS, TagsNF.NATIVE_METAL, TagsNF.PLATES);
+        tag(TagsNF.METAL_WORKPIECE).addTags(Tags.Items.INGOTS, TagsNF.NATIVE_METAL, TagsNF.PLATES, TagsNF.METAL_RODS);
         tag(TagsNF.METAL_WORKPIECE).add(ItemsNF.IRON_BLOOM.get());
         tag(TagsNF.NATIVE_METAL).add(ItemsNF.COPPER_CHUNK.get(), ItemsNF.METEORITE_CHUNK.get(), ItemsNF.TIN_CHUNK.get());
         tag(TagsNF.NATIVE_METAL_INGOT).add(ItemsNF.INGOTS.get(Metal.COPPER).get(), ItemsNF.INGOTS.get(Metal.METEORITE).get(), ItemsNF.INGOTS.get(Metal.TIN).get());
         tag(TagsNF.IRON_ORE).add(ItemsNF.HEMATITE_CHUNK.get());
         tag(TagsNF.CORROSION_RESISTANT_METAL).add(ItemsNF.INGOTS.get(Metal.BRONZE).get(), ItemsNF.WIRES.get(Metal.BRONZE).get(), ItemsNF.PLATES.get(Metal.BRONZE).get(),
-                ItemsNF.CHAINMAIL.get(Metal.BRONZE).get(), ItemsNF.SCALES.get(Metal.BRONZE).get(), ItemsNF.SCRAP.get(Metal.BRONZE).get());
+                ItemsNF.CHAINMAIL.get(Metal.BRONZE).get(), ItemsNF.SCALES.get(Metal.BRONZE).get(), ItemsNF.SCRAP.get(Metal.BRONZE).get(), ItemsNF.RODS.get(Metal.BRONZE).get());
         tag(TagsNF.HEAT_RESISTANT_MATERIAL_1).add(ItemsNF.TERRACOTTA_SHARD.get(), ItemsNF.MUD_BRICK.get());
         tag(TagsNF.HEAT_RESISTANT_MATERIAL_2).add(ItemsNF.BRICK.get());
         tag(TagsNF.HEAT_RESISTANT_MATERIAL_3).add(ItemsNF.FIRE_BRICK.get());

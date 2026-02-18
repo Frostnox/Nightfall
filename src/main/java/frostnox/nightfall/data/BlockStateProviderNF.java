@@ -585,6 +585,60 @@ public class BlockStateProviderNF extends BlockStateProvider {
         }, FenceGateBlock.POWERED, FenceGateBlockNF.WATER_LEVEL, BlockStatePropertiesNF.WATERLOG_TYPE);
     }
 
+    public void barsBlock(Block block) {
+        ResourceLocation bars = resource(block), edge = resource(block, "_edge");
+        ModelFile cap = templateModel(name(block) + "_cap", resource("bars_cap"), Pair.of("bars", edge), Pair.of("particle", bars));
+        ModelFile capAlt = templateModel(name(block) + "_cap_alt", resource("bars_cap_alt"), Pair.of("bars", edge), Pair.of("particle", bars));
+        ModelFile post = templateModel(name(block) + "_post", mcLoc("iron_bars_post"), Pair.of("bars", edge), Pair.of("particle", bars));
+        ModelFile postEnds = templateModel(name(block) + "_post_ends", mcLoc("iron_bars_post_ends"), Pair.of("edge", edge), Pair.of("particle", bars));
+        ModelFile side = templateModel(name(block) + "_side", mcLoc("iron_bars_side"), Pair.of("bars", bars), Pair.of("edge", edge), Pair.of("particle", bars));
+        ModelFile sideAlt = templateModel(name(block) + "_side_alt", mcLoc("iron_bars_side_alt"), Pair.of("bars", bars), Pair.of("edge", edge), Pair.of("particle", bars));
+        getMultipartBuilder(block)
+                .part().modelFile(postEnds).addModel()
+                .end()
+                .part().modelFile(post).addModel()
+                .condition(BlockStateProperties.NORTH, false)
+                .condition(BlockStateProperties.WEST, false)
+                .condition(BlockStateProperties.SOUTH, false)
+                .condition(BlockStateProperties.EAST, false)
+                .end()
+                .part().modelFile(cap).addModel()
+                .condition(BlockStateProperties.NORTH, true)
+                .condition(BlockStateProperties.WEST, false)
+                .condition(BlockStateProperties.SOUTH, false)
+                .condition(BlockStateProperties.EAST, false)
+                .end()
+                .part().modelFile(cap).rotationY(90).addModel()
+                .condition(BlockStateProperties.NORTH, false)
+                .condition(BlockStateProperties.WEST, false)
+                .condition(BlockStateProperties.SOUTH, false)
+                .condition(BlockStateProperties.EAST, true)
+                .end()
+                .part().modelFile(capAlt).addModel()
+                .condition(BlockStateProperties.NORTH, false)
+                .condition(BlockStateProperties.WEST, false)
+                .condition(BlockStateProperties.SOUTH, true)
+                .condition(BlockStateProperties.EAST, false)
+                .end()
+                .part().modelFile(capAlt).rotationY(90).addModel()
+                .condition(BlockStateProperties.NORTH, false)
+                .condition(BlockStateProperties.WEST, true)
+                .condition(BlockStateProperties.SOUTH, false)
+                .condition(BlockStateProperties.EAST, false)
+                .end()
+                .part().modelFile(side).addModel()
+                .condition(BlockStateProperties.NORTH, true)
+                .end()
+                .part().modelFile(side).rotationY(90).addModel()
+                .condition(BlockStateProperties.EAST, true)
+                .end()
+                .part().modelFile(sideAlt).addModel()
+                .condition(BlockStateProperties.SOUTH, true)
+                .end()
+                .part().modelFile(sideAlt).rotationY(90).addModel()
+                .condition(BlockStateProperties.WEST, true);
+    }
+
     public void ingotBlock(HeatablePileBlock block) {
         getVariantBuilder(block).forAllStatesExcept(state -> {
             int heat = state.getValue(BlockStatePropertiesNF.HEAT);
@@ -1156,6 +1210,7 @@ public class BlockStateProviderNF extends BlockStateProvider {
         unfiredPotteryBlock(BlocksNF.UNFIRED_POT.get());
         horizontalAxisBlock(BlocksNF.WARDING_EFFIGY.get(), file(BlocksNF.WARDING_EFFIGY.get()));
 
+        for(var block : BlocksNF.METAL_BARS.values()) barsBlock(block.get());
         for(var block : BlocksNF.INGOT_PILES.values()) horizontalColumnBlock(block.get());
         horizontalColumnBottomTopBlock(BlocksNF.STEEL_INGOT_PILE_POOR.get(), resource(BlocksNF.INGOT_PILES.get(Metal.IRON).get()),
                 resource(BlocksNF.INGOT_PILES.get(Metal.STEEL).get()));

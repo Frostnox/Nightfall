@@ -320,6 +320,12 @@ public class TextureProviderNF extends TextureProvider {
             replaceImagePalette(item(ItemsNF.BOWS.get(type), "_pulling_1"), item("bow_pulling_1"), BOW_PALETTES.get(type));
             replaceImagePalette(item(ItemsNF.BOWS.get(type), "_pulling_2"), item("bow_pulling_2"), BOW_PALETTES.get(type));
         }
+        replaceImagePalette(tempItem(ItemsNF.IRON_BLOOM), item("slag_metal"), subset(METAL_PALETTES.get(Metal.IRON), 5, 3));
+        layerImages(item(ItemsNF.IRON_BLOOM), item(ItemsNF.SLAG), tempItem(ItemsNF.IRON_BLOOM));
+        for(Metal metal : BlocksNF.METAL_BARS.keySet()) {
+            replaceImagePalette(block(BlocksNF.METAL_BARS.get(metal)), block("bars_" + metal.getCategory().name().toLowerCase()), subset(METAL_PALETTES.get(metal), 5, 3));
+            replaceImagePalette(block(BlocksNF.METAL_BARS.get(metal), "_edge"), block("bars_edge"), subset(METAL_PALETTES.get(metal), 5, 3));
+        }
         for(Metal metal : BlocksNF.METAL_BLOCKS.keySet()) {
             replaceImagePalette(block(BlocksNF.METAL_BLOCKS.get(metal)), block("metal_block"), subset(METAL_PALETTES.get(metal), 6, 2));
         }
@@ -415,6 +421,7 @@ public class TextureProviderNF extends TextureProvider {
                 subset(WOOD_FULL_PALETTES.get(Tree.IRONWOOD), 6, 2));
 
         for(Metal metal : ItemsNF.INGOTS.keySet()) replaceImagePalette(item(ItemsNF.INGOTS.get(metal)), item("ingot"), METAL_PALETTES.get(metal));
+        for(Metal metal : ItemsNF.RODS.keySet()) replaceImagePalette(item(ItemsNF.RODS.get(metal)), item("rod"), METAL_PALETTES.get(metal));
         for(Metal metal : ItemsNF.SCRAP.keySet()) replaceImagePalette(item(ItemsNF.SCRAP.get(metal)), item("scrap"), METAL_PALETTES.get(metal));
         for(Metal metal : ItemsNF.WIRES.keySet()) replaceImagePalette(item(ItemsNF.WIRES.get(metal)), item("wire"), METAL_PALETTES.get(metal));
         for(Metal metal : ItemsNF.PLATES.keySet()) replaceImagePalette(item(ItemsNF.PLATES.get(metal)), item("plate"), METAL_PALETTES.get(metal));

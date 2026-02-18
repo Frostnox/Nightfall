@@ -580,15 +580,17 @@ public class ClientEngine {
             if(this.mainHandHeight < 0.05F) this.mainHandItem = mainItem;
             if(this.offHandHeight < 0.05F) this.offHandItem = offItem;
 
-            if(!capP.getLastMainItem().sameItemStackIgnoreDurability(mainItem) || firstTick) {
+            if(!capP.getLastMainItem().is(mainItem.getItem()) || firstTick) {
                 optionalMainObject = null;
                 canUseModifiableMain = true;
+                modifiableIndexMain = -1;
                 if(!mainItem.isEmpty() && mainItem.getItem() instanceof IClientSwapBehavior swapItem) swapItem.swapClient(mc, mainItem, player, true);
                 capP.setLastMainItem();
             }
-            if(!capP.getLastOffItem().sameItemStackIgnoreDurability(offItem) || firstTick) {
+            if(!capP.getLastOffItem().is(offItem.getItem()) || firstTick) {
                 optionalOffObject = null;
                 canUseModifiableOff = true;
+                modifiableIndexOff = -1;
                 if(!offItem.isEmpty() && offItem.getItem() instanceof IClientSwapBehavior swapItem) swapItem.swapClient(mc, offItem, player, false);
                 capP.setLastOffItem();
             }

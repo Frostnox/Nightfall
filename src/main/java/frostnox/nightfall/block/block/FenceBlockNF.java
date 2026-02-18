@@ -37,7 +37,7 @@ public class FenceBlockNF extends CrossCollisionBlockNF {
         Block block = state.getBlock();
         boolean flag = this.isSameFence(state);
         boolean flag1 = block instanceof FenceGateBlock && FenceGateBlock.connectsToDirection(state, pDirection);
-        return !isExceptionForConnection(state) && pIsSideSolid || flag || flag1;
+        return pIsSideSolid || flag || flag1;
     }
 
     private boolean isSameFence(BlockState state) {

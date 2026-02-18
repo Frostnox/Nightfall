@@ -588,6 +588,10 @@ public class BlocksNF {
                     .strength(tree.getStrength() * 0.5F, tree.getExplosionResistance() * 0.5F).sound(SoundType.WOOD))));
 
     //Metallurgy
+    public static final Map<Metal, RegistryObject<MetalBarsBlock>> METAL_BARS = DataUtil.mapEnum(Metal.class, metal ->
+            register(metal.getName() + "_bars", () -> new MetalBarsBlock(
+                    BlockBehaviour.Properties.of(Material.METAL, metal.getBaseColor()).requiresCorrectToolForDrops()
+                            .strength(metal.getStrength(), metal.getExplosionResistance()).sound(metal.getSound()))));
     public static final Map<Metal, RegistryObject<Block>> METAL_BLOCKS = DataUtil.mapEnum(Metal.class, metal ->
             register(metal.getName() + "_block", () -> new Block(BlockBehaviour.Properties.of(Material.METAL, metal.getBaseColor())
                     .strength(metal.getStrength()/2F, metal.getExplosionResistance()/2F).sound(metal.getSound()))));
@@ -706,8 +710,7 @@ public class BlocksNF {
     public static final RegistryObject<BlockNF> SMELTED_AZURITE = BLOCKS.register("smelted_azurite", () -> new BlockNF(BlockBehaviour.Properties.of(Material.STONE,
             MaterialColor.TERRACOTTA_BLACK).strength(8.0F, 16.0F).sound(SoundType.ANCIENT_DEBRIS)));
     public static final RegistryObject<BlockNF> SMELTED_HEMATITE = BLOCKS.register("smelted_hematite", () -> new BlockNF(BlockBehaviour.Properties.of(Material.STONE,
-            MaterialColor.TERRACOTTA_BLACK).strength(8.0F, 16.0F).sound(SoundType.ANCIENT_DEBRIS)
-            .emissiveRendering(BlocksNF::always).lightLevel((state) -> 3)));
+            MaterialColor.TERRACOTTA_BLACK).strength(8.0F, 16.0F).sound(SoundType.ANCIENT_DEBRIS)));
 
     public static final RegistryObject<CrucibleBlock> CRUCIBLE = BLOCKS.register("crucible", () -> new CrucibleBlock(300, TieredHeat.WHITE.getBaseTemp() - 0.1F,
             BlockBehaviour.Properties.of(Material.STONE, MaterialColor.TERRACOTTA_BROWN).strength(1.0F, 1F)

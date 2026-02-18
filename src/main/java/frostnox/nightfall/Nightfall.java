@@ -281,6 +281,7 @@ public class Nightfall {
                 BlocksNF.TORCH, BlocksNF.TORCH_UNLIT, BlocksNF.WALL_TORCH, BlocksNF.WALL_TORCH_UNLIT, BlocksNF.CAMPFIRE, BlocksNF.DEAD_CROP,
                 BlocksNF.DEAD_PLANT, BlocksNF.POTATOES, BlocksNF.CARROTS, BlocksNF.FLAX, BlocksNF.YARROW, BlocksNF.BERRY_BUSH, BlocksNF.WARDING_EFFIGY,
                 BlocksNF.DEAD_BUSH, BlocksNF.FIRE, BlocksNF.SPIDER_WEB));
+        cutout.addAll(BlocksNF.METAL_BARS.values());
         cutout.addAll(BlocksNF.LANTERNS.values());
         cutout.addAll(BlocksNF.LANTERNS_UNLIT.values());
         translucent.addAll(List.of(BlocksNF.MOON_ESSENCE, BlocksNF.ICE, BlocksNF.RABBIT_BURROW));

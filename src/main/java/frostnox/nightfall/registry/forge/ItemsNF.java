@@ -644,6 +644,8 @@ public class ItemsNF {
     //Metallurgy
     public static final Map<Metal, RegistryObject<BuildingMaterialItem>> INGOTS = DataUtil.mapEnum(Metal.class, metal ->
             register(metal.getName() + "_ingot", () -> new BuildingMaterialItem(ingredient().stacksTo(32))));
+    public static final Map<Metal, RegistryObject<BuildingMaterialItem>> RODS = DataUtil.mapEnum(Metal.class, metal ->
+            register(metal.getName() + "_rod", () -> new BuildingMaterialItem(ingredient().stacksTo(32))));
     public static final Map<Metal, RegistryObject<Item>> SCRAP = DataUtil.mapEnum(Metal.class, metal ->
             register(metal.getName() + "_scrap", 32, INGREDIENTS_TAB));
     public static final Map<Metal, RegistryObject<Item>> WIRES = DataUtil.mapEnum(Metal.class, metal ->
@@ -679,9 +681,10 @@ public class ItemsNF {
                     material.getName() + "_arrow", () -> new ProjectileItem(30 * material.getDamageMultiplier(),
                             1F, 0.5F, DamageType.PIERCING.asArray(), ARROW_ID++, armament())));
 
-    public static final RegistryObject<LightItem> IRON_BLOOM = ITEMS.register("iron_bloom", () -> new LightItem(
-            1.15, 13, 5, ItemsNF.SLAG, ingredient().stacksTo(16)));
+    public static final RegistryObject<Item> IRON_BLOOM = register("iron_bloom", 16, INGREDIENTS_TAB);
 
+    public static final Map<Metal, RegistryObject<BlockItemNF>> METAL_BARS = DataUtil.mapEnum(Metal.class, metal -> !BlocksNF.METAL_BARS.containsKey(metal),
+            metal -> register(BlocksNF.METAL_BARS.get(metal)));
     public static final Map<Metal, RegistryObject<BlockItemNF>> METAL_BLOCKS = DataUtil.mapEnum(Metal.class, metal -> !BlocksNF.METAL_BLOCKS.containsKey(metal),
             metal -> register(BlocksNF.METAL_BLOCKS.get(metal)));
     public static final Map<Metal, RegistryObject<BlockItemNF>> INGOT_PILES = DataUtil.mapEnum(Metal.class, metal -> !BlocksNF.INGOT_PILES.containsKey(metal),

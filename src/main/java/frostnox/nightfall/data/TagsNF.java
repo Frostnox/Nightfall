@@ -242,6 +242,7 @@ public class TagsNF {
     public static final TagKey<Item> CURABLE_FOOD = itemTag("curable_food");
     public static final TagKey<Item> COOKED_VEGETABLE = itemTag("cooked_vegetable");
     public static final TagKey<Item> ARMOR_STAND = itemTag("armor_stand");
+    public static final TagKey<Item> METAL_RODS = itemTag("metal_rods");
     public static final TagKey<Item> WIRES = itemTag("wires");
     public static final TagKey<Item> PLATES = itemTag("plates");
     public static final TagKey<Item> CHAINMAIL = itemTag("chainmail");

@@ -363,8 +363,10 @@ public class ItemModelProviderNF extends ModelProvider<AnimatedItemModelBuilder>
         dyedShield(ItemsNF.IRONWOOD_SHIELD_DYED.get());
         genericItem(ItemsNF.WARDING_EFFIGY.get());
 
+        for(var item : ItemsNF.RODS.values()) handheldItem(item.get());
         for(var item : ItemsNF.METAL_SHIELDS.values()) shield(item.get());
         for(var item : ItemsNF.METAL_SHIELDS_DYED.values()) dyedShield(item.get());
+        for(var item : ItemsNF.METAL_BARS.values()) genericBlockAsItem(item.get());
         for(var item : ItemsNF.LANTERNS_UNLIT.values()) genericItem(item.get());
         for(var item : ItemsNF.LANTERNS.values()) genericItem(item.get());
         for(var item : ItemsNF.ARMAMENT_MOLDS.values()) genericItem(item.get());

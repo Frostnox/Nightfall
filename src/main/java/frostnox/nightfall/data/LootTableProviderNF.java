@@ -317,7 +317,8 @@ public class LootTableProviderNF extends LootTableProvider {
             for(Tree type : BlocksNF.ANVILS_LOG.keySet()) dropSpecialAction(BlocksNF.ANVILS_LOG.get(type).get(), BlocksNF.LOGS.get(type).get(), 1,
                     TagsNF.CHOPPING_ACTION, ItemsNF.FIREWOOD.get(), 4);
             for(Stone type : BlocksNF.ANVILS_STONE.keySet()) dropStone(BlocksNF.ANVILS_STONE.get(type).get(), type, 4);
-            for(Metal type : BlocksNF.INGOT_PILES.keySet())  dropOther(BlocksNF.INGOT_PILES.get(type).get(), ItemsNF.INGOTS.get(type).get(), 4);
+            for(Metal type : BlocksNF.METAL_BARS.keySet()) dropOther(BlocksNF.METAL_BARS.get(type).get(), ItemsNF.RODS.get(type).get());
+            for(Metal type : BlocksNF.INGOT_PILES.keySet()) dropOther(BlocksNF.INGOT_PILES.get(type).get(), ItemsNF.INGOTS.get(type).get(), 4);
             dropOthers(BlocksNF.STEEL_INGOT_PILE_POOR.get(), entry(ItemsNF.INGOTS.get(Metal.STEEL).get(), 2, 2),
                     entry(ItemsNF.INGOTS.get(Metal.IRON).get(), 2, 2));
             dropOthers(BlocksNF.STEEL_INGOT_PILE_FAIR.get(), entry(ItemsNF.INGOTS.get(Metal.STEEL).get(), 3, 3),
