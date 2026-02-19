@@ -46,7 +46,7 @@ public class RecipeSearchComponent extends ScreenGuiComponent {
     public RecipeSearchComponent(PlayerInventoryScreen screen) {
         mc = Minecraft.getInstance();
         this.screen = screen;
-        searchableRecipes = RenderUtil.getSearchableRecipes(mc.player);
+        searchableRecipes = RenderUtil.getSearchableRecipes(mc.player, false);
         allItems = new ObjectArrayList<>(searchableRecipes.size());
         searchedItems = new ObjectArrayList<>(searchableRecipes.size());
         recipeViewer = new RecipeViewerComponent(searchableRecipes);

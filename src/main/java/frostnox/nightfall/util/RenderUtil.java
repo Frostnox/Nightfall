@@ -394,23 +394,23 @@ public class RenderUtil {
         RenderSystem.applyModelViewMatrix();
     }
 
-    public static List<Recipe<?>> getSearchableRecipes(Player player) {
+    public static List<Recipe<?>> getSearchableRecipes(Player player, boolean inEntry) {
         return player.level.getRecipeManager().getRecipes().stream().sorted((r1, r2) -> {
             String r1Name = r1.getResultItem().getItem().getDescription().getString();
             String r2Name = r2.getResultItem().getItem().getDescription().getString();
             return r1Name.compareTo(r2Name);
         }).filter((recipe -> {
-            return !recipe.getResultItem().isEmpty() && recipe instanceof IRenderableRecipe renderableRecipe && renderableRecipe.showInRecipeViewer();
+            return !recipe.getResultItem().isEmpty() && recipe instanceof IRenderableRecipe renderableRecipe && renderableRecipe.showInRecipeViewer() && (!inEntry || renderableRecipe.showInEntry());
         })).toList();
     }
 
-    public static List<Recipe<?>> getUnlockedRecipes(Player player) {
+    public static List<Recipe<?>> getUnlockedRecipes(Player player, boolean inEntry) {
         return player.level.getRecipeManager().getRecipes().stream().sorted((r1, r2) -> {
             String r1Name = r1.getResultItem().getItem().getDescription().getString();
             String r2Name = r2.getResultItem().getItem().getDescription().getString();
             return r1Name.compareTo(r2Name);
         }).filter((recipe -> {
-            if(!recipe.getResultItem().isEmpty() && recipe instanceof IRenderableRecipe renderableRecipe && renderableRecipe.showInRecipeViewer()) {
+            if(!recipe.getResultItem().isEmpty() && recipe instanceof IRenderableRecipe renderableRecipe && renderableRecipe.showInRecipeViewer() && (!inEntry || renderableRecipe.showInEntry())) {
                 if(recipe instanceof IEncyclopediaRecipe encyclopediaRecipe) return encyclopediaRecipe.isUnlocked(player);
                 else return true;
             }

@@ -262,6 +262,9 @@ public class Nightfall {
                 return 0F;
             };
             ItemProperties.register(ItemsNF.FIRESTARTER.get(), ResourceLocation.fromNamespaceAndPath(MODID, "firing"), firing);
+
+            ItemProperties.register(ItemsNF.WOODEN_TONGS.get(), ResourceLocation.fromNamespaceAndPath(MODID, "workpiece"),
+                    (item, level, user, seed) -> ItemsNF.WOODEN_TONGS.get().hasWorkpiece(item) ? 1F : 0F);
             for(var tongs : ItemsNF.TONGS.values()) ItemProperties.register(tongs.get(), ResourceLocation.fromNamespaceAndPath(MODID, "workpiece"),
                     (item, level, user, seed) -> tongs.get().hasWorkpiece(item) ? 1F : 0F);
         });
@@ -526,6 +529,7 @@ public class Nightfall {
             event.getItemColors().register((stack, layer) -> layer > 0 ? -1 : ((DyeableLeatherItem) stack.getItem()).getColor(stack),
                     dyeableItems.toArray(ItemLike[]::new));
 
+            event.getItemColors().register((stack, layer) -> layer == 0 ? -1 : ItemsNF.WOODEN_TONGS.get().getColor(stack), ItemsNF.WOODEN_TONGS.get());
             for(var tongs : ItemsNF.TONGS.values()) event.getItemColors().register((stack, layer) -> layer == 0 ? -1 : tongs.get().getColor(stack), tongs.get());
 
             /*event.getItemColors().register((stack, layer) -> {

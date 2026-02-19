@@ -39,7 +39,13 @@ public class RackRenderer<T extends RackBlockEntity> implements BlockEntityRende
             if(!item.isEmpty()) {
                 stack.pushPose();
                 float scale = 15F/16F;
-                if(item.is(TagsNF.ARMAMENT) || item.is(TagsNF.SHIELD)) {
+                if(item.is(TagsNF.BOW)) {
+                    stack.translate(16.6D/16D, 5D/16D - 5D/16D * (2 - i), -5D/16D);
+                    stack.scale(scale, scale, scale);
+                    stack.mulPose(Vector3f.ZP.rotationDegrees(45));
+                    stack.translate(0, 0, i % 2 != 0 ? -(0.5D/16D) : (0.5D/16D));
+                }
+                else {
                     stack.translate(8D / 16D - 5D / 16D * scale, 4.01D / 16D + 5D / 16D * i, 1.5D / 16D);
                     stack.scale(scale, scale, scale);
                     if(item.is(TagsNF.SHIELD)) {
@@ -54,12 +60,6 @@ public class RackRenderer<T extends RackBlockEntity> implements BlockEntityRende
                         }
                         else stack.translate(0, 0, 0.5D / 16D);
                     }
-                }
-                else {
-                    stack.translate(16.6D/16D, 5D/16D - 5D/16D * (2 - i), -5D/16D);
-                    stack.scale(scale, scale, scale);
-                    stack.mulPose(Vector3f.ZP.rotationDegrees(45));
-                    stack.translate(0, 0, i % 2 != 0 ? -(0.5D/16D) : (0.5D/16D));
                 }
                 Minecraft.getInstance().getItemRenderer().renderStatic(item, TransformTypeNF.RACK, pPackedLight,
                         pPackedOverlay, stack, pBufferSource, (int) rack.getBlockPos().asLong());

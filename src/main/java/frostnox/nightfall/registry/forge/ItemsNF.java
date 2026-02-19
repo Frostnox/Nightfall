@@ -377,8 +377,9 @@ public class ItemsNF {
                             new Item.Properties().tab(ARMAMENTS_TAB), armament.getToolActions(), armament.getDefaultDamageType()));
                 }
             }));
+    public static final RegistryObject<TongsItem> WOODEN_TONGS = register("wooden_tongs", () -> new TongsItem(1, armament().defaultDurability(TieredItemMaterial.WOOD.getUses())));
     public static final Map<TieredItemMaterial, RegistryObject<TongsItem>> TONGS = DataUtil.mapEnum(TieredItemMaterial.class, mat -> mat.getMetal() == null || mat.getMetal().getCategory() != IMetal.Category.HARD,
-            mat -> register(mat.getName() + "_tongs", () -> new TongsItem(mat, armament())));
+            mat -> register(mat.getName() + "_tongs", () -> new TongsItem(mat.getMetal().getTier() + 1, armament().defaultDurability(mat.getUses()))));
     //Equipment
     public static final Map<TieredArmorMaterial, RegistryObject<TieredArmorItem>> HELMETS = DataUtil.mapEnum(TieredArmorMaterial.class,
             material -> register(material.getName() + "_helmet", () -> new DyeableTieredArmorItem(material, EquipmentSlot.HEAD, new Item.Properties().tab(ARMOR_TAB))));

@@ -81,7 +81,7 @@ public class TongsEmptyRecipe extends EncyclopediaRecipe<CraftingContainer> impl
 
     @Override
     public ItemStack getResultItem() {
-        return new ItemStack(ItemsNF.TONGS.get(TieredItemMaterial.COPPER).get());
+        return new ItemStack(ItemsNF.WOODEN_TONGS.get());
     }
 
     @Override
@@ -133,5 +133,10 @@ public class TongsEmptyRecipe extends EncyclopediaRecipe<CraftingContainer> impl
     @Override
     public boolean showInRecipeViewer() {
         return true;
+    }
+
+    @Override
+    public boolean showInEntry() {
+        return false;
     }
 }

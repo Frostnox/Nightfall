@@ -320,7 +320,7 @@ public class TextureProviderNF extends TextureProvider {
             replaceImagePalette(item(ItemsNF.BOWS.get(type), "_pulling_1"), item("bow_pulling_1"), BOW_PALETTES.get(type));
             replaceImagePalette(item(ItemsNF.BOWS.get(type), "_pulling_2"), item("bow_pulling_2"), BOW_PALETTES.get(type));
         }
-        replaceImagePalette(tempItem(ItemsNF.IRON_BLOOM), item("slag_metal"), subset(METAL_PALETTES.get(Metal.IRON), 5, 3));
+        replaceImagePalette(tempItem(ItemsNF.IRON_BLOOM), item("slag_metal"), subset(METAL_PALETTES.get(Metal.IRON), 5, 2));
         layerImages(item(ItemsNF.IRON_BLOOM), item(ItemsNF.SLAG), tempItem(ItemsNF.IRON_BLOOM));
         for(Metal metal : BlocksNF.METAL_BARS.keySet()) {
             replaceImagePalette(block(BlocksNF.METAL_BARS.get(metal)), block("bars_" + metal.getCategory().name().toLowerCase()), subset(METAL_PALETTES.get(metal), 5, 3));
@@ -369,7 +369,8 @@ public class TextureProviderNF extends TextureProvider {
         }
         replaceImagePalette(tempBlock(BlocksNF.SMELTED_AZURITE), block(BlocksNF.SMELTED_AZURITE, "_overlay"), subset(METAL_PALETTES.get(Metal.COPPER), 7, 0));
         layerImages(block(BlocksNF.SMELTED_AZURITE), block(BlocksNF.SLAG), tempBlock(BlocksNF.SMELTED_AZURITE));
-        layerImages(block(BlocksNF.SMELTED_HEMATITE), block(BlocksNF.SLAG), block(BlocksNF.SMELTED_HEMATITE, "_overlay"));
+        replaceImagePalette(tempBlock(BlocksNF.SMELTED_HEMATITE), block(BlocksNF.SMELTED_HEMATITE, "_overlay"), subset(METAL_PALETTES.get(Metal.IRON), 5, 2));
+        layerImages(block(BlocksNF.SMELTED_HEMATITE), block(BlocksNF.SLAG), tempBlock(BlocksNF.SMELTED_HEMATITE));
         for(Stone type : BlocksNF.STONE_TUNNELS.keySet()) {
             layerImages(block(BlocksNF.STONE_TUNNELS.get(type)), block(BlocksNF.STONE_BLOCKS.get(type)), block("hole"));
         }
@@ -507,6 +508,8 @@ public class TextureProviderNF extends TextureProvider {
                         handle, head, wrapping);
             }
         }
+        replaceImagePalette(item(ItemsNF.WOODEN_TONGS), item(ItemsNF.WOODEN_TONGS), STICK2, TWINE2);
+        replaceImagePalette(itemInv(ItemsNF.WOODEN_TONGS), itemInv(ItemsNF.WOODEN_TONGS), STICK3, TWINE3);
         for(TieredItemMaterial mat : ItemsNF.TONGS.keySet()) {
             Metal metal = (Metal) Metal.fromString(mat.getName());
             replaceImagePalette(item(ItemsNF.TONGS.get(mat)), item("tongs"), subset(METAL_PALETTES.get(metal), 6, 1));

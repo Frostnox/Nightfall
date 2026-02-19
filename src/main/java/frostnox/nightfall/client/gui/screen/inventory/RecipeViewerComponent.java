@@ -33,11 +33,6 @@ public class RecipeViewerComponent extends ScreenGuiComponent {
     private boolean visible;
     private int xOffset, yOffset;
 
-    public RecipeViewerComponent() {
-        mc = Minecraft.getInstance();
-        allRecipes = RenderUtil.getUnlockedRecipes(mc.player);
-    }
-
     public RecipeViewerComponent(List<Recipe<?>> allRecipes) {
         mc = Minecraft.getInstance();
         this.allRecipes = allRecipes;

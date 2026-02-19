@@ -252,7 +252,7 @@ public class TagsNF {
     public static final TagKey<Item> METAL_CHUNKS = itemTag("metal_chunks");
     public static final TagKey<Item> METAL_WORKPIECE = itemTag("metal_workpiece");
     public static final TagKey<Item> NATIVE_METAL = itemTag("native_metal");
-    public static final TagKey<Item> NATIVE_METAL_INGOT = itemTag("native_metal_ingot");
+    public static final TagKey<Item> METAL_INGOT = itemTag("metal_ingot");
     public static final TagKey<Item> IRON_ORE = itemTag("iron_ore");
     public static final TagKey<Item> CORROSION_RESISTANT_METAL = itemTag("corrosion_resistant_metal");
     public static final TagKey<Item> HEAT_RESISTANT_MATERIAL_1 = itemTag("heat_resistant_material_1");

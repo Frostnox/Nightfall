@@ -17,6 +17,10 @@ public interface IRenderableRecipe {
 
     boolean showInRecipeViewer();
 
+    default boolean showInEntry() {
+        return true;
+    }
+
     default boolean onItem(int x, int y, int mouseX, int mouseY) {
         return mouseX >= x && mouseX < x + 16 && mouseY >= y && mouseY < y + 16;
     }

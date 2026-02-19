@@ -1,6 +1,7 @@
 package frostnox.nightfall.item.item;
 
 import frostnox.nightfall.block.IHeatSource;
+import frostnox.nightfall.block.IMetal;
 import frostnox.nightfall.block.Metal;
 import frostnox.nightfall.block.TieredHeat;
 import frostnox.nightfall.block.block.anvil.TieredAnvilBlock;
@@ -12,7 +13,6 @@ import frostnox.nightfall.client.gui.screen.item.TongsVisualRecipeScreen;
 import frostnox.nightfall.data.TagsNF;
 import frostnox.nightfall.data.recipe.TieredAnvilRecipe;
 import frostnox.nightfall.item.IContainerChanger;
-import frostnox.nightfall.item.ITieredItemMaterial;
 import frostnox.nightfall.item.client.IClientSwapBehavior;
 import frostnox.nightfall.item.client.IModifiable;
 import frostnox.nightfall.registry.forge.ItemsNF;
@@ -65,15 +65,15 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class TongsItem extends ItemNF implements IContainerChanger, IModifiable, IClientSwapBehavior {
-    public final ITieredItemMaterial material;
+    public final int maxHeatTier;
 
-    public TongsItem(ITieredItemMaterial material, Properties properties) {
-        super(properties.defaultDurability(material.getUses()));
-        this.material = material;
+    public TongsItem(int maxHeatTier, Properties properties) {
+        super(properties);
+        this.maxHeatTier = maxHeatTier;
     }
 
     public int getMaxHeatTier() {
-        return material.getMetal().getTier() + 1;
+        return maxHeatTier;
     }
 
     public boolean hasWorkpiece(ItemStack item) {
@@ -214,14 +214,16 @@ public class TongsItem extends ItemNF implements IContainerChanger, IModifiable,
             ItemStack tongs = context.getItemInHand();
             if(!level.isClientSide && hasWorkpiece(tongs)) {
                 float temperature = heatSource.getTemperature(level, pos, state);
+                IMetal workMetal = Metal.fromString(getWorkpiece(tongs).toString());
                 if(getMaxHeatTier() != 5) temperature = Math.min(TieredHeat.fromTier(getMaxHeatTier() + 1).getBaseTemp() - 100, temperature);
-                temperature = Math.min(temperature, Metal.fromString(getWorkpiece(tongs).toString()).getMeltTemp());
+                temperature = Math.min(temperature, workMetal.getMeltTemp());
                 if(temperature > 100 && temperature >= getTemperature(tongs)) {
                     tongs.getTag().putFloat("temperature", temperature);
                     tongs.getTag().putInt("stableTempTicks", 20 * 45);
                     if(player != null) {
                         player.swing(context.getHand(), true);
                         level.playSound(null, player, SoundsNF.FIRE_WHOOSH.get(), SoundSource.PLAYERS, 1F, 1F);
+                        if(tongs.getMaxDamage() - tongs.getDamageValue() == 1) LevelUtil.giveItemToPlayer(new ItemStack(workMetal.getMatchingItem(TagsNF.SCRAP)), player, true);
                         tongs.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(context.getHand()));
                     }
                     return InteractionResult.CONSUME;

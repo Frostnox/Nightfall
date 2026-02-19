@@ -41,19 +41,20 @@ public class EntryCompletedScreen extends Screen {
         mc = Minecraft.getInstance();
         this.cEntry = cEntry;
         List<Item> unlockedItems = new ObjectArrayList<>(15), allItems = new ObjectArrayList<>(15);
-        for(Recipe<?> recipe : RenderUtil.getUnlockedRecipes(mc.player)) {
+        List<Recipe<?>> unlockedRecipes = RenderUtil.getUnlockedRecipes(mc.player, true);
+        for(Recipe<?> recipe : unlockedRecipes) {
             if(recipe instanceof IEncyclopediaRecipe encyclopediaRecipe && cEntry.containsEntry(encyclopediaRecipe.getRequirementId())
                     && !unlockedItems.contains(recipe.getResultItem().getItem())) {
                 unlockedItems.add(recipe.getResultItem().getItem());
             }
         }
-        for(Recipe<?> recipe : RenderUtil.getSearchableRecipes(mc.player)) {
+        for(Recipe<?> recipe : RenderUtil.getSearchableRecipes(mc.player, true)) {
             if(recipe instanceof IEncyclopediaRecipe encyclopediaRecipe && cEntry.containsEntry(encyclopediaRecipe.getRequirementId())
                     && !allItems.contains(recipe.getResultItem().getItem())) {
                 allItems.add(recipe.getResultItem().getItem());
             }
         }
-        recipeViewer = new RecipeViewerComponent();
+        recipeViewer = new RecipeViewerComponent(unlockedRecipes);
         groupedItems = new ObjectArrayList<>(8);
         if(!unlockedItems.isEmpty()) {
             recipeViewer.setVisible(true);

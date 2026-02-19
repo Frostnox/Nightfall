@@ -150,6 +150,8 @@ public class EntriesNF {
             new Puzzle(List.of(KnowledgeNF.MELTED_HARD_METAL, KnowledgeNF.IMPROVISED_ANVIL),
                     List.of(),
                     List.of())));
+    public static final RegistryObject<Entry> ARROWHEAD_SMITHING = ENTRIES.register("arrowhead_smithing",
+            () -> Entry.createAddendum(List.of(SMITHING, BOW_AND_ARROW)));
     public static final RegistryObject<Entry> SMELTING = ENTRIES.register("smelting", () -> Entry.create(
             List.of(CASTING),
             Set.of(),

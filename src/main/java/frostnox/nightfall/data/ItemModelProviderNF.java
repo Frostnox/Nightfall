@@ -215,8 +215,8 @@ public class ItemModelProviderNF extends ModelProvider<AnimatedItemModelBuilder>
         getBuilder(item.getRegistryName().getPath()).swapSpeed(1).swapYOffset(0).base(base).inventory(inventory).animatedLoader();
     }
 
-    protected void tongs(Item item) {
-        JsonObject base = getUnsavedBuilder(item.getRegistryName().getPath()).parent(getExistingFile(modLoc("item/tongs")))
+    protected void tongs(Item item, String baseName) {
+        JsonObject base = getUnsavedBuilder(item.getRegistryName().getPath()).parent(getExistingFile(modLoc("item/" + baseName)))
                 .texture("base", itemLoc(item)).texture("particle", itemLoc(item, "_inventory")).toJson();
         ModelFile inventoryWorkpiece = getBuilder(item.getRegistryName().getPath() + "_inventory_workpiece").parent(getExistingFile(modLoc("item/generated")))
                 .texture("layer0", itemLoc(item, "_inventory")).texture("layer1", modLoc("item/tongs_inventory_workpiece"));
@@ -342,7 +342,8 @@ public class ItemModelProviderNF extends ModelProvider<AnimatedItemModelBuilder>
             spear(set.get(Armament.SPEAR).get());
             sword(set.get(Armament.SWORD).get());
         }
-        for(var item : ItemsNF.TONGS.values()) tongs(item.get());
+        tongs(ItemsNF.WOODEN_TONGS.get(), "template_wooden_tongs");
+        for(var item : ItemsNF.TONGS.values()) tongs(item.get(), "tongs");
         for(RegistryObject<TieredArmorItem> item : ItemsNF.getTieredArmors()) {
             TieredArmorMaterial material = (TieredArmorMaterial) item.get().material;
             if(material == TieredArmorMaterial.LEATHER ||

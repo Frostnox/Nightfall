@@ -282,6 +282,9 @@ public class RecipeProviderNF extends RecipeProvider {
         CraftingRecipeBuilder.base(ItemsNF.WARDING_CHARM.get(), EntriesNF.WARDING_CHARM).define('F', ItemsNF.PLANT_FIBERS.get()).define('B', ItemsNF.LIVING_BONE.get()).pattern(" F ").pattern("F F").pattern(" B ").save(consumer);
         CraftingRecipeBuilder.base(ItemsNF.WARDING_EFFIGY.get(), EntriesNF.WARDING_EFFIGY).define('F', ItemsNF.ROTTEN_FLESH.get()).define('B', ItemsNF.LIVING_BONE.get()).define('H', ItemsNF.DREG_HEART.get()).pattern("FFF").pattern("BHB").pattern("FBF").save(consumer);
         CraftingRecipeBuilder.base(ItemsNF.FIRESTARTER.get(), EntriesNF.FIRESTARTER).define('F', ItemsNF.FLINT.get()).define('I', TagsNF.FIRESTARTER_IRON_INGREDIENT).define('P', ItemsNF.PLANKS.get(Tree.IRONWOOD).get()).define('T', ItemsNF.TERRACOTTA_SHARD.get()).pattern(" F ").pattern(" I ").pattern("PTP").save(consumer);
+
+        CraftingRecipeBuilder.base(ItemsNF.WOODEN_TONGS.get(), EntriesNF.SMITHING).define('S', ItemsNF.STICK.get()).define('X', ItemsNF.PLANT_FIBERS.get()).pattern("SXS").save(consumer);
+        for(TieredItemMaterial mat : ItemsNF.TONGS.keySet()) CraftingRecipeBuilder.base(ItemsNF.TONGS.get(mat).get(), EntriesNF.SMITHING).define('R', ItemsNF.RODS.get(mat.getMetal()).get()).pattern("RR").save(consumer);
         for(TieredItemMaterial material : ItemsNF.METAL_ARMAMENTS.keySet()) {
             var armaments = ItemsNF.METAL_ARMAMENTS.get(material);
             for(Armament armament : armaments.keySet()) {
@@ -294,7 +297,7 @@ public class RecipeProviderNF extends RecipeProvider {
                     var head = armament == Armament.HAMMER ? ItemsNF.INGOTS.get(material.getMetal()) : ItemsNF.ARMAMENT_HEADS.get(material).get(armament);
                     if(material.getTier() < 3) CraftingRecipeBuilder.base(armaments.get(armament).get(), KnowledgeNF.ITEMS.get(head)).define('H', head.get())
                             .define('S', ItemsNF.STICK.get()).define('X', ItemsNF.PLANT_FIBERS.get()).pattern("H").pattern("X").pattern("S").save(consumer);
-                    else CraftingRecipeBuilder.base(armaments.get(armament).get()).define('H', head.get())
+                    else CraftingRecipeBuilder.base(armaments.get(armament).get(), KnowledgeNF.ITEMS.get(head)).define('H', head.get())
                             .define('S', ItemsNF.STICK.get()).define('X', ItemsNF.LEATHER.get()).pattern("H").pattern("X").pattern("S").save(consumer);
                 }
             }
@@ -412,6 +415,9 @@ public class RecipeProviderNF extends RecipeProvider {
             TieredAnvilRecipeBuilder.base(inputs.get(metal), new int[]{0, 2, 0, 0, 2, 0, 0, 0, 2, 0, 0}, ItemsNF.RODS.get(metal).get()).order(2).requirement(EntriesNF.SMITHING).save(consumer);
             TieredAnvilRecipeBuilder.base(inputsRods.get(metal), new int[]{0, 3, 0, 0, 3, 0, 0, 0, 3, 0, 0}, ItemsNF.WIRES.get(metal).get(), 4).requirement(EntriesNF.SMITHING).order(3).save(consumer);
             if(ItemsNF.SCALES.containsKey(metal)) TieredAnvilRecipeBuilder.base(inputsPlates.get(metal), new int[]{0, 0, 3, 2, 1, 0, 0, 2, 1, 0, 0}, ItemsNF.SCALES.get(metal).get()).order(4).requirement(EntriesNF.SCALE_ARMOR).save(consumer);
+        }
+        for(TieredItemMaterial mat : ItemsNF.METAL_ARROWHEADS.keySet()) {
+            TieredAnvilRecipeBuilder.base(inputsRods.get(mat.getMetal()), new int[]{0, 0, 3, 0, 2, 0, 1, 0, 2, 0, 1}, ItemsNF.METAL_ARROWHEADS.get(mat).get(), 8).requirement(EntriesNF.ARROWHEAD_SMITHING).save(consumer);
         }
         for(TieredItemMaterial material : ItemsNF.ARMAMENT_HEADS.keySet()) {
             TieredAnvilRecipeBuilder.base(inputs.get(material.getMetal()), new int[]{0, 0, 0, 1, 1, 2, 0, 0, 0, 0, 3}, ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.ADZE).get()).requirement(EntriesNF.SMITHING).save(consumer);
