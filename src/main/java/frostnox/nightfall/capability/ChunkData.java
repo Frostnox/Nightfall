@@ -40,9 +40,11 @@ import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.NaturalSpawner;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.PipeBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.FluidState;
@@ -601,19 +603,24 @@ public class ChunkData implements IChunkData {
             VoxelShape shapeS = supportState.getCollisionShape(level, supportPos);
             if(!shapeS.getFaceShape(dir.getOpposite()).isEmpty()) {
                 boolean joined = false;
-                //Treat center of face as center of mass
-                Direction.Axis otherAxis = dir.getAxis() == Direction.Axis.X ? Direction.Axis.Z : Direction.Axis.X;
-                double xzCenter = (face.min(otherAxis) + face.max(otherAxis)) / 2D;
-                double yCenter = (face.min(Direction.Axis.Y) + face.max(Direction.Axis.Y)) / 2D;
-                //Check if any touching faces contain center of mass
-                for(AABB box : shapeS.toAabbs()) {
-                    if(dir.getAxisDirection() != Direction.AxisDirection.POSITIVE) {
-                        if(box.max(dir.getAxis()) < 1D) continue;
-                    }
-                    else if(box.min(dir.getAxis()) > 0D) continue;
-                    if(xzCenter >= box.min(otherAxis) && xzCenter <= box.max(otherAxis) && yCenter >= box.minY && yCenter <= box.maxY) {
-                        joined = true;
-                        break;
+                BooleanProperty connectionProperty = PipeBlock.PROPERTY_BY_DIRECTION.get(dir);
+                Optional<Boolean> connected = state.getOptionalValue(connectionProperty);
+                if(connected.isPresent() && connected.get()) joined = true;
+                else {
+                    //Treat center of face as center of mass
+                    Direction.Axis otherAxis = dir.getAxis() == Direction.Axis.X ? Direction.Axis.Z : Direction.Axis.X;
+                    double xzCenter = (face.min(otherAxis) + face.max(otherAxis)) / 2D;
+                    double yCenter = (face.min(Direction.Axis.Y) + face.max(Direction.Axis.Y)) / 2D;
+                    //Check if any touching faces contain center of mass
+                    for(AABB box : shapeS.toAabbs()) {
+                        if(dir.getAxisDirection() != Direction.AxisDirection.POSITIVE) {
+                            if(box.max(dir.getAxis()) < 1D) continue;
+                        }
+                        else if(box.min(dir.getAxis()) > 0D) continue;
+                        if(xzCenter >= box.min(otherAxis) && xzCenter <= box.max(otherAxis) && yCenter >= box.minY && yCenter <= box.maxY) {
+                            joined = true;
+                            break;
+                        }
                     }
                 }
                 if(joined) {

@@ -720,8 +720,6 @@ public class BlocksNF {
             20 * 60 * 8, TieredHeat.ORANGE, CRUCIBLE, 0,
             BlockBehaviour.Properties.of(Material.CLAY).strength(1.0F, 20F).sound(SoundType.GRAVEL)));
 
-    //Decoration
-
     //Special
     public static final RegistryObject<MoonEssenceBlock> MOON_ESSENCE = BLOCKS.register("moon_essence", () -> new MoonEssenceBlock(
             ParticleTypesNF.ESSENCE_MOON, BlockBehaviour.Properties.of(SOLID_DECORATION, MaterialColor.DIAMOND).sound(SoundsNF.MOON_ESSENCE_TYPE)
