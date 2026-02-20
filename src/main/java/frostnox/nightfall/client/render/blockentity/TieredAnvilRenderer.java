@@ -37,7 +37,7 @@ public class TieredAnvilRenderer implements BlockEntityRenderer<TieredAnvilBlock
             light = LightTexture.pack(Math.max(blockLight, LightTexture.block(light)), LightTexture.sky(light));
         }
         float baseWidth = 2F/16F, baseHeight = 2F/16F, baseDepth = 3F/16F;
-        //work = new int[]{0, 0, 3, 0, 2, 0, 1, 0, 2, 0, 1};
+        //work = new int[]{0, 0, 0, 1, 1, 2, 0, 0, 0, 0, 3};
 
         float spread = work[0] * 0.5F;
         float draw = work[1] * (work[1] < 0 ? 0.25F : 0.5F);

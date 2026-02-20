@@ -404,7 +404,7 @@ public class TieredAnvilBlockEntity extends BlockEntity {
             float leftCut = work[6] == 0 ? 1 : (work[6] == 1 ? 0.5F : 0.25F);
             float leftHeight = work[6] > 2 ? 0 : Math.max(0, baseHeight * (1F - leftSpread/2 - leftDraw/2));
 
-            float rightDraw = work[8] * (work[7] < 0 ? 0.25F : 0.5F);
+            float rightDraw = work[8] * (work[8] < 0 ? 0.25F : 0.5F);
             float rightPunch = work[9] * -0.5F/16F;
             float rightSpread = work[7] * 0.5F;
             float rightCut = work[10] == 0 ? 1 : (work[10] == 1 ? 0.5F : 0.25F);
