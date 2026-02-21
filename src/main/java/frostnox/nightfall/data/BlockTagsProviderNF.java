@@ -194,7 +194,7 @@ public class BlockTagsProviderNF extends BlockTagsProvider {
         tag(TagsNF.FALLING_DESTROYABLE).add(BlocksNF.TORCH.get(), BlocksNF.TORCH_UNLIT.get(), BlocksNF.WALL_TORCH.get(), BlocksNF.WALL_TORCH_UNLIT.get(),
                 BlocksNF.ROPE.get(), BlocksNF.CRUCIBLE.get(), BlocksNF.UNFIRED_CRUCIBLE.get(), BlocksNF.CAULDRON.get(), BlocksNF.UNFIRED_CAULDRON.get(),
                 BlocksNF.POT.get(), BlocksNF.UNFIRED_POT.get(), BlocksNF.INGOT_MOLD.get(), BlocksNF.ARROWHEAD_MOLD.get(), BlocksNF.UNFIRED_INGOT_MOLD.get(),
-                BlocksNF.UNFIRED_ARROWHEAD_MOLD.get(), BlocksNF.FLINT_CLUSTER.get(), BlocksNF.SEASHELL.get(), BlocksNF.SPIDER_WEB.get(),
+                BlocksNF.UNFIRED_ARROWHEAD_MOLD.get(), BlocksNF.ROD_MOLD.get(), BlocksNF.UNFIRED_ROD_MOLD.get(), BlocksNF.FLINT_CLUSTER.get(), BlocksNF.SEASHELL.get(), BlocksNF.SPIDER_WEB.get(),
                 BlocksNF.DRAKEFOWL_NEST.get());
         for(var block : BlocksNF.LANTERNS.values()) tag(TagsNF.FALLING_DESTROYABLE).add(block.get());
         for(var block : BlocksNF.LANTERNS_UNLIT.values()) tag(TagsNF.FALLING_DESTROYABLE).add(block.get());

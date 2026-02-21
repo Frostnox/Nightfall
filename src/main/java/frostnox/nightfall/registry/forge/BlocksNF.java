@@ -672,6 +672,9 @@ public class BlocksNF {
     public static final RegistryObject<ItemMoldBlock> ARROWHEAD_MOLD = register("arrowhead_mold", () -> new ItemMoldBlock(
             Block.box(4, 0, 4, 12, 2, 12), TagsNF.ARROWHEAD, 10,
             BlockBehaviour.Properties.of(Material.DECORATION).strength(0.3F).sound(SoundsNF.CERAMIC_SMALL_TYPE).noCollission()));
+    public static final RegistryObject<ItemMoldBlock> ROD_MOLD = register("rod_mold", () -> new ItemMoldBlock(
+            Block.box(0, 0, 0, 16, 2, 16), TagsNF.METAL_RODS, 100,
+            BlockBehaviour.Properties.of(Material.DECORATION).strength(0.3F).sound(SoundsNF.CERAMIC_SMALL_TYPE).noCollission()));
     public static final Map<Armament, RegistryObject<FireableFacingPartialBlock>> UNFIRED_ARMAMENT_MOLDS = DataUtil.mapEnum(Armament.class,
             armament -> !ARMAMENT_MOLDS.containsKey(armament),
             armament -> register("unfired_" + armament.getName() + "_mold", () -> new FireableFacingPartialBlock(
@@ -682,6 +685,9 @@ public class BlocksNF {
             BlockBehaviour.Properties.of(Material.DECORATION).strength(0.3F).sound(SoundType.GRAVEL).noCollission()));
     public static final RegistryObject<FireableFacingPartialBlock> UNFIRED_ARROWHEAD_MOLD = register("unfired_arrowhead_mold", () -> new FireableFacingPartialBlock(
             20 * 60 * 8, TieredHeat.ORANGE, ARROWHEAD_MOLD, 0,
+            BlockBehaviour.Properties.of(Material.DECORATION).strength(0.3F).sound(SoundType.GRAVEL).noCollission()));
+    public static final RegistryObject<FireableFacingPartialBlock> UNFIRED_ROD_MOLD = register("unfired_rod_mold", () -> new FireableFacingPartialBlock(
+            20 * 60 * 8, TieredHeat.ORANGE, ROD_MOLD, 0,
             BlockBehaviour.Properties.of(Material.DECORATION).strength(0.3F).sound(SoundType.GRAVEL).noCollission()));
 
     public static final RegistryObject<FuelBlock> COKE = BLOCKS.register("coke_block", () -> new FuelBlock(BlocksNF.COKE_BURNING, BlockBehaviour.Properties.of(

@@ -311,6 +311,7 @@ public class LootTableProviderNF extends LootTableProvider {
             for(var block : BlocksNF.UNFIRED_ARMAMENT_MOLDS.values()) dropOther(block.get(), ItemsNF.CLAY.get(), 4);
             dropOther(BlocksNF.UNFIRED_INGOT_MOLD.get(), ItemsNF.CLAY.get(), 4);
             dropOther(BlocksNF.UNFIRED_ARROWHEAD_MOLD.get(), ItemsNF.CLAY.get(), 4);
+            dropOther(BlocksNF.UNFIRED_ROD_MOLD.get(), ItemsNF.CLAY.get(), 4);
             dropOther(BlocksNF.TORCH.get(), ItemsNF.TORCH.get());
             dropOther(BlocksNF.TORCH_UNLIT.get(), ItemsNF.STICK.get());
 
