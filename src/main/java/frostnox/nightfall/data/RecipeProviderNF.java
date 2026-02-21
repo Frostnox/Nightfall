@@ -288,13 +288,12 @@ public class RecipeProviderNF extends RecipeProvider {
         for(TieredItemMaterial material : ItemsNF.METAL_ARMAMENTS.keySet()) {
             var armaments = ItemsNF.METAL_ARMAMENTS.get(material);
             for(Armament armament : armaments.keySet()) {
+                var head = ItemsNF.ARMAMENT_HEADS.get(material).get(armament);
                 if(armament == Armament.CHISEL) {
-                    var head = ItemsNF.ARMAMENT_HEADS.get(material).get(armament);
                     CraftingRecipeBuilder.base(armaments.get(armament).get(), KnowledgeNF.ITEMS.get(head)).define('H', head.get())
                             .define('S', ItemsNF.STICK.get()).pattern("H").pattern("S").save(consumer);
                 }
                 else {
-                    var head = armament == Armament.HAMMER ? ItemsNF.INGOTS.get(material.getMetal()) : ItemsNF.ARMAMENT_HEADS.get(material).get(armament);
                     if(material.getTier() < 3) CraftingRecipeBuilder.base(armaments.get(armament).get(), KnowledgeNF.ITEMS.get(head)).define('H', head.get())
                             .define('S', ItemsNF.STICK.get()).define('X', ItemsNF.PLANT_FIBERS.get()).pattern("H").pattern("X").pattern("S").save(consumer);
                     else CraftingRecipeBuilder.base(armaments.get(armament).get(), KnowledgeNF.ITEMS.get(head)).define('H', head.get())
@@ -423,6 +422,7 @@ public class RecipeProviderNF extends RecipeProvider {
             TieredAnvilRecipeBuilder.base(inputs.get(material.getMetal()), new int[]{0, 0, 0, 1, 1, 2, 0, 0, 0, 0, 3}, ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.ADZE).get()).requirement(EntriesNF.SMITHING).save(consumer);
             TieredAnvilRecipeBuilder.base(inputs.get(material.getMetal()), new int[]{0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 3}, ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.AXE).get()).requirement(EntriesNF.SMITHING).save(consumer);
             TieredAnvilRecipeBuilder.base(inputs.get(material.getMetal()), new int[]{0, 2, 1, 0, 2, 0, 0, 0, 0, 0, 3}, ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.CHISEL).get()).requirement(EntriesNF.SMITHING).save(consumer);
+            TieredAnvilRecipeBuilder.base(inputs.get(material.getMetal()), new int[]{0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0}, ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.HAMMER).get()).requirement(EntriesNF.SMITHING).save(consumer);
             TieredAnvilRecipeBuilder.base(inputs.get(material.getMetal()), new int[]{0, 2, 0, 0, 2, 0, 1, 0, 0, 0, 3}, ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.KNIFE).get()).requirement(EntriesNF.SMITHING).save(consumer);
             TieredAnvilRecipeBuilder.base(inputs.get(material.getMetal()), new int[]{0, 0, 0, 0, 2, 0, 2, 0, 2, 0, 2}, ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.MACE).get()).requirement(EntriesNF.MACE).save(consumer);
             TieredAnvilRecipeBuilder.base(inputs.get(material.getMetal()), new int[]{0, 1, 0, 0, 2, 2, 0, 0, 2, 2, 0}, ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.PICKAXE).get()).requirement(EntriesNF.SMITHING).save(consumer);

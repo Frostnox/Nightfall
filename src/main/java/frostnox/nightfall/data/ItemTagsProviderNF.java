@@ -137,6 +137,7 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
             tag(TagsNF.ADZE_HEAD).add(ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.ADZE).get());
             tag(TagsNF.AXE_HEAD).add(ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.AXE).get());
             tag(TagsNF.CHISEL_HEAD).add(ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.CHISEL).get());
+            tag(TagsNF.HAMMER_HEAD).add(ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.HAMMER).get());
             tag(TagsNF.KNIFE_HEAD).add(ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.KNIFE).get());
             tag(TagsNF.MACE_HEAD).add(ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.MACE).get());
             tag(TagsNF.PICKAXE_HEAD).add(ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.PICKAXE).get());
@@ -384,7 +385,7 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
                 TagsNF.ROCK, TagsNF.PLANK, TagsNF.ARROWHEAD, TagsNF.WOODEN_HATCHES_ITEM, TagsNF.WOODEN_LADDERS_ITEM, TagsNF.WOODEN_RACKS_ITEM,
                 TagsNF.WOODEN_SHELVES_ITEM, TagsNF.WOODEN_BARRELS_ITEM, ItemTags.WOODEN_FENCES, TagsNF.WOODEN_FENCE_GATES_ITEM, TagsNF.ANVILS_ITEM, TagsNF.METAL_ANVILS_ITEM,
                 TagsNF.METAL_BLOCKS_ITEM, TagsNF.WIRES, TagsNF.PLATES, TagsNF.CHAINMAIL, TagsNF.SCALES, TagsNF.SCRAP, TagsNF.ADZE_HEAD, TagsNF.AXE_HEAD, TagsNF.CHISEL_HEAD,
-                TagsNF.KNIFE_HEAD, TagsNF.MACE_HEAD, TagsNF.PICKAXE_HEAD, TagsNF.SABRE_HEAD, TagsNF.SHOVEL_HEAD, TagsNF.SICKLE_HEAD, TagsNF.SPEAR_HEAD,
+                TagsNF.HAMMER_HEAD, TagsNF.KNIFE_HEAD, TagsNF.MACE_HEAD, TagsNF.PICKAXE_HEAD, TagsNF.SABRE_HEAD, TagsNF.SHOVEL_HEAD, TagsNF.SICKLE_HEAD, TagsNF.SPEAR_HEAD,
                 TagsNF.SWORD_HEAD, TagsNF.ADZE, TagsNF.AXE, TagsNF.CHISEL, TagsNF.KNIFE, TagsNF.HAMMER, TagsNF.MACE, TagsNF.PICKAXE, TagsNF.SABRE, TagsNF.SICKLE, TagsNF.SHOVEL,
                 TagsNF.SPEAR, TagsNF.SWORD, TagsNF.BOW, TagsNF.SHIELD, TagsNF.WOODEN_BOW, TagsNF.UNDYED_METAL_SHIELD, TagsNF.NATIVE_METAL, TagsNF.METAL_INGOT,
                 TagsNF.LUMBER_TANNIN, TagsNF.CURABLE_FOOD, TagsNF.CURED_MEAT, ItemTags.SIGNS, TagsNF.CHAIRS_ITEM, TagsNF.TROUGHS_ITEM, TagsNF.ITEM_FRAMES_ITEM, ItemTags.BOATS,

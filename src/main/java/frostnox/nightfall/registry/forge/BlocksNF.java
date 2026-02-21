@@ -644,10 +644,11 @@ public class BlocksNF {
                             .strength(metal.getStrength(), metal.getExplosionResistance()).sound(SoundType.NETHERITE_BLOCK))));
 
     public static final Map<Armament, RegistryObject<ItemMoldBlock>> ARMAMENT_MOLDS = DataUtil.mapEnum(Armament.class,
-            a -> a == Armament.ADZE || a == Armament.HAMMER || a == Armament.MACE || a == Armament.SABRE || a == Armament.SWORD,
+            a -> a == Armament.ADZE || a == Armament.MACE || a == Armament.SABRE || a == Armament.SWORD,
             armament -> register(armament.getName() + "_mold", () -> new ItemMoldBlock(switch(armament) {
                 case AXE -> Block.box(3.5, 0, 4, 12.5, 2, 12);
                 case CHISEL -> Block.box(1, 0, 5, 15, 2, 11);
+                case HAMMER -> Block.box(3, 0, 4.5, 13, 2, 11.5);
                 case KNIFE -> Block.box(2.5, 0, 5, 13.5, 2, 11);
                 case PICKAXE -> Block.box(0, 0, 4.5, 16, 2, 11.5);
                 case SHOVEL -> Block.box(3.5, 0, 4, 12.5, 2, 12);
@@ -657,6 +658,7 @@ public class BlocksNF {
             }, switch(armament) {
                 case AXE -> TagsNF.AXE_HEAD;
                 case CHISEL -> TagsNF.CHISEL_HEAD;
+                case HAMMER -> TagsNF.HAMMER_HEAD;
                 case KNIFE -> TagsNF.KNIFE_HEAD;
                 case PICKAXE -> TagsNF.PICKAXE_HEAD;
                 case SHOVEL -> TagsNF.SHOVEL_HEAD;

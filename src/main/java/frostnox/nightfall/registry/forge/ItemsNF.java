@@ -659,7 +659,7 @@ public class ItemsNF {
             metal -> register(metal.getName() + "_scales", INGREDIENTS_TAB));
     public static final Map<TieredItemMaterial, Map<Armament, RegistryObject<Item>>> ARMAMENT_HEADS = DataUtil.mapEnum(TieredItemMaterial.class,
             material -> material.getMetal() == null || material.getMetal().getCategory() == IMetal.Category.NOBLE, material ->
-            DataUtil.mapEnum(Armament.class, armament -> armament == Armament.HAMMER, armament -> register(material.getName() + "_" + armament.getName() + "_head", 1)));
+            DataUtil.mapEnum(Armament.class, armament -> register(material.getName() + "_" + armament.getName() + "_head", 1)));
     public static final Map<TieredItemMaterial, RegistryObject<Item>> METAL_ARROWHEADS = DataUtil.mapEnum(TieredItemMaterial.class,
             material -> material.getMetal() == null || material.getMetal().getCategory() == IMetal.Category.NOBLE, material ->
                     register(material.getName() + "_arrowhead"));

@@ -144,6 +144,7 @@ public class TagsNF {
     public static final TagKey<Item> ADZE_HEAD = itemTag("adze_head");
     public static final TagKey<Item> AXE_HEAD = itemTag("axe_head");
     public static final TagKey<Item> CHISEL_HEAD = itemTag("chisel_head");
+    public static final TagKey<Item> HAMMER_HEAD = itemTag("hammer_head");
     public static final TagKey<Item> KNIFE_HEAD = itemTag("knife_head");
     public static final TagKey<Item> MACE_HEAD = itemTag("mace_head");
     public static final TagKey<Item> PICKAXE_HEAD = itemTag("pickaxe_head");
