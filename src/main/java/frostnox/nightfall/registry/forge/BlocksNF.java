@@ -673,7 +673,7 @@ public class BlocksNF {
             Block.box(4, 0, 4, 12, 2, 12), TagsNF.ARROWHEAD, 10,
             BlockBehaviour.Properties.of(Material.DECORATION).strength(0.3F).sound(SoundsNF.CERAMIC_SMALL_TYPE).noCollission()));
     public static final RegistryObject<ItemMoldBlock> ROD_MOLD = register("rod_mold", () -> new ItemMoldBlock(
-            Block.box(0, 0, 0, 16, 2, 16), TagsNF.METAL_RODS, 100,
+            Block.box(0, 0, 5, 16, 2, 11), TagsNF.METAL_RODS, 100,
             BlockBehaviour.Properties.of(Material.DECORATION).strength(0.3F).sound(SoundsNF.CERAMIC_SMALL_TYPE).noCollission()));
     public static final Map<Armament, RegistryObject<FireableFacingPartialBlock>> UNFIRED_ARMAMENT_MOLDS = DataUtil.mapEnum(Armament.class,
             armament -> !ARMAMENT_MOLDS.containsKey(armament),
