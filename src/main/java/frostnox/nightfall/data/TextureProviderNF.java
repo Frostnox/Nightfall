@@ -460,11 +460,13 @@ public class TextureProviderNF extends TextureProvider {
         }
         replaceImagePalette(item(ItemsNF.UNFIRED_INGOT_MOLD), item(ItemsNF.INGOT_MOLD), CLAY);
         replaceImagePalette(item(ItemsNF.UNFIRED_ARROWHEAD_MOLD), item(ItemsNF.ARROWHEAD_MOLD), CLAY);
+        replaceImagePalette(item(ItemsNF.UNFIRED_ROD_MOLD), item(ItemsNF.ROD_MOLD), CLAY);
         for(var item : ItemsNF.ARMAMENT_MOLDS.values()) {
             replaceImagePalette(item(item), item(item), TERRACOTTA);
         }
         replaceImagePalette(item(ItemsNF.INGOT_MOLD), item(ItemsNF.INGOT_MOLD), TERRACOTTA);
         replaceImagePalette(item(ItemsNF.ARROWHEAD_MOLD), item(ItemsNF.ARROWHEAD_MOLD), TERRACOTTA);
+        replaceImagePalette(item(ItemsNF.ROD_MOLD), item(ItemsNF.ROD_MOLD), TERRACOTTA);
         for(TieredItemMaterial material : ItemsNF.METAL_ARROWS.keySet()) {
             var item = ItemsNF.METAL_ARROWS.get(material);
             var palette = METAL_PALETTES.get(material.getMetal());

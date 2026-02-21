@@ -52,6 +52,7 @@ public class RecipeProviderNF extends RecipeProvider {
         }
         BuildingRecipeBuilder.base(ItemsNF.CLAY.get(), 4, ItemsNF.UNFIRED_INGOT_MOLD.get()).requirement(EntriesNF.CASTING).save(consumer);
         BuildingRecipeBuilder.base(ItemsNF.CLAY.get(), 4, ItemsNF.UNFIRED_ARROWHEAD_MOLD.get()).requirement(EntriesNF.ARROWHEAD_MOLD).save(consumer);
+        BuildingRecipeBuilder.base(ItemsNF.CLAY.get(), 4, ItemsNF.UNFIRED_ROD_MOLD.get()).requirement(EntriesNF.CASTING).save(consumer);
         BuildingRecipeBuilder.base(ItemsNF.FIRE_CLAY.get(), 4, ItemsNF.FIRE_CLAY_BLOCK.get()).order(0).save(consumer);
         BuildingRecipeBuilder.base(ItemsNF.FIRE_CLAY.get(), 4, ItemsNF.FIRE_CLAY_BRICKS.get()).order(1).save(consumer);
         BuildingRecipeBuilder.base(ItemsNF.MUD.get(), 4, ItemsNF.MUD_BLOCK.get()).order(0).save(consumer);

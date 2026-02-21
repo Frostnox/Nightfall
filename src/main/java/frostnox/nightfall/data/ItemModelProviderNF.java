@@ -373,9 +373,11 @@ public class ItemModelProviderNF extends ModelProvider<AnimatedItemModelBuilder>
         for(var item : ItemsNF.ARMAMENT_MOLDS.values()) genericItem(item.get());
         genericItem(ItemsNF.INGOT_MOLD.get());
         genericItem(ItemsNF.ARROWHEAD_MOLD.get());
+        genericItem(ItemsNF.ROD_MOLD.get());
         for(var item : ItemsNF.UNFIRED_ARMAMENT_MOLDS.values()) genericItem(item.get());
         genericItem(ItemsNF.UNFIRED_INGOT_MOLD.get());
         genericItem(ItemsNF.UNFIRED_ARROWHEAD_MOLD.get());
+        genericItem(ItemsNF.UNFIRED_ROD_MOLD.get());
         genericBlock(ItemsNF.CRUCIBLE.get(), "_none");
 
         genericBlockAsItem(ItemsNF.SPIDER_WEB.get());

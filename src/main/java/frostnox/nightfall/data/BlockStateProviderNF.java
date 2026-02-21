@@ -1230,9 +1230,11 @@ public class BlockStateProviderNF extends BlockStateProvider {
         for(var block : BlocksNF.ARMAMENT_MOLDS.values()) horizontalBlockNF(block.get(), file(block.get()), 0);
         horizontalBlockNF(BlocksNF.INGOT_MOLD.get(), file(BlocksNF.INGOT_MOLD.get()), 0);
         horizontalBlockNF(BlocksNF.ARROWHEAD_MOLD.get(), file(BlocksNF.ARROWHEAD_MOLD.get()), 0);
+        horizontalBlockNF(BlocksNF.ROD_MOLD.get(), file(BlocksNF.ROD_MOLD.get()), 0);
         for(Armament type : BlocksNF.ARMAMENT_MOLDS.keySet()) unfiredMoldBlock(BlocksNF.UNFIRED_ARMAMENT_MOLDS.get(type).get(), BlocksNF.ARMAMENT_MOLDS.get(type).get());
         unfiredMoldBlock(BlocksNF.UNFIRED_INGOT_MOLD.get(), BlocksNF.INGOT_MOLD.get());
         unfiredMoldBlock(BlocksNF.UNFIRED_ARROWHEAD_MOLD.get(), BlocksNF.ARROWHEAD_MOLD.get());
+        unfiredMoldBlock(BlocksNF.UNFIRED_ROD_MOLD.get(), BlocksNF.ROD_MOLD.get());
         simpleHeatableBlock(BlocksNF.COKE_BURNING.get());
         simpleHeatableBlock(BlocksNF.COAL_BURNING.get());
         horizontalColumnBlock(BlocksNF.CHARCOAL.get());
