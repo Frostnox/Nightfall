@@ -4,8 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import frostnox.nightfall.Nightfall;
 import frostnox.nightfall.data.TagsNF;
-import frostnox.nightfall.data.recipe.TieredAnvilRecipe;
-import frostnox.nightfall.util.DataUtil;
+import frostnox.nightfall.data.recipe.SmithingRecipe;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -21,7 +20,7 @@ import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.function.Consumer;
 
-public class TieredAnvilRecipeBuilder {
+public class SmithingRecipeBuilder {
     private static final HashMap<String, Integer> IDS = new HashMap<>();
     private final Item result;
     private final int count;
@@ -32,42 +31,42 @@ public class TieredAnvilRecipeBuilder {
     private int menuOrder = -1;
     private boolean showInEntry = true;
 
-    public TieredAnvilRecipeBuilder(Ingredient input, int[] work, ItemLike result, int count) {
+    public SmithingRecipeBuilder(Ingredient input, int[] work, ItemLike result, int count) {
         this.input = input;
         this.work = work;
         this.result = result.asItem();
         this.count = count;
     }
 
-    public static TieredAnvilRecipeBuilder base(Ingredient input, int[] work, ItemLike result) {
+    public static SmithingRecipeBuilder base(Ingredient input, int[] work, ItemLike result) {
         return base(input, work, result, 1);
     }
 
-    public static TieredAnvilRecipeBuilder base(Ingredient input, int[] work, ItemLike result, int count) {
-        return new TieredAnvilRecipeBuilder(input, work, result, count);
+    public static SmithingRecipeBuilder base(Ingredient input, int[] work, ItemLike result, int count) {
+        return new SmithingRecipeBuilder(input, work, result, count);
     }
 
-    public TieredAnvilRecipeBuilder addQuenchFluid(TagKey<Fluid> fluid) {
+    public SmithingRecipeBuilder addQuenchFluid(TagKey<Fluid> fluid) {
         quenchFluid = fluid;
         return this;
     }
 
-    public TieredAnvilRecipeBuilder requirement(RegistryObject<?> entryOrKnowledge) {
+    public SmithingRecipeBuilder requirement(RegistryObject<?> entryOrKnowledge) {
         this.requirement = entryOrKnowledge.getId();
         return this;
     }
 
-    public TieredAnvilRecipeBuilder requirement(ResourceLocation id) {
+    public SmithingRecipeBuilder requirement(ResourceLocation id) {
         this.requirement = id;
         return this;
     }
 
-    public TieredAnvilRecipeBuilder order(int menuOrder) {
+    public SmithingRecipeBuilder order(int menuOrder) {
         this.menuOrder = menuOrder;
         return this;
     }
 
-    public TieredAnvilRecipeBuilder hideInEntry() {
+    public SmithingRecipeBuilder hideInEntry() {
         this.showInEntry = false;
         return this;
     }
@@ -86,7 +85,7 @@ public class TieredAnvilRecipeBuilder {
         IDS.put(name, number);
         ResourceLocation id = ResourceLocation.fromNamespaceAndPath(namespace, name + "_" + number);
         if(work.length != 11) throw new IllegalStateException("Work array is not 11 elements for anvil recipe " + id);
-        consumer.accept(new TieredAnvilRecipeBuilder.Result(id, requirement, input, work, quenchFluid, result, count, menuOrder, showInEntry));
+        consumer.accept(new SmithingRecipeBuilder.Result(id, requirement, input, work, quenchFluid, result, count, menuOrder, showInEntry));
     }
     
     public static class Result implements FinishedRecipe {
@@ -142,7 +141,7 @@ public class TieredAnvilRecipeBuilder {
 
         @Override
         public RecipeSerializer<?> getType() {
-            return TieredAnvilRecipe.SERIALIZER;
+            return SmithingRecipe.SERIALIZER;
         }
 
         @Nullable

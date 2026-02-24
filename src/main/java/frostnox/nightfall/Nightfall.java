@@ -347,7 +347,7 @@ public class Nightfall {
         event.getRegistry().register(CauldronRecipe.SERIALIZER);
         event.getRegistry().register(CrucibleRecipe.SERIALIZER);
         event.getRegistry().register(FurnaceRecipe.SERIALIZER);
-        event.getRegistry().register(TieredAnvilRecipe.SERIALIZER);
+        event.getRegistry().register(SmithingRecipe.SERIALIZER);
         event.getRegistry().register(BuildingRecipe.SERIALIZER);
         event.getRegistry().register(CampfireRecipe.SERIALIZER);
         event.getRegistry().register(BarrelRecipe.SERIALIZER);

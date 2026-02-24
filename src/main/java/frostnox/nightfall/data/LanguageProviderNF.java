@@ -200,16 +200,17 @@ public class LanguageProviderNF extends LanguageProvider {
         add("toolaction." + ToolActionsNF.STRIP.name(), WordUtils.capitalize(ToolActionsNF.STRIP.name()));
         add("toolaction." + ToolActionsNF.TILL.name(), WordUtils.capitalize(ToolActionsNF.TILL.name()));
         add("toolaction." + ToolActionsNF.SKIN.name(), WordUtils.capitalize(ToolActionsNF.SKIN.name()));
-        add("anvil.action.context", "Smithing: ");
-        add("anvil.action.context_charged", "Smithing (Charged): ");
-        add("anvil.action.punch.info", "Punch 1x1 area");
-        add("anvil.action.punch_line.info", "Punch 3x1 area");
-        add("anvil.action.punch_square.info", "Punch 3x3 area");
-        add("anvil.action.bend.info", "Shifts line backwards");
-        add("anvil.action.draw.info", "Draws 3x1 edge forwards");
-        add("anvil.action.draw_line.info", "Draws entire edge forwards");
-        add("anvil.action.upset.info", "Upsets 3x1 edge backwards");
-        add("anvil.action.upset_line.info", "Upsets entire edge backwards");
+        add("action.smithing.context", "Smithing: ");
+        add("action.smithing.context_face", "Smithing (Face): ");
+        add("action.smithing.context_edge", "Smithing (Edge): ");
+        add("action.smithing.context_horn", "Smithing (Horn): ");
+        add("action.smithing.strike_face", "Spread section wider");
+        add("action.smithing.strike_edge", "Draw section longer");
+        add("action.smithing.strike_horn", "Bend section downward");
+        add("action.smithing.strike_charged", "Double basic effect");
+        add("action.smithing.cut", "Halve section");
+        add("action.smithing.cut_charged", "Remove section");
+        add("action.smithing.flip", "Flip workpiece");
         for(PlayerActionSet set : PlayerActionSet.SETS) {
             add("action_set." + set.toString(), WordUtils.capitalize(set.toString().replace("_", " ")));
         }
@@ -219,9 +220,10 @@ public class LanguageProviderNF extends LanguageProvider {
         }
         add("item.nightfall.mask.info", "Hides name");
         add("item.nightfall.warding_charm.info", "Reduces nearby Undead occurrence");
-        add("item.nightfall.tongs.info", "Use with forgeable metal to hold");
+        add("item.nightfall.tongs.info_place", "Use on anvil to place");
+        add("item.nightfall.tongs.info_hold", "Use with forgeable metal to hold");
         add("item.leading", "Use on tamed animals to lead");
-        add(Nightfall.MODID + ".anvil", "Anvil");
+        add(Nightfall.MODID + ".smithing", "Smithing");
         add(Nightfall.MODID + ".bowl_crushing", "Bowl");
         add(Nightfall.MODID + ".building", "Building");
         add(Nightfall.MODID + ".campfire", "Campfire");

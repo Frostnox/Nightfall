@@ -251,8 +251,8 @@ public class ChiselAndHammerBasic extends MoveSpeedPlayerAction {
         List<Component> tooltips = super.getTooltips(stack, level, isAdvanced);
         if(ClientEngine.get().isShiftHeld() && ClientEngine.get().getPlayer() != null && PlayerData.get(ClientEngine.get().getPlayer()).hasCompletedEntry(EntriesNF.SMITHING.getId())) {
             tooltips.add(new TextComponent(""));
-            tooltips.add(new TextComponent(" ").append(new TranslatableComponent("anvil.action.context").withStyle(ChatFormatting.GRAY))
-                    .append(new TranslatableComponent("anvil.action." + AnvilAction.CUT.name().toLowerCase() + ".info").withStyle(ChatFormatting.DARK_AQUA)));
+            tooltips.add(new TextComponent(" ").append(new TranslatableComponent("action.smithing.context").withStyle(ChatFormatting.GRAY))
+                    .append(new TranslatableComponent("action.smithing." + AnvilAction.CUT.name().toLowerCase()).withStyle(ChatFormatting.DARK_AQUA)));
         }
         return tooltips;
     }

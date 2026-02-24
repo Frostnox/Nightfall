@@ -27,10 +27,10 @@ import net.minecraftforge.items.wrapper.RecipeWrapper;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
-public class TieredAnvilRecipe extends EncyclopediaRecipe<RecipeWrapper> implements IRenderableRecipe {
-    public static final RecipeType<TieredAnvilRecipe> TYPE = RecipeType.register(Nightfall.MODID + ":anvil");
+public class SmithingRecipe extends EncyclopediaRecipe<RecipeWrapper> implements IRenderableRecipe {
+    public static final RecipeType<SmithingRecipe> TYPE = RecipeType.register(Nightfall.MODID + ":smithing");
     public static final Serializer SERIALIZER = new Serializer();
-    public static final ResourceLocation RECIPE_VIEWER_LOCATION = ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "textures/gui/screen/recipe_anvil.png");
+    public static final ResourceLocation RECIPE_VIEWER_LOCATION = ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "textures/gui/screen/recipe_smithing.png");
     public final int menuOrder;
     public final Ingredient input;
     public final int[] work;
@@ -38,7 +38,7 @@ public class TieredAnvilRecipe extends EncyclopediaRecipe<RecipeWrapper> impleme
     public final boolean showInEntry;
     private final ItemStack output;
 
-    public TieredAnvilRecipe(ResourceLocation id, ResourceLocation requirement, Ingredient input, int[] work, TagKey<Fluid> quenchFluid, ItemStack output, int menuOrder, boolean showInEntry) {
+    public SmithingRecipe(ResourceLocation id, ResourceLocation requirement, Ingredient input, int[] work, TagKey<Fluid> quenchFluid, ItemStack output, int menuOrder, boolean showInEntry) {
         super(id, requirement);
         this.input = input;
         this.work = work;
@@ -151,7 +151,7 @@ public class TieredAnvilRecipe extends EncyclopediaRecipe<RecipeWrapper> impleme
 
     @Override
     public TranslatableComponent getTitle() {
-        return new TranslatableComponent(Nightfall.MODID + ".anvil");
+        return new TranslatableComponent(Nightfall.MODID + ".smithing");
     }
 
     @Override
@@ -164,13 +164,13 @@ public class TieredAnvilRecipe extends EncyclopediaRecipe<RecipeWrapper> impleme
         return showInEntry;
     }
 
-    public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<TieredAnvilRecipe> {
+    public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<SmithingRecipe> {
         Serializer() {
-            this.setRegistryName(ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "anvil"));
+            this.setRegistryName(ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "smithing"));
         }
 
         @Override
-        public TieredAnvilRecipe fromJson(ResourceLocation id, JsonObject json) {
+        public SmithingRecipe fromJson(ResourceLocation id, JsonObject json) {
             ResourceLocation requirement = null;
             if(json.has("requirement")) requirement = ResourceLocation.parse(json.get("requirement").getAsString());
             Ingredient input = Ingredient.fromJson(json.get("input"));
@@ -182,11 +182,11 @@ public class TieredAnvilRecipe extends EncyclopediaRecipe<RecipeWrapper> impleme
             ItemStack result = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "result"));
             int menuOrder = GsonHelper.getAsInt(json, "menuOrder", -1);
             boolean showInEntry = GsonHelper.getAsBoolean(json, "showInEntry", true);
-            return new TieredAnvilRecipe(id, requirement, input, work, quenchFluid, result, menuOrder, showInEntry);
+            return new SmithingRecipe(id, requirement, input, work, quenchFluid, result, menuOrder, showInEntry);
         }
 
         @Override
-        public TieredAnvilRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
+        public SmithingRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
             ResourceLocation requirement = buf.readResourceLocation();
             Ingredient input = Ingredient.fromNetwork(buf);
             int[] work = new int[11];
@@ -195,11 +195,11 @@ public class TieredAnvilRecipe extends EncyclopediaRecipe<RecipeWrapper> impleme
             ItemStack result = buf.readItem();
             int menuOrder = buf.readVarInt();
             boolean showInEntry = buf.readBoolean();
-            return new TieredAnvilRecipe(id, requirement.getPath().equals("empty") ? null : requirement, input, work, quenchFluid, result, menuOrder, showInEntry);
+            return new SmithingRecipe(id, requirement.getPath().equals("empty") ? null : requirement, input, work, quenchFluid, result, menuOrder, showInEntry);
         }
 
         @Override
-        public void toNetwork(FriendlyByteBuf buf, TieredAnvilRecipe recipe) {
+        public void toNetwork(FriendlyByteBuf buf, SmithingRecipe recipe) {
             buf.writeResourceLocation(recipe.getRequirementId() == null ? ResourceLocation.parse("empty") : recipe.getRequirementId());
             recipe.input.toNetwork(buf);
             for(int i : recipe.work) buf.writeVarInt(i);

@@ -57,8 +57,8 @@ public class HammerStrikeCharged extends VerticalSwingCharged {
     public List<Component> getTooltips(ItemStack stack, @Nullable Level level, TooltipFlag isAdvanced) {
         List<Component> tooltips = super.getTooltips(stack, level, isAdvanced);
         if(ClientEngine.get().isShiftHeld() && ClientEngine.get().getPlayer() != null && PlayerData.get(ClientEngine.get().getPlayer()).hasCompletedEntry(EntriesNF.SMITHING.getId())) {
-            tooltips.add(new TextComponent(" ").append(new TranslatableComponent("anvil.action.context").withStyle(ChatFormatting.GRAY))
-                    .append(new TranslatableComponent("anvil.action." + AnvilAction.STRIKE.toString().toLowerCase(Locale.ROOT) + ".info").withStyle(ChatFormatting.DARK_AQUA)));
+            tooltips.add(new TextComponent(" ").append(new TranslatableComponent("action.smithing.context").withStyle(ChatFormatting.GRAY))
+                    .append(new TranslatableComponent("action.smithing." + AnvilAction.STRIKE.toString().toLowerCase(Locale.ROOT) + "_charged").withStyle(ChatFormatting.DARK_AQUA)));
         }
         return tooltips;
     }

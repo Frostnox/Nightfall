@@ -2,7 +2,7 @@ package frostnox.nightfall.client.gui.screen.item;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import frostnox.nightfall.data.recipe.TieredAnvilRecipe;
+import frostnox.nightfall.data.recipe.SmithingRecipe;
 import frostnox.nightfall.item.client.IModifiable;
 import frostnox.nightfall.util.DataUtil;
 import frostnox.nightfall.util.RenderUtil;
@@ -12,13 +12,13 @@ import net.minecraft.network.chat.TranslatableComponent;
 
 import java.util.List;
 
-public class TongsVisualRecipeScreen extends ModifiableScreen<TieredAnvilRecipe> {
-    public TongsVisualRecipeScreen(boolean mainHand, IModifiable modifiableItem, List<TieredAnvilRecipe> items) {
+public class TongsVisualRecipeScreen extends ModifiableScreen<SmithingRecipe> {
+    public TongsVisualRecipeScreen(boolean mainHand, IModifiable modifiableItem, List<SmithingRecipe> items) {
         super(64, 12, mainHand, modifiableItem, items);
     }
 
     @Override
-    protected void renderObject(TieredAnvilRecipe object, PoseStack poseStack, int xPos, int yPos) {
+    protected void renderObject(SmithingRecipe object, PoseStack poseStack, int xPos, int yPos) {
         if(object != null) {
             mc.getItemRenderer().renderAndDecorateItem(object.getResultItem(), xPos, yPos);
             mc.getItemRenderer().renderGuiItemDecorations(mc.font, object.getResultItem(), xPos, yPos);
@@ -30,7 +30,7 @@ public class TongsVisualRecipeScreen extends ModifiableScreen<TieredAnvilRecipe>
     }
 
     @Override
-    protected void renderObjectTooltip(TieredAnvilRecipe object, PoseStack poseStack, int mouseX, int mouseY) {
+    protected void renderObjectTooltip(SmithingRecipe object, PoseStack poseStack, int mouseX, int mouseY) {
         if(object != null) renderTooltip(poseStack, object.getResultItem(), mouseX, mouseY);
         else renderTooltip(poseStack, new TranslatableComponent("gui.empty"), mouseX, mouseY);
     }

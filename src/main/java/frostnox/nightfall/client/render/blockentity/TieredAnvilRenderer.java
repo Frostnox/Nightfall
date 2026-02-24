@@ -5,7 +5,7 @@ import com.mojang.math.Vector3f;
 import frostnox.nightfall.block.block.anvil.AnvilSection;
 import frostnox.nightfall.block.block.anvil.TieredAnvilBlockEntity;
 import frostnox.nightfall.client.ClientEngine;
-import frostnox.nightfall.data.recipe.TieredAnvilRecipe;
+import frostnox.nightfall.data.recipe.SmithingRecipe;
 import frostnox.nightfall.registry.forge.FluidsNF;
 import frostnox.nightfall.util.RenderUtil;
 import net.minecraft.client.Minecraft;
@@ -86,7 +86,7 @@ public class TieredAnvilRenderer implements BlockEntityRenderer<TieredAnvilBlock
             renderWorkpiece(stack, buffers, RenderUtil.getHeatedMetalColor(entity.getTemperature(), entity.getColor().getRGB()),
                     entity.hasLevel() ? LevelRenderer.getLightColor(entity.getLevel(), entity.getBlockPos().above()) : LightTexture.FULL_BRIGHT, section, entity.getTemperature(), entity.work,
                     entity.hasFlip(), entity.hasSlagCenter(), entity.hasSlagLeft(), entity.hasSlagRight());
-            if(ClientEngine.get().getLastVisualizedRecipe() instanceof TieredAnvilRecipe recipe && recipe.input.test(entity.getWorkpiece())) {
+            if(ClientEngine.get().getLastVisualizedRecipe() instanceof SmithingRecipe recipe && recipe.input.test(entity.getWorkpiece())) {
                 Player player = Minecraft.getInstance().player;
                 if(player != null && player.isAlive() && entity.getBlockPos().distToCenterSqr(player.getPosition(partialTicks)) < 2 * 2) {
                     stack.translate(0, 4F/16F, 0);

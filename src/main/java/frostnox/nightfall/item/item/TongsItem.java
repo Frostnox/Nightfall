@@ -4,6 +4,7 @@ import frostnox.nightfall.block.IHeatSource;
 import frostnox.nightfall.block.IMetal;
 import frostnox.nightfall.block.Metal;
 import frostnox.nightfall.block.TieredHeat;
+import frostnox.nightfall.block.block.anvil.AnvilAction;
 import frostnox.nightfall.block.block.anvil.TieredAnvilBlock;
 import frostnox.nightfall.block.block.anvil.TieredAnvilBlockEntity;
 import frostnox.nightfall.capability.PlayerData;
@@ -11,7 +12,7 @@ import frostnox.nightfall.client.ClientEngine;
 import frostnox.nightfall.client.gui.screen.item.ModifiableScreen;
 import frostnox.nightfall.client.gui.screen.item.TongsVisualRecipeScreen;
 import frostnox.nightfall.data.TagsNF;
-import frostnox.nightfall.data.recipe.TieredAnvilRecipe;
+import frostnox.nightfall.data.recipe.SmithingRecipe;
 import frostnox.nightfall.item.IContainerChanger;
 import frostnox.nightfall.item.client.IClientSwapBehavior;
 import frostnox.nightfall.item.client.IModifiable;
@@ -28,6 +29,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -140,7 +142,7 @@ public class TongsItem extends ItemNF implements IContainerChanger, IModifiable,
                     int[] work = getWork(tongs);
                     ItemStack resultItem = null;
                     RecipeWrapper inventory = new RecipeWrapper(new ItemStackHandlerNF(new ItemStack(workpiece)));
-                    for(TieredAnvilRecipe recipe : level.getRecipeManager().getRecipesFor(TieredAnvilRecipe.TYPE, inventory, level)) {
+                    for(SmithingRecipe recipe : level.getRecipeManager().getRecipesFor(SmithingRecipe.TYPE, inventory, level)) {
                         if(recipe.matchesWorkAndFluid(work, quenchFluid)) {
                             resultItem = recipe.assemble(inventory);
                             break;
@@ -309,7 +311,10 @@ public class TongsItem extends ItemNF implements IContainerChanger, IModifiable,
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         TieredHeat heat = TieredHeat.fromTier(getMaxHeatTier());
         pTooltipComponents.add(new TranslatableComponent("block.heat_resistant." + heat.getTier()).withStyle(Style.EMPTY.withColor(heat.color.getRGB())));
-        pTooltipComponents.add(new TranslatableComponent("item.nightfall.tongs.info").withStyle(ChatFormatting.AQUA));
+        if(hasWorkpiece(pStack)) pTooltipComponents.add(new TranslatableComponent("item.nightfall.tongs.info_place").withStyle(ChatFormatting.AQUA));
+        else pTooltipComponents.add(new TranslatableComponent("item.nightfall.tongs.info_hold").withStyle(ChatFormatting.AQUA));
+        pTooltipComponents.add(new TranslatableComponent("action.smithing.context").withStyle(ChatFormatting.GRAY)
+                .append(new TranslatableComponent("action.smithing." + AnvilAction.FLIP.name().toLowerCase()).withStyle(ChatFormatting.DARK_AQUA)));
     }
 
     @Override
@@ -318,9 +323,9 @@ public class TongsItem extends ItemNF implements IContainerChanger, IModifiable,
         item.getTag().remove("temperature");
     }
 
-    public List<TieredAnvilRecipe> getVisualRecipes(Level level, Player player, Item workpiece) {
+    public List<SmithingRecipe> getVisualRecipes(Level level, Player player, Item workpiece) {
         ForgeHooks.setCraftingPlayer(player);
-        List<TieredAnvilRecipe> recipes = level.getRecipeManager().getRecipesFor(TieredAnvilRecipe.TYPE, new RecipeWrapper(new ItemStackHandlerNF(new ItemStack(workpiece))), level).stream()
+        List<SmithingRecipe> recipes = level.getRecipeManager().getRecipesFor(SmithingRecipe.TYPE, new RecipeWrapper(new ItemStackHandlerNF(new ItemStack(workpiece))), level).stream()
                 .sorted((r1, r2) -> {
                     if(r1.menuOrder < 0 && r2.menuOrder >= 0) return 1;
                     else if(r2.menuOrder < 0 && r1.menuOrder >= 0) return -1;
@@ -341,7 +346,7 @@ public class TongsItem extends ItemNF implements IContainerChanger, IModifiable,
     @Override
     public Optional<Screen> modifyStartClient(Minecraft mc, ItemStack item, Player player, InteractionHand hand) {
         if(hasWorkpiece(item)) {
-            List<TieredAnvilRecipe> recipes = getVisualRecipes(player.level, player, getWorkpiece(item));
+            List<SmithingRecipe> recipes = getVisualRecipes(player.level, player, getWorkpiece(item));
             if(recipes.size() <= 1) return Optional.empty();
             else return Optional.of(new TongsVisualRecipeScreen(PlayerData.get(player).isMainhandActive(), this, recipes));
         }

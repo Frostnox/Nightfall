@@ -265,7 +265,7 @@ public class ClientEngine {
         registerEntry(METALLURGY, EntriesNF.CASTING, 0, 0, new ItemStack(ItemsNF.CRUCIBLE.get()), null,
                 null, image(67, 25, imageLoc("alloying")), false);
         registerEntry(METALLURGY, EntriesNF.SMITHING, -2, -1, new ItemStack(ItemsNF.ANVILS_METAL.get(Metal.COPPER).get()), null,
-                null, image(100, 12, imageLoc("smithing")), false);
+                null, image(130, 14, imageLoc("smithing")), false);
         registerEntry(METALLURGY, EntriesNF.SMELTING, -2, 1, new ItemStack(ItemsNF.INGOTS.get(Metal.COPPER).get()), null,
                 null, image(120, 58, imageLoc("furnace")), false);
         registerEntry(METALLURGY, EntriesNF.IRONWORKING, -4, 0, new ItemStack(ItemsNF.INGOTS.get(Metal.IRON).get()));

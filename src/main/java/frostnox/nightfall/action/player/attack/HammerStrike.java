@@ -57,8 +57,12 @@ public class HammerStrike extends VerticalSwing implements IClientAction {
     public List<Component> getTooltips(ItemStack stack, @Nullable Level level, TooltipFlag isAdvanced) {
         List<Component> tooltips = super.getTooltips(stack, level, isAdvanced);
         if(ClientEngine.get().isShiftHeld() && ClientEngine.get().getPlayer() != null && PlayerData.get(ClientEngine.get().getPlayer()).hasCompletedEntry(EntriesNF.SMITHING.getId())) {
-            tooltips.add(new TextComponent(" ").append(new TranslatableComponent("anvil.action.context").withStyle(ChatFormatting.GRAY))
-                    .append(new TranslatableComponent("anvil.action." + AnvilAction.STRIKE.name().toLowerCase() + ".info").withStyle(ChatFormatting.DARK_AQUA)));
+            tooltips.add(new TextComponent(" ").append(new TranslatableComponent("action.smithing.context_face").withStyle(ChatFormatting.GRAY))
+                    .append(new TranslatableComponent("action.smithing." + AnvilAction.STRIKE.name().toLowerCase() + "_face").withStyle(ChatFormatting.DARK_AQUA)));
+            tooltips.add(new TextComponent(" ").append(new TranslatableComponent("action.smithing.context_edge").withStyle(ChatFormatting.GRAY))
+                    .append(new TranslatableComponent("action.smithing." + AnvilAction.STRIKE.name().toLowerCase() + "_edge").withStyle(ChatFormatting.DARK_AQUA)));
+            tooltips.add(new TextComponent(" ").append(new TranslatableComponent("action.smithing.context_horn").withStyle(ChatFormatting.GRAY))
+                    .append(new TranslatableComponent("action.smithing." + AnvilAction.STRIKE.name().toLowerCase() + "_horn").withStyle(ChatFormatting.DARK_AQUA)));
         }
         return tooltips;
     }
