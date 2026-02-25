@@ -1,5 +1,6 @@
 package frostnox.nightfall.network.message.entity;
 
+import com.mojang.math.Vector3d;
 import frostnox.nightfall.Nightfall;
 import frostnox.nightfall.action.Attack;
 import frostnox.nightfall.action.DamageType;
@@ -18,6 +19,7 @@ import frostnox.nightfall.network.message.GenericEntityToClient;
 import frostnox.nightfall.network.message.capability.ActionTrackerToClient;
 import frostnox.nightfall.registry.forge.AttributesNF;
 import frostnox.nightfall.registry.vanilla.GameEventsNF;
+import frostnox.nightfall.util.MathUtil;
 import frostnox.nightfall.util.data.Vec3f;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -144,8 +146,7 @@ public class HitTargetToServer {
                 }
                 if(!capA.getHitEntities().contains(target.getId())) {
                     AABB box = target instanceof IOrientedHitBoxes hitBoxesEntity ? hitBoxesEntity.getEnclosingAABB() : target.getBoundingBox();
-                    if(box.move(-target.getX(), -target.getY(), -target.getZ()).inflate(0.01).contains(msg.x, msg.y, msg.z)
-                            && hasLineOfSightToBoundingBox(target, msg, player)) {
+                    if(box.move(-target.getX(), -target.getY(), -target.getZ()).inflate(0.01).contains(msg.x, msg.y, msg.z) && hasLineOfSight(target, msg, player)) {
                         //Distance is from player's eye position to the closest point of the target's bounding box
                         Vec3 t = target.getBoundingBox().getCenter();
                         Vec3 p = player.getEyePosition(1);
@@ -195,8 +196,7 @@ public class HitTargetToServer {
                     }
                     if(target.isAttackable()) {
                         AABB box = target instanceof IOrientedHitBoxes hitBoxesEntity ? hitBoxesEntity.getEnclosingAABB() : target.getBoundingBox();
-                        if(box.move(-target.getX(), -target.getY(), -target.getZ()).inflate(0.01).contains(msg.x, msg.y, msg.z)
-                                && hasLineOfSightToBoundingBox(target, msg, player)) {
+                        if(box.move(-target.getX(), -target.getY(), -target.getZ()).inflate(0.01).contains(msg.x, msg.y, msg.z) && hasLineOfSight(target, msg, player)) {
                             //Distance is from player's eye position to the closest point of the target's bounding box
                             Vec3 t = target.getBoundingBox().getCenter();
                             Vec3 p = player.getEyePosition(1);
@@ -234,32 +234,11 @@ public class HitTargetToServer {
         }
     }
 
-    private static boolean hasLineOfSightToBoundingBox(Entity target, HitTargetToServer msg, ServerPlayer player) {
-        if(!(target instanceof IOrientedHitBoxes)) {
-            return true;
-        }
+    private static boolean hasLineOfSight(Entity target, HitTargetToServer msg, ServerPlayer player) {
         Vec3 hitPos = target.position().add(msg.x, msg.y, msg.z);
         AABB targetBox = target.getBoundingBox();
-        if(targetBox.inflate(0.0001D).contains(hitPos)) {
-            return true;
-        }
-        //Line of sight against any point on the target's AABB, using the oriented hit position as a start point.
-        final int steps = 5;
-        for(int ix = 0; ix <= steps; ix++) {
-            double x = targetBox.minX + (targetBox.getXsize() * (double) ix / steps);
-            for(int iy = 0; iy <= steps; iy++) {
-                double y = targetBox.minY + (targetBox.getYsize() * (double) iy / steps);
-                for(int iz = 0; iz <= steps; iz++) {
-                    if(ix != 0 && ix != steps && iy != 0 && iy != steps && iz != 0 && iz != steps) {
-                        continue; //Only sample points on the surface of the AABB.
-                    }
-                    Vec3 boxPoint = new Vec3(x, y, z);
-                    if(player.level.clip(new ClipContext(hitPos, boxPoint, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player)).getType() == HitResult.Type.MISS) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
+        if(targetBox.inflate(0.0001D).contains(hitPos)) return true;
+        Vector3d boxPos = MathUtil.getShortestPointFromPointToBox(hitPos.x, hitPos.y, hitPos.z, targetBox);
+        return player.level.clip(new ClipContext(hitPos, new Vec3(boxPos.x, boxPos.y, boxPos.z), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player)).getType() == HitResult.Type.MISS;
     }
 }

@@ -503,9 +503,12 @@ public abstract class ActionableEntity extends PathfinderMob {
     protected float tickHeadTurn(float pYRot, float pAnimStep) {
         float oldYBodyRot = yBodyRot;
         float step = super.tickHeadTurn(pYRot, pAnimStep);
-        if(isAlive() && !getActionTracker().isInactive()) {
-            yBodyRot = oldYBodyRot;
-            yBodyRotO = oldYBodyRot;
+        if(isAlive()) {
+            IActionTracker capA = getActionTracker();
+            if(!capA.isInactive() && capA.getAction().getMaxYRot(capA.getState()) < 32768) {
+                yBodyRot = oldYBodyRot;
+                yBodyRotO = oldYBodyRot;
+            }
         }
         return step;
     }

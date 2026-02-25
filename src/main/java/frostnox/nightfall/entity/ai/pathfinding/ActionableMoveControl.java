@@ -32,7 +32,7 @@ public class ActionableMoveControl extends MoveControl {
 
     protected void setSpeed(float lookAngle) {
         //Make sure entity is facing the correct position before walking
-        if(Math.abs(lookAngle - mob.getYRot()) < 20F) mob.setSpeed((float) (speedModifier * mob.getAttributeValue(Attributes.MOVEMENT_SPEED)));
+        if(Mth.degreesDifferenceAbs(lookAngle, mob.getYRot()) < 20F) mob.setSpeed((float) (speedModifier * mob.getAttributeValue(Attributes.MOVEMENT_SPEED)));
         else mob.setSpeed((float) (speedModifier * mob.getAttributeValue(Attributes.MOVEMENT_SPEED)) * 0.2F);
     }
 
