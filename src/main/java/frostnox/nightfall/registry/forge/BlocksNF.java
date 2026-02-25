@@ -595,6 +595,15 @@ public class BlocksNF {
     public static final Map<Metal, RegistryObject<Block>> METAL_BLOCKS = DataUtil.mapEnum(Metal.class, metal ->
             register(metal.getName() + "_block", () -> new Block(BlockBehaviour.Properties.of(Material.METAL, metal.getBaseColor())
                     .strength(metal.getStrength()/2F, metal.getExplosionResistance()/2F).sound(metal.getSound()))));
+    public static final Map<Metal, RegistryObject<Block>> METAL_PLATINGS = DataUtil.mapEnum(Metal.class, metal ->
+            register(metal.getName() + "_plating", () -> new Block(BlockBehaviour.Properties.of(Material.METAL, metal.getBaseColor())
+                    .strength(metal.getStrength()/2F, metal.getExplosionResistance()/2F).sound(metal.getSound()))));
+    public static final Map<Metal, RegistryObject<StairBlockNF>> METAL_PLATING_STAIRS = DataUtil.mapEnum(Metal.class, metal ->
+            stairs(metal.getName() + "_plating", METAL_PLATINGS.get(metal)));
+    public static final Map<Metal, RegistryObject<SlabBlockNF>> METAL_PLATING_SLABS = DataUtil.mapEnum(Metal.class, metal ->
+            slab(metal.getName() + "_plating", METAL_PLATINGS.get(metal)));
+    public static final Map<Metal, RegistryObject<SidingBlock>> METAL_PLATING_SIDINGS = DataUtil.mapEnum(Metal.class, metal ->
+            siding(metal.getName() + "_plating", METAL_PLATINGS.get(metal)));
     public static final Map<Metal, RegistryObject<Block>> INGOT_PILES = DataUtil.mapEnum(Metal.class, metal ->
             register(metal.getName() + "_ingot_pile", metal == Metal.IRON ? () -> new FireableAxisBlock(
                     20 * 60 * 8, TieredHeat.WHITE,
