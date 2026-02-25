@@ -496,7 +496,7 @@ public class ClientEngine {
                                         double distSqr = startVec.distanceToSqr(hitVec.get());
                                         if(distSqr < closestDistSqr) {
                                             microHitResult = new Vec3i(i, 0, 0);
-                                            microHitBox = boxes[i].move(-(blockPos.getX() + 0.5 - (anvil.getRawSection().center - 0.5)), -(blockPos.getY() + 1), -(blockPos.getZ() + 0.5)).inflate(0.001);
+                                            microHitBox = boxes[i].move(-(blockPos.getX() + 0.5 - (anvil.getSection().center - 0.5)), -(blockPos.getY() + 1), -(blockPos.getZ() + 0.5)).inflate(0.001);
                                             microBlockEntityPos = new BlockPos(blockPos);
                                             closestDistSqr = distSqr;
                                         }

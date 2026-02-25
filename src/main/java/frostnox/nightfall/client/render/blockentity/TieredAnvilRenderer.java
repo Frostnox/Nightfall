@@ -81,7 +81,7 @@ public class TieredAnvilRenderer implements BlockEntityRenderer<TieredAnvilBlock
             stack.translate(-0.5, -0.5, -0.5);
         }
         if(entity.hasWorkpiece()) {
-            stack.translate(entity.getRawSection().center, 1, 0.5);
+            stack.translate(entity.getSection().center, 1, 0.5);
             AnvilSection section = entity.getSection();
             renderWorkpiece(stack, buffers, RenderUtil.getHeatedMetalColor(entity.getTemperature(), entity.getColor().getRGB()),
                     entity.hasLevel() ? LevelRenderer.getLightColor(entity.getLevel(), entity.getBlockPos().above()) : LightTexture.FULL_BRIGHT, section, entity.getTemperature(), entity.work,

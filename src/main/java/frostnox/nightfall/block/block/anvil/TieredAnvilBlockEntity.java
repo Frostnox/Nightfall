@@ -69,13 +69,8 @@ public class TieredAnvilBlockEntity extends BlockEntity {
         return color;
     }
 
-    public AnvilSection getRawSection() {
-        return section;
-    }
-
     public AnvilSection getSection() {
-        if(section == AnvilSection.HORN && !((TieredAnvilBlock) getBlockState().getBlock()).hasHorn) return AnvilSection.EDGE;
-        else return section;
+        return section;
     }
 
     public boolean hasFlip() {
@@ -183,7 +178,7 @@ public class TieredAnvilBlockEntity extends BlockEntity {
                 }
                 level.playSound(null, center.x, center.y, center.z, SoundsNF.ANVIL_STRIKE.get(), SoundSource.BLOCKS, 1F, 1F);
                 if(!player.getAbilities().instabuild) tool.hurtAndBreak(badTool ? 2 : 1, player, (p) -> p.broadcastBreakEvent(PlayerData.get(p).getActiveHand()));
-                if(!badTool && heat.getTier() >= metal.getWorkTier()) {
+                if(!badTool && ((TieredAnvilBlock) getBlockState().getBlock()).tier >= metal.getWorkTier() && heat.getTier() >= metal.getWorkTier()) {
                     if(action == AnvilAction.STRIKE) {
                         if(index == 0 ? slagCenter : (index == 1 ? slagLeft : slagRight)) {
                             if(index == 0) slagCenter = false;

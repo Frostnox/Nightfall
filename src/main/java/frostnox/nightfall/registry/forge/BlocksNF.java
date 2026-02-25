@@ -631,11 +631,11 @@ public class BlocksNF {
                     BlockBehaviour.Properties.of(Material.METAL, metal.getBaseColor()).strength(1F).noOcclusion().sound(SoundType.LANTERN))));
 
     public static final Map<Tree, RegistryObject<TieredAnvilBlock>> ANVILS_LOG = DataUtil.mapEnum(Tree.class, tree -> tree.getHardness() < 2F,
-            tree -> register(tree.getName() + "_anvil", () -> new TieredAnvilBlock(1, false,
+            tree -> register(tree.getName() + "_anvil", () -> new TieredAnvilBlock(1,
                     BlockBehaviour.Properties.of(Material.WOOD, tree.getBaseColor())
                             .strength(tree.getStrength(), tree.getExplosionResistance()).sound(tree.getSound()))));
     public static final Map<Stone, RegistryObject<TieredAnvilBlock>> ANVILS_STONE = DataUtil.mapEnum(Stone.class, stone -> stone.getExplosionResistance() < 12.5F,
-            stone -> register(stone.getName() + "_anvil", () -> new TieredAnvilBlock(1, false,
+            stone -> register(stone.getName() + "_anvil", () -> new TieredAnvilBlock(1,
                     BlockBehaviour.Properties.of(Material.WOOD, stone.getBaseColor())
                             .strength(stone.getStrength(), stone.getExplosionResistance()).sound(stone.getSound()))));
     public static final Map<Metal, RegistryObject<MetalAnvilBlock>> ANVILS_METAL = DataUtil.mapEnum(Metal.class, metal -> metal.getCategory() != IMetal.Category.HARD,

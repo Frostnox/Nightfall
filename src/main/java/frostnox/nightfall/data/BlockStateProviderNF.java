@@ -1219,12 +1219,12 @@ public class BlockStateProviderNF extends BlockStateProvider {
         for(var block : BlocksNF.LANTERNS.values()) lanternBlock(block.get());
         for(var block : BlocksNF.LANTERNS_UNLIT.values()) lanternBlock(block.get());
         for(Tree type : BlocksNF.ANVILS_LOG.keySet()) {
-            templateBlock(BlocksNF.ANVILS_LOG.get(type).get(), mcLoc("cube_bottom_top"), Pair.of("side", resource(BlocksNF.LOGS.get(type).get())),
-                    Pair.of("top", resource(BlocksNF.STRIPPED_LOGS.get(type).get(), "_top")), Pair.of("bottom", resource(BlocksNF.LOGS.get(type).get(), "_top")));
+            horizontalBlockNF(BlocksNF.ANVILS_LOG.get(type).get(), templateModel(BlocksNF.ANVILS_LOG.get(type).get(), resource("anvil_simple"), Pair.of("side", resource(BlocksNF.STRIPPED_LOGS.get(type).get())),
+                    Pair.of("top", resource(BlocksNF.STRIPPED_LOGS.get(type).get(), "_top")), Pair.of("bottom", resource(BlocksNF.STRIPPED_LOGS.get(type).get(), "_top"))), 0);
         }
         for(Stone type : BlocksNF.ANVILS_STONE.keySet()) {
-            templateBlock(BlocksNF.ANVILS_STONE.get(type).get(), mcLoc("cube_top"), Pair.of("side", resource(BlocksNF.STONE_BLOCKS.get(type).get())),
-                    Pair.of("top", resource(BlocksNF.TILED_STONE.get(type).get())));
+            horizontalBlockNF(BlocksNF.ANVILS_STONE.get(type).get(), templateModel(BlocksNF.ANVILS_STONE.get(type).get(), resource("anvil_simple"), Pair.of("side", resource(BlocksNF.STONE_BLOCKS.get(type).get())),
+                    Pair.of("top", resource(BlocksNF.TILED_STONE.get(type).get())), Pair.of("bottom", resource(BlocksNF.STONE_BLOCKS.get(type).get()))), 0);
         }
         for(var block : BlocksNF.ANVILS_METAL.values()) anvilBlock(block.get());
         for(var block : BlocksNF.ARMAMENT_MOLDS.values()) horizontalBlockNF(block.get(), file(block.get()), 0);
