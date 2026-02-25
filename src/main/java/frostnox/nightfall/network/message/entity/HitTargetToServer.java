@@ -33,7 +33,9 @@ import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.network.NetworkEvent;
@@ -142,7 +144,8 @@ public class HitTargetToServer {
                 }
                 if(!capA.getHitEntities().contains(target.getId())) {
                     AABB box = target instanceof IOrientedHitBoxes hitBoxesEntity ? hitBoxesEntity.getEnclosingAABB() : target.getBoundingBox();
-                    if(box.move(-target.getX(), -target.getY(), -target.getZ()).inflate(0.01).contains(msg.x, msg.y, msg.z)) {
+                    if(box.move(-target.getX(), -target.getY(), -target.getZ()).inflate(0.01).contains(msg.x, msg.y, msg.z)
+                            && hasLineOfSightToBoundingBox(target, msg, player)) {
                         //Distance is from player's eye position to the closest point of the target's bounding box
                         Vec3 t = target.getBoundingBox().getCenter();
                         Vec3 p = player.getEyePosition(1);
@@ -192,7 +195,8 @@ public class HitTargetToServer {
                     }
                     if(target.isAttackable()) {
                         AABB box = target instanceof IOrientedHitBoxes hitBoxesEntity ? hitBoxesEntity.getEnclosingAABB() : target.getBoundingBox();
-                        if(box.move(-target.getX(), -target.getY(), -target.getZ()).inflate(0.01).contains(msg.x, msg.y, msg.z)) {
+                        if(box.move(-target.getX(), -target.getY(), -target.getZ()).inflate(0.01).contains(msg.x, msg.y, msg.z)
+                                && hasLineOfSightToBoundingBox(target, msg, player)) {
                             //Distance is from player's eye position to the closest point of the target's bounding box
                             Vec3 t = target.getBoundingBox().getCenter();
                             Vec3 p = player.getEyePosition(1);
@@ -228,5 +232,34 @@ public class HitTargetToServer {
             }
             if(!capA.getAction().isStateDamaging(capA.getState() + 1)) NetworkHandler.toClient(player, new ActionTrackerToClient(capA.writeNBT(), player.getId()));
         }
+    }
+
+    private static boolean hasLineOfSightToBoundingBox(Entity target, HitTargetToServer msg, ServerPlayer player) {
+        if(!(target instanceof IOrientedHitBoxes)) {
+            return true;
+        }
+        Vec3 hitPos = target.position().add(msg.x, msg.y, msg.z);
+        AABB targetBox = target.getBoundingBox();
+        if(targetBox.inflate(0.0001D).contains(hitPos)) {
+            return true;
+        }
+        //Line of sight against any point on the target's AABB, using the oriented hit position as a start point.
+        final int steps = 5;
+        for(int ix = 0; ix <= steps; ix++) {
+            double x = targetBox.minX + (targetBox.getXsize() * (double) ix / steps);
+            for(int iy = 0; iy <= steps; iy++) {
+                double y = targetBox.minY + (targetBox.getYsize() * (double) iy / steps);
+                for(int iz = 0; iz <= steps; iz++) {
+                    if(ix != 0 && ix != steps && iy != 0 && iy != steps && iz != 0 && iz != steps) {
+                        continue; //Only sample points on the surface of the AABB.
+                    }
+                    Vec3 boxPoint = new Vec3(x, y, z);
+                    if(player.level.clip(new ClipContext(hitPos, boxPoint, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player)).getType() == HitResult.Type.MISS) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 }
