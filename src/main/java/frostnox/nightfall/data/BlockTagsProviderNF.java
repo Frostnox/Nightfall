@@ -119,6 +119,10 @@ public class BlockTagsProviderNF extends BlockTagsProvider {
         tag(BlockTags.LOGS).addTag(BlockTags.LOGS_THAT_BURN);
 
         for(var block : BlocksNF.METAL_BLOCKS.values()) tag(TagsNF.METAL_BLOCKS).add(block.get());
+        for(Metal type : BlocksNF.METAL_PLATINGS.keySet()) {
+            tag(TagsNF.METAL_BLOCKS).add(BlocksNF.METAL_PLATINGS.get(type).get(), BlocksNF.METAL_PLATING_STAIRS.get(type).get(),
+                    BlocksNF.METAL_PLATING_SLABS.get(type).get(), BlocksNF.METAL_PLATING_SIDINGS.get(type).get());
+        }
 
         tag(TagsNF.TILLABLE_SOIL).addTags(BlockTags.DIRT, TagsNF.SILT, TagsNF.LOAM);
         tag(TagsNF.TILLABLE_OR_AQUATIC_SOIL).addTag(TagsNF.TILLABLE_SOIL);
@@ -161,6 +165,10 @@ public class BlockTagsProviderNF extends BlockTagsProvider {
         for(var block : BlocksNF.ROCK_CLUSTERS.values()) tag(BlockTags.MINEABLE_WITH_PICKAXE).add(block.get());
         for(var block : BlocksNF.SKARA_ROCK_CLUSTERS.values()) tag(BlockTags.MINEABLE_WITH_PICKAXE).add(block.get());
         for(var block : BlocksNF.ANVILS_STONE.values()) tag(BlockTags.MINEABLE_WITH_PICKAXE).add(block.get());
+        for(Metal type : BlocksNF.METAL_PLATINGS.keySet()) {
+            tag(BlockTags.MINEABLE_WITH_PICKAXE).add(BlocksNF.METAL_PLATINGS.get(type).get(), BlocksNF.METAL_PLATING_STAIRS.get(type).get(),
+                    BlocksNF.METAL_PLATING_SLABS.get(type).get(), BlocksNF.METAL_PLATING_SIDINGS.get(type).get());
+        }
 
         tag(BlockTags.MINEABLE_WITH_AXE).addTags(BlockTags.LOGS, BlockTags.WOODEN_STAIRS, BlockTags.WOODEN_SLABS, TagsNF.WOODEN_SIDINGS,
                 BlockTags.WOODEN_FENCES, TagsNF.WOODEN_FENCE_GATES, BlockTags.WOODEN_DOORS, BlockTags.WOODEN_TRAPDOORS, TagsNF.WOODEN_HATCHES,
@@ -231,6 +239,8 @@ public class BlockTagsProviderNF extends BlockTagsProvider {
         }
         for(Metal type : BlocksNF.METAL_BARS.keySet()) sup.put(BlocksNF.METAL_BARS.get(type), 8);
         for(Metal type : BlocksNF.METAL_BLOCKS.keySet()) sup.put(BlocksNF.METAL_BLOCKS.get(type), 1);
+        for(Metal type : BlocksNF.METAL_PLATINGS.keySet()) addSupports(sup, 1, BlocksNF.METAL_PLATINGS.get(type), BlocksNF.METAL_PLATING_STAIRS.get(type),
+                BlocksNF.METAL_PLATING_SLABS.get(type), BlocksNF.METAL_PLATING_SIDINGS.get(type));
         for(Metal type : BlocksNF.INGOT_PILES.keySet()) sup.put(BlocksNF.INGOT_PILES.get(type), 0);
         for(var block : BlocksNF.ANVILS_LOG.values()) sup.put(block, 0);
         for(var block : BlocksNF.ANVILS_STONE.values()) sup.put(block, 0);

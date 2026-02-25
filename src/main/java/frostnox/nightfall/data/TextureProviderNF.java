@@ -329,6 +329,9 @@ public class TextureProviderNF extends TextureProvider {
         for(Metal metal : BlocksNF.METAL_BLOCKS.keySet()) {
             replaceImagePalette(block(BlocksNF.METAL_BLOCKS.get(metal)), block("metal_block"), subset(METAL_PALETTES.get(metal), 6, 2));
         }
+        for(Metal metal : BlocksNF.METAL_PLATINGS.keySet()) {
+            replaceImagePalette(block(BlocksNF.METAL_PLATINGS.get(metal)), block("metal_plating"), METAL_PALETTES.get(metal));
+        }
         for(Metal metal : BlocksNF.INGOT_PILES.keySet()) {
             replaceImagePalette(block(BlocksNF.INGOT_PILES.get(metal)), block("ingot_pile"), subset(METAL_PALETTES.get(metal), 6, 2));
             replaceImagePalette(block(BlocksNF.INGOT_PILES.get(metal), "_top"), block("ingot_pile_top"), subset(METAL_PALETTES.get(metal), 6, 2));

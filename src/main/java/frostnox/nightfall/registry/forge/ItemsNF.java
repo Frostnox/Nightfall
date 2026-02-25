@@ -651,8 +651,8 @@ public class ItemsNF {
             register(metal.getName() + "_scrap", 32, INGREDIENTS_TAB));
     public static final Map<Metal, RegistryObject<Item>> WIRES = DataUtil.mapEnum(Metal.class, metal ->
             register(metal.getName() + "_wire", INGREDIENTS_TAB));
-    public static final Map<Metal, RegistryObject<Item>> PLATES = DataUtil.mapEnum(Metal.class, metal ->
-            register(metal.getName() + "_plate", 32, INGREDIENTS_TAB));
+    public static final Map<Metal, RegistryObject<BuildingMaterialItem>> PLATES = DataUtil.mapEnum(Metal.class, metal ->
+            register(metal.getName() + "_plate", () -> new BuildingMaterialItem(ingredient().stacksTo(32))));
     public static final Map<Metal, RegistryObject<Item>> CHAINMAIL = DataUtil.mapEnum(Metal.class, metal -> metal.getCategory() == IMetal.Category.NOBLE,
             metal -> register(metal.getName() + "_chainmail", INGREDIENTS_TAB));
     public static final Map<Metal, RegistryObject<Item>> SCALES = DataUtil.mapEnum(Metal.class, metal -> metal.getCategory() == IMetal.Category.NOBLE,
@@ -688,6 +688,14 @@ public class ItemsNF {
             metal -> register(BlocksNF.METAL_BARS.get(metal)));
     public static final Map<Metal, RegistryObject<BlockItemNF>> METAL_BLOCKS = DataUtil.mapEnum(Metal.class, metal -> !BlocksNF.METAL_BLOCKS.containsKey(metal),
             metal -> register(BlocksNF.METAL_BLOCKS.get(metal)));
+    public static final Map<Metal, RegistryObject<BlockItemNF>> METAL_PLATINGS = DataUtil.mapEnum(Metal.class, metal -> !BlocksNF.METAL_PLATINGS.containsKey(metal),
+            metal -> register(BlocksNF.METAL_PLATINGS.get(metal)));
+    public static final Map<Metal, RegistryObject<BlockItemNF>> METAL_PLATING_STAIRS = DataUtil.mapEnum(Metal.class, metal -> !BlocksNF.METAL_PLATING_STAIRS.containsKey(metal),
+            metal -> register(BlocksNF.METAL_PLATING_STAIRS.get(metal)));
+    public static final Map<Metal, RegistryObject<BlockItemNF>> METAL_PLATING_SLABS = DataUtil.mapEnum(Metal.class, metal -> !BlocksNF.METAL_PLATING_SLABS.containsKey(metal),
+            metal -> register(BlocksNF.METAL_PLATING_SLABS.get(metal)));
+    public static final Map<Metal, RegistryObject<BlockItemNF>> METAL_PLATING_SIDINGS = DataUtil.mapEnum(Metal.class, metal -> !BlocksNF.METAL_PLATING_SIDINGS.containsKey(metal),
+            metal -> register(BlocksNF.METAL_PLATING_SIDINGS.get(metal)));
     public static final Map<Metal, RegistryObject<BlockItemNF>> INGOT_PILES = DataUtil.mapEnum(Metal.class, metal -> !BlocksNF.INGOT_PILES.containsKey(metal),
             metal -> register(BlocksNF.INGOT_PILES.get(metal)));
     public static final RegistryObject<BlockItemNF> STEEL_INGOT_PILE_POOR = register(BlocksNF.STEEL_INGOT_PILE_POOR, NATURAL_TAB);

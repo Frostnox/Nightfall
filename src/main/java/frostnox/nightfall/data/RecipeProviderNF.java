@@ -122,6 +122,13 @@ public class RecipeProviderNF extends RecipeProvider {
         for(Metal type : ItemsNF.RODS.keySet()) {
             BuildingRecipeBuilder.base(ItemsNF.RODS.get(type).get(), 1, ItemsNF.METAL_BARS.get(type).get()).order(0).save(consumer);
         }
+        for(Metal type : ItemsNF.PLATES.keySet()) {
+            Item plate = ItemsNF.PLATES.get(type).get();
+            BuildingRecipeBuilder.base(plate, 4, ItemsNF.METAL_PLATINGS.get(type).get()).order(0).save(consumer);
+            BuildingRecipeBuilder.base(plate, 3, ItemsNF.METAL_PLATING_STAIRS.get(type).get()).order(1).save(consumer);
+            BuildingRecipeBuilder.base(plate, 2, ItemsNF.METAL_PLATING_SLABS.get(type).get()).order(2).save(consumer);
+            BuildingRecipeBuilder.base(plate, 2, ItemsNF.METAL_PLATING_SIDINGS.get(type).get()).order(3).save(consumer);
+        }
 
         BuildingRecipeBuilder.base(ItemsNF.TERRACOTTA_SHARD.get(), 4, ItemsNF.TERRACOTTA_TILES.get()).order(0).save(consumer);
         BuildingRecipeBuilder.base(ItemsNF.TERRACOTTA_SHARD.get(), 3, ItemsNF.TERRACOTTA_TILE_STAIRS.get()).order(1).save(consumer);
