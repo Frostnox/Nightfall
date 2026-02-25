@@ -239,7 +239,7 @@ public class BlockTagsProviderNF extends BlockTagsProvider {
         }
         for(Metal type : BlocksNF.METAL_BARS.keySet()) sup.put(BlocksNF.METAL_BARS.get(type), 8);
         for(Metal type : BlocksNF.METAL_BLOCKS.keySet()) sup.put(BlocksNF.METAL_BLOCKS.get(type), 1);
-        for(Metal type : BlocksNF.METAL_PLATINGS.keySet()) addSupports(sup, 1, BlocksNF.METAL_PLATINGS.get(type), BlocksNF.METAL_PLATING_STAIRS.get(type),
+        for(Metal type : BlocksNF.METAL_PLATINGS.keySet()) addSupports(sup, 8, BlocksNF.METAL_PLATINGS.get(type), BlocksNF.METAL_PLATING_STAIRS.get(type),
                 BlocksNF.METAL_PLATING_SLABS.get(type), BlocksNF.METAL_PLATING_SIDINGS.get(type));
         for(Metal type : BlocksNF.INGOT_PILES.keySet()) sup.put(BlocksNF.INGOT_PILES.get(type), 0);
         for(var block : BlocksNF.ANVILS_LOG.values()) sup.put(block, 0);
