@@ -49,8 +49,9 @@ public class BlockTagsProviderNF extends BlockTagsProvider {
         for(var block : BlocksNF.STONE_BLOCKS.values()) tag(TagsNF.NATURAL_STONE).add(block.get());
         for(var block : BlocksNF.getOres()) tag(TagsNF.NATURAL_STONE).add(block.get());
         tag(TagsNF.NATURAL_TERRAIN).addTags(TagsNF.NATURAL_SOIL, TagsNF.NATURAL_STONE);
+        tag(TagsNF.SUPPORT_STONE).addTags(TagsNF.NATURAL_STONE, TagsNF.STONE_TUNNELS);
+        for(Stone type : BlocksNF.ANVILS_STONE.keySet()) tag(TagsNF.ANVIL_STONE).add(BlocksNF.STONE_BLOCKS.get(type).get());
         for(Stone type : Stone.values()) {
-            tag(Tags.Blocks.STONE).add(BlocksNF.TILED_STONE.get(type).get());
             tag(Tags.Blocks.STONE).add(BlocksNF.POLISHED_STONE.get(type).get());
             tag(Tags.Blocks.STONE).add(BlocksNF.POLISHED_STONE_STAIRS.get(type).get());
             tag(Tags.Blocks.STONE).add(BlocksNF.POLISHED_STONE_SLABS.get(type).get());
@@ -176,7 +177,6 @@ public class BlockTagsProviderNF extends BlockTagsProvider {
                 Tags.Blocks.GLASS, TagsNF.BRANCHES_OR_LEAVES);
         tag(BlockTags.MINEABLE_WITH_AXE).add(BlocksNF.DEAD_BUSH.get(), BlocksNF.CAMPFIRE.get(), BlocksNF.FIREWOOD.get(), BlocksNF.FIREWOOD_BURNING.get(),
                 BlocksNF.MOON_ESSENCE.get(), BlocksNF.CHARRED_LOG.get());
-        for(var block : BlocksNF.ANVILS_LOG.values()) tag(BlockTags.MINEABLE_WITH_AXE).add(block.get());
 
         tag(BlockTags.MINEABLE_WITH_SHOVEL).addTags(TagsNF.SOIL);
         tag(BlockTags.MINEABLE_WITH_SHOVEL).add(BlocksNF.SNOW.get(), BlocksNF.PACKED_SNOW.get(), BlocksNF.MUD.get(), BlocksNF.CLAY.get(),
@@ -222,7 +222,7 @@ public class BlockTagsProviderNF extends BlockTagsProvider {
                     BlocksNF.STACKED_STONE_SIDINGS.get(type));
             addSupports(sup, 2, BlocksNF.COBBLED_STONE.get(type), BlocksNF.COBBLED_STONE_STAIRS.get(type),
                     BlocksNF.COBBLED_STONE_SLABS.get(type), BlocksNF.COBBLED_STONE_SIDINGS.get(type));
-            addSupports(sup, 4, BlocksNF.TILED_STONE.get(type), BlocksNF.POLISHED_STONE.get(type), BlocksNF.POLISHED_STONE_STAIRS.get(type),
+            addSupports(sup, 4, BlocksNF.POLISHED_STONE.get(type), BlocksNF.POLISHED_STONE_STAIRS.get(type),
                     BlocksNF.POLISHED_STONE_SLABS.get(type), BlocksNF.POLISHED_STONE_SIDINGS.get(type));
             addSupports(sup, 6, BlocksNF.STONE_BLOCKS.get(type), BlocksNF.STONE_BRICK_BLOCKS.get(type), BlocksNF.STONE_BRICK_STAIRS.get(type),
                     BlocksNF.STONE_BRICK_SLABS.get(type), BlocksNF.STONE_BRICK_SIDINGS.get(type));
@@ -242,7 +242,6 @@ public class BlockTagsProviderNF extends BlockTagsProvider {
         for(Metal type : BlocksNF.METAL_PLATINGS.keySet()) addSupports(sup, 8, BlocksNF.METAL_PLATINGS.get(type), BlocksNF.METAL_PLATING_STAIRS.get(type),
                 BlocksNF.METAL_PLATING_SLABS.get(type), BlocksNF.METAL_PLATING_SIDINGS.get(type));
         for(Metal type : BlocksNF.INGOT_PILES.keySet()) sup.put(BlocksNF.INGOT_PILES.get(type), 0);
-        for(var block : BlocksNF.ANVILS_LOG.values()) sup.put(block, 0);
         for(var block : BlocksNF.ANVILS_STONE.values()) sup.put(block, 0);
         for(Metal type : BlocksNF.ANVILS_METAL.keySet()) sup.put(BlocksNF.ANVILS_METAL.get(type), 0);
         addSupports(sup, 0, BlocksNF.SILT, BlocksNF.DIRT, BlocksNF.LOAM, BlocksNF.ASH, BlocksNF.GRAVEL, BlocksNF.BLUE_GRAVEL, BlocksNF.BLACK_GRAVEL,

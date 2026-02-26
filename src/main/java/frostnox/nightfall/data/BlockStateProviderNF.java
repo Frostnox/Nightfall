@@ -1218,13 +1218,9 @@ public class BlockStateProviderNF extends BlockStateProvider {
                 resource(BlocksNF.INGOT_PILES.get(Metal.STEEL).get()));
         for(var block : BlocksNF.LANTERNS.values()) lanternBlock(block.get());
         for(var block : BlocksNF.LANTERNS_UNLIT.values()) lanternBlock(block.get());
-        for(Tree type : BlocksNF.ANVILS_LOG.keySet()) {
-            horizontalBlockNF(BlocksNF.ANVILS_LOG.get(type).get(), templateModel(BlocksNF.ANVILS_LOG.get(type).get(), resource("anvil_simple"), Pair.of("side", resource(BlocksNF.STRIPPED_LOGS.get(type).get())),
-                    Pair.of("top", resource(BlocksNF.STRIPPED_LOGS.get(type).get(), "_top")), Pair.of("bottom", resource(BlocksNF.STRIPPED_LOGS.get(type).get(), "_top"))), 0);
-        }
         for(Stone type : BlocksNF.ANVILS_STONE.keySet()) {
             horizontalBlockNF(BlocksNF.ANVILS_STONE.get(type).get(), templateModel(BlocksNF.ANVILS_STONE.get(type).get(), resource("anvil_simple"), Pair.of("side", resource(BlocksNF.STONE_BLOCKS.get(type).get())),
-                    Pair.of("top", resource(BlocksNF.TILED_STONE.get(type).get())), Pair.of("bottom", resource(BlocksNF.STONE_BLOCKS.get(type).get()))), 0);
+                    Pair.of("top", resource(BlocksNF.POLISHED_STONE.get(type).get())), Pair.of("bottom", resource(BlocksNF.STONE_BLOCKS.get(type).get()))), 0);
         }
         for(var block : BlocksNF.ANVILS_METAL.values()) anvilBlock(block.get());
         for(var block : BlocksNF.ARMAMENT_MOLDS.values()) horizontalBlockNF(block.get(), file(block.get()), 0);

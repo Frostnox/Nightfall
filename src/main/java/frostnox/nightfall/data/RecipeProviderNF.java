@@ -90,7 +90,14 @@ public class RecipeProviderNF extends RecipeProvider {
             BuildingRecipeBuilder.base(brick, 3, ItemsNF.STONE_BRICK_STAIRS.get(type).get()).order(1).save(consumer);
             BuildingRecipeBuilder.base(brick, 2, ItemsNF.STONE_BRICK_SLABS.get(type).get()).order(2).save(consumer);
             BuildingRecipeBuilder.base(brick, 2, ItemsNF.STONE_BRICK_SIDINGS.get(type).get()).order(3).save(consumer);
-            HeldToolRecipe.saveHeldTool(Ingredient.of(rock), Ingredient.of(TagsNF.RECIPE_TOOL_STONE_CARVE), brick, 1, -1, entryKnowledge(EntriesNF.TOOLS), consumer);
+            HeldToolRecipe.saveHeldTool(Ingredient.of(rock), Ingredient.of(TagsNF.RECIPE_TOOL_STONE_COMPLEX), brick, 1, -1, entryKnowledge(EntriesNF.TOOLS), consumer);
+            HeldToolRecipe.saveHeldTool(Ingredient.of(ItemsNF.STONE_BLOCKS.get(type).get()), Ingredient.of(TagsNF.RECIPE_TOOL_STONE_COMPLEX), ItemsNF.POLISHED_STONE.get(type).get(), 1, 0, entryKnowledge(EntriesNF.TOOLS), consumer);
+            HeldToolRecipe.saveHeldTool(Ingredient.of(ItemsNF.STONE_BLOCKS.get(type).get()), Ingredient.of(TagsNF.RECIPE_TOOL_STONE_COMPLEX), ItemsNF.POLISHED_STONE_STAIRS.get(type).get(), 1, 1, entryKnowledge(EntriesNF.TOOLS), consumer);
+            HeldToolRecipe.saveHeldTool(Ingredient.of(ItemsNF.STONE_BLOCKS.get(type).get()), Ingredient.of(TagsNF.RECIPE_TOOL_STONE_COMPLEX), ItemsNF.POLISHED_STONE_SLABS.get(type).get(), 2, 2, entryKnowledge(EntriesNF.TOOLS), consumer);
+            HeldToolRecipe.saveHeldTool(Ingredient.of(ItemsNF.STONE_BLOCKS.get(type).get()), Ingredient.of(TagsNF.RECIPE_TOOL_STONE_COMPLEX), ItemsNF.POLISHED_STONE_SIDINGS.get(type).get(), 2, 3, entryKnowledge(EntriesNF.TOOLS), consumer);
+            if(ItemsNF.ANVILS_STONE.containsKey(type)) {
+                HeldToolRecipe.saveHeldTool(Ingredient.of(ItemsNF.STONE_BLOCKS.get(type).get()), Ingredient.of(TagsNF.RECIPE_TOOL_STONE_SIMPLE), ItemsNF.ANVILS_STONE.get(type).get(), 1, -1, entryKnowledge(EntriesNF.SMITHING), consumer);
+            }
         }
         for(Tree type : Tree.values()) {
             Item plank = ItemsNF.PLANKS.get(type).get();

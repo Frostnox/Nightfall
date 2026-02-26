@@ -67,6 +67,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.LegacyStuffWrapper;
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.tutorial.TutorialSteps;
 import net.minecraft.core.BlockPos;
@@ -92,6 +93,7 @@ import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
@@ -1124,6 +1126,10 @@ public class ClientEngine {
             mc.levelRenderer.destructionProgress.put(pos.asLong(), new SingleSortedSet<>(data));
         }
         else mc.levelRenderer.destructionProgress.remove(pos.asLong());
+    }
+
+    public boolean isItemModel3D(ItemStack item, Level level) {
+        return Minecraft.getInstance().getItemRenderer().getModel(item, level, null, 0).isGui3d();
     }
 
     public void playEntitySound(Entity pEntity, SoundEvent pEvent, SoundSource pCategory, float pVolume, float pPitch) {

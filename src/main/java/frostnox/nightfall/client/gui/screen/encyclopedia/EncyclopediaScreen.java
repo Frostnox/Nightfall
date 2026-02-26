@@ -277,6 +277,5 @@ public class EncyclopediaScreen extends Screen {
         if(entryScreen != null) entryScreen.onClose();
         super.onClose();
         mc.getWindow().setGuiScale(scaleCache);
-        mc.getSoundManager().play(SimpleSoundInstance.forUI(SoundsNF.ENCYCLOPEDIA_USE.get(), 1F));
     }
 }

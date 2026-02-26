@@ -7,6 +7,7 @@ import frostnox.nightfall.block.BlockStatePropertiesNF;
 import frostnox.nightfall.block.IDropsItems;
 import frostnox.nightfall.block.IFallable;
 import frostnox.nightfall.block.IWaterloggedBlock;
+import frostnox.nightfall.block.block.StoneBlock;
 import frostnox.nightfall.capability.ActionTracker;
 import frostnox.nightfall.capability.IActionTracker;
 import frostnox.nightfall.data.TagsNF;
@@ -63,7 +64,7 @@ import java.util.List;
  * Similar to FallingBlockEntity, far less prone to breaking during a fall. Supports sliding.
  */
 public class MovingBlockEntity extends Entity {
-    public static final int SLIDE_DURATION = 4, SOUND_DURATION = 18;
+    public static final int SLIDE_DURATION = 4, SOUND_DURATION = 25;
     public static final double SLIDE_SPEED = 1D / SLIDE_DURATION;
     private static final Logger LOGGER = Nightfall.LOGGER;
     private BlockState blockState = BlocksNF.DIRT.get().defaultBlockState();
@@ -99,6 +100,7 @@ public class MovingBlockEntity extends Entity {
         float strength = state.getBlock().defaultDestroyTime();
         setHurtsEntities(strength < 0F ? 15F : Math.min(strength * 2.5F, 17.5F), 250);
         if(state.getBlock() instanceof IFallable fallable) fallable.onMovingBlockEntityCreated(state, level, pos, this);
+        StoneBlock.noDislodging = false;
     }
 
     public static MovingBlockEntity fall(Level level, BlockPos pos, BlockState state) {

@@ -434,7 +434,7 @@ public class ItemsNF {
     public static final RegistryObject<BlockItemNF> BERRY_BUSH = register(BlocksNF.BERRY_BUSH, NATURAL_TAB);
     //Stone blocks
     public static final Map<Stone, RegistryObject<BlockItemNF>> STONE_BLOCKS = DataUtil.mapEnum(Stone.class, stone ->
-            register(BlocksNF.STONE_BLOCKS.get(stone), NATURAL_TAB));
+            register(BlocksNF.STONE_BLOCKS.get(stone), 8, NATURAL_TAB));
     public static final Map<Stone, RegistryObject<BlockItemNF>> ROCK_CLUSTERS = DataUtil.mapEnum(Stone.class, stone ->
             register(BlocksNF.ROCK_CLUSTERS.get(stone), NATURAL_TAB));
     public static final RegistryObject<BlockItemNF> FLINT_CLUSTER = register(BlocksNF.FLINT_CLUSTER, NATURAL_TAB);
@@ -496,16 +496,14 @@ public class ItemsNF {
                     BlocksNF.PLANK_STANDING_SIGNS.get(tree).get(), BlocksNF.PLANK_WALL_SIGNS.get(tree).get())));
     public static final Map<Tree, RegistryObject<BlockItemNF>> WOODEN_ITEM_FRAMES = DataUtil.mapEnum(Tree.class, tree ->
             register(BlocksNF.WOODEN_ITEM_FRAMES.get(tree)));
-    public static final Map<Stone, RegistryObject<BlockItemNF>> TILED_STONE = DataUtil.mapEnum(Stone.class, stone ->
-            register(BlocksNF.TILED_STONE.get(stone)));
     public static final Map<Stone, RegistryObject<BlockItemNF>> POLISHED_STONE = DataUtil.mapEnum(Stone.class, stone ->
-            register(BlocksNF.POLISHED_STONE.get(stone)));
+            register(BlocksNF.POLISHED_STONE.get(stone), 8, BUILDING_TAB));
     public static final Map<Stone, RegistryObject<BlockItemNF>> POLISHED_STONE_STAIRS = DataUtil.mapEnum(Stone.class, stone ->
-            register(BlocksNF.POLISHED_STONE_STAIRS.get(stone)));
+            register(BlocksNF.POLISHED_STONE_STAIRS.get(stone), 8, BUILDING_TAB));
     public static final Map<Stone, RegistryObject<BlockItemNF>> POLISHED_STONE_SLABS = DataUtil.mapEnum(Stone.class, stone ->
-            register(BlocksNF.POLISHED_STONE_SLABS.get(stone)));
+            register(BlocksNF.POLISHED_STONE_SLABS.get(stone), 16, BUILDING_TAB));
     public static final Map<Stone, RegistryObject<BlockItemNF>> POLISHED_STONE_SIDINGS = DataUtil.mapEnum(Stone.class, stone ->
-            register(BlocksNF.POLISHED_STONE_SIDINGS.get(stone)));
+            register(BlocksNF.POLISHED_STONE_SIDINGS.get(stone), 16, BUILDING_TAB));
     public static final Map<Stone, RegistryObject<BlockItemNF>> STACKED_STONE = DataUtil.mapEnum(Stone.class, stone ->
             register(BlocksNF.STACKED_STONE.get(stone)));
     public static final Map<Stone, RegistryObject<BlockItemNF>> STACKED_STONE_STAIRS = DataUtil.mapEnum(Stone.class, stone ->
@@ -707,8 +705,6 @@ public class ItemsNF {
             register(BlocksNF.LANTERNS_UNLIT.get(metal).getId().getPath(), () -> new UnlitLanternItem(ItemsNF.LANTERNS.get(metal),
                     BlocksNF.LANTERNS_UNLIT.get(metal).get(), utility().stacksTo(16))));
 
-    public static final Map<Tree, RegistryObject<BlockItemNF>> ANVILS_LOG = DataUtil.mapEnum(Tree.class, tree -> !BlocksNF.ANVILS_LOG.containsKey(tree),
-            tree -> register(BlocksNF.ANVILS_LOG.get(tree), 1, FUNCTIONAL_TAB));
     public static final Map<Stone, RegistryObject<BlockItemNF>> ANVILS_STONE = DataUtil.mapEnum(Stone.class, stone -> !BlocksNF.ANVILS_STONE.containsKey(stone),
             stone -> register(BlocksNF.ANVILS_STONE.get(stone), 1, FUNCTIONAL_TAB));
     public static final Map<Metal, RegistryObject<BlockItemNF>> ANVILS_METAL = DataUtil.mapEnum(Metal.class, metal -> !BlocksNF.ANVILS_METAL.containsKey(metal),

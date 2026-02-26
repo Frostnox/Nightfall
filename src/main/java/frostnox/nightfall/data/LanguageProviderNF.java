@@ -196,7 +196,6 @@ public class LanguageProviderNF extends LanguageProvider {
         add("action.bandage_use.info_1", "+10 Health");
         add("action.medicinal_bandage_use.info", "+40 Regenerating Health");
         add("tooltip.expand_prompt", "[Hold shift for more]");
-        add("toolaction." + ToolActionsNF.REFINE.name(), WordUtils.capitalize(ToolActionsNF.REFINE.name()));
         add("toolaction." + ToolActionsNF.STRIP.name(), WordUtils.capitalize(ToolActionsNF.STRIP.name()));
         add("toolaction." + ToolActionsNF.TILL.name(), WordUtils.capitalize(ToolActionsNF.TILL.name()));
         add("toolaction." + ToolActionsNF.SKIN.name(), WordUtils.capitalize(ToolActionsNF.SKIN.name()));
@@ -353,6 +352,7 @@ public class LanguageProviderNF extends LanguageProvider {
         addSound(SoundsNF.CRUCIBLE_POUR, "Metal pours from crucible");
         addSound(SoundsNF.FIRE_CRACKLE, "Fire crackles");
         addSound(SoundsNF.TROUGH_FILL, "Trough fills");
+        addSound(SoundsNF.STONE_DISLODGE, "Stone dislodges");
         add("nightfall.block.ceramic.open", "Ceramic vessel opens");
         addSound(SoundsNF.SWING, "Weapon whooshes");
         addSound(SoundsNF.SWING_CHARGED, "Weapon whooshes forcefully");
@@ -566,7 +566,7 @@ public class LanguageProviderNF extends LanguageProvider {
         addItemClues(EntriesNF.WARDING_EFFIGY, "A structure...", "An essence...", "A body...");
 
         addKnowledgeClues(EntriesNF.CASTING, "Melt a strong metal");
-        addKnowledgeClues(EntriesNF.SMITHING, "Melt a hard, mundane metal", "Create an improvised anvil from a sturdy block");
+        addKnowledgeClues(EntriesNF.SMITHING, "Melt a hard, mundane metal", "Obtain a full, sturdy stone block");
         addItemClues(EntriesNF.SMELTING, "A material resistant to at least tier 2 heat");
         addKnowledgeClues(EntriesNF.IRONWORKING, "Work an iron ore into an iron ingot");
         addItemClues(EntriesNF.SABRE, "A sabre");

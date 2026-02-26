@@ -92,7 +92,7 @@ public class LevelUtil {
         return entity.isAlive() && (entity instanceof ActionableEntity || (entity instanceof Player player && !player.getAbilities().invulnerable));
     };
     public static final EquipmentSlot[] ARMOR_SLOTS = new EquipmentSlot[]{EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
-    public static final Direction[] PHYSICS_DIRECTIONS = new Direction[] {Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.UP};
+    public static final Direction[] HORIZONTAL_UP_DIRECTIONS = new Direction[] {Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.UP};
     public static final Direction[] HORIZONTAL_DIRECTIONS = new Direction[] {Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST};
     public static final Direction[] HORIZONTAL_DOWN_DIRECTIONS = new Direction[] {Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.DOWN};
     public static final BlockPos NULL_POS = new BlockPos(0, -32768, 0);

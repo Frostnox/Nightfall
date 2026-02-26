@@ -1,31 +1,45 @@
 package frostnox.nightfall.block.block;
 
+import frostnox.nightfall.block.IFallable;
 import frostnox.nightfall.block.IStone;
-import frostnox.nightfall.block.block.anvil.TieredAnvilBlock;
-import frostnox.nightfall.world.ToolActionsNF;
-import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.item.context.UseOnContext;
+import frostnox.nightfall.data.TagsNF;
+import frostnox.nightfall.registry.forge.SoundsNF;
+import frostnox.nightfall.util.LevelUtil;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.ToolAction;
-import net.minecraftforge.registries.RegistryObject;
 
-import javax.annotation.Nullable;
-
-public class StoneBlock extends BlockNF {
+public class StoneBlock extends BlockNF implements IFallable {
     public final IStone type;
-    public final @Nullable RegistryObject<? extends TieredAnvilBlock> anvilBlock;
+    public static boolean noDislodging = false;
 
-    public StoneBlock(IStone type, @Nullable RegistryObject<? extends TieredAnvilBlock> anvilBlock, Properties pProperties) {
+    public StoneBlock(IStone type, Properties pProperties) {
         super(pProperties);
         this.type = type;
-        this.anvilBlock = anvilBlock;
     }
 
     @Override
-    public BlockState getToolModifiedState(BlockState state, UseOnContext context, ToolAction toolAction, boolean simulate) {
-        if(toolAction == ToolActionsNF.REFINE) {
-            if(anvilBlock != null) return anvilBlock.get().getStateForPlacement(new BlockPlaceContext(context));
+    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean pIsMoving) {
+        if(noDislodging) return; //Stop dislodging from nearby blocks falling
+        if(level.getBlockState(pos.below()).getMaterial().blocksMotion()) return;
+        BlockPos.MutableBlockPos neighborPos = pos.mutable();
+        for(Direction dir : LevelUtil.HORIZONTAL_UP_DIRECTIONS) {
+            if(level.getBlockState(neighborPos.setWithOffset(pos, dir)).is(TagsNF.SUPPORT_STONE)) {
+                return;
+            }
         }
-        return null;
+        level.removeBlock(pos, pIsMoving);
+        level.playSound(null, pos, SoundsNF.STONE_DISLODGE.get(), SoundSource.BLOCKS, 1F, 1F);
+        popResource(level, pos, new ItemStack(asItem()));
+    }
+
+    @Override
+    public SoundEvent getFallSound(BlockState state) {
+        return SoundsNF.STONE_FALL.get();
     }
 }

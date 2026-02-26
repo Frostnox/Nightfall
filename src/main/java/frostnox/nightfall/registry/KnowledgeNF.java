@@ -47,7 +47,6 @@ public class KnowledgeNF {
     public static final RegistryObject<Knowledge> UNDEAD_PRESENCE = KNOWLEDGE.register("undead_presence", () -> new Knowledge());
     public static final RegistryObject<Knowledge> MELTED_HARD_METAL = KNOWLEDGE.register("melted_hard_metal", () -> new Knowledge());
     public static final RegistryObject<Knowledge> MELTED_CASTABLE_METAL = KNOWLEDGE.register("melted_castable_metal", () -> new Knowledge());
-    public static final RegistryObject<Knowledge> IMPROVISED_ANVIL = KNOWLEDGE.register("improvised_anvil", () -> new ItemTagKnowledge(ItemsNF.ANVILS_METAL.get(Metal.COPPER).get(), TagsNF.ANVILS_ITEM));
     public static final RegistryObject<Knowledge> WORKED_IRON_BLOOM = KNOWLEDGE.register("worked_iron_bloom", () -> new Knowledge());
 
     public static void register() {

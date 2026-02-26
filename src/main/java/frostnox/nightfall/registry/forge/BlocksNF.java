@@ -210,9 +210,8 @@ public class BlocksNF {
             .speedFactor(0.8F).jumpFactor(0.9F).sound(SoundType.SWEET_BERRY_BUSH)));
     //Stone
     public static final Map<Stone, RegistryObject<StoneBlock>> STONE_BLOCKS = DataUtil.mapEnum(Stone.class, stone ->
-            register(stone.getName(), () -> new StoneBlock(stone, BlocksNF.ANVILS_STONE.get(stone),
-                    BlockBehaviour.Properties.of(Material.STONE, stone.getBaseColor()).requiresCorrectToolForDrops()
-                    .strength(stone.getStrength(), stone.getExplosionResistance()).sound(stone.getSound()))));
+            register(stone.getName(), () -> new StoneBlock(stone, BlockBehaviour.Properties.of(Material.STONE, stone.getBaseColor())
+                    .requiresCorrectToolForDrops().strength(stone.getStrength(), stone.getExplosionResistance()).sound(stone.getSound()))));
     private static final VoxelShape ROCK_SHAPE_12 = Block.box(3.0D, 0.0D, 3.0D, 13.0D, 2.0D, 13.0D);
     private static final VoxelShape ROCK_SHAPE_34 = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 3.0D, 14.0D);
     public static final Map<Stone, RegistryObject<ClusterBlock>> ROCK_CLUSTERS = DataUtil.mapEnum(Stone.class, stone -> register(stone.getName() + "_rocks",
@@ -242,7 +241,7 @@ public class BlocksNF {
             MaterialColor.COLOR_BLACK).requiresCorrectToolForDrops().strength(55.0F, 1200.0F)));
     //Trees
     public static final Map<Tree, RegistryObject<LogBlock>> LOGS = DataUtil.mapEnum(Tree.class, tree ->
-            register(tree.getName() + "_log", () -> new LogBlock(BlocksNF.STRIPPED_LOGS.get(tree), BlocksNF.ANVILS_LOG.get(tree),
+            register(tree.getName() + "_log", () -> new LogBlock(BlocksNF.STRIPPED_LOGS.get(tree),
                     BlockBehaviour.Properties.of(Material.WOOD, (state) ->
                                     state.getValue(LogBlock.AXIS) == Direction.Axis.Y ? tree.getBaseColor() : tree.getBarkColor())
                     .strength(tree.getStrength(), tree.getExplosionResistance()).sound(tree.getSound()))));
@@ -424,9 +423,6 @@ public class BlocksNF {
                 }
             }));
 
-    public static final Map<Stone, RegistryObject<Block>> TILED_STONE = DataUtil.mapEnum(Stone.class, stone ->
-            register("tiled_" + stone.getName(), () -> new BlockNF(BlockBehaviour.Properties.of(Material.STONE, stone.getBaseColor())
-                    .strength(stone.getStrength(), stone.getExplosionResistance()).sound(stone.getSound()))));
     public static final Map<Stone, RegistryObject<Block>> POLISHED_STONE = DataUtil.mapEnum(Stone.class, stone ->
             register("polished_" + stone.getName(), () -> new BlockNF(BlockBehaviour.Properties.of(Material.STONE, stone.getBaseColor())
                     .strength(stone.getStrength(), stone.getExplosionResistance()).sound(stone.getSound()))));
@@ -593,17 +589,14 @@ public class BlocksNF {
                     BlockBehaviour.Properties.of(Material.METAL, metal.getBaseColor()).requiresCorrectToolForDrops()
                             .strength(metal.getStrength(), metal.getExplosionResistance()).sound(metal.getSound()))));
     public static final Map<Metal, RegistryObject<Block>> METAL_BLOCKS = DataUtil.mapEnum(Metal.class, metal ->
-            register(metal.getName() + "_block", () -> new Block(BlockBehaviour.Properties.of(Material.METAL, metal.getBaseColor())
+            register(metal.getName() + "_block", () -> new BlockNF(BlockBehaviour.Properties.of(Material.METAL, metal.getBaseColor())
                     .strength(metal.getStrength(), metal.getExplosionResistance()).sound(metal.getSound()))));
     public static final Map<Metal, RegistryObject<Block>> METAL_PLATINGS = DataUtil.mapEnum(Metal.class, metal ->
-            register(metal.getName() + "_plating", () -> new Block(BlockBehaviour.Properties.of(Material.METAL, metal.getBaseColor())
+            register(metal.getName() + "_plating", () -> new BlockNF(BlockBehaviour.Properties.of(Material.METAL, metal.getBaseColor())
                     .strength(metal.getStrength(), metal.getExplosionResistance()).sound(metal.getSound()))));
-    public static final Map<Metal, RegistryObject<StairBlockNF>> METAL_PLATING_STAIRS = DataUtil.mapEnum(Metal.class, metal ->
-            stairs(metal.getName() + "_plating", METAL_PLATINGS.get(metal)));
-    public static final Map<Metal, RegistryObject<SlabBlockNF>> METAL_PLATING_SLABS = DataUtil.mapEnum(Metal.class, metal ->
-            slab(metal.getName() + "_plating", METAL_PLATINGS.get(metal)));
-    public static final Map<Metal, RegistryObject<SidingBlock>> METAL_PLATING_SIDINGS = DataUtil.mapEnum(Metal.class, metal ->
-            siding(metal.getName() + "_plating", METAL_PLATINGS.get(metal)));
+    public static final Map<Metal, RegistryObject<StairBlockNF>> METAL_PLATING_STAIRS = DataUtil.mapEnum(Metal.class, metal -> stairs(metal.getName() + "_plating", METAL_PLATINGS.get(metal)));
+    public static final Map<Metal, RegistryObject<SlabBlockNF>> METAL_PLATING_SLABS = DataUtil.mapEnum(Metal.class, metal -> slab(metal.getName() + "_plating", METAL_PLATINGS.get(metal)));
+    public static final Map<Metal, RegistryObject<SidingBlock>> METAL_PLATING_SIDINGS = DataUtil.mapEnum(Metal.class, metal -> siding(metal.getName() + "_plating", METAL_PLATINGS.get(metal)));
     public static final Map<Metal, RegistryObject<Block>> INGOT_PILES = DataUtil.mapEnum(Metal.class, metal ->
             register(metal.getName() + "_ingot_pile", metal == Metal.IRON ? () -> new FireableAxisBlock(
                     20 * 60 * 8, TieredHeat.WHITE,
@@ -639,10 +632,6 @@ public class BlocksNF {
             metal -> register("extinguished_" + metal.getName() + "_lantern", () -> new LanternBlockNF(false, LANTERNS.get(metal),
                     BlockBehaviour.Properties.of(Material.METAL, metal.getBaseColor()).strength(1F).noOcclusion().sound(SoundType.LANTERN))));
 
-    public static final Map<Tree, RegistryObject<TieredAnvilBlock>> ANVILS_LOG = DataUtil.mapEnum(Tree.class, tree -> tree.getHardness() < 2F,
-            tree -> register(tree.getName() + "_anvil", () -> new TieredAnvilBlock(1,
-                    BlockBehaviour.Properties.of(Material.WOOD, tree.getBaseColor())
-                            .strength(tree.getStrength(), tree.getExplosionResistance()).sound(tree.getSound()))));
     public static final Map<Stone, RegistryObject<TieredAnvilBlock>> ANVILS_STONE = DataUtil.mapEnum(Stone.class, stone -> stone.getExplosionResistance() < 12.5F,
             stone -> register(stone.getName() + "_anvil", () -> new TieredAnvilBlock(1,
                     BlockBehaviour.Properties.of(Material.WOOD, stone.getBaseColor())

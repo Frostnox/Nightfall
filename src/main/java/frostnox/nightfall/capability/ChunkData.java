@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableSet;
 import frostnox.nightfall.block.IDropsItems;
 import frostnox.nightfall.block.IFallable;
 import frostnox.nightfall.block.ITimeSimulatedBlock;
+import frostnox.nightfall.block.block.StoneBlock;
 import frostnox.nightfall.data.TagsNF;
 import frostnox.nightfall.entity.entity.ActionableEntity;
 import frostnox.nightfall.entity.entity.MovingBlockEntity;
@@ -260,6 +261,7 @@ public class ChunkData implements IChunkData {
             }
             if(fell.val) {
                 BlockEntity blockEntity = level.getBlockEntity(pos);
+                StoneBlock.noDislodging = true;
                 if(state.getBlock() instanceof IFallable fallable) fallable.onFall(state, (ServerLevel) level, pos, blockEntity);
                 if(blockEntity instanceof IDropsItems droppable && droppable.dropOnFall()) {
                     NonNullList<ItemStack> drops = droppable.getContainerDrops();
@@ -283,7 +285,7 @@ public class ChunkData implements IChunkData {
     @Override
     public void schedulePhysicsTickAround(BlockPos pos) {
         int chunkX = pos.getX() & 15, chunkZ = pos.getZ() & 15;
-        for(Direction dir : LevelUtil.PHYSICS_DIRECTIONS) {
+        for(Direction dir : LevelUtil.HORIZONTAL_UP_DIRECTIONS) {
             BlockPos neighborPos = pos.relative(dir);
             if(physicsTicks.contains(neighborPos)) continue;
             BlockState neighbor = level.getBlockState(neighborPos);

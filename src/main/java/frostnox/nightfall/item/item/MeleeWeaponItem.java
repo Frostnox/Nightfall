@@ -6,13 +6,11 @@ import frostnox.nightfall.block.IMetal;
 import frostnox.nightfall.capability.*;
 import frostnox.nightfall.client.ClientEngine;
 import frostnox.nightfall.data.TagsNF;
-import frostnox.nightfall.data.recipe.HeldToolRecipe;
 import frostnox.nightfall.data.recipe.ToolIngredientRecipe;
 import frostnox.nightfall.entity.entity.ActionableEntity;
 import frostnox.nightfall.item.*;
 
 import frostnox.nightfall.registry.ActionsNF;
-import frostnox.nightfall.registry.KnowledgeNF;
 import frostnox.nightfall.registry.forge.SoundsNF;
 import frostnox.nightfall.util.LevelUtil;
 import frostnox.nightfall.world.ToolActionsNF;
@@ -37,13 +35,11 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.registries.RegistryObject;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public class MeleeWeaponItem extends ToolItem implements IWeaponItem {
@@ -360,12 +356,7 @@ public class MeleeWeaponItem extends ToolItem implements IWeaponItem {
         for(ToolAction action : toolActions) {
             modifiedState = state.getToolModifiedState(context, action, false);
             if(modifiedState != null) {
-                if(action == ToolActionsNF.REFINE) {
-                    if(!level.isClientSide && player != null && modifiedState.is(TagsNF.ANVILS)) PlayerData.get(player).addKnowledge(KnowledgeNF.IMPROVISED_ANVIL.getId());
-                    if(state.is(Tags.Blocks.STONE)) level.playSound(player, pos, SoundsNF.CARVE_STONE.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
-                    else level.playSound(player, pos, SoundsNF.CARVE_WOOD.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
-                }
-                else if(action == ToolActionsNF.STRIP) level.playSound(player, pos, SoundsNF.STRIP_WOOD.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+                if(action == ToolActionsNF.STRIP) level.playSound(player, pos, SoundsNF.STRIP_WOOD.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
                 else if(action == ToolActionsNF.TILL) level.playSound(player, pos, SoundsNF.TILL_SOIL.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
                 break;
             }

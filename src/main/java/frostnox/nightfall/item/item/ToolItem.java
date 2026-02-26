@@ -55,16 +55,14 @@ public abstract class ToolItem extends ScreenCacheItem implements IModifiable, I
         if(worldIn.isClientSide) {
             if(isSelected) {
                 if(entityIn instanceof Player player && PlayerData.isPresent(player) && player.getMainHandItem() == stack) {
-                    boolean oldCanUse = ClientEngine.get().canUseModifiableMain;
                     ClientEngine.get().canUseModifiableMain = canUseSelectedItem(ClientEngine.get().getModifiableIndexMain(), worldIn, player, InteractionHand.MAIN_HAND);
-                    if(oldCanUse != ClientEngine.get().canUseModifiableMain) ClientEngine.get().updateToolItemRecipeSelection(this, true);
+                    ClientEngine.get().updateToolItemRecipeSelection(this, true);
                 }
             }
             else if(itemSlot == 0) {
                 if(entityIn instanceof Player player && PlayerData.isPresent(player) && player.getOffhandItem() == stack) {
-                    boolean oldCanUse = ClientEngine.get().canUseModifiableOff;
                     ClientEngine.get().canUseModifiableOff = canUseSelectedItem(ClientEngine.get().getModifiableIndexOff(), worldIn, player, InteractionHand.OFF_HAND);
-                    if(oldCanUse != ClientEngine.get().canUseModifiableOff) ClientEngine.get().updateToolItemRecipeSelection(this, false);
+                    ClientEngine.get().updateToolItemRecipeSelection(this, false);
                 }
             }
         }

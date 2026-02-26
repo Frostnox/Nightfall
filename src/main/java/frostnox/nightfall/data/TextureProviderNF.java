@@ -228,11 +228,7 @@ public class TextureProviderNF extends TextureProvider {
                     }
                 }
             }
-            if(type.getType() == StoneType.IGNEOUS) {
-                replaceImagePalette(block(BlocksNF.POLISHED_STONE.get(type)), block("polished_stone_igneous"), subset(STONE_PALETTES.get(type), 4, 4));
-            }
-            else replaceImagePalette(block(BlocksNF.POLISHED_STONE.get(type)), block("polished_stone"), subset(STONE_PALETTES.get(type), 3, 5));
-            replaceImagePalette(block(BlocksNF.TILED_STONE.get(type)), block("tiled_stone"), subset(STONE_PALETTES.get(type), 5, 3));
+            replaceImagePalette(block(BlocksNF.POLISHED_STONE.get(type)), block("polished_stone"), subset(STONE_PALETTES.get(type), 5, 3));
             replaceImagePalette(block(BlocksNF.STACKED_STONE.get(type)), block("stacked_stone_" + category), STONE7_PALETTES.get(type));
             replaceImagePalette(block(BlocksNF.COBBLED_STONE.get(type)), block("cobbled_stone_" + category), STONE7_PALETTES.get(type));
             replaceImagePalette(block(BlocksNF.STONE_BRICK_BLOCKS.get(type)), block("stone_bricks_" + category), STONE7_PALETTES.get(type));

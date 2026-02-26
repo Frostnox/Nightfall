@@ -17,6 +17,7 @@ public class SoundsNF {
     public static final RegistryObject<SoundEvent> DIRT_FALL = generic("block.dirt_fall");
     public static final RegistryObject<SoundEvent> GRAVEL_FALL = generic("block.gravel_fall");
     public static final RegistryObject<SoundEvent> WET_SOIL_FALL = generic("block.wet_soil_fall");
+    public static final RegistryObject<SoundEvent> STONE_FALL = generic("block.stone_fall");
     public static final RegistryObject<SoundEvent> SIZZLE = generic("block.sizzle");
     public static final RegistryObject<SoundEvent> ICE_CRACKLE = generic("block.ice_crackle");
     public static final RegistryObject<SoundEvent> ANVIL_STRIKE = generic("block.anvil.strike");
@@ -44,6 +45,7 @@ public class SoundsNF {
     public static final RegistryObject<SoundEvent> CRUCIBLE_POUR = generic("block.crucible.pour");
     public static final RegistryObject<SoundEvent> FIRE_CRACKLE = generic("block.fire_crackle");
     public static final RegistryObject<SoundEvent> TROUGH_FILL = generic("block.trough.fill");
+    public static final RegistryObject<SoundEvent> STONE_DISLODGE = generic("block.stone_dislodge");
     public static final RegistryObject<SoundEvent> SWING = generic("action.swing");
     public static final RegistryObject<SoundEvent> SWING_CHARGED = generic("action.swing_charged");
     public static final RegistryObject<SoundEvent> BLADE_SWING = generic("action.blade_swing");

@@ -13,6 +13,8 @@ public interface IStone extends IBlock {
 
     StoneType getType();
 
+    boolean hasCleavage();
+
     default String getName() {
         return toString().toLowerCase(Locale.ROOT);
     }

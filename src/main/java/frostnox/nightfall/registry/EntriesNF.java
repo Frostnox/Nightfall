@@ -147,7 +147,7 @@ public class EntriesNF {
     public static final RegistryObject<Entry> SMITHING = ENTRIES.register("smithing", () -> Entry.create(
             List.of(CASTING),
             Set.of(),
-            new Puzzle(List.of(KnowledgeNF.MELTED_HARD_METAL, KnowledgeNF.IMPROVISED_ANVIL),
+            new Puzzle(List.of(KnowledgeNF.MELTED_HARD_METAL, knowledge(TagsNF.ANVIL_STONE_ITEM)),
                     List.of(),
                     List.of())));
     public static final RegistryObject<Entry> ARROWHEAD_SMITHING = ENTRIES.register("arrowhead_smithing",

@@ -256,11 +256,8 @@ public class LootTableProviderNF extends LootTableProvider {
                     ItemsNF.CHARCOAL.get(), 1, 0.15F, 0.01F, 1);
 
             for(Stone type : Stone.values()) {
-                dropStone(BlocksNF.TILED_STONE.get(type).get(), type, 4);
-                dropStone(BlocksNF.POLISHED_STONE.get(type).get(), type, 4);
-                dropStone(BlocksNF.POLISHED_STONE_STAIRS.get(type).get(), type, 3);
-                dropStoneSlab(BlocksNF.POLISHED_STONE_SLABS.get(type).get(), type, 2);
-                dropStoneSiding(BlocksNF.POLISHED_STONE_SIDINGS.get(type).get(), type, 2);
+                dropSlab(BlocksNF.POLISHED_STONE_SLABS.get(type).get(), ItemsNF.POLISHED_STONE_SLABS.get(type).get(), 1);
+                dropSiding(BlocksNF.POLISHED_STONE_SIDINGS.get(type).get(), ItemsNF.POLISHED_STONE_SIDINGS.get(type).get(), 1);
                 dropOther(BlocksNF.STACKED_STONE.get(type).get(), ItemsNF.ROCKS.get(type).get(), 4);
                 dropOther(BlocksNF.STACKED_STONE_STAIRS.get(type).get(), ItemsNF.ROCKS.get(type).get(), 3);
                 dropSlab(BlocksNF.STACKED_STONE_SLABS.get(type).get(), ItemsNF.ROCKS.get(type).get(), 2);
@@ -315,8 +312,6 @@ public class LootTableProviderNF extends LootTableProvider {
             dropOther(BlocksNF.TORCH.get(), ItemsNF.TORCH.get());
             dropOther(BlocksNF.TORCH_UNLIT.get(), ItemsNF.STICK.get());
 
-            for(Tree type : BlocksNF.ANVILS_LOG.keySet()) dropSpecialAction(BlocksNF.ANVILS_LOG.get(type).get(), BlocksNF.LOGS.get(type).get(), 1,
-                    TagsNF.CHOPPING_ACTION, ItemsNF.FIREWOOD.get(), 4);
             for(Stone type : BlocksNF.ANVILS_STONE.keySet()) dropStone(BlocksNF.ANVILS_STONE.get(type).get(), type, 4);
             for(Metal type : BlocksNF.METAL_BARS.keySet()) dropOther(BlocksNF.METAL_BARS.get(type).get(), ItemsNF.RODS.get(type).get());
             for(Metal type : BlocksNF.METAL_PLATINGS.keySet()) {

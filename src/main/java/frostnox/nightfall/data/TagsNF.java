@@ -42,6 +42,7 @@ public class TagsNF {
     public static final TagKey<Block> NATURAL_SOIL = blockTag("natural_soil");
     public static final TagKey<Block> NATURAL_STONE = blockTag("natural_stone");
     public static final TagKey<Block> NATURAL_TERRAIN = blockTag("natural_terrain");
+    public static final TagKey<Block> SUPPORT_STONE = blockTag("support_stone");
     public static final TagKey<Block> TILLABLE_SOIL = blockTag("tillable_soil");
     public static final TagKey<Block> TILLABLE_OR_AQUATIC_SOIL = blockTag("tillable_or_aquatic_soil");
     public static final TagKey<Block> TILLED_SOIL = blockTag("tilled_soil");
@@ -65,6 +66,7 @@ public class TagsNF {
     public static final TagKey<Block> WOODEN_BARRELS = blockTag("wooden_barrels");
     public static final TagKey<Block> WOODEN_FENCE_GATES = blockTag("wooden_fence_gates");
     public static final TagKey<Block> STONE_TUNNELS = blockTag("stone_tunnels");
+    public static final TagKey<Block> ANVIL_STONE = blockTag("anvil_stone");
     public static final TagKey<Block> ANVILS = blockTag("anvils");
     public static final TagKey<Block> METAL_ANVILS = blockTag("metal_anvils");
     public static final TagKey<Block> METAL_BLOCKS = blockTag("metal_blocks");
@@ -179,7 +181,8 @@ public class TagsNF {
     public static final TagKey<Item> SICKLE_OR_HEAD = itemTag("sickle_or_head");
     public static final TagKey<Item> RECIPE_TOOL_WOOD_SIMPLE = itemTag("recipe_tool/wood_simple");
     public static final TagKey<Item> RECIPE_TOOL_WOOD_COMPLEX = itemTag("recipe_tool/wood_complex");
-    public static final TagKey<Item> RECIPE_TOOL_STONE_CARVE = itemTag("recipe_tool/stone_carve");
+    public static final TagKey<Item> RECIPE_TOOL_STONE_SIMPLE = itemTag("recipe_tool/stone_simple");
+    public static final TagKey<Item> RECIPE_TOOL_STONE_COMPLEX = itemTag("recipe_tool/stone_complex");
     public static final TagKey<Item> RECIPE_TOOL_FLINT = itemTag("recipe_tool/flint");
     public static final TagKey<Item> RECIPE_TOOL_COCONUT = itemTag("recipe_tool/coconut");
     public static final TagKey<Item> SLING_AMMO = itemTag("sling_ammo");
@@ -306,6 +309,7 @@ public class TagsNF {
     public static final TagKey<Item> OMNIVORE_FOOD = itemTag("omnivore_food");
     public static final TagKey<Item> OMNIVORE_SEEDS_FOOD = itemTag("omnivore_seeds_food");
     //Block tag copies
+    public static final TagKey<Item> NATURAL_STONE_ITEM = itemTag(NATURAL_STONE);
     public static final TagKey<Item> HEAT_RESISTANT_ITEM_1 = itemTag(HEAT_RESISTANT_1);
     public static final TagKey<Item> HEAT_RESISTANT_ITEM_2 = itemTag(HEAT_RESISTANT_2);
     public static final TagKey<Item> HEAT_RESISTANT_ITEM_3 = itemTag(HEAT_RESISTANT_3);
@@ -320,6 +324,7 @@ public class TagsNF {
     public static final TagKey<Item> CHAIRS_ITEM = itemTag(CHAIRS);
     public static final TagKey<Item> TROUGHS_ITEM = itemTag(TROUGHS);
     public static final TagKey<Item> ITEM_FRAMES_ITEM = itemTag(ITEM_FRAMES);
+    public static final TagKey<Item> ANVIL_STONE_ITEM = itemTag(ANVIL_STONE);
     public static final TagKey<Item> ANVILS_ITEM = itemTag(ANVILS);
     public static final TagKey<Item> METAL_ANVILS_ITEM = itemTag(METAL_ANVILS);
     public static final TagKey<Item> METAL_BLOCKS_ITEM = itemTag(METAL_BLOCKS);

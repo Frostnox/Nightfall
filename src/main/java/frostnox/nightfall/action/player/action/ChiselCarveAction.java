@@ -2,6 +2,8 @@ package frostnox.nightfall.action.player.action;
 
 import com.mojang.math.Vector3f;
 import frostnox.nightfall.capability.ActionTracker;
+import frostnox.nightfall.capability.PlayerData;
+import frostnox.nightfall.client.ClientEngine;
 import frostnox.nightfall.entity.EntityPart;
 import frostnox.nightfall.util.AnimationUtil;
 import frostnox.nightfall.util.animation.AnimationCalculator;
@@ -35,7 +37,10 @@ public class ChiselCarveAction extends CarveAction {
         Vector3f dRotation = data.dRotation;
         switch(state) {
             case 0 -> {
-                tCalc.add(-8.75F/16F, 6F/16F, -1F/16F);
+                if(ClientEngine.get().isItemModel3D(user.getItemInHand(PlayerData.get((Player) user).getOppositeActiveHand()), user.level)) {
+                    tCalc.add(-4F/16F, 6F/16F, -1F/16F);
+                }
+                else tCalc.add(-8.75F/16F, 6F/16F, -1F/16F);
                 rCalc.extend(0, 0, 100);
             }
             case 1 -> {

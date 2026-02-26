@@ -175,7 +175,8 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
         tag(TagsNF.SICKLE_OR_HEAD).addTags(TagsNF.SICKLE, TagsNF.SICKLE_HEAD);
         tag(TagsNF.RECIPE_TOOL_WOOD_SIMPLE).addTags(TagsNF.ADZE, TagsNF.AXE, TagsNF.KNIFE);
         tag(TagsNF.RECIPE_TOOL_WOOD_COMPLEX).addTag(TagsNF.ADZE);
-        tag(TagsNF.RECIPE_TOOL_STONE_CARVE).addTag(TagsNF.CHISEL_METAL);
+        tag(TagsNF.RECIPE_TOOL_STONE_SIMPLE).addTag(TagsNF.CHISEL);
+        tag(TagsNF.RECIPE_TOOL_STONE_COMPLEX).addTag(TagsNF.CHISEL_METAL);
         tag(TagsNF.RECIPE_TOOL_FLINT).add(ItemsNF.FLINT.get(), ItemsNF.BONE.get());
         tag(TagsNF.RECIPE_TOOL_COCONUT).addTags(TagsNF.RECIPE_TOOL_FLINT, TagsNF.HAMMER);
         for(Stone type : ItemsNF.ROCKS.keySet()) {
@@ -237,7 +238,7 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
         tag(TagsNF.FLINT_FIRE_STARTER_STRONG).addTag(TagsNF.IRON_ORE);
         tag(TagsNF.RACK_ITEM).addTags(TagsNF.ARMAMENT, TagsNF.BOW, TagsNF.SHIELD, TagsNF.TONGS);
         for(var item : ItemsNF.ROCKS.values()) tag(TagsNF.ROCK).add(item.get());
-        tag(TagsNF.STONE).addTags(TagsNF.ROCK, TagsNF.CRUSHABLE_TO_BONE_SHARD);
+        tag(TagsNF.STONE).addTags(TagsNF.ROCK, TagsNF.NATURAL_STONE_ITEM, TagsNF.CRUSHABLE_TO_BONE_SHARD);
         tag(TagsNF.STONE).add(ItemsNF.FLINT.get(), ItemsNF.OBSIDIAN_SHARD.get(), ItemsNF.BONE_SHARD.get());
         for(var item : ItemsNF.SOILS.values()) tag(TagsNF.SOIL_ITEM).add(item.get());
         tag(TagsNF.SAND_ITEM).add(ItemsNF.SOILS.get(Soil.SAND).get(), ItemsNF.SOILS.get(Soil.RED_SAND).get(), ItemsNF.SOILS.get(Soil.WHITE_SAND).get());
@@ -295,6 +296,7 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
         tag(TagsNF.OMNIVORE_FOOD).add(ItemsNF.FRUIT_SOUFFLE.get(), ItemsNF.SAVORY_SOUFFLE.get());
         tag(TagsNF.OMNIVORE_SEEDS_FOOD).addTags(TagsNF.OMNIVORE_FOOD, Tags.Items.SEEDS);
 
+        copy(TagsNF.NATURAL_STONE, TagsNF.NATURAL_STONE_ITEM);
         copy(TagsNF.HEAT_RESISTANT_1, TagsNF.HEAT_RESISTANT_ITEM_1);
         copy(TagsNF.HEAT_RESISTANT_2, TagsNF.HEAT_RESISTANT_ITEM_2);
         copy(TagsNF.HEAT_RESISTANT_3, TagsNF.HEAT_RESISTANT_ITEM_3);
@@ -309,6 +311,7 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
         copy(TagsNF.CHAIRS, TagsNF.CHAIRS_ITEM);
         copy(TagsNF.TROUGHS, TagsNF.TROUGHS_ITEM);
         copy(TagsNF.ITEM_FRAMES, TagsNF.ITEM_FRAMES_ITEM);
+        copy(TagsNF.ANVIL_STONE, TagsNF.ANVIL_STONE_ITEM);
         copy(TagsNF.ANVILS, TagsNF.ANVILS_ITEM);
         copy(TagsNF.METAL_ANVILS, TagsNF.METAL_ANVILS_ITEM);
         copy(TagsNF.METAL_BLOCKS, TagsNF.METAL_BLOCKS_ITEM);

@@ -18,6 +18,10 @@
     "subtitle": "nightfall.block.fall",
     "sounds": ["nightfall:block/wet_soil_fall_0", "nightfall:block/wet_soil_fall_1", "nightfall:block/wet_soil_fall_2", "nightfall:block/wet_soil_fall_3"]
   },
+  "block.stone_fall": {
+    "subtitle": "nightfall.block.fall",
+    "sounds": ["nightfall:block/stone_fall_0", "nightfall:block/stone_fall_1", "nightfall:block/stone_fall_2", "nightfall:block/stone_fall_3"]
+  },
   "block.sizzle": {
     "subtitle": "nightfall.block.sizzle",
     "sounds": ["nightfall:block/sizzle_0", "nightfall:block/sizzle_1", "nightfall:block/sizzle_2"]
@@ -125,6 +129,10 @@
   "block.trough.fill": {
     "subtitle": "nightfall.block.trough.fill",
     "sounds": ["block/composter/ready1", "block/composter/ready2", "block/composter/ready3", "block/composter/ready4"]
+  },
+  "block.stone_dislodge": {
+    "subtitle": "nightfall.block.stone_dislodge",
+    "sounds": ["nightfall:block/stone_dislodge_0", "nightfall:block/stone_dislodge_1", "nightfall:block/stone_dislodge_2", "nightfall:block/stone_dislodge_3"]
   },
   "action.swing": {
     "subtitle": "nightfall.action.swing",
