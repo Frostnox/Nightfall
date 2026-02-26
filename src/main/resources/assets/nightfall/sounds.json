@@ -704,7 +704,7 @@
   },
   "item.tongs.handle": {
     "subtitle": "nightfall.item.tongs.handle",
-    "sounds": ["nightfall:item/tongs_handle_0", "nightfall:item/tongs_handle_1", "nightfall:item/tongs_handle_2"]
+    "sounds": ["nightfall:item/tongs_handle_0", "nightfall:item/tongs_handle_1", "nightfall:item/tongs_handle_2", "nightfall:item/tongs_handle_3"]
   },
   "gui.encyclopedia_use": {
     "sounds": ["nightfall:gui/encyclopedia_use_0", "nightfall:gui/encyclopedia_use_1"]
