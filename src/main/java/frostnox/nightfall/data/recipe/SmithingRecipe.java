@@ -35,17 +35,15 @@ public class SmithingRecipe extends EncyclopediaRecipe<RecipeWrapper> implements
     public final Ingredient input;
     public final int[] work;
     public final TagKey<Fluid> quenchFluid;
-    public final boolean showInEntry;
     private final ItemStack output;
 
-    public SmithingRecipe(ResourceLocation id, ResourceLocation requirement, Ingredient input, int[] work, TagKey<Fluid> quenchFluid, ItemStack output, int menuOrder, boolean showInEntry) {
+    public SmithingRecipe(ResourceLocation id, ResourceLocation requirement, Ingredient input, int[] work, TagKey<Fluid> quenchFluid, ItemStack output, int menuOrder) {
         super(id, requirement);
         this.input = input;
         this.work = work;
         this.quenchFluid = quenchFluid;
         this.output = output;
         this.menuOrder = menuOrder;
-        this.showInEntry = showInEntry;
     }
 
     public boolean matchesWorkAndFluid(int[] testWork, Fluid testFluid) {
@@ -159,11 +157,6 @@ public class SmithingRecipe extends EncyclopediaRecipe<RecipeWrapper> implements
         return getRequirementId() != null;
     }
 
-    @Override
-    public boolean showInEntry() {
-        return showInEntry;
-    }
-
     public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<SmithingRecipe> {
         Serializer() {
             this.setRegistryName(ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "smithing"));
@@ -181,8 +174,7 @@ public class SmithingRecipe extends EncyclopediaRecipe<RecipeWrapper> implements
             TagKey<Fluid> quenchFluid = json.has("quenchFluid") ? TagKey.create(ForgeRegistries.FLUIDS.getRegistryKey(), ResourceLocation.parse(json.get("quenchFluid").getAsString())) : TagsNF.FRESHWATER;
             ItemStack result = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "result"));
             int menuOrder = GsonHelper.getAsInt(json, "menuOrder", -1);
-            boolean showInEntry = GsonHelper.getAsBoolean(json, "showInEntry", true);
-            return new SmithingRecipe(id, requirement, input, work, quenchFluid, result, menuOrder, showInEntry);
+            return new SmithingRecipe(id, requirement, input, work, quenchFluid, result, menuOrder);
         }
 
         @Override
@@ -194,8 +186,7 @@ public class SmithingRecipe extends EncyclopediaRecipe<RecipeWrapper> implements
             TagKey<Fluid> quenchFluid = TagKey.create(ForgeRegistries.FLUIDS.getRegistryKey(), buf.readResourceLocation());
             ItemStack result = buf.readItem();
             int menuOrder = buf.readVarInt();
-            boolean showInEntry = buf.readBoolean();
-            return new SmithingRecipe(id, requirement.getPath().equals("empty") ? null : requirement, input, work, quenchFluid, result, menuOrder, showInEntry);
+            return new SmithingRecipe(id, requirement.getPath().equals("empty") ? null : requirement, input, work, quenchFluid, result, menuOrder);
         }
 
         @Override
@@ -206,7 +197,6 @@ public class SmithingRecipe extends EncyclopediaRecipe<RecipeWrapper> implements
             buf.writeResourceLocation(recipe.quenchFluid.location());
             buf.writeItem(recipe.getResultItem());
             buf.writeVarInt(recipe.menuOrder);
-            buf.writeBoolean(recipe.showInEntry);
         }
     }
 }

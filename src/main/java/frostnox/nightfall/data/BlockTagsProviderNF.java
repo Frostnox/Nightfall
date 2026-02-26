@@ -302,8 +302,8 @@ public class BlockTagsProviderNF extends BlockTagsProvider {
             else if(block instanceof FenceBlockNF) tag(BlockTags.FENCES).add(block);
             else if(block instanceof FenceGateBlockNF) tag(BlockTags.FENCE_GATES).add(block);
             else if(block instanceof TieredAnvilBlock) {
-                tag(TagsNF.ANVILS).add(block);
                 if(block instanceof MetalAnvilBlock) tag(TagsNF.METAL_ANVILS).add(block);
+                else tag(TagsNF.PRIMITIVE_ANVILS).add(block);
             }
             else if(block instanceof BarrelBlockNF) tag(Tags.Blocks.BARRELS).add(block);
             else if(block instanceof ChestBlockNF) tag(Tags.Blocks.CHESTS).add(block);

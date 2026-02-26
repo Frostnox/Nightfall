@@ -49,7 +49,10 @@ public abstract class ModifiableScreen<T> extends Screen {
     }
 
     public static void initSelection(Minecraft mc, List<?> objects, IModifiable modifiableItem, boolean mainHand) {
-        if(mc.screen instanceof ModifiableScreen screen) screen.setObjects(objects);
+        if(mc.screen instanceof ModifiableScreen screen) {
+            if(screen.mainHand != mainHand) return;
+            screen.setObjects(objects);
+        }
         activeIndex = updateSelection(modifiableItem, objects, mainHand);
         page = modifiableItem.getLastUsedPage();
     }

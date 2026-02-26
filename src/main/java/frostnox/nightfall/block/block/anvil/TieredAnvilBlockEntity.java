@@ -173,7 +173,8 @@ public class TieredAnvilBlockEntity extends BlockEntity {
                 AABB box = getWorkpieceBoxes()[index];
                 Vec3 center = box.getCenter();
                 if(heat != TieredHeat.NONE) {
-                    ((ServerLevel) level).sendParticles(heat.getSparkParticle().get(), center.x, center.y, center.z,
+                    if(temperature < TieredHeat.RED.getBaseTemp()) heat = TieredHeat.NONE;
+                    else ((ServerLevel) level).sendParticles(heat.getSparkParticle().get(), center.x, center.y, center.z,
                             (badTool ? 2 : 8) + level.random.nextInt(5), 0, 0, 0, 0.12F);
                 }
                 level.playSound(null, center.x, center.y, center.z, SoundsNF.ANVIL_STRIKE.get(), SoundSource.BLOCKS, 1F, 1F);
@@ -359,7 +360,7 @@ public class TieredAnvilBlockEntity extends BlockEntity {
         if(hasWorkpiece()) {
             double x = worldPosition.getX() + 0.5, y = worldPosition.getY() + 1, z = worldPosition.getZ() + 0.5;
             TieredHeat heat = TieredHeat.fromTemp(temperature);
-            if(heat != TieredHeat.NONE) {
+            if(heat != TieredHeat.NONE && temperature >= TieredHeat.RED.getBaseTemp()) {
                 ((ServerLevel) level).sendParticles(heat.getSparkParticle().get(), x, y, z,
                         20 + level.random.nextInt(5), 4/32D, 1D/16D, 4/32D, 0.003F);
             }

@@ -12,7 +12,7 @@ import java.util.Locale;
 
 public enum TieredHeat {
     NONE(0F, null, null, Color.WHITE),
-    RED(100F, ParticleTypesNF.FLAME_RED, ParticleTypesNF.SPARK_RED, new Color(1F, 0.378F, 0.312F)),
+    RED(500F, ParticleTypesNF.FLAME_RED, ParticleTypesNF.SPARK_RED, new Color(1F, 0.378F, 0.312F)),
     ORANGE(1000F, ParticleTypesNF.FLAME_ORANGE, ParticleTypesNF.SPARK_ORANGE, new Color(1F, 0.595F, 0.359F)),
     YELLOW(1200F, ParticleTypesNF.FLAME_YELLOW, ParticleTypesNF.SPARK_YELLOW, new Color(1F, 0.792F, 0.480F)),
     WHITE(1400F, ParticleTypesNF.FLAME_WHITE, ParticleTypesNF.SPARK_WHITE, new Color(1F, 1F, 0.869F)),

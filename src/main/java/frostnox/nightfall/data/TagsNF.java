@@ -67,7 +67,7 @@ public class TagsNF {
     public static final TagKey<Block> WOODEN_FENCE_GATES = blockTag("wooden_fence_gates");
     public static final TagKey<Block> STONE_TUNNELS = blockTag("stone_tunnels");
     public static final TagKey<Block> ANVIL_STONE = blockTag("anvil_stone");
-    public static final TagKey<Block> ANVILS = blockTag("anvils");
+    public static final TagKey<Block> PRIMITIVE_ANVILS = blockTag("primitive_anvils");
     public static final TagKey<Block> METAL_ANVILS = blockTag("metal_anvils");
     public static final TagKey<Block> METAL_BLOCKS = blockTag("metal_blocks");
     public static final TagKey<Block> UNCLIMBABLE = blockTag("unclimbable_block");
@@ -325,7 +325,7 @@ public class TagsNF {
     public static final TagKey<Item> TROUGHS_ITEM = itemTag(TROUGHS);
     public static final TagKey<Item> ITEM_FRAMES_ITEM = itemTag(ITEM_FRAMES);
     public static final TagKey<Item> ANVIL_STONE_ITEM = itemTag(ANVIL_STONE);
-    public static final TagKey<Item> ANVILS_ITEM = itemTag(ANVILS);
+    public static final TagKey<Item> PRIMITIVE_ANVILS_ITEM = itemTag(PRIMITIVE_ANVILS);
     public static final TagKey<Item> METAL_ANVILS_ITEM = itemTag(METAL_ANVILS);
     public static final TagKey<Item> METAL_BLOCKS_ITEM = itemTag(METAL_BLOCKS);
 

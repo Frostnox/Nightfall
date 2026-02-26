@@ -96,7 +96,7 @@ public class RecipeProviderNF extends RecipeProvider {
             HeldToolRecipe.saveHeldTool(Ingredient.of(ItemsNF.STONE_BLOCKS.get(type).get()), Ingredient.of(TagsNF.RECIPE_TOOL_STONE_COMPLEX), ItemsNF.POLISHED_STONE_SLABS.get(type).get(), 2, 2, entryKnowledge(EntriesNF.TOOLS), consumer);
             HeldToolRecipe.saveHeldTool(Ingredient.of(ItemsNF.STONE_BLOCKS.get(type).get()), Ingredient.of(TagsNF.RECIPE_TOOL_STONE_COMPLEX), ItemsNF.POLISHED_STONE_SIDINGS.get(type).get(), 2, 3, entryKnowledge(EntriesNF.TOOLS), consumer);
             if(ItemsNF.ANVILS_STONE.containsKey(type)) {
-                HeldToolRecipe.saveHeldTool(Ingredient.of(ItemsNF.STONE_BLOCKS.get(type).get()), Ingredient.of(TagsNF.RECIPE_TOOL_STONE_SIMPLE), ItemsNF.ANVILS_STONE.get(type).get(), 1, -1, entryKnowledge(EntriesNF.SMITHING), consumer);
+                HeldToolRecipe.saveHeldTool(Ingredient.of(ItemsNF.STONE_BLOCKS.get(type).get()), Ingredient.of(TagsNF.RECIPE_TOOL_STONE_SIMPLE), ItemsNF.ANVILS_STONE.get(type).get(), 1, -1, EntriesNF.SMITHING.getId(), consumer);
             }
         }
         for(Tree type : Tree.values()) {
@@ -422,7 +422,7 @@ public class RecipeProviderNF extends RecipeProvider {
             items.add(new ItemStack(ItemsNF.RODS.get(metal).get()));
             inputsRods.put(metal, Ingredient.of(items.stream()));
 
-            SmithingRecipeBuilder.base(inputs.get(metal), new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, ItemsNF.INGOTS.get(metal).get()).order(0).requirement(EntriesNF.SMITHING).hideInEntry().save(consumer);
+            SmithingRecipeBuilder.base(inputs.get(metal), new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, ItemsNF.INGOTS.get(metal).get()).order(0).requirement(entryKnowledge(EntriesNF.SMITHING)).save(consumer);
             SmithingRecipeBuilder.base(inputsPlates.get(metal), new int[]{2, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0}, ItemsNF.PLATES.get(metal).get()).order(1).requirement(EntriesNF.SMITHING).save(consumer);
             SmithingRecipeBuilder.base(inputs.get(metal), new int[]{0, 2, 0, 0, 2, 0, 0, 0, 2, 0, 0}, ItemsNF.RODS.get(metal).get()).order(2).requirement(EntriesNF.SMITHING).save(consumer);
             SmithingRecipeBuilder.base(inputsRods.get(metal), new int[]{0, 3, 0, 0, 3, 0, 0, 0, 3, 0, 0}, ItemsNF.WIRES.get(metal).get(), 4).requirement(EntriesNF.SMITHING).order(3).save(consumer);
@@ -433,16 +433,16 @@ public class RecipeProviderNF extends RecipeProvider {
         }
         for(TieredItemMaterial material : ItemsNF.ARMAMENT_HEADS.keySet()) {
             SmithingRecipeBuilder.base(inputs.get(material.getMetal()), new int[]{0, 0, 0, 1, 1, 2, 0, 0, 0, 0, 3}, ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.ADZE).get()).requirement(EntriesNF.SMITHING).save(consumer);
-            SmithingRecipeBuilder.base(inputs.get(material.getMetal()), new int[]{0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 3}, ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.AXE).get()).requirement(EntriesNF.SMITHING).hideInEntry().save(consumer);
-            SmithingRecipeBuilder.base(inputs.get(material.getMetal()), new int[]{0, 2, 1, 0, 2, 0, 0, 0, 0, 0, 3}, ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.CHISEL).get()).requirement(EntriesNF.SMITHING).hideInEntry().save(consumer);
-            SmithingRecipeBuilder.base(inputs.get(material.getMetal()), new int[]{0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0}, ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.HAMMER).get()).requirement(EntriesNF.SMITHING).hideInEntry().save(consumer);
-            SmithingRecipeBuilder.base(inputs.get(material.getMetal()), new int[]{0, 2, 0, 0, 2, 0, 1, 0, 0, 0, 3}, ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.KNIFE).get()).requirement(EntriesNF.SMITHING).hideInEntry().save(consumer);
+            SmithingRecipeBuilder.base(inputs.get(material.getMetal()), new int[]{0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 3}, ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.AXE).get()).requirement(entryKnowledge(EntriesNF.SMITHING)).save(consumer);
+            SmithingRecipeBuilder.base(inputs.get(material.getMetal()), new int[]{0, 2, 1, 0, 2, 0, 0, 0, 0, 0, 3}, ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.CHISEL).get()).requirement(entryKnowledge(EntriesNF.SMITHING)).save(consumer);
+            SmithingRecipeBuilder.base(inputs.get(material.getMetal()), new int[]{0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0}, ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.HAMMER).get()).requirement(entryKnowledge(EntriesNF.SMITHING)).save(consumer);
+            SmithingRecipeBuilder.base(inputs.get(material.getMetal()), new int[]{0, 2, 0, 0, 2, 0, 1, 0, 0, 0, 3}, ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.KNIFE).get()).requirement(entryKnowledge(EntriesNF.SMITHING)).save(consumer);
             SmithingRecipeBuilder.base(inputs.get(material.getMetal()), new int[]{0, 0, 0, 0, 2, 0, 2, 0, 2, 0, 2}, ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.MACE).get()).requirement(EntriesNF.MACE).save(consumer);
-            SmithingRecipeBuilder.base(inputs.get(material.getMetal()), new int[]{0, 1, 0, 0, 2, 2, 0, 0, 2, 2, 0}, ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.PICKAXE).get()).requirement(EntriesNF.SMITHING).hideInEntry().save(consumer);
+            SmithingRecipeBuilder.base(inputs.get(material.getMetal()), new int[]{0, 1, 0, 0, 2, 2, 0, 0, 2, 2, 0}, ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.PICKAXE).get()).requirement(entryKnowledge(EntriesNF.SMITHING)).save(consumer);
             SmithingRecipeBuilder.base(inputsRods.get(material.getMetal()), new int[]{0, 2, 0, 0, 2, 1, 1, 0, 2, 1, 0}, ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.SABRE).get()).requirement(EntriesNF.SABRE).save(consumer);
-            SmithingRecipeBuilder.base(inputs.get(material.getMetal()), new int[]{2, 0, 0, 1, 1, 0, 1, 2, 0, 0, 0}, ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.SHOVEL).get()).requirement(EntriesNF.SMITHING).hideInEntry().save(consumer);
-            SmithingRecipeBuilder.base(inputsRods.get(material.getMetal()), new int[]{0, 2, 0, 0, 2, 2, 0, 0, 2, 0, 1}, ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.SICKLE).get()).requirement(EntriesNF.SICKLE_SMITHING).hideInEntry().save(consumer);
-            SmithingRecipeBuilder.base(inputs.get(material.getMetal()), new int[]{2, 0, 1, 0, 2, 0, 1, 0, 2, 0, 2}, ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.SPEAR).get()).requirement(EntriesNF.SMITHING).hideInEntry().save(consumer);
+            SmithingRecipeBuilder.base(inputs.get(material.getMetal()), new int[]{2, 0, 0, 1, 1, 0, 1, 2, 0, 0, 0}, ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.SHOVEL).get()).requirement(entryKnowledge(EntriesNF.SMITHING)).save(consumer);
+            SmithingRecipeBuilder.base(inputsRods.get(material.getMetal()), new int[]{0, 2, 0, 0, 2, 2, 0, 0, 2, 0, 1}, ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.SICKLE).get()).requirement(entryKnowledge(EntriesNF.SICKLE_SMITHING)).save(consumer);
+            SmithingRecipeBuilder.base(inputs.get(material.getMetal()), new int[]{2, 0, 1, 0, 2, 0, 1, 0, 2, 0, 2}, ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.SPEAR).get()).requirement(entryKnowledge(EntriesNF.SMITHING)).save(consumer);
             SmithingRecipeBuilder.base(inputsRods.get(material.getMetal()), new int[]{0, 2, 0, 0, 2, 0, 1, 0, 2, 0, 0}, ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.SWORD).get()).requirement(EntriesNF.SMITHING).save(consumer);
         }
 
