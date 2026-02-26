@@ -16,6 +16,7 @@ import frostnox.nightfall.data.recipe.SmithingRecipe;
 import frostnox.nightfall.item.IContainerChanger;
 import frostnox.nightfall.item.client.IClientSwapBehavior;
 import frostnox.nightfall.item.client.IModifiable;
+import frostnox.nightfall.registry.KnowledgeNF;
 import frostnox.nightfall.registry.forge.ItemsNF;
 import frostnox.nightfall.registry.forge.ParticleTypesNF;
 import frostnox.nightfall.registry.forge.SoundsNF;
@@ -149,6 +150,7 @@ public class TongsItem extends ItemNF implements IContainerChanger, IModifiable,
                         }
                     }
                     if(resultItem == null) resultItem = new ItemStack(Metal.fromString(workpiece.toString()).getMatchingItem(TagsNF.SCRAP));
+                    else if(workpiece == ItemsNF.IRON_BLOOM.get()) PlayerData.get(player).addKnowledge(KnowledgeNF.WORKED_IRON_BLOOM.getId());
                     removeWorkpiece(tongs);
                     player.setItemInHand(InteractionHand.MAIN_HAND, tongs.copy());
                     LevelUtil.giveItemToPlayer(resultItem, player, true);
