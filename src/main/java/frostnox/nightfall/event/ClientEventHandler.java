@@ -1076,6 +1076,7 @@ public class ClientEventHandler {
                 event.setNewfov(event.getNewfov() * Math.max(1F - progress * 0.15F, 0.15F));
             }
         }
+        if(PlayerData.get(player).getStamina() == 0) event.setNewfov(event.getNewfov() * 0.9F);
     }
 
     private static void handleDodge(LocalPlayer p) {
