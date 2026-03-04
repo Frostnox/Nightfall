@@ -718,7 +718,7 @@ public class BlocksNF {
     public static final RegistryObject<BlockNF> SMELTED_HEMATITE = BLOCKS.register("smelted_hematite", () -> new BlockNF(BlockBehaviour.Properties.of(Material.STONE,
             MaterialColor.TERRACOTTA_BLACK).strength(8.0F, 16.0F).sound(SoundType.ANCIENT_DEBRIS)));
 
-    public static final RegistryObject<CrucibleBlock> CRUCIBLE = BLOCKS.register("crucible", () -> new CrucibleBlock(300, TieredHeat.WHITE.getBaseTemp() - 0.1F,
+    public static final RegistryObject<CrucibleBlock> CRUCIBLE = BLOCKS.register("crucible", () -> new CrucibleBlock(400, TieredHeat.WHITE.getBaseTemp() - 0.1F,
             BlockBehaviour.Properties.of(Material.STONE, MaterialColor.TERRACOTTA_BROWN).strength(1.0F, 1F)
                     .sound(SoundsNF.CERAMIC_VESSEL_TYPE).emissiveRendering((state, level, pos) -> state.getValue(CrucibleBlock.HEAT) != 0)
                     .lightLevel((state) -> state.getValue(CrucibleBlock.HEAT) != 0 ? 2 : 0)));
