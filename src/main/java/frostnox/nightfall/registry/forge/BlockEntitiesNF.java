@@ -6,7 +6,9 @@ import frostnox.nightfall.block.block.anvil.TieredAnvilBlockEntity;
 import frostnox.nightfall.block.block.barrel.BarrelBlockEntityNF;
 import frostnox.nightfall.block.block.bowl.BowlBlockEntity;
 import frostnox.nightfall.block.block.eggnest.EggNestBlockEntity;
+import frostnox.nightfall.block.block.furnacechannel.FurnaceChannelBlockEntity;
 import frostnox.nightfall.block.block.itemframe.ItemFrameBlockEntity;
+import frostnox.nightfall.block.block.meltedmetal.MeltedMetalBlockEntity;
 import frostnox.nightfall.block.block.nest.GuardedNestBlockEntity;
 import frostnox.nightfall.block.block.nest.NestBlockEntity;
 import frostnox.nightfall.block.block.campfire.CampfireBlockEntityNF;
@@ -64,6 +66,9 @@ public class BlockEntitiesNF {
     public static final RegistryObject<BlockEntityType<FireableHoldableBlockEntity>> FIREABLE_POTTERY = BLOCK_ENTITIES.register("fireable_pottery", () -> BlockEntityType.Builder.of(FireableHoldableBlockEntity::new, Stream.concat(BlocksNF.UNFIRED_ARMAMENT_MOLDS.values().stream().map(RegistryObject::get), Stream.of(BlocksNF.UNFIRED_CRUCIBLE.get(), BlocksNF.UNFIRED_CAULDRON.get(), BlocksNF.UNFIRED_POT.get(), BlocksNF.UNFIRED_INGOT_MOLD.get(), BlocksNF.UNFIRED_ARROWHEAD_MOLD.get(), BlocksNF.UNFIRED_ROD_MOLD.get())).toArray(Block[]::new)).build(null));
     public static final RegistryObject<BlockEntityType<BurningFuelBlockEntity>> FUEL = BLOCK_ENTITIES.register("fuel", () -> BlockEntityType.Builder.of(BurningFuelBlockEntity::new, BlocksNF.COKE_BURNING.get(), BlocksNF.COAL_BURNING.get(), BlocksNF.CHARCOAL_BURNING.get(), BlocksNF.FIREWOOD_BURNING.get()).build(null));
     public static final RegistryObject<BlockEntityType<TieredAnvilBlockEntity>> ANVIL = BLOCK_ENTITIES.register("anvil", () -> BlockEntityType.Builder.of(TieredAnvilBlockEntity::new, Stream.of(BlocksNF.ANVILS_STONE.values(), BlocksNF.ANVILS_METAL.values()).flatMap(Collection::stream).map(RegistryObject::get).toArray(Block[]::new)).build(null));
+    public static final RegistryObject<BlockEntityType<MeltedMetalBlockEntity>> MELTED_METAL = BLOCK_ENTITIES.register("melted_metal", () -> BlockEntityType.Builder.of(MeltedMetalBlockEntity::new, BlocksNF.MELTED_METAL.get()).build(null));
+    public static final RegistryObject<BlockEntityType<FurnaceChannelBlockEntity>> FURNACE_CHANNEL = BLOCK_ENTITIES.register("furnace_channel", () -> BlockEntityType.Builder.of(FurnaceChannelBlockEntity::new, BlocksNF.FIRE_BRICK_CHANNEL.get()).build(null));
+
     public static final RegistryObject<BlockEntityType<NestBlockEntity>> RABBIT_BURROW = BLOCK_ENTITIES.register("rabbit_burrow", () ->
             BlockEntityType.Builder.of((pos, state) -> new NestBlockEntity(BlockEntitiesNF.RABBIT_BURROW.get(), pos, state, 1, (int) ContinentalWorldType.DAY_LENGTH,
                             (level, homePos) -> {

@@ -104,6 +104,11 @@ public class TieredAnvilBlock extends BaseEntityBlock implements IFallable, ITim
     }
 
     @Override
+    public BlockState mirror(BlockState state, Mirror pMirror) {
+        return state.rotate(pMirror.getRotation(state.getValue(FACING)));
+    }
+
+    @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
         builder.add(FACING, HAS_METAL, WATER_LEVEL, WATERLOG_TYPE);

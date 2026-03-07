@@ -162,7 +162,7 @@ public class BlockTagsProviderNF extends BlockTagsProvider {
                 BlocksNF.BRICK_SIDING.get(), BlocksNF.FIRE_BRICKS.get(), BlocksNF.FIRE_BRICK_STAIRS.get(), BlocksNF.FIRE_BRICK_SLAB.get(),
                 BlocksNF.FIRE_BRICK_SIDING.get(), BlocksNF.MOON_ESSENCE.get(), BlocksNF.FLINT_CLUSTER.get(), BlocksNF.SLAG.get(),
                 BlocksNF.AZURITE.get(), BlocksNF.HEMATITE.get(), BlocksNF.SMELTED_AZURITE.get(), BlocksNF.SMELTED_HEMATITE.get(),
-                BlocksNF.ANCHORING_RESIN.get());
+                BlocksNF.ANCHORING_RESIN.get(), BlocksNF.FIRE_BRICK_CHANNEL.get());
         for(var block : BlocksNF.ROCK_CLUSTERS.values()) tag(BlockTags.MINEABLE_WITH_PICKAXE).add(block.get());
         for(var block : BlocksNF.SKARA_ROCK_CLUSTERS.values()) tag(BlockTags.MINEABLE_WITH_PICKAXE).add(block.get());
         for(var block : BlocksNF.ANVILS_STONE.values()) tag(BlockTags.MINEABLE_WITH_PICKAXE).add(block.get());
@@ -249,7 +249,7 @@ public class BlockTagsProviderNF extends BlockTagsProvider {
                 BlocksNF.CHARCOAL, BlocksNF.CHARCOAL_BURNING, BlocksNF.FIREWOOD, BlocksNF.SLAG, BlocksNF.AZURITE, BlocksNF.HEMATITE, BlocksNF.SMELTED_AZURITE,
                 BlocksNF.SMELTED_HEMATITE, BlocksNF.CAMPFIRE, BlocksNF.CAULDRON, BlocksNF.POT, BlocksNF.WET_MUD_BRICKS, BlocksNF.CLAY_BRICKS, BlocksNF.FIRE_CLAY_BRICKS,
                 BlocksNF.STEEL_INGOT_PILE_POOR, BlocksNF.STEEL_INGOT_PILE_FAIR, BlocksNF.CRUCIBLE, BlocksNF.UNFIRED_CRUCIBLE, BlocksNF.CAULDRON, BlocksNF.UNFIRED_CAULDRON,
-                BlocksNF.POT, BlocksNF.UNFIRED_POT, BlocksNF.SPIDER_NEST);
+                BlocksNF.POT, BlocksNF.UNFIRED_POT, BlocksNF.SPIDER_NEST, BlocksNF.MELTED_METAL);
         addSupports(sup, 1, BlocksNF.CLAY, BlocksNF.FIRE_CLAY, BlocksNF.PACKED_SNOW);
         addSupports(sup, 2, BlocksNF.THATCH, BlocksNF.THATCH_STAIRS, BlocksNF.THATCH_SLAB, BlocksNF.THATCH_SIDING, BlocksNF.TERRACOTTA, BlocksNF.TERRACOTTA_TILES,
                 BlocksNF.TERRACOTTA_TILE_STAIRS, BlocksNF.TERRACOTTA_TILE_SLAB, BlocksNF.TERRACOTTA_TILE_SIDING, BlocksNF.TERRACOTTA_MOSAIC, BlocksNF.TERRACOTTA_MOSAIC_STAIRS,

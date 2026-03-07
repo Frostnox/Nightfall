@@ -732,6 +732,7 @@ public class ItemsNF {
     public static final RegistryObject<BlockItemNF> SMELTED_HEMATITE = register(BlocksNF.SMELTED_HEMATITE, NATURAL_TAB);
     public static final RegistryObject<BlockItemNF> UNFIRED_CRUCIBLE = register(BlocksNF.UNFIRED_CRUCIBLE, 8);
     public static final RegistryObject<BlockItemNF> CRUCIBLE = register(BlocksNF.CRUCIBLE, 8, FUNCTIONAL_TAB);
+    public static final RegistryObject<BlockItemNF> FIRE_BRICK_CHANNEL = register(BlocksNF.FIRE_BRICK_CHANNEL);
 
     public static final RegistryObject<BlockItemNF> SPIDER_WEB = register(BlocksNF.SPIDER_WEB, 16, NATURAL_TAB);
     public static final RegistryObject<BlockItemNF> SPIDER_NEST = register(BlocksNF.SPIDER_NEST, NATURAL_TAB);

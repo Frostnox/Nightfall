@@ -5,7 +5,9 @@ import com.google.common.collect.HashBiMap;
 import com.mojang.datafixers.util.Pair;
 import frostnox.nightfall.Nightfall;
 import frostnox.nightfall.block.Metal;
+import frostnox.nightfall.block.TieredHeat;
 import frostnox.nightfall.block.fluid.LavaFluidNF;
+import frostnox.nightfall.block.fluid.MeltedMetalFluid;
 import frostnox.nightfall.block.fluid.MetalFluid;
 import frostnox.nightfall.block.fluid.WaterFluidNF;
 import frostnox.nightfall.util.DataUtil;
@@ -49,10 +51,19 @@ public class FluidsNF {
             sound(SoundEvents.BUCKET_FILL_LAVA, SoundEvents.BUCKET_EMPTY_LAVA)).slopeFindDistance(2).levelDecreasePerBlock(1).
             block(() -> BlocksNF.LAVA.get()).explosionResistance(100).tickRate(24);
 
-    //Recipe fluids (do not exist as blocks, mainly used as FluidStacks)
     public static final ResourceLocation METAL_STILL = still("metal");
     public static final ResourceLocation METAL_FLOW = flow("metal");
     public static final ResourceLocation METAL_SOLID = ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "block/metal");
+    public static final Map<TieredHeat, RegistryObject<MeltedMetalFluid>> MELTED_METAL = DataUtil.mapEnum(TieredHeat.class, heat -> heat == TieredHeat.NONE,
+            (heat) -> FLUIDS.register(heat.toString() + "_melted_metal", () -> new MeltedMetalFluid.Source(FluidsNF.MELTED_METAL_PROPERTIES.get(heat))));
+    public static final Map<TieredHeat, RegistryObject<MeltedMetalFluid>> MELTED_METAL_FLOWING = DataUtil.mapEnum(TieredHeat.class, heat -> heat == TieredHeat.NONE,
+            (heat) -> FLUIDS.register(heat.toString() + "_melted_metal_flowing", () -> new MeltedMetalFluid.Flowing(FluidsNF.MELTED_METAL_PROPERTIES.get(heat))));
+    public static final Map<TieredHeat, ForgeFlowingFluid.Properties> MELTED_METAL_PROPERTIES = DataUtil.mapEnum(TieredHeat.class, heat -> heat == TieredHeat.NONE,
+            (heat) -> new ForgeFlowingFluid.Properties(() -> MELTED_METAL.get(heat).get(), () -> MELTED_METAL_FLOWING.get(heat).get(),
+            FluidAttributes.builder(METAL_STILL, METAL_FLOW).overlay(null).temperature((int) heat.getBaseTemp()).color(heat.color.getRGB()).
+                    sound(SoundEvents.BUCKET_FILL_LAVA, SoundEvents.BUCKET_EMPTY_LAVA)).slopeFindDistance(2).levelDecreasePerBlock(1).
+            block(() -> BlocksNF.LIQUID_MELTED_METAL.get(heat).get()).explosionResistance(100).tickRate(24));
+    //Recipe fluids (do not exist as blocks, mainly used as FluidStacks)
     public static final Map<Metal, RegistryObject<MetalFluid>> METAL = DataUtil.mapEnum(Metal.class, (metal) ->
             FLUIDS.register(metal.getName(), () -> new MetalFluid.Source(FluidsNF.METAL_PROPERTIES.get(metal))));
     public static final Map<Metal, RegistryObject<MetalFluid>> METAL_FLOWING = DataUtil.mapEnum(Metal.class, (metal) ->

@@ -28,7 +28,7 @@ public class DamageTypeSource extends DamageSource {
     public static final DamageTypeSource LIGHTNING_BOLT = new DamageTypeSource("lightningBolt", DamageType.ELECTRIC);
     public static final DamageTypeSource ON_FIRE = (new DamageTypeSource("onFire", DamageType.FIRE)).setDoT().setSound(() -> SoundEvents.PLAYER_HURT_ON_FIRE);
     public static final DamageTypeSource LAVA = (new DamageTypeSource("lava", DamageType.FIRE)).fromBlock();
-    public static final DamageTypeSource HOT_FLOOR = (new DamageTypeSource("hotFloor", DamageType.FIRE)).fromBlock();
+    public static final DamageTypeSource HOT_FLOOR = (new DamageTypeSource("hotFloor", DamageType.FIRE)).fromBlock().setSound(() -> SoundEvents.PLAYER_HURT_ON_FIRE);
     public static final DamageTypeSource IN_WALL = (new DamageTypeSource("inWall", DamageType.ABSOLUTE)).fromBlock();
     public static final DamageTypeSource CRAMMING = (new DamageTypeSource("cramming", DamageType.ABSOLUTE)).fromBlock();
     public static final DamageTypeSource DROWN = (new DamageTypeSource("drown", DamageType.ABSOLUTE));

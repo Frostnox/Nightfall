@@ -16,6 +16,7 @@ public class BlockStatePropertiesNF {
     public static final BooleanProperty CHARRED = BooleanProperty.create("charred");
     public static final BooleanProperty ALTERNATE = BooleanProperty.create("alternate");
     public static final BooleanProperty HEATED = BooleanProperty.create("heated");
+    public static final BooleanProperty SEALED = BooleanProperty.create("sealed");
     public static final BooleanProperty HAS_FOOD = BooleanProperty.create("has_food");
     public static final BooleanProperty HAS_METAL = BooleanProperty.create("has_metal");
     public static final BooleanProperty OPEN = BooleanProperty.create("open");

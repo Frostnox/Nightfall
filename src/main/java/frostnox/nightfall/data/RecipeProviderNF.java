@@ -157,6 +157,7 @@ public class RecipeProviderNF extends RecipeProvider {
         BuildingRecipeBuilder.base(ItemsNF.FIRE_BRICK.get(), 3, ItemsNF.FIRE_BRICK_STAIRS.get()).order(1).save(consumer);
         BuildingRecipeBuilder.base(ItemsNF.FIRE_BRICK.get(), 2, ItemsNF.FIRE_BRICK_SLAB.get()).order(2).save(consumer);
         BuildingRecipeBuilder.base(ItemsNF.FIRE_BRICK.get(), 2, ItemsNF.FIRE_BRICK_SIDING.get()).order(3).save(consumer);
+        BuildingRecipeBuilder.base(ItemsNF.FIRE_BRICK.get(), 2, ItemsNF.FIRE_BRICK_CHANNEL.get()).requirement(EntriesNF.SMELTING).save(consumer);
         BuildingRecipeBuilder.base(ItemsNF.PLANT_FIBERS.get(), 4, ItemsNF.THATCH.get()).order(0).save(consumer);
         BuildingRecipeBuilder.base(ItemsNF.PLANT_FIBERS.get(), 3, ItemsNF.THATCH_STAIRS.get()).order(1).save(consumer);
         BuildingRecipeBuilder.base(ItemsNF.PLANT_FIBERS.get(), 2, ItemsNF.THATCH_SLAB.get()).order(2).save(consumer);

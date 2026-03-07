@@ -12,7 +12,9 @@ import frostnox.nightfall.block.block.bowl.BowlBlock;
 import frostnox.nightfall.block.block.ChairBlock;
 import frostnox.nightfall.block.block.crop.FoodCropBlock;
 import frostnox.nightfall.block.block.eggnest.DrakefowlEggNestBlock;
+import frostnox.nightfall.block.block.furnacechannel.FurnaceChannelBlock;
 import frostnox.nightfall.block.block.itemframe.ItemFrameBlock;
+import frostnox.nightfall.block.block.meltedmetal.MeltedMetalBlock;
 import frostnox.nightfall.block.block.nest.AnchoringResinBlock;
 import frostnox.nightfall.block.block.nest.RabbitBurrowBlock;
 import frostnox.nightfall.block.block.campfire.CampfireBlockNF;
@@ -718,6 +720,12 @@ public class BlocksNF {
     public static final RegistryObject<BlockNF> SMELTED_HEMATITE = BLOCKS.register("smelted_hematite", () -> new BlockNF(BlockBehaviour.Properties.of(Material.STONE,
             MaterialColor.TERRACOTTA_BLACK).strength(8.0F, 16.0F).sound(SoundType.ANCIENT_DEBRIS)));
 
+    public static final RegistryObject<MeltedMetalBlock> MELTED_METAL = register("melted_metal", () -> new MeltedMetalBlock(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.FIRE)
+            .strength(12.0F, 20.0F).lightLevel(state -> 15).speedFactor(0.2F).jumpFactor(0.5F).noDrops().randomTicks().sound(SoundType.NETHER_ORE)));
+    public static final Map<TieredHeat, RegistryObject<SizedLiquidBlock>> LIQUID_MELTED_METAL = DataUtil.mapEnum(TieredHeat.class, heat -> heat == TieredHeat.NONE,
+            (heat) -> register(heat.toString() + "_melted_metal", () -> new SizedLiquidBlock(FluidsNF.MELTED_METAL.get(heat),
+            BlockBehaviour.Properties.of(Material.LAVA).noCollission().strength(100.0F).noDrops().randomTicks().lightLevel((state) -> 15))));
+
     public static final RegistryObject<CrucibleBlock> CRUCIBLE = BLOCKS.register("crucible", () -> new CrucibleBlock(400, TieredHeat.WHITE.getBaseTemp() - 0.1F,
             BlockBehaviour.Properties.of(Material.STONE, MaterialColor.TERRACOTTA_BROWN).strength(1.0F, 1F)
                     .sound(SoundsNF.CERAMIC_VESSEL_TYPE).emissiveRendering((state, level, pos) -> state.getValue(CrucibleBlock.HEAT) != 0)
@@ -725,6 +733,8 @@ public class BlocksNF {
     public static final RegistryObject<FireableAxisPartialBlock> UNFIRED_CRUCIBLE = BLOCKS.register("unfired_crucible", () -> new FireableAxisPartialBlock(
             20 * 60 * 8, TieredHeat.ORANGE, CRUCIBLE, 0,
             BlockBehaviour.Properties.of(Material.CLAY).strength(1.0F, 20F).sound(SoundType.GRAVEL)));
+
+    public static final RegistryObject<FurnaceChannelBlock> FIRE_BRICK_CHANNEL = register("fire_brick_channel", () -> new FurnaceChannelBlock(TieredHeat.WHITE, BlockBehaviour.Properties.copy(FIRE_BRICKS.get()).strength(5)));
 
     //Special
     public static final RegistryObject<MoonEssenceBlock> MOON_ESSENCE = BLOCKS.register("moon_essence", () -> new MoonEssenceBlock(

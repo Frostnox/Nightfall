@@ -98,9 +98,8 @@ public abstract class LavaFluidNF extends SizedFluid {
 
     @Override
     public void animateTick(Level level, BlockPos pos, FluidState state, Random random) {
-        BlockPos blockpos = pos.above();
-        if (level.getBlockState(blockpos).isAir() && !level.getBlockState(blockpos).isSolidRender(level, blockpos)) {
-            if (random.nextInt(100) == 0) {
+        if(level.getBlockState(pos.above()).isAir()) {
+            if(random.nextInt(100) == 0) {
                 double d0 = pos.getX() + random.nextDouble();
                 double d1 = pos.getY() + 1.0D;
                 double d2 = pos.getZ() + random.nextDouble();
@@ -108,7 +107,7 @@ public abstract class LavaFluidNF extends SizedFluid {
                 level.playLocalSound(d0, d1, d2, SoundEvents.LAVA_POP, SoundSource.BLOCKS, 0.2F + random.nextFloat() * 0.2F, 0.9F + random.nextFloat() * 0.15F, false);
             }
 
-            if (random.nextInt(200) == 0) {
+            if(random.nextInt(200) == 0) {
                 level.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.LAVA_AMBIENT, SoundSource.BLOCKS, 0.2F + random.nextFloat() * 0.2F, 0.9F + random.nextFloat() * 0.15F, false);
             }
         }

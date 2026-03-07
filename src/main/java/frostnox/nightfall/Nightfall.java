@@ -3,6 +3,7 @@ package frostnox.nightfall;
 import frostnox.nightfall.action.Action;
 import frostnox.nightfall.action.player.PlayerActionSet;
 import frostnox.nightfall.block.*;
+import frostnox.nightfall.block.block.meltedmetal.MeltedMetalBlock;
 import frostnox.nightfall.capability.*;
 import frostnox.nightfall.client.ClientEngine;
 import frostnox.nightfall.client.gui.OverlayNF;
@@ -287,7 +288,7 @@ public class Nightfall {
         cutout.addAll(BlocksNF.METAL_BARS.values());
         cutout.addAll(BlocksNF.LANTERNS.values());
         cutout.addAll(BlocksNF.LANTERNS_UNLIT.values());
-        translucent.addAll(List.of(BlocksNF.MOON_ESSENCE, BlocksNF.ICE, BlocksNF.RABBIT_BURROW));
+        translucent.addAll(List.of(BlocksNF.MOON_ESSENCE, BlocksNF.ICE, BlocksNF.RABBIT_BURROW, BlocksNF.FIRE_BRICK_CHANNEL));
         for(var block : cutout) ItemBlockRenderTypes.setRenderLayer(block.get(), RenderType.cutout());
         for(var block : cutoutMipped) ItemBlockRenderTypes.setRenderLayer(block.get(), RenderType.cutoutMipped());
         for(var block : translucent) ItemBlockRenderTypes.setRenderLayer(block.get(), RenderType.translucent());
@@ -505,6 +506,10 @@ public class Nightfall {
             event.getBlockColors().register(((state, level, pos, tintIndex) -> {
                     return level != null && pos != null ? BiomeColors.getAverageWaterColor(level, pos) : -1;
             }), BlocksNF.WATER.get());
+
+            event.getBlockColors().register(((state, level, pos, tintIndex) -> {
+                return TieredHeat.values()[state.getValue(MeltedMetalBlock.HEAT)].color.getRGB();
+            }), BlocksNF.MELTED_METAL.get());
         }
 
         @SubscribeEvent
@@ -517,7 +522,7 @@ public class Nightfall {
             coloredBlockItems.addAll(BlocksNF.FRUIT_LEAVES.values().stream().map(RegistryObject::get).toList());
             coloredBlockItems.addAll(List.of(BlocksNF.SHORT_GRASS.get(), BlocksNF.GRASS.get(), BlocksNF.TALL_GRASS.get(),
                     BlocksNF.SMALL_FERN.get(), BlocksNF.FERN.get(), BlocksNF.LARGE_FERN.get(), BlocksNF.VINES.get(),
-                    BlocksNF.BERRY_BUSH.get()));
+                    BlocksNF.BERRY_BUSH.get(), BlocksNF.MELTED_METAL.get()));
 
             event.getItemColors().register((stack, layer) -> {
                 BlockState blockstate = ((BlockItem)stack.getItem()).getBlock().defaultBlockState();

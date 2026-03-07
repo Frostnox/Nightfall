@@ -20,5 +20,7 @@ public class FluidTagsProviderNF extends FluidTagsProvider {
         tag(TagsNF.SEAWATER).add(FluidsNF.SEAWATER.get(), FluidsNF.SEAWATER_FLOWING.get());
         tag(FluidTags.WATER).addTags(TagsNF.FRESHWATER, TagsNF.SEAWATER);
         tag(FluidTags.LAVA).add(FluidsNF.LAVA.get(), FluidsNF.LAVA_FLOWING.get());
+        for(var fluid : FluidsNF.MELTED_METAL.values()) tag(FluidTags.LAVA).add(fluid.get());
+        for(var fluid : FluidsNF.MELTED_METAL_FLOWING.values()) tag(FluidTags.LAVA).add(fluid.get());
     }
 }

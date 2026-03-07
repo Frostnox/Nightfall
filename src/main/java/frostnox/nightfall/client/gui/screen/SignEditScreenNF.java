@@ -26,6 +26,11 @@ public class SignEditScreenNF extends SignEditScreen {
     }
 
     @Override
+    public boolean isPauseScreen() {
+        return false;
+    }
+
+    @Override
     protected void init() {
         super.init();
         signModel = new SignRenderer.SignModel(minecraft.getEntityModels().bakeLayer(ModelRegistryNF.SIGN));

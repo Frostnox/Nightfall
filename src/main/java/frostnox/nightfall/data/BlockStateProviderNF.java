@@ -113,6 +113,10 @@ public class BlockStateProviderNF extends BlockStateProvider {
         getVariantBuilder(block).partialState().addModels(ConfiguredModel.builder().modelFile(model).build());
     }
 
+    public void cube(Block block, ResourceLocation texture) {
+        getVariantBuilder(block).partialState().addModels(ConfiguredModel.builder().modelFile(models().cubeAll(name(block), texture)).build());
+    }
+
     public void cubeTopBlock(Block block) {
         getVariantBuilder(block).partialState().addModels(ConfiguredModel.builder().modelFile(cubeTop(block)).build());
     }
@@ -687,6 +691,17 @@ public class BlockStateProviderNF extends BlockStateProvider {
         }
     }
 
+    public void furnaceChannelBlock(Block block, ResourceLocation texture) {
+        ModelFile sealed = models().withExistingParent(name(block) + "_sealed", resource("furnace_channel_sealed")).texture("all", texture);
+        ModelFile unsealed = models().withExistingParent(name(block), resource("furnace_channel_unsealed")).texture("all", texture);
+        for(Direction dir : BlockStateProperties.HORIZONTAL_FACING.getPossibleValues()) {
+            getVariantBuilder(block).partialState().with(BlockStateProperties.HORIZONTAL_FACING, dir).with(BlockStatePropertiesNF.SEALED, true).modelForState()
+                    .modelFile(sealed).rotationY(((int) dir.toYRot()) % 360).addModel();
+            getVariantBuilder(block).partialState().with(BlockStateProperties.HORIZONTAL_FACING, dir).with(BlockStatePropertiesNF.SEALED, false).modelForState()
+                    .modelFile(unsealed).rotationY(((int) dir.toYRot()) % 360).addModel();
+        }
+    }
+
     public void unfiredPotteryBlock(FireablePartialBlock block) {
         getVariantBuilder(block).partialState().addModels(ConfiguredModel.builder().modelFile(models().withExistingParent(name(block), resource(block.firedBlock.get())).texture("all", resource(block)).texture("particle", resource(BlocksNF.CLAY.get()))).build());
     }
@@ -1237,8 +1252,13 @@ public class BlockStateProviderNF extends BlockStateProvider {
         horizontalHeatableBlock(BlocksNF.CHARCOAL_BURNING.get());
         horizontalColumnBlock(BlocksNF.FIREWOOD.get());
         horizontalHeatableBlock(BlocksNF.FIREWOOD_BURNING.get());
+        templateBlock(BlocksNF.MELTED_METAL.get(), resource("cube_tinted"), Pair.of("all", resource("metal_still")), Pair.of("particle", resource("empty")));
+        for(var block : BlocksNF.LIQUID_MELTED_METAL.values()) particleOnlyBlock(block.get(), resource("metal_still"));
         crucibleBlock(BlocksNF.CRUCIBLE.get());
         unfiredAxisPotteryBlock(BlocksNF.UNFIRED_CRUCIBLE.get());
+        furnaceChannelBlock(BlocksNF.FIRE_BRICK_CHANNEL.get(), resource(BlocksNF.FIRE_BRICKS.get()));
+
+        templateBlock(BlocksNF.MOON_ESSENCE.get(), mcLoc("cube_all"), Pair.of("all", resource(BlocksNF.MOON_ESSENCE.get())), Pair.of("particle", resource("empty")));
         overlayBurrowBlock(BlocksNF.RABBIT_BURROW.get());
         multifaceBlock(BlocksNF.SPIDER_WEB.get(), templateModel(BlocksNF.SPIDER_WEB.get(), resource("cover"),
                 Pair.of("0", resource(BlocksNF.SPIDER_WEB.get())), Pair.of("particle", resource(BlocksNF.SPIDER_WEB.get()))));
