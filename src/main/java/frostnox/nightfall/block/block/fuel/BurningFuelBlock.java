@@ -68,7 +68,7 @@ public class BurningFuelBlock extends BaseEntityBlock implements IHeatSource, IA
 
     public float getTargetTemperature(Level level, BlockState state, BlockPos pos) {
         if(!(level.getBlockEntity(pos) instanceof BurningFuelBlockEntity fuel)) return 0;
-        return burnTemp + fuel.structureTempBonus + getRainTempPenalty(level, pos);
+        return burnTemp + fuel.structureTempBonus + LevelUtil.getRainTempPenalty(level, pos);
     }
 
     protected BlockState createBurningState(BlockState originalState) {
@@ -81,10 +81,6 @@ public class BurningFuelBlock extends BaseEntityBlock implements IHeatSource, IA
             fuel.temperature = burnTemp;
             fuel.setChanged();
         }
-    }
-
-    public static float getRainTempPenalty(Level level, BlockPos pos) {
-        return level.isRainingAt(pos.above()) ? -200 : 0;
     }
 
     public void setHeat(Level level, BlockState state, BlockPos pos, TieredHeat heat) {

@@ -11,19 +11,20 @@ import java.awt.*;
 import java.util.Locale;
 
 public enum TieredHeat {
-    NONE(0F, null, null, Color.WHITE),
-    RED(500F, ParticleTypesNF.FLAME_RED, ParticleTypesNF.SPARK_RED, new Color(1F, 0.378F, 0.312F)),
-    ORANGE(1000F, ParticleTypesNF.FLAME_ORANGE, ParticleTypesNF.SPARK_ORANGE, new Color(1F, 0.595F, 0.359F)),
-    YELLOW(1200F, ParticleTypesNF.FLAME_YELLOW, ParticleTypesNF.SPARK_YELLOW, new Color(1F, 0.792F, 0.480F)),
-    WHITE(1400F, ParticleTypesNF.FLAME_WHITE, ParticleTypesNF.SPARK_WHITE, new Color(1F, 1F, 0.869F)),
-    BLUE(1600F, ParticleTypesNF.FLAME_BLUE, ParticleTypesNF.SPARK_BLUE, new Color(0.788F, 0.983F, 1F));
+    NONE(0F, 0F, null, null, Color.WHITE),
+    RED(500F, 900F, ParticleTypesNF.FLAME_RED, ParticleTypesNF.SPARK_RED, new Color(1F, 0.378F, 0.312F)),
+    ORANGE(1000F, 1150F, ParticleTypesNF.FLAME_ORANGE, ParticleTypesNF.SPARK_ORANGE, new Color(1F, 0.595F, 0.359F)),
+    YELLOW(1200F, 1350F, ParticleTypesNF.FLAME_YELLOW, ParticleTypesNF.SPARK_YELLOW, new Color(1F, 0.792F, 0.480F)),
+    WHITE(1400F, 1550F, ParticleTypesNF.FLAME_WHITE, ParticleTypesNF.SPARK_WHITE, new Color(1F, 1F, 0.869F)),
+    BLUE(1600F, 1700F, ParticleTypesNF.FLAME_BLUE, ParticleTypesNF.SPARK_BLUE, new Color(0.788F, 0.983F, 1F));
 
-    private final float temperature;
+    private final float temperature, upperTemp;
     private final @Nullable RegistryObject<SimpleParticleType> flameParticle, sparkParticle;
     public final Color color;
 
-    TieredHeat(float temperature, @Nullable RegistryObject<SimpleParticleType> flameParticle, @Nullable RegistryObject<SimpleParticleType> sparkParticle, Color color) {
+    TieredHeat(float temperature, float upperTemp, @Nullable RegistryObject<SimpleParticleType> flameParticle, @Nullable RegistryObject<SimpleParticleType> sparkParticle, Color color) {
         this.temperature = temperature;
+        this.upperTemp = upperTemp;
         this.flameParticle = flameParticle;
         this.sparkParticle = sparkParticle;
         this.color = color;
@@ -40,6 +41,10 @@ public enum TieredHeat {
 
     public float getBaseTemp() {
         return temperature;
+    }
+
+    public float getUpperTemp() {
+        return upperTemp;
     }
 
     public @Nullable RegistryObject<SimpleParticleType> getFlameParticle() {

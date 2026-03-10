@@ -45,7 +45,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
 
-public class MeltedMetalBlock extends BaseEntityBlock implements IAdjustableNodeType, ITimeSimulatedBlock {
+public class MeltedMetalBlock extends BaseEntityBlock implements IAdjustableNodeType, IHeatable, ITimeSimulatedBlock {
     public static final IntegerProperty HEAT = BlockStatePropertiesNF.HEAT;
     public static final VoxelShape COLLISION_SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 12.0D, 16.0D);
 
@@ -70,6 +70,13 @@ public class MeltedMetalBlock extends BaseEntityBlock implements IAdjustableNode
             //TODO:
         }
         else level.setBlockAndUpdate(pos, state.setValue(HEAT, heat.getTier()));
+    }
+
+    @Override
+    public void applyHeat(Level level, BlockPos pos, BlockState state, TieredHeat heat, Direction fromDir) {
+        if(fromDir == Direction.DOWN && level.getBlockEntity(pos) instanceof MeltedMetalBlockEntity metal) {
+            metal.targetTemperature = heat.getUpperTemp();
+        }
     }
 
     @Override

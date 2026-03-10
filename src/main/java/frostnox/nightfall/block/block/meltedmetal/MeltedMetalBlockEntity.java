@@ -19,10 +19,11 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class MeltedMetalBlockEntity extends BlockEntity {
-    public float temperature = TieredHeat.YELLOW.getBaseTemp() - 1;
+    public float temperature = TieredHeat.ORANGE.getUpperTemp(), targetTemperature;
     public BlockState originalState = BlocksNF.METAL_BLOCKS.get(Metal.COPPER).get().defaultBlockState();
     public IMetal.Entry metal = RegistriesNF.getMetals().getValue(ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, Metal.COPPER.getName()));
     public int units = 400;
+    public boolean hasSlag = false;
 
     public MeltedMetalBlockEntity(BlockPos pPos, BlockState pBlockState) {
         this(BlockEntitiesNF.MELTED_METAL.get(), pPos, pBlockState);
@@ -71,24 +72,38 @@ public class MeltedMetalBlockEntity extends BlockEntity {
     }
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, MeltedMetalBlockEntity entity) {
-
+        float targetTemp = entity.targetTemperature + LevelUtil.getRainTempPenalty(level, pos);
+        if(entity.temperature != targetTemp) {
+            if(entity.temperature > targetTemp) entity.temperature = Math.max(entity.temperature - 0.05F, targetTemp);
+            else entity.temperature = Math.min(entity.temperature + 0.05F, targetTemp);
+            if(entity.temperature < entity.metal.value.getMeltTemp()) level.setBlockAndUpdate(pos, entity.originalState);
+            else {
+                TieredHeat heat = TieredHeat.fromTemp(entity.temperature);
+                if(heat.getTier() != state.getValue(MeltedMetalBlock.HEAT)) level.setBlockAndUpdate(pos, state.setValue(MeltedMetalBlock.HEAT, heat.getTier()));
+            }
+            entity.setChanged();
+        }
     }
 
     @Override
     public void load(CompoundTag tag) {
         super.load(tag);
         temperature = tag.getFloat("temperature");
+        targetTemperature = tag.getFloat("targetTemperature");
         originalState = MeltedMetalBlock.stateById(tag.getInt("originalState"));
         metal = RegistriesNF.getMetals().getValue(ResourceLocation.parse(tag.getString("metal")));
         units = tag.getInt("units");
+        hasSlag = tag.getBoolean("hasSlag");
     }
 
     @Override
     public void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
         tag.putFloat("temperature", temperature);
+        tag.putFloat("targetTemperature", targetTemperature);
         tag.putInt("originalState", MeltedMetalBlock.getId(originalState));
         tag.putString("metal", metal.getRegistryName().toString());
         tag.putInt("units", units);
+        tag.putBoolean("hasSlag", hasSlag);
     }
 }

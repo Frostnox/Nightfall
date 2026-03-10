@@ -754,4 +754,8 @@ public class LevelUtil {
         }
         return -1;
     }
+
+    public static float getRainTempPenalty(Level level, BlockPos pos) {
+        return level.isRainingAt(pos.above()) ? -200 : 0;
+    }
 }
