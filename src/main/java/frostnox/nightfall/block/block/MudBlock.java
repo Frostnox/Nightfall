@@ -32,7 +32,7 @@ public class MudBlock extends UnstableBlock implements ITimeSimulatedBlock {
         BlockPos abovePos = pos.above();
         if(!level.isRainingAt(abovePos)) {
             BlockPos.MutableBlockPos neighborPos = pos.mutable();
-            for(AxisDirection dir : AxisDirection.values()) {
+            for(AxisDirection dir : AxisDirection.XYZ) {
                 if(level.getFluidState(neighborPos.set(pos.getX() + dir.x, pos.getY() + dir.y, pos.getZ() + dir.z)).is(FluidTags.WATER)) return;
             }
             LevelChunk chunk = level.getChunkAt(pos);
@@ -67,7 +67,7 @@ public class MudBlock extends UnstableBlock implements ITimeSimulatedBlock {
             if(LevelUtil.isSkyUnobstructed(level, pos.above())) p *= 1F - chunkData.getWeatherPercentageAboveIntensityOverTime(LevelData.get(level), pos, Weather.GLOBAL_CLOUDS_THRESHOLD, gameTime - elapsedTime, gameTime);
             if(MathUtil.getRandomSuccesses(p, elapsedTime, 1, random) >= 1) {
                 BlockPos.MutableBlockPos neighborPos = pos.mutable();
-                for(AxisDirection dir : AxisDirection.values()) {
+                for(AxisDirection dir : AxisDirection.XYZ) {
                     if(level.getFluidState(neighborPos.set(pos.getX() + dir.x, pos.getY() + dir.y, pos.getZ() + dir.z)).is(FluidTags.WATER)) return;
                 }
                 level.setBlock(pos, BlocksNF.DIRT.get().defaultBlockState(), 3);

@@ -226,7 +226,7 @@ public class EntityLightEngine {
                     double light = source.getBrightness() * (1D - dist / radius);
                     if(light > 0D) {
                         double maxNeighborLight = Double.NEGATIVE_INFINITY;
-                        for(AxisDirection axisDir : AxisDirection.values()) {
+                        for(AxisDirection axisDir : AxisDirection.XYZ) {
                             mutablePos.set(pos.getX() + axisDir.x, pos.getY() + axisDir.y, pos.getZ() + axisDir.z);
                             if(!lightMap.containsKey(mutablePos)) continue;
                             double neighborLight = lightMap.getDouble(mutablePos);
@@ -278,7 +278,7 @@ public class EntityLightEngine {
                         }
                         if(light > (maxNeighborLight - 0.001D) && maxNeighborLight != Double.NEGATIVE_INFINITY) light = maxNeighborLight - dropOff;
                         if(light > 0) {
-                            for(AxisDirection axisDir : AxisDirection.values()) {
+                            for(AxisDirection axisDir : AxisDirection.XYZ) {
                                 mutablePos.set(pos.getX() + axisDir.x, pos.getY() + axisDir.y, pos.getZ() + axisDir.z);
                                 if(state.canOcclude()) {
                                     VoxelShape shape = state.getFaceOcclusionShape(mc.level, pos, axisDir.normal);

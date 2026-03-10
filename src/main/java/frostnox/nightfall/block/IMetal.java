@@ -10,6 +10,7 @@ import net.minecraft.world.item.Items;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.ForgeRegistryEntry;
+import net.minecraftforge.registries.RegistryObject;
 
 import java.awt.*;
 import java.util.Collection;
@@ -41,6 +42,8 @@ public interface IMetal extends IBlock {
     Map<IMetal, Vec2f> getBaseMetals();
 
     List<Float> getBaseDefenses();
+
+    RegistryObject<MetalFluid> getFluid();
 
     default String getName() {
         return toString().toLowerCase(Locale.ROOT);

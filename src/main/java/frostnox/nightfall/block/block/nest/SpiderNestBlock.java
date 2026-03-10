@@ -67,7 +67,7 @@ public class SpiderNestBlock extends GuardedNestBlock {
                 }
                 continue;
             }
-            for(AxisDirection dir : AxisDirection.values()) {
+            for(AxisDirection dir : AxisDirection.XYZ) {
                 mutablePos.set(pos.getX() + dir.x, pos.getY() + dir.y, pos.getZ() + dir.z);
                 if(!visited.contains(mutablePos)) {
                     BlockPos neighborPos = mutablePos.immutable();

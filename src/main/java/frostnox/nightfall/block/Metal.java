@@ -1,7 +1,9 @@
 package frostnox.nightfall.block;
 
 import frostnox.nightfall.Nightfall;
+import frostnox.nightfall.block.fluid.MetalFluid;
 import frostnox.nightfall.registry.RegistriesNF;
+import frostnox.nightfall.registry.forge.FluidsNF;
 import frostnox.nightfall.registry.forge.SoundsNF;
 import frostnox.nightfall.util.data.Vec2f;
 import it.unimi.dsi.fastutil.floats.FloatList;
@@ -11,6 +13,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.MaterialColor;
+import net.minecraftforge.registries.RegistryObject;
 
 import javax.annotation.Nullable;
 import java.awt.Color;
@@ -123,5 +126,10 @@ public enum Metal implements IMetal {
     @Override
     public List<Float> getBaseDefenses() {
         return defenses;
+    }
+
+    @Override
+    public RegistryObject<MetalFluid> getFluid() {
+        return FluidsNF.METAL.get(this);
     }
 }

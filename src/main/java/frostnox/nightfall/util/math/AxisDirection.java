@@ -12,7 +12,10 @@ public enum AxisDirection {
     ZP(0, 0, 1, 5),
     ZN(0, 0, -1, 4);
 
-    public static final AxisDirection[] HORIZONTALS = new AxisDirection[]{XP, XN, ZP, ZN};
+    public static final AxisDirection[] XYZ = new AxisDirection[]{XP, XN, YP, YN, ZP, ZN};
+    public static final AxisDirection[] XZ = new AxisDirection[]{XP, XN, ZP, ZN};
+    public static final AxisDirection[] YPXZ = new AxisDirection[]{YP, XP, XN, ZP, ZN};
+    public static final AxisDirection[] XZYN = new AxisDirection[]{XP, XN, ZP, ZN, YN};
 
     public final int x;
     public final int y;
@@ -31,6 +34,6 @@ public enum AxisDirection {
     }
 
     public AxisDirection getOpposite() {
-        return values()[oppositeIndex];
+        return XYZ[oppositeIndex];
     }
 }

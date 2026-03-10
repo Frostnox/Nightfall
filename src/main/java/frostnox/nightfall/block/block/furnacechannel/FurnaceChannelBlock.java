@@ -43,9 +43,9 @@ import java.util.List;
 public class FurnaceChannelBlock extends WaterloggedEntityBlock implements ICustomPathfindable {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     public static BooleanProperty SEALED = BlockStatePropertiesNF.SEALED;
-    private static final VoxelShape SOUTH_SHAPE = Shapes.or(Block.box(5.0D, 5.0D, 10.0D, 11.0D, 7.0D, 16.0D),
-            Block.box(9.0D, 7.0D, 10.0D, 11.0D, 9.0D, 16.0D),
-            Block.box(5.0D, 7.0D, 10.0D, 7.0D, 9.0D, 16.0D));
+    private static final VoxelShape SOUTH_SHAPE = Shapes.or(Block.box(5.0D, 5.0D, 9.0D, 11.0D, 7.0D, 16.0D),
+            Block.box(9.0D, 7.0D, 9.0D, 11.0D, 9.0D, 16.0D),
+            Block.box(5.0D, 7.0D, 9.0D, 7.0D, 9.0D, 16.0D));
     private static final VoxelShape NORTH_SHAPE = MathUtil.rotate(SOUTH_SHAPE, Rotation.CLOCKWISE_180);
     private static final VoxelShape EAST_SHAPE = MathUtil.rotate(SOUTH_SHAPE, Rotation.COUNTERCLOCKWISE_90);
     private static final VoxelShape WEST_SHAPE = MathUtil.rotate(SOUTH_SHAPE, Rotation.CLOCKWISE_90);
@@ -87,7 +87,8 @@ public class FurnaceChannelBlock extends WaterloggedEntityBlock implements ICust
         level.playSound(player, pos, SoundsNF.CERAMIC_OPEN_SMALL.get(), SoundSource.BLOCKS, 1F, 1F);
         if(level.isClientSide) return InteractionResult.SUCCESS;
         else {
-            level.setBlock(pos, state.setValue(SEALED, !state.getValue(SEALED)), 2);;
+            if(!state.getValue(SEALED)) ((FurnaceChannelBlockEntity) level.getBlockEntity(pos)).stopCasting();
+            level.setBlock(pos, state.setValue(SEALED, !state.getValue(SEALED)), 2);
             return InteractionResult.CONSUME;
         }
     }

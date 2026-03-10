@@ -47,7 +47,7 @@ public class DryingUnstableBlock extends UnstableBlock implements EntityBlock, I
             if(!level.isRainingAt(abovePos)) {
                 boolean canDry = false;
                 BlockPos.MutableBlockPos neighborPos = pos.mutable();
-                for(AxisDirection dir : AxisDirection.values()) {
+                for(AxisDirection dir : AxisDirection.XYZ) {
                     if(level.getFluidState(neighborPos.set(pos.getX() + dir.x, pos.getY() + dir.y, pos.getZ() + dir.z)).is(FluidTags.WATER)) {
                         canDry = false;
                         break;

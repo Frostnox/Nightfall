@@ -615,6 +615,7 @@ public class Nightfall {
             event.registerBlockEntityRenderer(BlockEntitiesNF.RACK.get(), RackRenderer::new);
             event.registerBlockEntityRenderer(BlockEntitiesNF.SHELF.get(), ShelfRenderer::new);
             event.registerBlockEntityRenderer(BlockEntitiesNF.ITEM_MOLD.get(), ItemMoldRenderer::new);
+            event.registerBlockEntityRenderer(BlockEntitiesNF.FURNACE_CHANNEL.get(), FurnaceChannelRenderer::new);
         }
 
         @SubscribeEvent

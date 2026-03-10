@@ -107,8 +107,8 @@ public class LevelUtil {
     public static final long MIDNIGHT_TIME = 18000L * (ContinentalWorldType.DAY_LENGTH / 24000L);
     public static final long SUNRISE_TIME = 23000L * (ContinentalWorldType.DAY_LENGTH / 24000L);
     public static final long UNDEAD_START_TIME = 13500L * (ContinentalWorldType.DAY_LENGTH / 24000L);
-    private static final int MAX_FURNACE_AREA = 9;
-    private static final int MAX_BLAST_FURNACE_AREA = 16;
+    public static final int MAX_FURNACE_AREA = 9;
+    public static final int MAX_BLAST_FURNACE_AREA = 16;
     public static final float PLAYER_PUSH = 2;
 
     public static long getDayLength(Level level) {
