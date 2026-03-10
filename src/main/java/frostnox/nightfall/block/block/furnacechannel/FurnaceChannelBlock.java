@@ -10,13 +10,19 @@ import frostnox.nightfall.registry.forge.BlockEntitiesNF;
 import frostnox.nightfall.registry.forge.SoundsNF;
 import frostnox.nightfall.util.MathUtil;
 import frostnox.nightfall.util.math.OctalDirection;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -109,7 +115,14 @@ public class FurnaceChannelBlock extends WaterloggedEntityBlock implements ICust
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext placeContext) {
-        return addLiquidToPlacement(defaultBlockState().setValue(FACING, placeContext.getHorizontalDirection()), placeContext);
+        if(placeContext.getClickedFace().getAxis() == Direction.Axis.Y) return null;
+        else return addLiquidToPlacement(defaultBlockState().setValue(FACING, placeContext.getClickedFace().getOpposite()), placeContext);
+    }
+
+    @Override
+    public void appendHoverText(ItemStack pStack, @Nullable BlockGetter pLevel, List<Component> pTooltip, TooltipFlag pFlag) {
+        pTooltip.add(new TranslatableComponent("block.furnace_channel.info").withStyle(ChatFormatting.AQUA));
+        pTooltip.add(new TranslatableComponent("block.heat_resistant." + maxHeat.getTier()).withStyle(Style.EMPTY.withColor(maxHeat.color.getRGB())));
     }
 
     @Override

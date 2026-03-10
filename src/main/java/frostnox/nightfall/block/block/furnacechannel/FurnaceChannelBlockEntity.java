@@ -76,7 +76,7 @@ public class FurnaceChannelBlockEntity extends BlockEntity {
                         if(mold.addFluid(new FluidStack(targetMetal.metal.value.getFluid().get(), 1), targetMetal.temperature)) {
                             entity.startCasting(i, targetMetal.temperature);
                             targetMetal.drain();
-                            if(TieredHeat.fromTemp(targetMetal.temperature).getTier() > ((FurnaceChannelBlock) state.getBlock()).maxHeat.getTier() && level.random.nextInt(8) == 0) {
+                            if(TieredHeat.fromTemp(targetMetal.temperature).getTier() > ((FurnaceChannelBlock) state.getBlock()).maxHeat.getTier() && level.random.nextInt(4) == 0) {
                                 level.destroyBlock(pos, false);
                             }
                             return;
@@ -118,7 +118,7 @@ public class FurnaceChannelBlockEntity extends BlockEntity {
         AABB box = getBlockState().getShape(level, getBlockPos()).bounds().move(getBlockPos());
         if(visualDist > 0) {
             Direction dir = getBlockState().getValue(FurnaceChannelBlock.FACING);
-            float x = dir.getStepX() * 1F/16F, z = dir.getStepZ() * 1F/16F;
+            float x = dir.getStepX() * 2F/16F, z = dir.getStepZ() * 2F/16F;
             return new AABB(box.minX - x, box.minY - 4F/16F - visualDist, box.minZ - z, box.maxX + x, box.maxY, box.maxZ + z);
         }
         return box;

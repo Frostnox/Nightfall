@@ -162,7 +162,7 @@ public class BlockTagsProviderNF extends BlockTagsProvider {
                 BlocksNF.BRICK_SIDING.get(), BlocksNF.FIRE_BRICKS.get(), BlocksNF.FIRE_BRICK_STAIRS.get(), BlocksNF.FIRE_BRICK_SLAB.get(),
                 BlocksNF.FIRE_BRICK_SIDING.get(), BlocksNF.MOON_ESSENCE.get(), BlocksNF.FLINT_CLUSTER.get(), BlocksNF.SLAG.get(),
                 BlocksNF.AZURITE.get(), BlocksNF.HEMATITE.get(), BlocksNF.SMELTED_AZURITE.get(), BlocksNF.SMELTED_HEMATITE.get(),
-                BlocksNF.ANCHORING_RESIN.get(), BlocksNF.FIRE_BRICK_CHANNEL.get());
+                BlocksNF.ANCHORING_RESIN.get(), BlocksNF.MUD_BRICK_CHANNEL.get(), BlocksNF.BRICK_CHANNEL.get(), BlocksNF.FIRE_BRICK_CHANNEL.get());
         for(var block : BlocksNF.ROCK_CLUSTERS.values()) tag(BlockTags.MINEABLE_WITH_PICKAXE).add(block.get());
         for(var block : BlocksNF.SKARA_ROCK_CLUSTERS.values()) tag(BlockTags.MINEABLE_WITH_PICKAXE).add(block.get());
         for(var block : BlocksNF.ANVILS_STONE.values()) tag(BlockTags.MINEABLE_WITH_PICKAXE).add(block.get());

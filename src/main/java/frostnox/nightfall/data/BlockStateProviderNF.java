@@ -1256,6 +1256,8 @@ public class BlockStateProviderNF extends BlockStateProvider {
         for(var block : BlocksNF.LIQUID_MELTED_METAL.values()) particleOnlyBlock(block.get(), resource("metal_still"));
         crucibleBlock(BlocksNF.CRUCIBLE.get());
         unfiredAxisPotteryBlock(BlocksNF.UNFIRED_CRUCIBLE.get());
+        furnaceChannelBlock(BlocksNF.MUD_BRICK_CHANNEL.get(), resource(BlocksNF.MUD_BRICKS.get()));
+        furnaceChannelBlock(BlocksNF.BRICK_CHANNEL.get(), resource(BlocksNF.BRICKS.get()));
         furnaceChannelBlock(BlocksNF.FIRE_BRICK_CHANNEL.get(), resource(BlocksNF.FIRE_BRICKS.get()));
 
         templateBlock(BlocksNF.MOON_ESSENCE.get(), mcLoc("cube_all"), Pair.of("all", resource(BlocksNF.MOON_ESSENCE.get())), Pair.of("particle", resource("empty")));

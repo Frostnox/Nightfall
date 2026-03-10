@@ -341,6 +341,8 @@ public class LootTableProviderNF extends LootTableProvider {
             addExplodable(BlocksNF.SMELTED_HEMATITE.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.SLAG.get(), 2, 2)))
                     .withPool(pool(entry(ItemsNF.IRON_BLOOM.get(), 2, 2)))
                     .withPool(pool(entry(ItemsNF.STEEL_NUGGET.get(), 0, 0, List.of(PerceptionCountFunction.with(1, 0.15F, 0.01F))))));
+            dropOther(BlocksNF.MUD_BRICK_CHANNEL.get(), ItemsNF.MUD_BRICK.get(), 2);
+            dropOther(BlocksNF.BRICK_CHANNEL.get(), ItemsNF.BRICK.get(), 2);
             dropOther(BlocksNF.FIRE_BRICK_CHANNEL.get(), ItemsNF.FIRE_BRICK.get(), 2);
 
             dropOthers(BlocksNF.SPIDER_WEB.get(), entry(ItemsNF.SILK.get(), -1, 1));

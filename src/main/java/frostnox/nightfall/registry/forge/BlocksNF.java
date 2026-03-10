@@ -721,7 +721,7 @@ public class BlocksNF {
             MaterialColor.TERRACOTTA_BLACK).strength(8.0F, 16.0F).sound(SoundType.ANCIENT_DEBRIS)));
 
     public static final RegistryObject<MeltedMetalBlock> MELTED_METAL = register("melted_metal", () -> new MeltedMetalBlock(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.FIRE)
-            .strength(12.0F, 20.0F).lightLevel(state -> 15).speedFactor(0.2F).jumpFactor(0.5F).noDrops().randomTicks().sound(SoundType.NETHER_ORE)));
+            .strength(12.0F, 20.0F).lightLevel(state -> 15).speedFactor(0.1F).jumpFactor(0.5F).noDrops().randomTicks().sound(SoundType.NETHER_ORE)));
     public static final Map<TieredHeat, RegistryObject<SizedLiquidBlock>> LIQUID_MELTED_METAL = DataUtil.mapEnum(TieredHeat.class, heat -> heat == TieredHeat.NONE,
             (heat) -> register(heat.toString() + "_melted_metal", () -> new SizedLiquidBlock(FluidsNF.MELTED_METAL.get(heat),
             BlockBehaviour.Properties.of(Material.LAVA).noCollission().strength(100.0F).noDrops().randomTicks().lightLevel((state) -> 15))));
@@ -734,6 +734,8 @@ public class BlocksNF {
             20 * 60 * 8, TieredHeat.ORANGE, CRUCIBLE, 0,
             BlockBehaviour.Properties.of(Material.CLAY).strength(1.0F, 20F).sound(SoundType.GRAVEL)));
 
+    public static final RegistryObject<FurnaceChannelBlock> MUD_BRICK_CHANNEL = register("mud_brick_channel", () -> new FurnaceChannelBlock(TieredHeat.ORANGE, BlockBehaviour.Properties.copy(MUD_BRICKS.get()).strength(2.5F)));
+    public static final RegistryObject<FurnaceChannelBlock> BRICK_CHANNEL = register("brick_channel", () -> new FurnaceChannelBlock(TieredHeat.YELLOW, BlockBehaviour.Properties.copy(BRICKS.get()).strength(4)));
     public static final RegistryObject<FurnaceChannelBlock> FIRE_BRICK_CHANNEL = register("fire_brick_channel", () -> new FurnaceChannelBlock(TieredHeat.WHITE, BlockBehaviour.Properties.copy(FIRE_BRICKS.get()).strength(5)));
 
     //Special

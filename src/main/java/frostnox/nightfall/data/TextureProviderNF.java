@@ -31,6 +31,7 @@ public class TextureProviderNF extends TextureProvider {
     private final List<Integer> FLINT, FLINT4, FLINT5;
     private final List<Integer> SNOW, SNOW_LIGHT;
     private final List<Integer> CLAY, TERRACOTTA;
+    private final List<Integer> MUD_BRICK, BRICK, FIRE_BRICK;
     private final List<Integer> METAL_GENERIC_LIGHT, METAL_GENERIC_DARK;
     private final Map<Metal, List<Integer>> METAL_PALETTES = new HashMap<>();
     private final Map<Metal, List<Integer>> METAL_REDUCED_PALETTES = new HashMap<>();
@@ -88,6 +89,9 @@ public class TextureProviderNF extends TextureProvider {
         SNOW_LIGHT = subset(SNOW, 3, 3);
         CLAY = fill(image);
         TERRACOTTA = fill(image);
+        MUD_BRICK = fill(image);
+        BRICK = fill(image);
+        FIRE_BRICK = fill(image);
         METAL_GENERIC_LIGHT = fill(image);
         METAL_GENERIC_DARK = fill(image);
         for(Metal type : Metal.values()) {
@@ -376,6 +380,9 @@ public class TextureProviderNF extends TextureProvider {
 
         replaceImagePalette(item(ItemsNF.STICK), item(ItemsNF.STICK), STICK);
         replaceImagePalette(item(ItemsNF.LEATHER), item(ItemsNF.LEATHER), subset(LEATHER, 6, 1));
+        replaceImagePalette(item(ItemsNF.MUD_BRICK), item("brick"), MUD_BRICK);
+        replaceImagePalette(item(ItemsNF.FIRE_BRICK), item("brick"), FIRE_BRICK);
+        replaceImagePalette(item(ItemsNF.BRICK), item("brick"), BRICK);
 
         replaceImagePalette(item(ItemsNF.TORCH), item(ItemsNF.TORCH), STICK);
         replaceImagePalette(item(ItemsNF.TORCH_UNLIT), item(ItemsNF.TORCH_UNLIT), STICK);
@@ -466,6 +473,9 @@ public class TextureProviderNF extends TextureProvider {
         replaceImagePalette(item(ItemsNF.INGOT_MOLD), item(ItemsNF.INGOT_MOLD), TERRACOTTA);
         replaceImagePalette(item(ItemsNF.ARROWHEAD_MOLD), item(ItemsNF.ARROWHEAD_MOLD), TERRACOTTA);
         replaceImagePalette(item(ItemsNF.ROD_MOLD), item(ItemsNF.ROD_MOLD), TERRACOTTA);
+        replaceImagePalette(item(ItemsNF.MUD_BRICK_CHANNEL), item("furnace_channel"), MUD_BRICK);
+        replaceImagePalette(item(ItemsNF.BRICK_CHANNEL), item("furnace_channel"), BRICK);
+        replaceImagePalette(item(ItemsNF.FIRE_BRICK_CHANNEL), item("furnace_channel"), FIRE_BRICK);
         for(TieredItemMaterial material : ItemsNF.METAL_ARROWS.keySet()) {
             var item = ItemsNF.METAL_ARROWS.get(material);
             var palette = METAL_PALETTES.get(material.getMetal());

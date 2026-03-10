@@ -288,7 +288,7 @@ public class Nightfall {
         cutout.addAll(BlocksNF.METAL_BARS.values());
         cutout.addAll(BlocksNF.LANTERNS.values());
         cutout.addAll(BlocksNF.LANTERNS_UNLIT.values());
-        translucent.addAll(List.of(BlocksNF.MOON_ESSENCE, BlocksNF.ICE, BlocksNF.RABBIT_BURROW, BlocksNF.FIRE_BRICK_CHANNEL));
+        translucent.addAll(List.of(BlocksNF.MOON_ESSENCE, BlocksNF.ICE, BlocksNF.RABBIT_BURROW, BlocksNF.MUD_BRICK_CHANNEL, BlocksNF.BRICK_CHANNEL, BlocksNF.FIRE_BRICK_CHANNEL));
         for(var block : cutout) ItemBlockRenderTypes.setRenderLayer(block.get(), RenderType.cutout());
         for(var block : cutoutMipped) ItemBlockRenderTypes.setRenderLayer(block.get(), RenderType.cutoutMipped());
         for(var block : translucent) ItemBlockRenderTypes.setRenderLayer(block.get(), RenderType.translucent());

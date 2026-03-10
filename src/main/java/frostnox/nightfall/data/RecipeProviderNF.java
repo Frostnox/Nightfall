@@ -149,10 +149,12 @@ public class RecipeProviderNF extends RecipeProvider {
         BuildingRecipeBuilder.base(ItemsNF.BRICK.get(), 3, ItemsNF.BRICK_STAIRS.get()).order(1).save(consumer);
         BuildingRecipeBuilder.base(ItemsNF.BRICK.get(), 2, ItemsNF.BRICK_SLAB.get()).order(2).save(consumer);
         BuildingRecipeBuilder.base(ItemsNF.BRICK.get(), 2, ItemsNF.BRICK_SIDING.get()).order(3).save(consumer);
+        BuildingRecipeBuilder.base(ItemsNF.BRICK.get(), 2, ItemsNF.BRICK_CHANNEL.get()).requirement(EntriesNF.SMELTING).save(consumer);
         BuildingRecipeBuilder.base(ItemsNF.MUD_BRICK.get(), 4, ItemsNF.MUD_BRICKS.get()).order(0).save(consumer);
         BuildingRecipeBuilder.base(ItemsNF.MUD_BRICK.get(), 3, ItemsNF.MUD_BRICK_STAIRS.get()).order(1).save(consumer);
         BuildingRecipeBuilder.base(ItemsNF.MUD_BRICK.get(), 2, ItemsNF.MUD_BRICK_SLAB.get()).order(2).save(consumer);
         BuildingRecipeBuilder.base(ItemsNF.MUD_BRICK.get(), 2, ItemsNF.MUD_BRICK_SIDING.get()).order(3).save(consumer);
+        BuildingRecipeBuilder.base(ItemsNF.MUD_BRICK.get(), 2, ItemsNF.MUD_BRICK_CHANNEL.get()).requirement(EntriesNF.SMELTING).save(consumer);
         BuildingRecipeBuilder.base(ItemsNF.FIRE_BRICK.get(), 4, ItemsNF.FIRE_BRICKS.get()).order(0).save(consumer);
         BuildingRecipeBuilder.base(ItemsNF.FIRE_BRICK.get(), 3, ItemsNF.FIRE_BRICK_STAIRS.get()).order(1).save(consumer);
         BuildingRecipeBuilder.base(ItemsNF.FIRE_BRICK.get(), 2, ItemsNF.FIRE_BRICK_SLAB.get()).order(2).save(consumer);

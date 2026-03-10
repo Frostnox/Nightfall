@@ -173,8 +173,9 @@ public class LanguageProviderNF extends LanguageProvider {
         add("block.holdable.control", "(Crouch and use with empty hand)");
         add("block.fireable", "Fires at ");
         add("block.capacity", "%s Capacity");
-        add("block.crucible.pour", "Carry and use to pour fluids");
+        add("block.crucible.pour", "Carry and use to pour liquids");
         add("block.warding_effigy.info", "Prevents nearby Undead occurrence");
+        add("block.furnace_channel.info", "Extracts liquid metal and pours into molds");
         add("item.on_use", "On Use: ");
         add("item.toolactions", "Can perform ");
         add("item.integrity", "%s Integrity");

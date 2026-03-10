@@ -379,6 +379,9 @@ public class ItemModelProviderNF extends ModelProvider<AnimatedItemModelBuilder>
         genericItem(ItemsNF.UNFIRED_ARROWHEAD_MOLD.get());
         genericItem(ItemsNF.UNFIRED_ROD_MOLD.get());
         genericBlock(ItemsNF.CRUCIBLE.get(), "_none");
+        genericItem(ItemsNF.MUD_BRICK_CHANNEL.get());
+        genericItem(ItemsNF.BRICK_CHANNEL.get());
+        genericItem(ItemsNF.FIRE_BRICK_CHANNEL.get());
 
         genericBlockAsItem(ItemsNF.SPIDER_WEB.get());
         genericBlock(ItemsNF.DRAKEFOWL_NEST.get(), "_0");

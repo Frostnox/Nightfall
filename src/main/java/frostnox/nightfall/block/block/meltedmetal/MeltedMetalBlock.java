@@ -1,6 +1,5 @@
 package frostnox.nightfall.block.block.meltedmetal;
 
-import frostnox.nightfall.action.DamageTypeSource;
 import frostnox.nightfall.block.*;
 import frostnox.nightfall.block.block.fuel.BurningFuelBlockEntity;
 import frostnox.nightfall.block.fluid.MeltedMetalFluid;
@@ -10,7 +9,6 @@ import frostnox.nightfall.capability.LevelData;
 import frostnox.nightfall.entity.ai.pathfinding.NodeType;
 import frostnox.nightfall.registry.forge.BlockEntitiesNF;
 import frostnox.nightfall.registry.forge.FluidsNF;
-import frostnox.nightfall.registry.forge.SoundsNF;
 import frostnox.nightfall.util.LevelUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -37,8 +35,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.chunk.LevelChunk;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.EntityCollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.ticks.TickPriority;
 import org.jetbrains.annotations.Nullable;
 
@@ -46,6 +47,7 @@ import java.util.Random;
 
 public class MeltedMetalBlock extends BaseEntityBlock implements IAdjustableNodeType, ITimeSimulatedBlock {
     public static final IntegerProperty HEAT = BlockStatePropertiesNF.HEAT;
+    public static final VoxelShape COLLISION_SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 12.0D, 16.0D);
 
     public MeltedMetalBlock(Properties properties) {
         super(properties);
@@ -76,10 +78,19 @@ public class MeltedMetalBlock extends BaseEntityBlock implements IAdjustableNode
     }
 
     @Override
-    public void stepOn(Level level, BlockPos pos, BlockState state, Entity pEntity) {
-        if(!pEntity.fireImmune() && pEntity.invulnerableTime <= 10 && pEntity instanceof LivingEntity && level.getBlockEntity(pos) instanceof MeltedMetalBlockEntity metal) {
-            pEntity.hurt(DamageTypeSource.HOT_FLOOR, metal.temperature / 600F);
-        }
+    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+        entity.lavaHurt();
+    }
+
+    @Override
+    public VoxelShape getBlockSupportShape(BlockState state, BlockGetter pReader, BlockPos pos) {
+        return Shapes.empty();
+    }
+
+    @Override
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        if(context instanceof EntityCollisionContext entityContext && entityContext.getEntity() != null) return COLLISION_SHAPE;
+        else return super.getCollisionShape(state, level, pos, context);
     }
 
     @Override
