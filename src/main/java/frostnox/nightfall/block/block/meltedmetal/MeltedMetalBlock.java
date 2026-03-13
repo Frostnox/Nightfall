@@ -8,6 +8,7 @@ import frostnox.nightfall.capability.IChunkData;
 import frostnox.nightfall.capability.LevelData;
 import frostnox.nightfall.entity.ai.pathfinding.NodeType;
 import frostnox.nightfall.registry.forge.BlockEntitiesNF;
+import frostnox.nightfall.registry.forge.BlocksNF;
 import frostnox.nightfall.registry.forge.FluidsNF;
 import frostnox.nightfall.util.LevelUtil;
 import net.minecraft.core.BlockPos;
@@ -146,10 +147,10 @@ public class MeltedMetalBlock extends BaseEntityBlock implements IAdjustableNode
     @Override
     public void neighborChanged(BlockState state, Level level, BlockPos pos, Block pBlock, BlockPos pFromPos, boolean pIsMoving) {
         super.neighborChanged(state, level, pos, pBlock, pFromPos, pIsMoving);
-        if(!level.isClientSide && level.getBlockEntity(pos) instanceof MeltedMetalBlockEntity metal) {
+        if(!level.isClientSide) {
             BlockState neighbor = level.getBlockState(pFromPos);
             if(neighbor.getFluidState().is(FluidTags.WATER)) {
-                level.setBlockAndUpdate(pos, metal.originalState);
+                level.setBlockAndUpdate(pos, BlocksNF.SLAG.get().defaultBlockState());
                 level.playSound(null, pos, SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, 0.375F, 2.6F + (level.random.nextFloat() - level.random.nextFloat()) * 0.8F);
                 ((ServerLevel) level).sendParticles(ParticleTypes.LARGE_SMOKE, (double)pos.getX() + 0.5D, (double)pos.getY() + 0.25D, (double)pos.getZ() + 0.5D, 8, 0.25D, 0.25D, 0.25D, 0.0D);
             }
