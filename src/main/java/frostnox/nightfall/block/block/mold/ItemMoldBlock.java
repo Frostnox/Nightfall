@@ -1,13 +1,17 @@
 package frostnox.nightfall.block.block.mold;
 
 import frostnox.nightfall.block.BlockStatePropertiesNF;
+import frostnox.nightfall.block.ICustomPathfindable;
 import frostnox.nightfall.block.ITimeSimulatedBlock;
 import frostnox.nightfall.block.block.WaterloggedEntityBlock;
 import frostnox.nightfall.capability.ChunkData;
 import frostnox.nightfall.capability.IChunkData;
 import frostnox.nightfall.capability.LevelData;
+import frostnox.nightfall.entity.ai.pathfinding.NodeManager;
+import frostnox.nightfall.entity.ai.pathfinding.NodeType;
 import frostnox.nightfall.registry.forge.BlockEntitiesNF;
 import frostnox.nightfall.util.LevelUtil;
+import frostnox.nightfall.util.MathUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -37,9 +41,9 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.ticks.TickPriority;
 import org.jetbrains.annotations.Nullable;
@@ -47,17 +51,28 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Random;
 
-public class ItemMoldBlock extends WaterloggedEntityBlock implements ITimeSimulatedBlock {
+public class ItemMoldBlock extends WaterloggedEntityBlock implements ITimeSimulatedBlock, ICustomPathfindable {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty TICKING = BlockStatePropertiesNF.TICKING;
     public final TagKey<Item> matchingItemTag;
     public final int maxUnits;
-    private final VoxelShape shapeX, shapeZ;
+    private final VoxelShape southShape, northShape, eastShape, westShape;
+    private final List<AABB> southFaceUp, northFaceUp, eastFaceUp, westFaceUp, southFaceDown, northFaceDown, eastFaceDown, westFaceDown;
 
     public ItemMoldBlock(VoxelShape shape, TagKey<Item> matchingItemTag, int maxUnits, Properties properties) {
         super(properties);
-        this.shapeZ = shape;
-        this.shapeX = Shapes.box(shape.min(Direction.Axis.Z), shape.min(Direction.Axis.Y), shape.min(Direction.Axis.X), shape.max(Direction.Axis.Z), shape.max(Direction.Axis.Y), shape.max(Direction.Axis.X));
+        this.southShape = shape;
+        this.northShape = MathUtil.rotate(shape, Rotation.CLOCKWISE_180);
+        this.eastShape = MathUtil.rotate(shape, Rotation.COUNTERCLOCKWISE_90);
+        this.westShape = MathUtil.rotate(shape, Rotation.CLOCKWISE_90);
+        this.southFaceUp = southShape.getFaceShape(Direction.UP).toAabbs();
+        this.northFaceUp = northShape.getFaceShape(Direction.UP).toAabbs();
+        this.eastFaceUp = eastShape.getFaceShape(Direction.UP).toAabbs();
+        this.westFaceUp = westShape.getFaceShape(Direction.UP).toAabbs();
+        this.southFaceDown = southShape.getFaceShape(Direction.DOWN).toAabbs();
+        this.northFaceDown = northShape.getFaceShape(Direction.DOWN).toAabbs();
+        this.eastFaceDown = eastShape.getFaceShape(Direction.DOWN).toAabbs();
+        this.westFaceDown = westShape.getFaceShape(Direction.DOWN).toAabbs();
         this.matchingItemTag = matchingItemTag;
         this.maxUnits = maxUnits;
         this.registerDefaultState(defaultBlockState().setValue(FACING, Direction.NORTH).setValue(TICKING, false));
@@ -83,7 +98,12 @@ public class ItemMoldBlock extends WaterloggedEntityBlock implements ITimeSimula
 
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter blockGetter, BlockPos pos, CollisionContext collisionContext) {
-        return state.getValue(FACING).getAxis() == Direction.Axis.Z ? shapeZ : shapeX;
+        return switch(state.getValue(FACING)) {
+            case NORTH -> northShape;
+            case EAST -> eastShape;
+            case SOUTH -> southShape;
+            default -> westShape;
+        };
     }
 
     @Override
@@ -173,5 +193,36 @@ public class ItemMoldBlock extends WaterloggedEntityBlock implements ITimeSimula
         if(state.getValue(TICKING) && level.getBlockEntity(pos) instanceof ItemMoldBlockEntity mold) {
             ItemMoldBlockEntity.serverTick(level, pos, state, mold, (elapsedTime > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) elapsedTime));
         }
+    }
+
+    @Override
+    public NodeType getRawNodeType(NodeManager nodeManager, BlockState state, BlockGetter level, BlockPos pos) {
+        nodeManager.getNode(pos).partial = true;
+        return NodeType.CLOSED;
+    }
+
+    @Override
+    public NodeType getFloorNodeType(NodeManager nodeManager, BlockState state, BlockGetter level, BlockPos pos) {
+        return NodeType.CLOSED;
+    }
+
+    @Override
+    public List<AABB> getTopFaceShape(BlockState state) {
+        return switch(state.getValue(FACING)) {
+            case NORTH -> northFaceUp;
+            case SOUTH -> southFaceUp;
+            case WEST -> westFaceUp;
+            default -> eastFaceUp;
+        };
+    }
+
+    @Override
+    public List<AABB> getBottomFaceShape(BlockState state) {
+        return switch(state.getValue(FACING)) {
+            case NORTH -> northFaceDown;
+            case SOUTH -> southFaceDown;
+            case WEST -> westFaceDown;
+            default -> eastFaceDown;
+        };
     }
 }

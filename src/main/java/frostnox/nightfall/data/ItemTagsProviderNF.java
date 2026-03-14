@@ -113,6 +113,8 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
         for(Metal metal : ItemsNF.WIRES.keySet()) tag(metal.getTag()).add(ItemsNF.WIRES.get(metal).get());
         for(Metal metal : ItemsNF.CHAINMAIL.keySet()) tag(metal.getTag()).add(ItemsNF.CHAINMAIL.get(metal).get());
         for(Metal metal : ItemsNF.SCALES.keySet()) tag(metal.getTag()).add(ItemsNF.SCALES.get(metal).get());
+        for(Metal metal : ItemsNF.METAL_BLOCKS.keySet()) tag(metal.getTag()).add(ItemsNF.METAL_BLOCKS.get(metal).get());
+        for(Metal metal : ItemsNF.ANVILS_METAL.keySet()) tag(metal.getTag()).add(ItemsNF.ANVILS_METAL.get(metal).get());
         for(TieredItemMaterial material : ItemsNF.ARMAMENT_HEADS.keySet()) {
             for(var item : ItemsNF.ARMAMENT_HEADS.get(material).values()) tag(material.getMetal().getTag()).add(item.get());
         }

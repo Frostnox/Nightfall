@@ -715,11 +715,15 @@ public class ItemsNF {
     public static final RegistryObject<BlockItemNF> INGOT_MOLD = register(BlocksNF.INGOT_MOLD, FUNCTIONAL_TAB);
     public static final RegistryObject<BlockItemNF> ARROWHEAD_MOLD = register(BlocksNF.ARROWHEAD_MOLD, FUNCTIONAL_TAB);
     public static final RegistryObject<BlockItemNF> ROD_MOLD = register(BlocksNF.ROD_MOLD, FUNCTIONAL_TAB);
+    public static final RegistryObject<BlockItemNF> BLOCK_MOLD = register(BlocksNF.BLOCK_MOLD, FUNCTIONAL_TAB);
+    public static final RegistryObject<BlockItemNF> ANVIL_MOLD = register(BlocksNF.ANVIL_MOLD, FUNCTIONAL_TAB);
     public static final Map<Armament, RegistryObject<BlockItemNF>> UNFIRED_ARMAMENT_MOLDS = DataUtil.mapEnum(Armament.class, a -> !BlocksNF.UNFIRED_ARMAMENT_MOLDS.containsKey(a),
             armament -> register(BlocksNF.UNFIRED_ARMAMENT_MOLDS.get(armament)));
     public static final RegistryObject<BlockItemNF> UNFIRED_INGOT_MOLD = register(BlocksNF.UNFIRED_INGOT_MOLD);
     public static final RegistryObject<BlockItemNF> UNFIRED_ARROWHEAD_MOLD = register(BlocksNF.UNFIRED_ARROWHEAD_MOLD);
     public static final RegistryObject<BlockItemNF> UNFIRED_ROD_MOLD = register(BlocksNF.UNFIRED_ROD_MOLD);
+    public static final RegistryObject<BlockItemNF> UNFIRED_BLOCK_MOLD = register(BlocksNF.UNFIRED_BLOCK_MOLD);
+    public static final RegistryObject<BlockItemNF> UNFIRED_ANVIL_MOLD = register(BlocksNF.UNFIRED_ANVIL_MOLD);
 
     public static final RegistryObject<BlockItemNF> COKE_BLOCK = register(BlocksNF.COKE);
     public static final RegistryObject<BlockItemNF> COAL_BLOCK = register(BlocksNF.COAL);

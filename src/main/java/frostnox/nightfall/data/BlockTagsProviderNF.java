@@ -120,10 +120,6 @@ public class BlockTagsProviderNF extends BlockTagsProvider {
         tag(BlockTags.LOGS).addTag(BlockTags.LOGS_THAT_BURN);
 
         for(var block : BlocksNF.METAL_BLOCKS.values()) tag(TagsNF.METAL_BLOCKS).add(block.get());
-        for(Metal type : BlocksNF.METAL_PLATINGS.keySet()) {
-            tag(TagsNF.METAL_BLOCKS).add(BlocksNF.METAL_PLATINGS.get(type).get(), BlocksNF.METAL_PLATING_STAIRS.get(type).get(),
-                    BlocksNF.METAL_PLATING_SLABS.get(type).get(), BlocksNF.METAL_PLATING_SIDINGS.get(type).get());
-        }
 
         tag(TagsNF.TILLABLE_SOIL).addTags(BlockTags.DIRT, TagsNF.SILT, TagsNF.LOAM);
         tag(TagsNF.TILLABLE_OR_AQUATIC_SOIL).addTag(TagsNF.TILLABLE_SOIL);
@@ -185,8 +181,10 @@ public class BlockTagsProviderNF extends BlockTagsProvider {
                 BlocksNF.COKE.get(), BlocksNF.COKE_BURNING.get(), BlocksNF.COAL.get(), BlocksNF.COAL_BURNING.get(),
                 BlocksNF.CHARCOAL.get(), BlocksNF.CHARCOAL_BURNING.get(), BlocksNF.FIREWOOD.get(), BlocksNF.FIREWOOD_BURNING.get(),
                 BlocksNF.SLAG.get(), BlocksNF.AZURITE.get(), BlocksNF.HEMATITE.get(), BlocksNF.SMELTED_AZURITE.get(),
-                BlocksNF.SMELTED_HEMATITE.get(), BlocksNF.MOON_ESSENCE.get());
+                BlocksNF.SMELTED_HEMATITE.get(), BlocksNF.MOON_ESSENCE.get(), BlocksNF.UNFIRED_INGOT_MOLD.get(), BlocksNF.UNFIRED_ARROWHEAD_MOLD.get(),
+                BlocksNF.UNFIRED_ROD_MOLD.get(), BlocksNF.UNFIRED_BLOCK_MOLD.get(), BlocksNF.UNFIRED_ANVIL_MOLD.get());
         for(var block : BlocksNF.INGOT_PILES.values()) tag(BlockTags.MINEABLE_WITH_SHOVEL).add(block.get());
+        for(var block : BlocksNF.UNFIRED_ARMAMENT_MOLDS.values()) tag(BlockTags.MINEABLE_WITH_SHOVEL).add(block.get());
 
         tag(Tags.Blocks.GLASS_COLORLESS).add(BlocksNF.GLASS_BLOCK.get(), BlocksNF.GLASS_SLAB.get(), BlocksNF.GLASS_SIDING.get());
         tag(BlockTags.IMPERMEABLE).addTags(Tags.Blocks.GLASS);
@@ -213,7 +211,7 @@ public class BlockTagsProviderNF extends BlockTagsProvider {
         tag(TagsNF.HAS_PHYSICS).addTags(TagsNF.SUPPORT_1, TagsNF.SUPPORT_2, TagsNF.SUPPORT_4, TagsNF.SUPPORT_8);
         //TODO: Make this function off hardness instead? And keep this for exceptions
         tag(TagsNF.FLOATS).addTags(BlockTags.ICE, BlockTags.PLANKS, BlockTags.WOODEN_STAIRS, BlockTags.WOODEN_SLABS, TagsNF.WOODEN_SIDINGS);
-        tag(TagsNF.FLOATS).add(BlocksNF.THATCH.get(), BlocksNF.THATCH_STAIRS.get(), BlocksNF.THATCH_SIDING.get());
+        tag(TagsNF.FLOATS).add(BlocksNF.THATCH.get(), BlocksNF.THATCH_STAIRS.get(), BlocksNF.THATCH_SLAB.get(), BlocksNF.THATCH_SIDING.get());
         HashMap<RegistryObject<? extends Block>, Integer> sup = new HashMap<>(256);
         for(var block : BlocksNF.getCoveredSoils()) sup.put(block, 0);
         for(var block : BlocksNF.STRANGE_SOILS.values()) sup.put(block, 0);
@@ -249,7 +247,8 @@ public class BlockTagsProviderNF extends BlockTagsProvider {
                 BlocksNF.CHARCOAL, BlocksNF.CHARCOAL_BURNING, BlocksNF.FIREWOOD, BlocksNF.SLAG, BlocksNF.AZURITE, BlocksNF.HEMATITE, BlocksNF.SMELTED_AZURITE,
                 BlocksNF.SMELTED_HEMATITE, BlocksNF.CAMPFIRE, BlocksNF.CAULDRON, BlocksNF.POT, BlocksNF.WET_MUD_BRICKS, BlocksNF.CLAY_BRICKS, BlocksNF.FIRE_CLAY_BRICKS,
                 BlocksNF.STEEL_INGOT_PILE_POOR, BlocksNF.STEEL_INGOT_PILE_FAIR, BlocksNF.CRUCIBLE, BlocksNF.UNFIRED_CRUCIBLE, BlocksNF.CAULDRON, BlocksNF.UNFIRED_CAULDRON,
-                BlocksNF.POT, BlocksNF.UNFIRED_POT, BlocksNF.SPIDER_NEST, BlocksNF.MELTED_METAL);
+                BlocksNF.POT, BlocksNF.UNFIRED_POT, BlocksNF.SPIDER_NEST, BlocksNF.MELTED_METAL, BlocksNF.BLOCK_MOLD, BlocksNF.ANVIL_MOLD, BlocksNF.UNFIRED_BLOCK_MOLD,
+                BlocksNF.UNFIRED_ANVIL_MOLD);
         addSupports(sup, 1, BlocksNF.CLAY, BlocksNF.FIRE_CLAY, BlocksNF.PACKED_SNOW);
         addSupports(sup, 2, BlocksNF.THATCH, BlocksNF.THATCH_STAIRS, BlocksNF.THATCH_SLAB, BlocksNF.THATCH_SIDING, BlocksNF.TERRACOTTA, BlocksNF.TERRACOTTA_TILES,
                 BlocksNF.TERRACOTTA_TILE_STAIRS, BlocksNF.TERRACOTTA_TILE_SLAB, BlocksNF.TERRACOTTA_TILE_SIDING, BlocksNF.TERRACOTTA_MOSAIC, BlocksNF.TERRACOTTA_MOSAIC_STAIRS,

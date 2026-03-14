@@ -211,7 +211,7 @@ public class SoundsNF {
     public static final SoundType TERRACOTTA_TYPE = new ForgeSoundType(1F, 1F, CERAMIC_BREAK, CERAMIC_STEP, () -> SoundEvents.STONE_PLACE,
             () -> SoundEvents.STONE_HIT, () -> SoundEvents.STONE_FALL);
     public static final SoundType CERAMIC_TYPE = new ForgeSoundType(1F, 1F, CERAMIC_BREAK, CERAMIC_STEP, CERAMIC_PLACE, CERAMIC_HIT, CERAMIC_FALL);
-    public static final SoundType CERAMIC_SMALL_TYPE = new ForgeSoundType(1F, 1F, () -> SoundEvents.STONE_BREAK, CERAMIC_STEP, () -> SoundEvents.STONE_PLACE, CERAMIC_HIT, CERAMIC_FALL);
+    public static final SoundType CERAMIC_DECORATION_TYPE = new ForgeSoundType(1F, 1F, () -> SoundEvents.STONE_BREAK, CERAMIC_STEP, () -> SoundEvents.STONE_PLACE, CERAMIC_HIT, CERAMIC_FALL);
     public static final SoundType CERAMIC_VESSEL_TYPE = new ForgeSoundType(1F, 1F, STURDY_CERAMIC_BREAK, CERAMIC_STEP, CERAMIC_PLACE, CERAMIC_HIT, CERAMIC_FALL);
     public static final SoundType FIREWOOD_TYPE = new ForgeSoundType(1F, 1F, FIREWOOD_BREAK, FIREWOOD_STEP, FIREWOOD_PLACE, FIREWOOD_HIT, FIREWOOD_FALL);
     public static final SoundType MUD_TYPE = new ForgeSoundType(1F, 1F, MUD_BREAK, MUD_STEP, MUD_PLACE, MUD_HIT, MUD_FALL);

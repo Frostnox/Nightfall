@@ -309,6 +309,8 @@ public class LootTableProviderNF extends LootTableProvider {
             dropOther(BlocksNF.UNFIRED_INGOT_MOLD.get(), ItemsNF.CLAY.get(), 4);
             dropOther(BlocksNF.UNFIRED_ARROWHEAD_MOLD.get(), ItemsNF.CLAY.get(), 4);
             dropOther(BlocksNF.UNFIRED_ROD_MOLD.get(), ItemsNF.CLAY.get(), 4);
+            dropOther(BlocksNF.UNFIRED_BLOCK_MOLD.get(), ItemsNF.CLAY.get(), 8);
+            dropOther(BlocksNF.UNFIRED_ANVIL_MOLD.get(), ItemsNF.CLAY.get(), 8);
             dropOther(BlocksNF.TORCH.get(), ItemsNF.TORCH.get());
             dropOther(BlocksNF.TORCH_UNLIT.get(), ItemsNF.STICK.get());
 

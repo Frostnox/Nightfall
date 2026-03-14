@@ -737,11 +737,11 @@ public class BlockStateProviderNF extends BlockStateProvider {
         }
     }
 
-    public void unfiredMoldBlock(Block unfiredMold, Block firedMold) {
+    public void unfiredMoldBlock(Block unfiredMold, Block firedMold, int angleOffset) {
         ModelFile model = models().withExistingParent(name(unfiredMold), resource(firedMold))
                 .texture("0", resource("clay_block")).texture("1", resource("clay_darkened"))
                 .texture("particle", resource("clay_block"));
-        horizontalBlockNF(unfiredMold, model, 0);
+        horizontalBlockNF(unfiredMold, model, angleOffset);
     }
 
     public void horizontalColumnBlock(Block block) {
@@ -1242,10 +1242,14 @@ public class BlockStateProviderNF extends BlockStateProvider {
         horizontalBlockNF(BlocksNF.INGOT_MOLD.get(), file(BlocksNF.INGOT_MOLD.get()), 0);
         horizontalBlockNF(BlocksNF.ARROWHEAD_MOLD.get(), file(BlocksNF.ARROWHEAD_MOLD.get()), 0);
         horizontalBlockNF(BlocksNF.ROD_MOLD.get(), file(BlocksNF.ROD_MOLD.get()), 0);
-        for(Armament type : BlocksNF.ARMAMENT_MOLDS.keySet()) unfiredMoldBlock(BlocksNF.UNFIRED_ARMAMENT_MOLDS.get(type).get(), BlocksNF.ARMAMENT_MOLDS.get(type).get());
-        unfiredMoldBlock(BlocksNF.UNFIRED_INGOT_MOLD.get(), BlocksNF.INGOT_MOLD.get());
-        unfiredMoldBlock(BlocksNF.UNFIRED_ARROWHEAD_MOLD.get(), BlocksNF.ARROWHEAD_MOLD.get());
-        unfiredMoldBlock(BlocksNF.UNFIRED_ROD_MOLD.get(), BlocksNF.ROD_MOLD.get());
+        horizontalBlockNF(BlocksNF.BLOCK_MOLD.get(), file(BlocksNF.BLOCK_MOLD.get()), 0);
+        horizontalBlockNF(BlocksNF.ANVIL_MOLD.get(), file(BlocksNF.ANVIL_MOLD.get()), -90);
+        for(Armament type : BlocksNF.ARMAMENT_MOLDS.keySet()) unfiredMoldBlock(BlocksNF.UNFIRED_ARMAMENT_MOLDS.get(type).get(), BlocksNF.ARMAMENT_MOLDS.get(type).get(), 0);
+        unfiredMoldBlock(BlocksNF.UNFIRED_INGOT_MOLD.get(), BlocksNF.INGOT_MOLD.get(), 0);
+        unfiredMoldBlock(BlocksNF.UNFIRED_ARROWHEAD_MOLD.get(), BlocksNF.ARROWHEAD_MOLD.get(), 0);
+        unfiredMoldBlock(BlocksNF.UNFIRED_ROD_MOLD.get(), BlocksNF.ROD_MOLD.get(), 0);
+        unfiredMoldBlock(BlocksNF.UNFIRED_BLOCK_MOLD.get(), BlocksNF.BLOCK_MOLD.get(), 0);
+        unfiredMoldBlock(BlocksNF.UNFIRED_ANVIL_MOLD.get(), BlocksNF.ANVIL_MOLD.get(), -90);
         simpleHeatableBlock(BlocksNF.COKE_BURNING.get());
         simpleHeatableBlock(BlocksNF.COAL_BURNING.get());
         horizontalColumnBlock(BlocksNF.CHARCOAL.get());

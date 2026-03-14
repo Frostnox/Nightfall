@@ -51,6 +51,8 @@ public class RecipeProviderNF extends RecipeProvider {
         BuildingRecipeBuilder.base(ItemsNF.CLAY.get(), 4, ItemsNF.UNFIRED_INGOT_MOLD.get()).requirement(EntriesNF.CASTING).save(consumer);
         BuildingRecipeBuilder.base(ItemsNF.CLAY.get(), 4, ItemsNF.UNFIRED_ARROWHEAD_MOLD.get()).requirement(EntriesNF.ARROWHEAD_MOLD).save(consumer);
         BuildingRecipeBuilder.base(ItemsNF.CLAY.get(), 4, ItemsNF.UNFIRED_ROD_MOLD.get()).requirement(EntriesNF.CASTING).save(consumer);
+        BuildingRecipeBuilder.base(ItemsNF.CLAY.get(), 8, ItemsNF.UNFIRED_BLOCK_MOLD.get()).requirement(EntriesNF.CASTING).save(consumer);
+        BuildingRecipeBuilder.base(ItemsNF.CLAY.get(), 8, ItemsNF.UNFIRED_ANVIL_MOLD.get()).requirement(EntriesNF.SMITHING).save(consumer);
         BuildingRecipeBuilder.base(ItemsNF.FIRE_CLAY.get(), 4, ItemsNF.FIRE_CLAY_BLOCK.get()).order(0).save(consumer);
         BuildingRecipeBuilder.base(ItemsNF.FIRE_CLAY.get(), 4, ItemsNF.FIRE_CLAY_BRICKS.get()).order(1).save(consumer);
         BuildingRecipeBuilder.base(ItemsNF.MUD.get(), 4, ItemsNF.MUD_BLOCK.get()).order(0).save(consumer);
@@ -448,9 +450,6 @@ public class RecipeProviderNF extends RecipeProvider {
             SmithingRecipeBuilder.base(inputs.get(material.getMetal()), new int[]{2, 0, 1, 0, 2, 0, 1, 0, 2, 0, 2}, ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.SPEAR).get()).requirement(entryKnowledge(EntriesNF.SMITHING)).save(consumer);
             SmithingRecipeBuilder.base(inputsRods.get(material.getMetal()), new int[]{0, 2, 0, 0, 2, 0, 1, 0, 2, 0, 0}, ItemsNF.ARMAMENT_HEADS.get(material).get(Armament.SWORD).get()).requirement(EntriesNF.SMITHING).save(consumer);
         }
-
-        //TODO: Temp recipe, replace with anvil mold later
-        for(Metal metal : ItemsNF.ANVILS_METAL.keySet()) CraftingRecipeBuilder.base(ItemsNF.ANVILS_METAL.get(metal).get(), EntriesNF.SMITHING).define('I', ItemsNF.INGOTS.get(metal).get()).pattern("III").pattern(" I ").pattern("III").save(consumer);
 
         SpecialRecipeBuilder.special(TongsEmptyRecipe.SERIALIZER).save(consumer, Nightfall.MODID + ":tongs_empty");
     }

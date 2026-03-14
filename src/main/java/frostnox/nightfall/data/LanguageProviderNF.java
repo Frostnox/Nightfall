@@ -516,6 +516,7 @@ public class LanguageProviderNF extends LanguageProvider {
             }
         }
         add(ItemsNF.IRONWOOD_SHIELD_DYED.get(), "Ironwood Shield");
+        add(ItemsNF.UNFIRED_BLOCK_MOLD.get(), "Unfired Block Mold");
         for(var item : ItemsNF.METAL_BLOCKS.values()) add(item.get(), WordUtils.capitalize(item.getId().getPath().replace("_", " ")));
         for(var item : ItemsNF.METAL_SHIELDS_DYED.values()) add(item.get(),
                 WordUtils.capitalize(item.getId().getPath().replace("_dyed", "").replace("_", " ")));

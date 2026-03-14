@@ -45,6 +45,7 @@ import frostnox.nightfall.data.TagsNF;
 import frostnox.nightfall.item.Armament;
 import frostnox.nightfall.util.DataUtil;
 import frostnox.nightfall.util.LevelUtil;
+import frostnox.nightfall.util.MathUtil;
 import frostnox.nightfall.world.ContinentalWorldType;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.BlockPos;
@@ -61,6 +62,8 @@ import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.client.IBlockRenderProperties;
 import net.minecraftforge.common.Tags;
@@ -665,16 +668,31 @@ public class BlocksNF {
                 case SICKLE -> TagsNF.SICKLE_HEAD;
                 case SPEAR -> TagsNF.SPEAR_HEAD;
                 default -> throw new IllegalArgumentException("Missing matching tag for armament mold.");
-            }, 100, BlockBehaviour.Properties.of(Material.DECORATION).strength(0.3F).sound(SoundsNF.CERAMIC_SMALL_TYPE).noCollission())));
+            }, 100, BlockBehaviour.Properties.of(Material.DECORATION).strength(0.3F).sound(SoundsNF.CERAMIC_DECORATION_TYPE).noCollission())));
     public static final RegistryObject<ItemMoldBlock> INGOT_MOLD = register("ingot_mold", () -> new ItemMoldBlock(
             Block.box(3, 0, 4.5, 13, 3, 11.5), Tags.Items.INGOTS, 100,
-            BlockBehaviour.Properties.of(Material.DECORATION).strength(0.3F).sound(SoundsNF.CERAMIC_SMALL_TYPE).noCollission()));
+            BlockBehaviour.Properties.of(Material.DECORATION).strength(0.3F).sound(SoundsNF.CERAMIC_DECORATION_TYPE).noCollission()));
     public static final RegistryObject<ItemMoldBlock> ARROWHEAD_MOLD = register("arrowhead_mold", () -> new ItemMoldBlock(
             Block.box(4, 0, 4, 12, 2, 12), TagsNF.ARROWHEAD, 10,
-            BlockBehaviour.Properties.of(Material.DECORATION).strength(0.3F).sound(SoundsNF.CERAMIC_SMALL_TYPE).noCollission()));
+            BlockBehaviour.Properties.of(Material.DECORATION).strength(0.3F).sound(SoundsNF.CERAMIC_DECORATION_TYPE).noCollission()));
     public static final RegistryObject<ItemMoldBlock> ROD_MOLD = register("rod_mold", () -> new ItemMoldBlock(
             Block.box(0, 0, 5, 16, 2, 11), TagsNF.METAL_RODS, 100,
-            BlockBehaviour.Properties.of(Material.DECORATION).strength(0.3F).sound(SoundsNF.CERAMIC_SMALL_TYPE).noCollission()));
+            BlockBehaviour.Properties.of(Material.DECORATION).strength(0.3F).sound(SoundsNF.CERAMIC_DECORATION_TYPE).noCollission()));
+    public static final RegistryObject<ItemMoldBlock> BLOCK_MOLD = register("block_mold", () -> new ItemMoldBlock(
+            Shapes.join(Block.box(0, 0, 0, 16, 16, 16), Block.box(1, 1, 1, 15, 16, 15), BooleanOp.ONLY_FIRST),
+            TagsNF.METAL_BLOCKS_ITEM, 800, BlockBehaviour.Properties.of(Material.STONE, MaterialColor.TERRACOTTA_ORANGE).strength(1F).sound(SoundsNF.CERAMIC_DECORATION_TYPE)));
+    public static final RegistryObject<ItemMoldBlock> ANVIL_MOLD = register("anvil_mold", () -> new ItemMoldBlock(
+            MathUtil.rotate(Shapes.or(Block.box(0, 0, 0, 16, 5, 16), Block.box(3, 5, 3, 13, 10, 13),
+                    Block.box(3, 9, 0, 13, 10, 3), Shapes.join(Block.box(1, 10, 0, 15, 16, 16),
+                            Shapes.or(Block.box(3, 10, 4, 13, 16, 12), Block.box(3, 13, 12, 13, 16, 15),
+                                    Block.box(5, 10, 1, 11, 15, 4)), BooleanOp.ONLY_FIRST)), Rotation.COUNTERCLOCKWISE_90),
+            TagsNF.METAL_ANVILS_ITEM, 800, BlockBehaviour.Properties.of(Material.STONE, MaterialColor.TERRACOTTA_ORANGE).strength(1F).sound(SoundsNF.CERAMIC_DECORATION_TYPE)) {
+        @Override
+        public int getExcludedWaterLevel(BlockState state) {
+            return 3;
+        }
+    });
+
     public static final Map<Armament, RegistryObject<FireableFacingPartialBlock>> UNFIRED_ARMAMENT_MOLDS = DataUtil.mapEnum(Armament.class,
             armament -> !ARMAMENT_MOLDS.containsKey(armament),
             armament -> register("unfired_" + armament.getName() + "_mold", () -> new FireableFacingPartialBlock(
@@ -689,6 +707,12 @@ public class BlocksNF {
     public static final RegistryObject<FireableFacingPartialBlock> UNFIRED_ROD_MOLD = register("unfired_rod_mold", () -> new FireableFacingPartialBlock(
             20 * 60 * 8, TieredHeat.ORANGE, ROD_MOLD, 0,
             BlockBehaviour.Properties.of(Material.DECORATION).strength(0.3F).sound(SoundType.GRAVEL).noCollission()));
+    public static final RegistryObject<FireableFacingPartialBlock> UNFIRED_BLOCK_MOLD = register("unfired_block_mold", () -> new FireableFacingPartialBlock(
+            20 * 60 * 8, TieredHeat.ORANGE, BLOCK_MOLD, 0,
+            BlockBehaviour.Properties.of(Material.CLAY).strength(1F).sound(SoundType.GRAVEL)));
+    public static final RegistryObject<FireableFacingPartialBlock> UNFIRED_ANVIL_MOLD = register("unfired_anvil_mold", () -> new FireableFacingPartialBlock(
+            20 * 60 * 8, TieredHeat.ORANGE, ANVIL_MOLD, 3,
+            BlockBehaviour.Properties.of(Material.CLAY).strength(1F).sound(SoundType.GRAVEL)));
 
     public static final RegistryObject<FuelBlock> COKE = BLOCKS.register("coke_block", () -> new FuelBlock(BlocksNF.COKE_BURNING, BlockBehaviour.Properties.of(
             Material.STONE, MaterialColor.COLOR_GRAY).strength(2.4F, 2F).sound(SoundType.NETHER_BRICKS)));
