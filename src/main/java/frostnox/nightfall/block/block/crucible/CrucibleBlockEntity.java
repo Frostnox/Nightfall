@@ -4,7 +4,7 @@ import frostnox.nightfall.Nightfall;
 import frostnox.nightfall.block.IHoldable;
 import frostnox.nightfall.block.TieredHeat;
 import frostnox.nightfall.block.block.MenuContainerBlockEntity;
-import frostnox.nightfall.block.block.mold.ItemMoldBlockEntity;
+import frostnox.nightfall.block.block.mold.BlockMoldBlockEntity;
 import frostnox.nightfall.block.fluid.MetalFluid;
 import frostnox.nightfall.data.recipe.CrucibleRecipe;
 import frostnox.nightfall.world.inventory.ItemStackHandlerNF;
@@ -305,7 +305,7 @@ public class CrucibleBlockEntity extends MenuContainerBlockEntity implements Men
         if(fluid.getFluid() instanceof MetalFluid metalFluid && temperature >= metalFluid.metal.getMeltTemp()) {
             BlockEntity blockEntity = player.level.getBlockEntity(usePos);
             boolean poured = false;
-            if(blockEntity instanceof ItemMoldBlockEntity mold) {
+            if(blockEntity instanceof BlockMoldBlockEntity mold) {
                 if(mold.addFluid(fluid, metalFluid.metal.getMeltTemp())) poured = true;
             }
             else if(blockEntity instanceof CrucibleBlockEntity crucible) {

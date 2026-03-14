@@ -2,8 +2,8 @@ package frostnox.nightfall.block.block.furnacechannel;
 
 import frostnox.nightfall.block.TieredHeat;
 import frostnox.nightfall.block.block.meltedmetal.MeltedMetalBlockEntity;
+import frostnox.nightfall.block.block.mold.BlockMoldBlockEntity;
 import frostnox.nightfall.block.block.mold.ItemMoldBlock;
-import frostnox.nightfall.block.block.mold.ItemMoldBlockEntity;
 import frostnox.nightfall.registry.forge.BlockEntitiesNF;
 import frostnox.nightfall.util.LevelUtil;
 import net.minecraft.core.BlockPos;
@@ -65,11 +65,11 @@ public class FurnaceChannelBlockEntity extends BlockEntity {
                 if(level.getBlockEntity(mutPos.move(state.getValue(FurnaceChannelBlock.FACING))) instanceof MeltedMetalBlockEntity targetMetal) {
                     mutPos.set(pos);
                     LevelChunk chunk = level.getChunkAt(pos);
-                    ItemMoldBlockEntity mold = null;
+                    BlockMoldBlockEntity mold = null;
                     int i = 0;
                     for(; i < 16; i++) {
                         BlockState castTarget = chunk.getBlockState(mutPos.setY(mutPos.getY() - 1));
-                        if(castTarget.getBlock() instanceof ItemMoldBlock) mold = (ItemMoldBlockEntity) chunk.getBlockEntity(mutPos);
+                        if(castTarget.getBlock() instanceof ItemMoldBlock) mold = (BlockMoldBlockEntity) chunk.getBlockEntity(mutPos);
                         else if(!castTarget.isAir() && Shapes.joinIsNotEmpty(castTarget.getShape(level, mutPos), FLUID_PASSAGE, BooleanOp.AND)) break;
                     }
                     if(mold != null) {

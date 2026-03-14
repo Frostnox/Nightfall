@@ -15,6 +15,7 @@ import frostnox.nightfall.block.block.eggnest.DrakefowlEggNestBlock;
 import frostnox.nightfall.block.block.furnacechannel.FurnaceChannelBlock;
 import frostnox.nightfall.block.block.itemframe.ItemFrameBlock;
 import frostnox.nightfall.block.block.meltedmetal.MeltedMetalBlock;
+import frostnox.nightfall.block.block.mold.BlockMoldBlock;
 import frostnox.nightfall.block.block.nest.AnchoringResinBlock;
 import frostnox.nightfall.block.block.nest.RabbitBurrowBlock;
 import frostnox.nightfall.block.block.campfire.CampfireBlockNF;
@@ -678,10 +679,10 @@ public class BlocksNF {
     public static final RegistryObject<ItemMoldBlock> ROD_MOLD = register("rod_mold", () -> new ItemMoldBlock(
             Block.box(0, 0, 5, 16, 2, 11), TagsNF.METAL_RODS, 100,
             BlockBehaviour.Properties.of(Material.DECORATION).strength(0.3F).sound(SoundsNF.CERAMIC_DECORATION_TYPE).noCollission()));
-    public static final RegistryObject<ItemMoldBlock> BLOCK_MOLD = register("block_mold", () -> new ItemMoldBlock(
+    public static final RegistryObject<BlockMoldBlock> BLOCK_MOLD = register("block_mold", () -> new BlockMoldBlock(
             Shapes.join(Block.box(0, 0, 0, 16, 16, 16), Block.box(1, 1, 1, 15, 16, 15), BooleanOp.ONLY_FIRST),
             TagsNF.METAL_BLOCKS_ITEM, 800, BlockBehaviour.Properties.of(Material.STONE, MaterialColor.TERRACOTTA_ORANGE).strength(1F).sound(SoundsNF.CERAMIC_DECORATION_TYPE)));
-    public static final RegistryObject<ItemMoldBlock> ANVIL_MOLD = register("anvil_mold", () -> new ItemMoldBlock(
+    public static final RegistryObject<BlockMoldBlock> ANVIL_MOLD = register("anvil_mold", () -> new BlockMoldBlock(
             MathUtil.rotate(Shapes.or(Block.box(0, 0, 0, 16, 5, 16), Block.box(3, 5, 3, 13, 10, 13),
                     Block.box(3, 9, 0, 13, 10, 3), Shapes.join(Block.box(1, 10, 0, 15, 16, 16),
                             Shapes.or(Block.box(3, 10, 4, 13, 16, 12), Block.box(3, 13, 12, 13, 16, 15),

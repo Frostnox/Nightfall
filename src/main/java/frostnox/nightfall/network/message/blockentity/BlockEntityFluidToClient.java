@@ -2,8 +2,7 @@ package frostnox.nightfall.network.message.blockentity;
 
 import frostnox.nightfall.Nightfall;
 import frostnox.nightfall.block.TieredHeat;
-import frostnox.nightfall.block.block.crucible.CrucibleBlockEntity;
-import frostnox.nightfall.block.block.mold.ItemMoldBlockEntity;
+import frostnox.nightfall.block.block.mold.BlockMoldBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.Level;
@@ -61,7 +60,7 @@ public class BlockEntityFluidToClient {
                 }
                 if(!world.get().isLoaded(msg.blockEntityPos)) return;
                 BlockEntity blockEntity = world.get().getBlockEntity(msg.blockEntityPos);
-                if(blockEntity instanceof ItemMoldBlockEntity mold) mold.setInputFluid(msg.fluidResult);
+                if(blockEntity instanceof BlockMoldBlockEntity mold) mold.setInputFluid(msg.fluidResult);
             });
         }
         else if(sideReceived.isServer()) {
