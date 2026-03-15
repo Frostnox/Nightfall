@@ -685,7 +685,7 @@ public class ItemsNF {
     public static final Map<Metal, RegistryObject<BlockItemNF>> METAL_BARS = DataUtil.mapEnum(Metal.class, metal -> !BlocksNF.METAL_BARS.containsKey(metal),
             metal -> register(BlocksNF.METAL_BARS.get(metal)));
     public static final Map<Metal, RegistryObject<BlockItemNF>> METAL_BLOCKS = DataUtil.mapEnum(Metal.class, metal -> !BlocksNF.METAL_BLOCKS.containsKey(metal),
-            metal -> register(BlocksNF.METAL_BLOCKS.get(metal)));
+            metal -> register(BlocksNF.METAL_BLOCKS.get(metal), BUILDING_TAB));
     public static final Map<Metal, RegistryObject<BlockItemNF>> METAL_PLATINGS = DataUtil.mapEnum(Metal.class, metal -> !BlocksNF.METAL_PLATINGS.containsKey(metal),
             metal -> register(BlocksNF.METAL_PLATINGS.get(metal)));
     public static final Map<Metal, RegistryObject<BlockItemNF>> METAL_PLATING_STAIRS = DataUtil.mapEnum(Metal.class, metal -> !BlocksNF.METAL_PLATING_STAIRS.containsKey(metal),
