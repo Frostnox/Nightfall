@@ -299,10 +299,10 @@ public class ItemTagsProviderNF extends ItemTagsProvider {
         tag(TagsNF.OMNIVORE_SEEDS_FOOD).addTags(TagsNF.OMNIVORE_FOOD, Tags.Items.SEEDS);
 
         copy(TagsNF.NATURAL_STONE, TagsNF.NATURAL_STONE_ITEM);
-        copy(TagsNF.HEAT_RESISTANT_1, TagsNF.HEAT_RESISTANT_ITEM_1);
         copy(TagsNF.HEAT_RESISTANT_2, TagsNF.HEAT_RESISTANT_ITEM_2);
         copy(TagsNF.HEAT_RESISTANT_3, TagsNF.HEAT_RESISTANT_ITEM_3);
         copy(TagsNF.HEAT_RESISTANT_4, TagsNF.HEAT_RESISTANT_ITEM_4);
+        copy(TagsNF.HEAT_RESISTANT_5, TagsNF.HEAT_RESISTANT_ITEM_5);
         copy(TagsNF.WOODEN_HATCHES, TagsNF.WOODEN_HATCHES_ITEM);
         copy(TagsNF.WOODEN_LADDERS, TagsNF.WOODEN_LADDERS_ITEM);
         copy(TagsNF.WOODEN_CHESTS, TagsNF.WOODEN_CHESTS_ITEM);

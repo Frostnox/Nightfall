@@ -125,21 +125,17 @@ public class BlockTagsProviderNF extends BlockTagsProvider {
         tag(TagsNF.TILLABLE_OR_AQUATIC_SOIL).addTag(TagsNF.TILLABLE_SOIL);
         tag(TagsNF.TILLABLE_OR_AQUATIC_SOIL).add(BlocksNF.MUD.get(), BlocksNF.CLAY.get());
         tag(TagsNF.TILLED_SOIL).add(BlocksNF.TILLED_SILT.get(), BlocksNF.TILLED_DIRT.get(), BlocksNF.TILLED_LOAM.get());
-        for(Stone type : Stone.values()) {
-            if(type.getType() == StoneType.METAMORPHIC) tag(TagsNF.HEAT_RESISTANT_1).add(BlocksNF.STONE_BRICK_BLOCKS.get(type).get());
-            else if(type.getType() == StoneType.IGNEOUS) tag(TagsNF.HEAT_RESISTANT_2).add(BlocksNF.STONE_BRICK_BLOCKS.get(type).get());
-        }
         tag(TagsNF.FULLY_CLIMBABLE).addTags(BlockTags.STAIRS, BlockTags.SLABS);
         tag(TagsNF.CAN_IGNITE_ITEMS).add(BlocksNF.TORCH.get(), BlocksNF.WALL_TORCH.get());
         for(var block : BlocksNF.LANTERNS.values()) tag(TagsNF.CAN_IGNITE_ITEMS).add(block.get());
         tag(TagsNF.UNCLIMBABLE).addTags(TagsNF.BRANCHES_OR_LEAVES, BlockTags.FENCES, BlockTags.WALLS, BlockTags.FENCE_GATES);
-        tag(TagsNF.HEAT_RESISTANT_1).add(BlocksNF.TERRACOTTA.get(), BlocksNF.TERRACOTTA_TILES.get(), BlocksNF.TERRACOTTA_MOSAIC.get(), BlocksNF.MUD_BRICKS.get());
-        tag(TagsNF.HEAT_RESISTANT_2).add(BlocksNF.BRICKS.get());
-        tag(TagsNF.HEAT_RESISTANT_3).add(BlocksNF.FIRE_BRICKS.get());
-        tag(TagsNF.HEAT_RESISTANT_4).add(BlocksNF.OBSIDIAN.get());
-        tag(TagsNF.HEAT_RESISTANT_1).addTags(TagsNF.HEAT_RESISTANT_2);
+        tag(TagsNF.HEAT_RESISTANT_2).add(BlocksNF.TERRACOTTA.get(), BlocksNF.TERRACOTTA_TILES.get(), BlocksNF.TERRACOTTA_MOSAIC.get(), BlocksNF.MUD_BRICKS.get());
+        tag(TagsNF.HEAT_RESISTANT_3).add(BlocksNF.BRICKS.get());
+        tag(TagsNF.HEAT_RESISTANT_4).add(BlocksNF.FIRE_BRICKS.get(), BlocksNF.OBSIDIAN.get());
+        tag(TagsNF.HEAT_RESISTANT_5);
         tag(TagsNF.HEAT_RESISTANT_2).addTags(TagsNF.HEAT_RESISTANT_3);
         tag(TagsNF.HEAT_RESISTANT_3).addTags(TagsNF.HEAT_RESISTANT_4);
+        tag(TagsNF.HEAT_RESISTANT_4).addTags(TagsNF.HEAT_RESISTANT_5);
 
         tag(TagsNF.MINEABLE_WITH_KNIFE).addTag(TagsNF.MINEABLE_WITH_SICKLE);
         tag(TagsNF.MINEABLE_WITH_ADZE).addTags(BlockTags.MINEABLE_WITH_SHOVEL, BlockTags.MINEABLE_WITH_AXE);

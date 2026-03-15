@@ -257,7 +257,7 @@ public class BurningFuelBlock extends BaseEntityBlock implements IHeatSource, IA
                 else level.setBlock(pos, BlocksNF.ASH.get().defaultBlockState(), 3);
             }
             else {
-                if(LevelUtil.getNearbySmelterTier(level, pos) >= TieredHeat.fromTemp(block.burnTemp).getTier()) entity.structureTempBonus = 200F;
+                if(LevelUtil.getNearbySmelterTier(level, pos) > TieredHeat.fromTemp(block.burnTemp).getTier()) entity.structureTempBonus = 200F;
                 else entity.structureTempBonus = 0F;
 
                 float oldTemp = entity.temperature;

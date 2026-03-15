@@ -300,10 +300,10 @@ public class LevelUtil {
     }
 
     public static int getBlockHeatResistanceTier(BlockState state) {
-        if(state.is(TagsNF.HEAT_RESISTANT_4)) return 4;
+        if(state.is(TagsNF.HEAT_RESISTANT_5)) return 5;
+        else if(state.is(TagsNF.HEAT_RESISTANT_4)) return 4;
         else if(state.is(TagsNF.HEAT_RESISTANT_3)) return 3;
         else if(state.is(TagsNF.HEAT_RESISTANT_2)) return 2;
-        else if(state.is(TagsNF.HEAT_RESISTANT_1)) return 1;
         else return 0;
     }
 
@@ -315,20 +315,20 @@ public class LevelUtil {
         int i = 0;
         for(Direction direction : Direction.Plane.HORIZONTAL) {
             BlockState state = level.getBlockState(pos.relative(direction));
-            if(!state.is(TagsNF.HEAT_RESISTANT_1) || !state.isFaceSturdy(level, pos, direction.getOpposite())) {
+            if(!state.is(TagsNF.HEAT_RESISTANT_2) || !state.isFaceSturdy(level, pos, direction.getOpposite())) {
                 i++;
                 if(i > 1) return 0;
             }
         }
-        return 1;
+        return 2;
     }
 
     public static int getNearbyKilnTier(Level level, BlockPos pos) {
         for(Direction direction : Direction.Plane.HORIZONTAL) {
             BlockState state = level.getBlockState(pos.relative(direction));
-            if(!state.is(TagsNF.HEAT_RESISTANT_1) || !state.isFaceSturdy(level, pos, direction.getOpposite())) return 0;
+            if(!state.is(TagsNF.HEAT_RESISTANT_2) || !state.isFaceSturdy(level, pos, direction.getOpposite())) return 0;
         }
-        return 1;
+        return 2;
     }
 
     public static int getNearbyFurnaceTier(Level level, BlockPos pos) {

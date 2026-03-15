@@ -288,13 +288,14 @@ public class CommonEventHandler {
                         break;
                     }
                 }
-                if(item.is(TagsNF.HEAT_RESISTANT_ITEM_1)) {
+                if(item.is(TagsNF.HEAT_RESISTANT_ITEM_2)) {
                     IPlayerData capP = PlayerData.get(event.getPlayer());
                     if(capP.hasCompletedEntry(EntriesNF.POTTERY.getId())) {
                         int tier;
-                        /*if(item.is(TagsNF.HEAT_RESISTANT_ITEM_4) && capP.hasEntry(null)) tier = 4;
-                        else if(item.is(TagsNF.HEAT_RESISTANT_ITEM_3) && capP.hasEntry(null)) tier = 3;
-                        else*/ if(item.is(TagsNF.HEAT_RESISTANT_ITEM_2) && capP.hasCompletedEntry(EntriesNF.SMELTING.getId())) tier = 2;
+                        if(item.is(TagsNF.HEAT_RESISTANT_ITEM_5)) tier = 5;
+                        else if(item.is(TagsNF.HEAT_RESISTANT_ITEM_4)) tier = 4;
+                        else if(item.is(TagsNF.HEAT_RESISTANT_ITEM_3)) tier = 3;
+                        else if(item.is(TagsNF.HEAT_RESISTANT_ITEM_2)) tier = 2;
                         else tier = 1;
                         tooltip.add(getTooltipIndex(tooltip), new TranslatableComponent("block.heat_resistant." + tier)
                                 .withStyle(Style.EMPTY.withColor(TieredHeat.fromTier(tier).color.getRGB())));

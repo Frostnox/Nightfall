@@ -22,7 +22,7 @@ public class SimpleFireableBlock extends FireableBlock {
     @Override
     public boolean isStructureValid(Level level, BlockPos pos, BlockState state) {
         if(cookHeat.getTier() <= 1) return true;
-        else return Math.max(LevelUtil.getNearbyKilnTier(level, pos), LevelUtil.getNearbyFurnaceTier(level, pos)) >= cookHeat.getTier() - 1;
+        else return LevelUtil.getNearbySmelterTier(level, pos) > cookHeat.getTier() - 1;
     }
 
     @Override

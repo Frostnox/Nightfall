@@ -29,7 +29,7 @@ public class BurningFuelBlockEntity extends BlockEntity {
         BurningFuelBlock block = (BurningFuelBlock) state.getBlock();
         if(level.getGameTime() % 66L == 0L) {
             float baseTemp = block.burnTemp;
-            if(LevelUtil.getNearbySmelterTier(level, pos) >= TieredHeat.fromTemp(baseTemp).getTier()) entity.structureTempBonus = 200F;
+            if(LevelUtil.getNearbySmelterTier(level, pos) > TieredHeat.fromTemp(baseTemp).getTier()) entity.structureTempBonus = 200F;
             else entity.structureTempBonus = 0F;
         }
         if(block.cookChecker != null && block.cookChecker.apply(level, pos) != null) entity.cookTicks++;

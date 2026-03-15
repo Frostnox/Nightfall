@@ -48,7 +48,7 @@ public class FireablePartialBlock extends SimpleFireableBlock implements IWaterl
     @Override
     public boolean isStructureValid(Level level, BlockPos pos, BlockState state) {
         if(cookHeat.getTier() <= 1) return true;
-        else return LevelUtil.getNearbyKilnTier(level, pos) >= cookHeat.getTier() - 1;
+        else return LevelUtil.getNearbyKilnTier(level, pos) > cookHeat.getTier() - 1;
     }
 
     @Override

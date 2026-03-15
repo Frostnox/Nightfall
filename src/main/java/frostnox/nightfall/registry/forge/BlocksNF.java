@@ -620,7 +620,7 @@ public class BlocksNF {
                 @Override
                 public boolean isStructureValid(Level level, BlockPos pos, BlockState state) {
                     return LevelUtil.isBlockBurningCarbon(level.getBlockState(pos.below())) && LevelUtil.isBlockBurningCarbon(level.getBlockState(pos.above()))
-                            && LevelUtil.getNearbySmelterTier(level, pos) >= 3;
+                            && LevelUtil.getNearbySmelterTier(level, pos) > 3;
                 }
             } :
                     () -> new HorizontalAxisBlock(BlockBehaviour.Properties.of(Material.METAL, metal.getBaseColor())
