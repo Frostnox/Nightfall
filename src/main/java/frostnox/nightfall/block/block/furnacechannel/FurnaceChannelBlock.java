@@ -16,6 +16,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.InteractionHand;
@@ -45,6 +46,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Random;
 
 public class FurnaceChannelBlock extends WaterloggedEntityBlock implements ICustomPathfindable {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
@@ -94,8 +96,17 @@ public class FurnaceChannelBlock extends WaterloggedEntityBlock implements ICust
         if(level.isClientSide) return InteractionResult.SUCCESS;
         else {
             if(!state.getValue(SEALED)) ((FurnaceChannelBlockEntity) level.getBlockEntity(pos)).stopCasting();
+            else if(!level.getBlockTicks().hasScheduledTick(pos, this)) level.scheduleTick(pos, this, 20);
             level.setBlock(pos, state.setValue(SEALED, !state.getValue(SEALED)), 2);
             return InteractionResult.CONSUME;
+        }
+    }
+
+    @Override
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, Random random) {
+        if(!state.getValue(SEALED) && level.getBlockEntity(pos) instanceof FurnaceChannelBlockEntity channel && !channel.wasCasting) {
+            level.setBlockAndUpdate(pos, state.setValue(SEALED, true));
+            level.playSound(null, pos, SoundsNF.CERAMIC_OPEN_SMALL.get(), SoundSource.BLOCKS, 1F, 1F);
         }
     }
 

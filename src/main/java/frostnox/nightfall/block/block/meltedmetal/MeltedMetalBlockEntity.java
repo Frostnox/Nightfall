@@ -138,7 +138,7 @@ public class MeltedMetalBlockEntity extends BlockEntity {
         float targetTemp = entity.targetTemperature + LevelUtil.getRainTempPenalty(level, pos);
         if(entity.temperature != targetTemp) {
             if(entity.temperature > targetTemp) entity.temperature = Math.max(entity.temperature - 0.05F, targetTemp);
-            else entity.temperature = Math.min(entity.temperature + 0.05F, targetTemp);
+            else entity.temperature = Math.min(entity.temperature + 0.25F, targetTemp);
             if(entity.temperature < entity.metal.getMeltTemp()) {
                 if(entity.untouched) level.setBlockAndUpdate(pos, entity.originalState);
                 else {
@@ -153,8 +153,8 @@ public class MeltedMetalBlockEntity extends BlockEntity {
             else {
                 TieredHeat heat = TieredHeat.fromTemp(entity.temperature);
                 if(heat.getTier() != state.getValue(MeltedMetalBlock.HEAT)) level.setBlockAndUpdate(pos, state.setValue(MeltedMetalBlock.HEAT, heat.getTier()));
-                entity.setChanged();
             }
+            entity.setChanged();
         }
         if(entity.alloyTimer > 0) {
             if(entity.alloyTimer == 1) entity.alloy();

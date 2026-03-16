@@ -5,6 +5,7 @@ import frostnox.nightfall.block.block.meltedmetal.MeltedMetalBlockEntity;
 import frostnox.nightfall.block.block.mold.BlockMoldBlockEntity;
 import frostnox.nightfall.block.block.mold.ItemMoldBlock;
 import frostnox.nightfall.registry.forge.BlockEntitiesNF;
+import frostnox.nightfall.registry.forge.SoundsNF;
 import frostnox.nightfall.util.LevelUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -13,6 +14,7 @@ import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -53,7 +55,8 @@ public class FurnaceChannelBlockEntity extends BlockEntity {
         if(wasCasting) {
             visualDist = 0;
             visualTemp = 0;
-            level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 2);
+            level.setBlockAndUpdate(getBlockPos(), getBlockState().setValue(FurnaceChannelBlock.SEALED, true));
+            level.playSound(null, getBlockPos(), SoundsNF.CERAMIC_OPEN_SMALL.get(), SoundSource.BLOCKS, 1F, 1F);
         }
         wasCasting = false;
     }
