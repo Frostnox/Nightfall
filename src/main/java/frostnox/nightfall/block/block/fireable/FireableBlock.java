@@ -67,9 +67,13 @@ public abstract class FireableBlock extends BaseEntityBlock implements IAdjustab
         this.registerDefaultState(this.stateDefinition.any().setValue(LIT, false));
     }
 
-    public abstract BlockState getFiredBlock(Level level, BlockPos pos, BlockState state);
+    public abstract BlockState getFiredBlock(Level level, BlockPos pos, BlockState state, float temperature);
 
     public abstract boolean isStructureValid(Level level, BlockPos pos, BlockState state);
+
+    protected void onFire(Level level, BlockPos pos, BlockState originalState, BlockState firedState, float temperature) {
+
+    }
 
     public static void serverEntityTick(Level level, BlockPos pos, BlockState state, IFireableBlockEntity entity) {
         FireableBlock fireable = (FireableBlock) state.getBlock();
@@ -88,16 +92,22 @@ public abstract class FireableBlock extends BaseEntityBlock implements IAdjustab
                 entity.setInStructure(fireable.isStructureValid(level, pos, state));
                 if(state.getValue(LIT) && !entity.inStructure()) level.setBlockAndUpdate(pos, state.setValue(LIT, false));
             }
-            if(updated || (entity.inStructure() && level.getBlockEntity(pos.below()) instanceof BurningFuelBlockEntity fuel && fuel.temperature >= fireable.cookHeat.getBaseTemp())) {
+            if(entity.inStructure() && level.getBlockEntity(pos.below()) instanceof BurningFuelBlockEntity fuel && fuel.temperature >= fireable.cookHeat.getBaseTemp()) {
                 entity.setCookTicks(entity.getCookTicks() + 1);
                 ((BlockEntity) entity).setChanged();
+                if(entity.getCookTicks() >= fireable.cookTicks) {
+                    BlockState firedState = fireable.getFiredBlock(level, pos, state, fuel.temperature);
+                    if(firedState != state) {
+                        level.setBlockAndUpdate(pos, firedState);
+                        fireable.onFire(level, pos, state, firedState, fuel.temperature);
+                    }
+                }
             }
             else if(entity.getCookTicks() > 0) {
                 entity.setCookTicks(Math.max(0, entity.getCookTicks() - 30));
                 ((BlockEntity) entity).setChanged();
                 if(entity.getCookTicks() == 0) level.setBlockAndUpdate(pos, state.setValue(LIT, false));
             }
-            if(entity.getCookTicks() >= fireable.cookTicks) level.setBlockAndUpdate(pos, fireable.getFiredBlock(level, pos, state));
         }
     }
 
@@ -283,10 +293,16 @@ public abstract class FireableBlock extends BaseEntityBlock implements IAdjustab
                         finalTemp = Math.max(targetTemp, temp - burnTime);
                         int cookTime = (int) (temp - cookTemp);
                         if(cookTime > 0) {
+                            int originalTicks = entity.getCookTicks();
                             entity.setCookTicks(entity.getCookTicks() + Math.min(burnTime, cookTime));
                             if(entity.getCookTicks() >= fireable.cookTicks) {
                                 ((BlockEntity) entity).setChanged();
-                                level.setBlockAndUpdate(pos, fireable.getFiredBlock(level, pos, state));
+                                BlockState firedState = fireable.getFiredBlock(level, pos, state, finalTemp);
+                                if(firedState != state) {
+                                    level.setBlockAndUpdate(pos, firedState);
+                                    fireable.onFire(level, pos, state, firedState, finalTemp);
+                                    if(firedState.getBlock() instanceof ITimeSimulatedBlock simulatable) simulatable.simulateTime(level, chunk, chunkData, pos, firedState, ticks - (fireable.cookTicks - originalTicks), gameTime, dayTime, seasonTime, seasonalTemp, randomTickChance, random);
+                                }
                                 return;
                             }
                             burnTime -= cookTime;
@@ -300,9 +316,17 @@ public abstract class FireableBlock extends BaseEntityBlock implements IAdjustab
                         if(entity.getCookTicks() == 0) level.setBlockAndUpdate(pos, state.setValue(LIT, false));
                     }
                     else {
+                        int originalTicks = entity.getCookTicks();
                         entity.setCookTicks(entity.getCookTicks() + burnTime);
                         ((BlockEntity) entity).setChanged();
-                        if(entity.getCookTicks() >= fireable.cookTicks) level.setBlockAndUpdate(pos, fireable.getFiredBlock(level, pos, state));
+                        if(entity.getCookTicks() >= fireable.cookTicks) {
+                            BlockState firedState = fireable.getFiredBlock(level, pos, state, finalTemp);
+                            if(firedState != state) {
+                                level.setBlockAndUpdate(pos, firedState);
+                                fireable.onFire(level, pos, state, firedState, finalTemp);
+                                if(firedState.getBlock() instanceof ITimeSimulatedBlock simulatable) simulatable.simulateTime(level, chunk, chunkData, pos, firedState, ticks - (fireable.cookTicks - originalTicks), gameTime, dayTime, seasonTime, seasonalTemp, randomTickChance, random);
+                            }
+                        }
                         else if(ticks > burnTime) { //Cool ticks after fuel burned out
                             entity.setCookTicks(Math.max(0, entity.getCookTicks() - 30 * (ticks - burnTime)));
                             if(entity.getCookTicks() == 0) level.setBlockAndUpdate(pos, state.setValue(LIT, false));

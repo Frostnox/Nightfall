@@ -31,7 +31,7 @@ public class RopeBlock extends WaterloggedBlock {
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         BlockPos abovePos = pos.above();
         BlockState aboveState = level.getBlockState(abovePos);
-        return aboveState.is(this) || aboveState.isFaceSturdy(level, abovePos, Direction.UP, SupportType.CENTER);
+        return aboveState.is(this) || aboveState.isFaceSturdy(level, abovePos, Direction.DOWN, SupportType.CENTER);
     }
 
     @Override

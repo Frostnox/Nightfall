@@ -59,20 +59,6 @@ public class MeltedMetalBlock extends BaseEntityBlock implements IAdjustableNode
         return TieredHeat.values()[state.getValue(HEAT)];
     }
 
-    public void createAt(TieredHeat heat, BlockPos pos, Level level) {
-        level.setBlockAndUpdate(pos, defaultBlockState().setValue(HEAT, heat.ordinal()));
-        if(level.getBlockEntity(pos) instanceof MeltedMetalBlockEntity) {
-            //TODO:
-        }
-    }
-
-    public void setHeat(Level level, BlockState state, BlockPos pos, TieredHeat heat) {
-        if(heat == TieredHeat.NONE) {
-            //TODO:
-        }
-        else level.setBlockAndUpdate(pos, state.setValue(HEAT, heat.getTier()));
-    }
-
     @Override
     public void applyHeat(Level level, BlockPos pos, BlockState state, TieredHeat heat, Direction fromDir) {
         if(fromDir == Direction.DOWN && level.getBlockEntity(pos) instanceof MeltedMetalBlockEntity metal) {
@@ -209,7 +195,7 @@ public class MeltedMetalBlock extends BaseEntityBlock implements IAdjustableNode
         if(level.getBlockEntity(pos) instanceof BurningFuelBlockEntity entity) {
             int ticks = (elapsedTime > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) elapsedTime);
             MeltedMetalBlock block = (MeltedMetalBlock) state.getBlock();
-
+            //TODO:
             entity.setChanged();
         }
     }

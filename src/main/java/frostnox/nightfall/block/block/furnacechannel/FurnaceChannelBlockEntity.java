@@ -73,7 +73,7 @@ public class FurnaceChannelBlockEntity extends BlockEntity {
                         else if(!castTarget.isAir() && Shapes.joinIsNotEmpty(castTarget.getShape(level, mutPos), FLUID_PASSAGE, BooleanOp.AND)) break;
                     }
                     if(mold != null) {
-                        if(mold.addFluid(new FluidStack(targetMetal.metal.value.getFluid().get(), 1), targetMetal.temperature)) {
+                        if(mold.addFluid(new FluidStack(targetMetal.metal.getFluid().get(), 1), targetMetal.temperature)) {
                             entity.startCasting(i, targetMetal.temperature);
                             targetMetal.drain(1);
                             if(TieredHeat.fromTemp(targetMetal.temperature).getTier() > ((FurnaceChannelBlock) state.getBlock()).maxHeat.getTier() && level.random.nextInt(4) == 0) {

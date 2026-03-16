@@ -336,14 +336,6 @@ public class TextureProviderNF extends TextureProvider {
             replaceImagePalette(block(BlocksNF.INGOT_PILES.get(metal)), block("ingot_pile"), subset(METAL_PALETTES.get(metal), 6, 2));
             replaceImagePalette(block(BlocksNF.INGOT_PILES.get(metal), "_top"), block("ingot_pile_top"), subset(METAL_PALETTES.get(metal), 6, 2));
         }
-        replaceImagePalette(tempBlock(BlocksNF.STEEL_INGOT_PILE_POOR), block("ingot_pile_poor_overlay"), subset(METAL_PALETTES.get(Metal.STEEL), 6, 2));
-        layerImages(block(BlocksNF.STEEL_INGOT_PILE_POOR), block(BlocksNF.INGOT_PILES.get(Metal.IRON)), tempBlock(BlocksNF.STEEL_INGOT_PILE_POOR));
-        replaceImagePalette(tempBlock(BlocksNF.STEEL_INGOT_PILE_POOR, "_top"), block("ingot_pile_top_poor_overlay"), subset(METAL_PALETTES.get(Metal.STEEL), 6, 2));
-        layerImages(block(BlocksNF.STEEL_INGOT_PILE_POOR, "_top"), block(BlocksNF.INGOT_PILES.get(Metal.IRON), "_top"), tempBlock(BlocksNF.STEEL_INGOT_PILE_POOR, "_top"));
-        replaceImagePalette(tempBlock(BlocksNF.STEEL_INGOT_PILE_FAIR), block("ingot_pile_fair_overlay"), subset(METAL_PALETTES.get(Metal.STEEL), 6, 2));
-        layerImages(block(BlocksNF.STEEL_INGOT_PILE_FAIR), block(BlocksNF.INGOT_PILES.get(Metal.IRON)), tempBlock(BlocksNF.STEEL_INGOT_PILE_FAIR));
-        replaceImagePalette(tempBlock(BlocksNF.STEEL_INGOT_PILE_FAIR, "_top"), block("ingot_pile_top_fair_overlay"), subset(METAL_PALETTES.get(Metal.STEEL), 6, 2));
-        layerImages(block(BlocksNF.STEEL_INGOT_PILE_FAIR, "_top"), block(BlocksNF.INGOT_PILES.get(Metal.IRON), "_top"), tempBlock(BlocksNF.STEEL_INGOT_PILE_FAIR, "_top"));
         for(Metal type : BlocksNF.LANTERNS.keySet()) {
             String base = "lantern_" + type.getCategory().name().toLowerCase(Locale.ROOT);
             replaceImagePalette(block(BlocksNF.LANTERNS_UNLIT.get(type)), block(base), LANTERN_PALETTES.get(type));
@@ -370,6 +362,9 @@ public class TextureProviderNF extends TextureProvider {
             replaceImagePalette(tempBlock(BlocksNF.CRUCIBLE, "_" + type), block(BlocksNF.CRUCIBLE, "_overlay"), HEAT_PALETTES.get(type));
             layerImages(block(BlocksNF.CRUCIBLE, "_" + type), block(BlocksNF.CRUCIBLE, "_none"), tempBlock(BlocksNF.CRUCIBLE, "_" + type));
         }
+        replaceImagePalette(block(BlocksNF.RAW_TIN), block("ore"), combine(subset(METAL_PALETTES.get(Metal.TIN), 3, 0), subset(METAL_PALETTES.get(Metal.TIN), 3, 5)));
+        replaceImagePalette(block(BlocksNF.RAW_COPPER), block("ore"), combine(subset(METAL_PALETTES.get(Metal.COPPER), 3, 1), subset(METAL_PALETTES.get(Metal.COPPER), 3, 5)));
+        replaceImagePalette(block(BlocksNF.RAW_METEORITE), block("ore"), combine(subset(METAL_PALETTES.get(Metal.METEORITE), 3, 0), subset(METAL_PALETTES.get(Metal.METEORITE), 3, 4)));
         replaceImagePalette(tempBlock(BlocksNF.SMELTED_AZURITE), block(BlocksNF.SMELTED_AZURITE, "_overlay"), subset(METAL_PALETTES.get(Metal.COPPER), 7, 0));
         layerImages(block(BlocksNF.SMELTED_AZURITE), block(BlocksNF.SLAG), tempBlock(BlocksNF.SMELTED_AZURITE));
         replaceImagePalette(tempBlock(BlocksNF.SMELTED_HEMATITE), block(BlocksNF.SMELTED_HEMATITE, "_overlay"), subset(METAL_PALETTES.get(Metal.IRON), 5, 2));

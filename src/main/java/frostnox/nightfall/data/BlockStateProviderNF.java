@@ -1227,10 +1227,6 @@ public class BlockStateProviderNF extends BlockStateProvider {
 
         for(var block : BlocksNF.METAL_BARS.values()) barsBlock(block.get());
         for(var block : BlocksNF.INGOT_PILES.values()) horizontalColumnBlock(block.get());
-        horizontalColumnBottomTopBlock(BlocksNF.STEEL_INGOT_PILE_POOR.get(), resource(BlocksNF.INGOT_PILES.get(Metal.IRON).get()),
-                resource(BlocksNF.INGOT_PILES.get(Metal.STEEL).get()));
-        horizontalColumnBottomTopBlock(BlocksNF.STEEL_INGOT_PILE_FAIR.get(), resource(BlocksNF.INGOT_PILES.get(Metal.IRON).get()),
-                resource(BlocksNF.INGOT_PILES.get(Metal.STEEL).get()));
         for(var block : BlocksNF.LANTERNS.values()) lanternBlock(block.get());
         for(var block : BlocksNF.LANTERNS_UNLIT.values()) lanternBlock(block.get());
         for(Stone type : BlocksNF.ANVILS_STONE.keySet()) {

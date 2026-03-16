@@ -147,11 +147,11 @@ public class ItemsNF {
     public static final RegistryObject<Item> LIME = register("lime", () -> new LimeItem(ingredient()));
     public static final RegistryObject<Item> SALT = ITEMS.register("salt", () -> new SaltItem(ingredient()));
     public static final RegistryObject<Item> BOOK = register("book", 32, INGREDIENTS_TAB);
-    public static final RegistryObject<Item> TIN_CHUNK = ITEMS.register("tin_chunk", () -> new Item(ingredient().stacksTo(16)));
-    public static final RegistryObject<Item> COPPER_CHUNK = ITEMS.register("copper_chunk", () -> new Item(ingredient().stacksTo(16)));
+    public static final RegistryObject<BuildingMaterialItem> TIN_CHUNK = ITEMS.register("tin_chunk", () -> new BuildingMaterialItem(ingredient().stacksTo(16)));
+    public static final RegistryObject<BuildingMaterialItem> COPPER_CHUNK = ITEMS.register("copper_chunk", () -> new BuildingMaterialItem(ingredient().stacksTo(16)));
     public static final RegistryObject<BuildingMaterialItem> AZURITE_CHUNK = ITEMS.register("azurite_chunk", () -> new BuildingMaterialItem(ingredient().stacksTo(16)));
     public static final RegistryObject<BuildingMaterialItem> HEMATITE_CHUNK = ITEMS.register("hematite_chunk", () -> new BuildingMaterialItem(ingredient().stacksTo(16)));
-    public static final RegistryObject<Item> METEORITE_CHUNK = ITEMS.register("meteorite_chunk", () -> new Item(ingredient().stacksTo(16)));
+    public static final RegistryObject<BuildingMaterialItem> METEORITE_CHUNK = ITEMS.register("meteorite_chunk", () -> new BuildingMaterialItem(ingredient().stacksTo(16)));
     public static final RegistryObject<Item> TIN_NUGGET = ITEMS.register("tin_nugget", () -> new Item(ingredient()));
     public static final RegistryObject<Item> COPPER_NUGGET = ITEMS.register("copper_nugget", () -> new Item(ingredient()));
     public static final RegistryObject<Item> AZURITE_NUGGET = ITEMS.register("azurite_nugget", () -> new Item(ingredient()));
@@ -696,8 +696,6 @@ public class ItemsNF {
             metal -> register(BlocksNF.METAL_PLATING_SIDINGS.get(metal)));
     public static final Map<Metal, RegistryObject<BlockItemNF>> INGOT_PILES = DataUtil.mapEnum(Metal.class, metal -> !BlocksNF.INGOT_PILES.containsKey(metal),
             metal -> register(BlocksNF.INGOT_PILES.get(metal)));
-    public static final RegistryObject<BlockItemNF> STEEL_INGOT_PILE_POOR = register(BlocksNF.STEEL_INGOT_PILE_POOR, NATURAL_TAB);
-    public static final RegistryObject<BlockItemNF> STEEL_INGOT_PILE_FAIR = register(BlocksNF.STEEL_INGOT_PILE_FAIR, NATURAL_TAB);
     public static final Map<Metal, RegistryObject<LanternItem>> LANTERNS = DataUtil.mapEnum(Metal.class, metal ->
             register(BlocksNF.LANTERNS.get(metal).getId().getPath(), () -> new LanternItem(BlocksNF.LANTERNS.get(metal).get(),
                     ItemsNF.LANTERNS_UNLIT.get(metal), new Item.Properties().stacksTo(16).tab(UTILITIES_TAB))));
@@ -730,8 +728,11 @@ public class ItemsNF {
     public static final RegistryObject<BlockItemNF> CHARCOAL_BLOCK = register(BlocksNF.CHARCOAL);
     public static final RegistryObject<BlockItemNF> FIREWOOD_BLOCK = register(BlocksNF.FIREWOOD);
     public static final RegistryObject<BlockItemNF> SLAG_BLOCK = register(BlocksNF.SLAG);
-    public static final RegistryObject<BlockItemNF> AZURITE_BLOCK = register(BlocksNF.AZURITE);
-    public static final RegistryObject<BlockItemNF> HEMATITE_BLOCK = register(BlocksNF.HEMATITE);
+    public static final RegistryObject<BlockItemNF> RAW_TIN = register(BlocksNF.RAW_TIN);
+    public static final RegistryObject<BlockItemNF> RAW_COPPER = register(BlocksNF.RAW_COPPER);
+    public static final RegistryObject<BlockItemNF> RAW_METEORITE = register(BlocksNF.RAW_METEORITE);
+    public static final RegistryObject<BlockItemNF> RAW_AZURITE = register(BlocksNF.RAW_AZURITE);
+    public static final RegistryObject<BlockItemNF> RAW_HEMATITE = register(BlocksNF.RAW_HEMATITE);
     public static final RegistryObject<BlockItemNF> SMELTED_AZURITE = register(BlocksNF.SMELTED_AZURITE, NATURAL_TAB);
     public static final RegistryObject<BlockItemNF> SMELTED_HEMATITE = register(BlocksNF.SMELTED_HEMATITE, NATURAL_TAB);
     public static final RegistryObject<BlockItemNF> UNFIRED_CRUCIBLE = register(BlocksNF.UNFIRED_CRUCIBLE, 8);

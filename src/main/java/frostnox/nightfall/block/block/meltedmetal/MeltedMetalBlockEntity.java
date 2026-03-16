@@ -1,6 +1,5 @@
 package frostnox.nightfall.block.block.meltedmetal;
 
-import frostnox.nightfall.Nightfall;
 import frostnox.nightfall.block.IMetal;
 import frostnox.nightfall.block.Metal;
 import frostnox.nightfall.block.TieredHeat;
@@ -29,7 +28,7 @@ import java.util.Map;
 public class MeltedMetalBlockEntity extends BlockEntity {
     public float temperature = TieredHeat.ORANGE.getUpperTemp(), targetTemperature;
     public BlockState originalState = BlocksNF.METAL_BLOCKS.get(Metal.COPPER).get().defaultBlockState();
-    public IMetal.Entry metal = RegistriesNF.getMetals().getValue(ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, Metal.COPPER.getName()));
+    public IMetal metal = Metal.COPPER;
     public int units = 400, alloyTimer = 20 * 5;
     public boolean hasSlag = false, untouched = true;
 
@@ -54,7 +53,7 @@ public class MeltedMetalBlockEntity extends BlockEntity {
             BlockPos pos = positions.dequeue();
             if(visited.contains(pos)) continue;
             else visited.add(pos);
-            if(level.getBlockEntity(pos) instanceof MeltedMetalBlockEntity metal && metal.metal.value == this.metal.value) {
+            if(level.getBlockEntity(pos) instanceof MeltedMetalBlockEntity metal && metal.metal == this.metal) {
                 metals.add(metal);
                 totalUnits += metal.units;
                 for(AxisDirection dir : AxisDirection.XZ) positions.enqueue(pos.offset(dir.x, dir.y, dir.z));
@@ -92,8 +91,8 @@ public class MeltedMetalBlockEntity extends BlockEntity {
             else visited.add(pos);
             if(level.getBlockEntity(pos) instanceof MeltedMetalBlockEntity entity) {
                 entities.add(entity);
-                if(!unitsMap.containsKey(entity.metal.value)) unitsMap.put(entity.metal.value, entity.units);
-                else unitsMap.put(entity.metal.value, entity.units + unitsMap.get(entity.metal.value));
+                if(!unitsMap.containsKey(entity.metal)) unitsMap.put(entity.metal, entity.units);
+                else unitsMap.put(entity.metal, entity.units + unitsMap.get(entity.metal));
                 for(AxisDirection dir : AxisDirection.XZ) positions.enqueue(pos.offset(dir.x, dir.y, dir.z));
             }
         }
@@ -124,7 +123,7 @@ public class MeltedMetalBlockEntity extends BlockEntity {
         }
 
         if(alloyMetal != null) for(MeltedMetalBlockEntity entity : entities) {
-            entity.metal = alloyMetal;
+            entity.metal = alloyMetal.value;
             entity.untouched = false;
             entity.alloyTimer = 0;
             entity.setChanged();
@@ -140,7 +139,7 @@ public class MeltedMetalBlockEntity extends BlockEntity {
         if(entity.temperature != targetTemp) {
             if(entity.temperature > targetTemp) entity.temperature = Math.max(entity.temperature - 0.05F, targetTemp);
             else entity.temperature = Math.min(entity.temperature + 0.05F, targetTemp);
-            if(entity.temperature < entity.metal.value.getMeltTemp()) {
+            if(entity.temperature < entity.metal.getMeltTemp()) {
                 if(entity.untouched) level.setBlockAndUpdate(pos, entity.originalState);
                 else {
                     if(entity.hasSlag) level.setBlockAndUpdate(pos, BlocksNF.SLAG.get().defaultBlockState());
@@ -154,10 +153,13 @@ public class MeltedMetalBlockEntity extends BlockEntity {
             else {
                 TieredHeat heat = TieredHeat.fromTemp(entity.temperature);
                 if(heat.getTier() != state.getValue(MeltedMetalBlock.HEAT)) level.setBlockAndUpdate(pos, state.setValue(MeltedMetalBlock.HEAT, heat.getTier()));
-                if(entity.alloyTimer > 0) {
-                    if(entity.alloyTimer == 1) entity.alloy();
-                    else entity.alloyTimer--;
-                }
+                entity.setChanged();
+            }
+        }
+        if(entity.alloyTimer > 0) {
+            if(entity.alloyTimer == 1) entity.alloy();
+            else {
+                entity.alloyTimer--;
                 entity.setChanged();
             }
         }
@@ -169,7 +171,8 @@ public class MeltedMetalBlockEntity extends BlockEntity {
         temperature = tag.getFloat("temperature");
         targetTemperature = tag.getFloat("targetTemperature");
         originalState = MeltedMetalBlock.stateById(tag.getInt("originalState"));
-        metal = RegistriesNF.getMetals().getValue(ResourceLocation.parse(tag.getString("metal")));
+        IMetal.Entry metalEntry = RegistriesNF.getMetals().getValue(ResourceLocation.parse(tag.getString("metal")));
+        if(metalEntry != null) this.metal = metalEntry.value;
         units = tag.getInt("units");
         alloyTimer = tag.getInt("alloyTimer");
         hasSlag = tag.getBoolean("hasSlag");
@@ -182,7 +185,7 @@ public class MeltedMetalBlockEntity extends BlockEntity {
         tag.putFloat("temperature", temperature);
         tag.putFloat("targetTemperature", targetTemperature);
         tag.putInt("originalState", MeltedMetalBlock.getId(originalState));
-        tag.putString("metal", metal.getRegistryName().toString());
+        tag.putString("metal", metal.getId().toString());
         tag.putInt("units", units);
         tag.putInt("alloyTimer", alloyTimer);
         tag.putBoolean("hasSlag", hasSlag);

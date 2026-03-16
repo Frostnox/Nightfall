@@ -4,6 +4,7 @@ import frostnox.nightfall.block.fluid.MetalFluid;
 import frostnox.nightfall.util.data.Vec2f;
 import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -36,6 +37,8 @@ public interface IMetal extends IBlock {
 
     TagKey<Item> getTag();
 
+    ResourceLocation getId();
+
     /**
      * @return map of metals with percentage ranges (0 to 1) necessary to create this metal
      */
@@ -50,6 +53,7 @@ public interface IMetal extends IBlock {
     }
 
     default float getMeltTemp() {
+        if(getWorkTier() >= 5) return Float.MAX_VALUE;
         return TieredHeat.fromTier(getWorkTier() + 1).getBaseTemp();
     }
 

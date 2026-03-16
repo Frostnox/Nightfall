@@ -323,10 +323,6 @@ public class LootTableProviderNF extends LootTableProvider {
                 dropSiding(BlocksNF.METAL_PLATING_SIDINGS.get(type).get(), ItemsNF.PLATES.get(type).get(), 2);
             }
             for(Metal type : BlocksNF.INGOT_PILES.keySet()) dropOther(BlocksNF.INGOT_PILES.get(type).get(), ItemsNF.INGOTS.get(type).get(), 4);
-            dropOthers(BlocksNF.STEEL_INGOT_PILE_POOR.get(), entry(ItemsNF.INGOTS.get(Metal.STEEL).get(), 2, 2),
-                    entry(ItemsNF.INGOTS.get(Metal.IRON).get(), 2, 2));
-            dropOthers(BlocksNF.STEEL_INGOT_PILE_FAIR.get(), entry(ItemsNF.INGOTS.get(Metal.STEEL).get(), 3, 3),
-                    entry(ItemsNF.INGOTS.get(Metal.IRON).get(), 1, 1));
             dropOther(BlocksNF.COKE.get(), ItemsNF.COKE.get(), 4);
             dropOtherRandom(BlocksNF.COKE_BURNING.get(), ItemsNF.COKE.get(), 1, -1, 1, 1);
             dropOther(BlocksNF.COAL.get(), ItemsNF.COAL.get(), 4);
@@ -336,10 +332,13 @@ public class LootTableProviderNF extends LootTableProvider {
             dropOther(BlocksNF.FIREWOOD.get(), ItemsNF.FIREWOOD.get(), 8);
             dropOtherRandom(BlocksNF.FIREWOOD_BURNING.get(), ItemsNF.FIREWOOD.get(), 1, -1, 1, 1);
             dropOther(BlocksNF.SLAG.get(), ItemsNF.SLAG.get(), 4);
-            dropOther(BlocksNF.AZURITE.get(), ItemsNF.AZURITE_CHUNK.get(), 4);
-            dropOther(BlocksNF.HEMATITE.get(), ItemsNF.HEMATITE_CHUNK.get(), 4);
+            dropOther(BlocksNF.RAW_TIN.get(), ItemsNF.TIN_CHUNK.get(), 4);
+            dropOther(BlocksNF.RAW_COPPER.get(), ItemsNF.COPPER_CHUNK.get(), 4);
+            dropOther(BlocksNF.RAW_METEORITE.get(), ItemsNF.METEORITE_CHUNK.get(), 4);
+            dropOther(BlocksNF.RAW_AZURITE.get(), ItemsNF.AZURITE_CHUNK.get(), 4);
+            dropOther(BlocksNF.RAW_HEMATITE.get(), ItemsNF.HEMATITE_CHUNK.get(), 4);
             addExplodable(BlocksNF.SMELTED_AZURITE.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.SLAG.get(), 2, 2)))
-                            .withPool(pool(entry(ItemsNF.AZURITE_CHUNK.get(), 2, 2))));
+                            .withPool(pool(entry(ItemsNF.COPPER_CHUNK.get(), 2, 2))));
             addExplodable(BlocksNF.SMELTED_HEMATITE.get(), LootTable.lootTable().withPool(pool(entry(ItemsNF.SLAG.get(), 2, 2)))
                     .withPool(pool(entry(ItemsNF.IRON_BLOOM.get(), 2, 2)))
                     .withPool(pool(entry(ItemsNF.STEEL_NUGGET.get(), 0, 0, List.of(PerceptionCountFunction.with(1, 0.15F, 0.01F))))));

@@ -172,6 +172,7 @@ public class LanguageProviderNF extends LanguageProvider {
         add("block.holdable", "Carriable");
         add("block.holdable.control", "(Crouch and use with empty hand)");
         add("block.fireable", "Fires at ");
+        add("block.meltable", "Melts at ");
         add("block.capacity", "%s Capacity");
         add("block.crucible.pour", "Carry and use to pour liquids");
         add("block.warding_effigy.info", "Prevents nearby Undead occurrence");
@@ -496,8 +497,6 @@ public class LanguageProviderNF extends LanguageProvider {
         add(ItemsNF.COAL_BLOCK.get(), "Coal Block");
         add(ItemsNF.CHARCOAL_BLOCK.get(), "Charcoal Block");
         add(ItemsNF.FIREWOOD_BLOCK.get(), "Firewood Block");
-        add(ItemsNF.AZURITE_BLOCK.get(), "Azurite Block");
-        add(ItemsNF.HEMATITE_BLOCK.get(), "Hematite Block");
         add(ItemsNF.CHESTPLATES.get(TieredArmorMaterial.LEATHER).get(), "Leather Tunic");
         add(ItemsNF.LEGGINGS.get(TieredArmorMaterial.LEATHER).get(), "Leather Pants");
         add(ItemsNF.CHESTPLATES.get(TieredArmorMaterial.PADDED).get(), "Padded Tunic");

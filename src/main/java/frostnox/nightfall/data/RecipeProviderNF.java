@@ -175,8 +175,11 @@ public class RecipeProviderNF extends RecipeProvider {
         BuildingRecipeBuilder.base(ItemsNF.CHARCOAL.get(), 4, ItemsNF.CHARCOAL_BLOCK.get()).order(0).save(consumer);
         BuildingRecipeBuilder.base(ItemsNF.COKE.get(), 4, ItemsNF.COKE_BLOCK.get()).order(0).save(consumer);
         BuildingRecipeBuilder.base(ItemsNF.SLAG.get(), 4, ItemsNF.SLAG_BLOCK.get()).order(0).save(consumer);
-        BuildingRecipeBuilder.base(ItemsNF.AZURITE_CHUNK.get(), 4, ItemsNF.AZURITE_BLOCK.get()).order(0).save(consumer);
-        BuildingRecipeBuilder.base(ItemsNF.HEMATITE_CHUNK.get(), 4, ItemsNF.HEMATITE_BLOCK.get()).order(0).save(consumer);
+        BuildingRecipeBuilder.base(ItemsNF.TIN_CHUNK.get(), 4, ItemsNF.RAW_TIN.get()).order(0).save(consumer);
+        BuildingRecipeBuilder.base(ItemsNF.COPPER_CHUNK.get(), 4, ItemsNF.RAW_COPPER.get()).order(0).save(consumer);
+        BuildingRecipeBuilder.base(ItemsNF.METEORITE_CHUNK.get(), 4, ItemsNF.RAW_METEORITE.get()).order(0).save(consumer);
+        BuildingRecipeBuilder.base(ItemsNF.AZURITE_CHUNK.get(), 4, ItemsNF.RAW_AZURITE.get()).order(0).save(consumer);
+        BuildingRecipeBuilder.base(ItemsNF.HEMATITE_CHUNK.get(), 4, ItemsNF.RAW_HEMATITE.get()).order(0).save(consumer);
 
         SingleRecipeBuilder.base(ItemsNF.ROASTED_POTATO.get(), 1).input(ItemsNF.POTATO.get()).cookTime(60 * 20).requirement(EntriesNF.CAMPFIRE.getId()).saveCampfire(consumer);
         SingleRecipeBuilder.base(ItemsNF.ROASTED_CARROT.get(), 1).input(ItemsNF.CARROT.get()).cookTime(60 * 20).requirement(EntriesNF.CAMPFIRE.getId()).saveCampfire(consumer);

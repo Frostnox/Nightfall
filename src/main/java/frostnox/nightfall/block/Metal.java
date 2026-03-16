@@ -25,7 +25,7 @@ public enum Metal implements IMetal {
     COPPER(1, 1, Category.HARD, 10F, 10F, MaterialColor.COLOR_ORANGE, new Color(0xffcb623a), SoundType.COPPER, Map.of(),
             FloatList.of(0.35F, 0.35F, 0.35F, 0.15F, 0.15F, -1F)),
     BRONZE(2, 1, Category.HARD, 12F, 12F, MaterialColor.TERRACOTTA_ORANGE, new Color(0xffc07d3d), SoundsNF.BRONZE_TYPE,
-            Map.of(COPPER, new Vec2f(0.85F, 1F), TIN, new Vec2f(0.05F, 0.15F)),
+            Map.of(COPPER, new Vec2f(0.8F, 1F), TIN, new Vec2f(0.05F, 0.2F)),
             FloatList.of(0.4F, 0.4F, 0.4F, 0.2F, 0.2F, 0.2F)),
     IRON(3, 3, Category.HARD, 14F, 14F, MaterialColor.COLOR_GRAY, new Color(0xff575554), SoundType.NETHERITE_BLOCK, Map.of(),
             FloatList.of(0.45F, 0.45F, 0.45F, 0.25F, 0.25F, 0.25F)),
@@ -43,6 +43,7 @@ public enum Metal implements IMetal {
     private final Map<IMetal, Vec2f> bases;
     private final List<Float> defenses;
     private final TagKey<Item> itemTag;
+    private final ResourceLocation id;
 
     Metal(int tier, int workTier, Category category, float strength, float explosionResistance, MaterialColor materialColor, Color color, SoundType sound, Map<IMetal, Vec2f> bases) {
         this(tier, workTier, category, strength, explosionResistance, materialColor, color, sound, bases, FloatList.of(0, 0, 0, 0, 0, 0));
@@ -60,6 +61,7 @@ public enum Metal implements IMetal {
         this.bases = bases;
         this.defenses = defenses;
         itemTag = TagKey.create(Registry.ITEM_REGISTRY, ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, "metal/" + getName()));
+        id = ResourceLocation.fromNamespaceAndPath(Nightfall.MODID, getName());
     }
 
     /**
@@ -116,6 +118,11 @@ public enum Metal implements IMetal {
     @Override
     public TagKey<Item> getTag() {
         return itemTag;
+    }
+
+    @Override
+    public ResourceLocation getId() {
+        return id;
     }
 
     @Override

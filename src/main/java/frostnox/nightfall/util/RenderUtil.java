@@ -20,6 +20,7 @@ import frostnox.nightfall.encyclopedia.knowledge.IItemKnowledge;
 import frostnox.nightfall.encyclopedia.knowledge.Knowledge;
 import frostnox.nightfall.entity.PlayerAttribute;
 import frostnox.nightfall.registry.KnowledgeNF;
+import frostnox.nightfall.util.math.Easing;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiComponent;
@@ -115,7 +116,7 @@ public class RenderUtil {
             TieredHeat fromHeat = TieredHeat.fromTier(heat.getTier() + 1);
             Color toColor = heat.color;
             Color fromColor = fromHeat.color;
-            float progress = 1F - (temperature - heat.getBaseTemp()) / (fromHeat.getBaseTemp() - heat.getBaseTemp());
+            float progress = Easing.outQuad.apply(1F - (temperature - heat.getBaseTemp()) / (fromHeat.getBaseTemp() - heat.getBaseTemp()));
             r = (int) Mth.lerp(progress, fromColor.getRed(), toColor.getRed());
             g = (int) Mth.lerp(progress, fromColor.getGreen(), toColor.getGreen());
             b = (int) Mth.lerp(progress, fromColor.getBlue(), toColor.getBlue());

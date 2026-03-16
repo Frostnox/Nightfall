@@ -153,7 +153,8 @@ public class BlockTagsProviderNF extends BlockTagsProvider {
                 BlocksNF.MUD_BRICK_SIDING.get(), BlocksNF.BRICKS.get(), BlocksNF.BRICK_STAIRS.get(), BlocksNF.BRICK_SLAB.get(),
                 BlocksNF.BRICK_SIDING.get(), BlocksNF.FIRE_BRICKS.get(), BlocksNF.FIRE_BRICK_STAIRS.get(), BlocksNF.FIRE_BRICK_SLAB.get(),
                 BlocksNF.FIRE_BRICK_SIDING.get(), BlocksNF.MOON_ESSENCE.get(), BlocksNF.FLINT_CLUSTER.get(), BlocksNF.SLAG.get(),
-                BlocksNF.AZURITE.get(), BlocksNF.HEMATITE.get(), BlocksNF.SMELTED_AZURITE.get(), BlocksNF.SMELTED_HEMATITE.get(),
+                BlocksNF.RAW_TIN.get(), BlocksNF.RAW_COPPER.get(), BlocksNF.RAW_METEORITE.get(),
+                BlocksNF.RAW_AZURITE.get(), BlocksNF.RAW_HEMATITE.get(), BlocksNF.SMELTED_AZURITE.get(), BlocksNF.SMELTED_HEMATITE.get(),
                 BlocksNF.ANCHORING_RESIN.get(), BlocksNF.MUD_BRICK_CHANNEL.get(), BlocksNF.BRICK_CHANNEL.get(), BlocksNF.FIRE_BRICK_CHANNEL.get());
         for(var block : BlocksNF.ROCK_CLUSTERS.values()) tag(BlockTags.MINEABLE_WITH_PICKAXE).add(block.get());
         for(var block : BlocksNF.SKARA_ROCK_CLUSTERS.values()) tag(BlockTags.MINEABLE_WITH_PICKAXE).add(block.get());
@@ -173,10 +174,11 @@ public class BlockTagsProviderNF extends BlockTagsProvider {
         tag(BlockTags.MINEABLE_WITH_SHOVEL).addTags(TagsNF.SOIL);
         tag(BlockTags.MINEABLE_WITH_SHOVEL).add(BlocksNF.SNOW.get(), BlocksNF.PACKED_SNOW.get(), BlocksNF.MUD.get(), BlocksNF.CLAY.get(),
                 BlocksNF.FIRE_CLAY.get(), BlocksNF.WET_MUD_BRICKS.get(), BlocksNF.CLAY_BRICKS.get(), BlocksNF.FIRE_CLAY_BRICKS.get(),
-                BlocksNF.CAMPFIRE.get(), BlocksNF.BERRY_BUSH.get(), BlocksNF.STEEL_INGOT_PILE_POOR.get(), BlocksNF.STEEL_INGOT_PILE_FAIR.get(),
+                BlocksNF.CAMPFIRE.get(), BlocksNF.BERRY_BUSH.get(),
                 BlocksNF.COKE.get(), BlocksNF.COKE_BURNING.get(), BlocksNF.COAL.get(), BlocksNF.COAL_BURNING.get(),
                 BlocksNF.CHARCOAL.get(), BlocksNF.CHARCOAL_BURNING.get(), BlocksNF.FIREWOOD.get(), BlocksNF.FIREWOOD_BURNING.get(),
-                BlocksNF.SLAG.get(), BlocksNF.AZURITE.get(), BlocksNF.HEMATITE.get(), BlocksNF.SMELTED_AZURITE.get(),
+                BlocksNF.SLAG.get(), BlocksNF.RAW_TIN.get(), BlocksNF.RAW_COPPER.get(), BlocksNF.RAW_METEORITE.get(),
+                BlocksNF.RAW_AZURITE.get(), BlocksNF.RAW_HEMATITE.get(), BlocksNF.SMELTED_AZURITE.get(),
                 BlocksNF.SMELTED_HEMATITE.get(), BlocksNF.MOON_ESSENCE.get(), BlocksNF.UNFIRED_INGOT_MOLD.get(), BlocksNF.UNFIRED_ARROWHEAD_MOLD.get(),
                 BlocksNF.UNFIRED_ROD_MOLD.get(), BlocksNF.UNFIRED_BLOCK_MOLD.get(), BlocksNF.UNFIRED_ANVIL_MOLD.get());
         for(var block : BlocksNF.INGOT_PILES.values()) tag(BlockTags.MINEABLE_WITH_SHOVEL).add(block.get());
@@ -240,9 +242,10 @@ public class BlockTagsProviderNF extends BlockTagsProvider {
         for(Metal type : BlocksNF.ANVILS_METAL.keySet()) sup.put(BlocksNF.ANVILS_METAL.get(type), 0);
         addSupports(sup, 0, BlocksNF.SILT, BlocksNF.DIRT, BlocksNF.LOAM, BlocksNF.ASH, BlocksNF.GRAVEL, BlocksNF.BLUE_GRAVEL, BlocksNF.BLACK_GRAVEL,
                 BlocksNF.SAND, BlocksNF.RED_SAND, BlocksNF.WHITE_SAND, BlocksNF.MUD, BlocksNF.COKE, BlocksNF.COKE_BURNING, BlocksNF.COAL, BlocksNF.COAL_BURNING,
-                BlocksNF.CHARCOAL, BlocksNF.CHARCOAL_BURNING, BlocksNF.FIREWOOD, BlocksNF.SLAG, BlocksNF.AZURITE, BlocksNF.HEMATITE, BlocksNF.SMELTED_AZURITE,
+                BlocksNF.CHARCOAL, BlocksNF.CHARCOAL_BURNING, BlocksNF.FIREWOOD, BlocksNF.SLAG, BlocksNF.RAW_TIN, BlocksNF.RAW_COPPER, BlocksNF.RAW_METEORITE,
+                BlocksNF.RAW_AZURITE, BlocksNF.RAW_HEMATITE, BlocksNF.SMELTED_AZURITE,
                 BlocksNF.SMELTED_HEMATITE, BlocksNF.CAMPFIRE, BlocksNF.CAULDRON, BlocksNF.POT, BlocksNF.WET_MUD_BRICKS, BlocksNF.CLAY_BRICKS, BlocksNF.FIRE_CLAY_BRICKS,
-                BlocksNF.STEEL_INGOT_PILE_POOR, BlocksNF.STEEL_INGOT_PILE_FAIR, BlocksNF.CRUCIBLE, BlocksNF.UNFIRED_CRUCIBLE, BlocksNF.CAULDRON, BlocksNF.UNFIRED_CAULDRON,
+                BlocksNF.CRUCIBLE, BlocksNF.UNFIRED_CRUCIBLE, BlocksNF.CAULDRON, BlocksNF.UNFIRED_CAULDRON,
                 BlocksNF.POT, BlocksNF.UNFIRED_POT, BlocksNF.SPIDER_NEST, BlocksNF.MELTED_METAL, BlocksNF.BLOCK_MOLD, BlocksNF.ANVIL_MOLD, BlocksNF.UNFIRED_BLOCK_MOLD,
                 BlocksNF.UNFIRED_ANVIL_MOLD);
         addSupports(sup, 1, BlocksNF.CLAY, BlocksNF.FIRE_CLAY, BlocksNF.PACKED_SNOW);

@@ -603,34 +603,9 @@ public class BlocksNF {
     public static final Map<Metal, RegistryObject<StairBlockNF>> METAL_PLATING_STAIRS = DataUtil.mapEnum(Metal.class, metal -> stairs(metal.getName() + "_plating", METAL_PLATINGS.get(metal)));
     public static final Map<Metal, RegistryObject<SlabBlockNF>> METAL_PLATING_SLABS = DataUtil.mapEnum(Metal.class, metal -> slab(metal.getName() + "_plating", METAL_PLATINGS.get(metal)));
     public static final Map<Metal, RegistryObject<SidingBlock>> METAL_PLATING_SIDINGS = DataUtil.mapEnum(Metal.class, metal -> siding(metal.getName() + "_plating", METAL_PLATINGS.get(metal)));
-    public static final Map<Metal, RegistryObject<Block>> INGOT_PILES = DataUtil.mapEnum(Metal.class, metal ->
-            register(metal.getName() + "_ingot_pile", metal == Metal.IRON ? () -> new FireableAxisBlock(
-                    20 * 60 * 8, TieredHeat.WHITE,
-                    BlockBehaviour.Properties.of(Material.METAL, metal.getBaseColor())
-                    .strength(metal.getStrength()/8F, metal.getExplosionResistance()/2F).sound(metal.getSound())) {
-                @Override
-                public BlockState getFiredBlock(Level level, BlockPos pos, BlockState state) {
-                    BlockState above = level.getBlockState(pos.above());
-                    BlockState below = level.getBlockState(pos.below());
-                    if(above.is(COAL_BURNING.get()) || below.is(COAL_BURNING.get())) return STEEL_INGOT_PILE_POOR.get().defaultBlockState();
-                    else if(above.is(CHARCOAL_BURNING.get()) || below.is(CHARCOAL_BURNING.get())) return STEEL_INGOT_PILE_FAIR.get().defaultBlockState();
-                    else return state.getBlock().defaultBlockState();
-                }
-
-                @Override
-                public boolean isStructureValid(Level level, BlockPos pos, BlockState state) {
-                    return LevelUtil.isBlockBurningCarbon(level.getBlockState(pos.below())) && LevelUtil.isBlockBurningCarbon(level.getBlockState(pos.above()))
-                            && LevelUtil.getNearbySmelterTier(level, pos) > 3;
-                }
-            } :
-                    () -> new HorizontalAxisBlock(BlockBehaviour.Properties.of(Material.METAL, metal.getBaseColor())
+    public static final Map<Metal, RegistryObject<FireableMetalAxisBlock>> INGOT_PILES = DataUtil.mapEnum(Metal.class, metal ->
+            register(metal.getName() + "_ingot_pile", () -> new FireableMetalAxisBlock(metal, BlockBehaviour.Properties.of(Material.METAL, metal.getBaseColor())
                             .strength(metal.getStrength()/8F, metal.getExplosionResistance()/2F).sound(metal.getSound()))));
-    public static final RegistryObject<HorizontalAxisBlock> STEEL_INGOT_PILE_POOR = register("poor_steel_ingot_pile", () -> new HorizontalAxisBlock(
-            BlockBehaviour.Properties.of(Material.METAL, Metal.STEEL.getBaseColor()).strength(Metal.STEEL.getStrength()/8F,
-                    Metal.STEEL.getExplosionResistance()/2F).sound(Metal.STEEL.getSound())));
-    public static final RegistryObject<HorizontalAxisBlock> STEEL_INGOT_PILE_FAIR = register("fair_steel_ingot_pile", () -> new HorizontalAxisBlock(
-            BlockBehaviour.Properties.of(Material.METAL, Metal.STEEL.getBaseColor()).strength(Metal.STEEL.getStrength()/8F,
-                    Metal.STEEL.getExplosionResistance()/2F).sound(Metal.STEEL.getSound())));
     public static final Map<Metal, RegistryObject<LanternBlockNF>> LANTERNS = DataUtil.mapEnum(Metal.class,
             metal -> register(metal.getName() + "_lantern", () -> new LanternBlockNF(true, BlocksNF.LANTERNS_UNLIT.get(metal), BlockBehaviour.Properties.of(Material.METAL,
                     metal.getBaseColor()).strength(1F).lightLevel((state) -> 15).noOcclusion().sound(SoundType.LANTERN))));
@@ -736,10 +711,16 @@ public class BlocksNF {
 
     public static final RegistryObject<BlockNF> SLAG = BLOCKS.register("slag_block", () -> new BlockNF(BlockBehaviour.Properties.of(Material.STONE,
             MaterialColor.TERRACOTTA_BLACK).strength(12.0F, 20.0F).sound(SoundType.ANCIENT_DEBRIS)));
-    public static final RegistryObject<FireableBlock> AZURITE = BLOCKS.register("azurite_block", () -> new SimpleFireableBlock(20 * 60 * 8, TieredHeat.ORANGE,
-            BlocksNF.SMELTED_AZURITE, BlockBehaviour.Properties.of(Material.METAL, MaterialColor.LAPIS).strength(8.0F, 2000F).sound(SoundType.METAL)));
-    public static final RegistryObject<FireableBlock> HEMATITE = BLOCKS.register("hematite_block", () -> new SimpleFireableBlock(20 * 60 * 8, TieredHeat.WHITE,
-            BlocksNF.SMELTED_HEMATITE, BlockBehaviour.Properties.of(Material.METAL).strength(8.0F, 2000F).sound(SoundType.METAL)));
+    public static final RegistryObject<FireableBlock> RAW_TIN = BLOCKS.register("raw_tin", () -> new FireableMetalBlock(Metal.TIN,
+            BlockBehaviour.Properties.of(Material.METAL, Metal.TIN.getBaseColor()).strength(Metal.TIN.getStrength(), Metal.TIN.getExplosionResistance()).sound(SoundType.ANCIENT_DEBRIS)));
+    public static final RegistryObject<FireableBlock> RAW_COPPER = BLOCKS.register("raw_copper", () -> new FireableMetalBlock(Metal.COPPER,
+            BlockBehaviour.Properties.of(Material.METAL, Metal.COPPER.getBaseColor()).strength(Metal.COPPER.getStrength(), Metal.COPPER.getExplosionResistance()).sound(SoundType.ANCIENT_DEBRIS)));
+    public static final RegistryObject<FireableBlock> RAW_METEORITE = BLOCKS.register("raw_meteorite", () -> new FireableMetalBlock(Metal.METEORITE,
+            BlockBehaviour.Properties.of(Material.METAL, Metal.METEORITE.getBaseColor()).strength(Metal.METEORITE.getStrength(), Metal.METEORITE.getExplosionResistance()).sound(SoundType.ANCIENT_DEBRIS)));
+    public static final RegistryObject<FireableBlock> RAW_AZURITE = BLOCKS.register("raw_azurite", () -> new FireableMetalBlock(Metal.COPPER, 200, true,
+            BlocksNF.SMELTED_AZURITE, BlockBehaviour.Properties.of(Material.METAL, MaterialColor.LAPIS).strength(8.0F, 20F).sound(SoundType.METAL)));
+    public static final RegistryObject<FireableBlock> RAW_HEMATITE = BLOCKS.register("raw_hematite", () -> new FireableMetalBlock(Metal.IRON, 200, true,
+            BlocksNF.SMELTED_HEMATITE, BlockBehaviour.Properties.of(Material.METAL).strength(8.0F, 20F).sound(SoundType.METAL)));
     public static final RegistryObject<BlockNF> SMELTED_AZURITE = BLOCKS.register("smelted_azurite", () -> new BlockNF(BlockBehaviour.Properties.of(Material.STONE,
             MaterialColor.TERRACOTTA_BLACK).strength(8.0F, 16.0F).sound(SoundType.ANCIENT_DEBRIS)));
     public static final RegistryObject<BlockNF> SMELTED_HEMATITE = BLOCKS.register("smelted_hematite", () -> new BlockNF(BlockBehaviour.Properties.of(Material.STONE,

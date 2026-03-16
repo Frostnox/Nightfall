@@ -181,7 +181,7 @@ public class RegistriesNF {
 
     @SubscribeEvent
     public static void onRegisterMetalsEvent(RegistryEvent.Register<IMetal.Entry> event) {
-        for(Metal value : Metal.values()) event.getRegistry().register(new IMetal.Entry(value).setRegistryName(Nightfall.MODID, value.getName()));
+        for(Metal value : Metal.values()) event.getRegistry().register(new IMetal.Entry(value).setRegistryName(value.getId()));
     }
 
     @SubscribeEvent

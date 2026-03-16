@@ -23,7 +23,7 @@ public class FireableFacingPartialBlock extends FireablePartialBlock {
     }
 
     @Override
-    public BlockState getFiredBlock(Level level, BlockPos pos, BlockState state) {
+    public BlockState getFiredBlock(Level level, BlockPos pos, BlockState state, float temperature) {
         return firedBlock.get().defaultBlockState().setValue(FACING, state.getValue(FACING));
     }
 

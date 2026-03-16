@@ -1,6 +1,6 @@
 package frostnox.nightfall.block.block.fireable;
 
-import frostnox.nightfall.block.TieredHeat;
+import frostnox.nightfall.block.IMetal;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
@@ -9,12 +9,17 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraftforge.registries.RegistryObject;
 
-public abstract class FireableAxisBlock extends FireableBlock {
+public class FireableMetalAxisBlock extends FireableMetalBlock {
     public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.HORIZONTAL_AXIS;
 
-    public FireableAxisBlock(int cookTicks, TieredHeat cookHeat, Properties properties) {
-        super(cookTicks, cookHeat, properties);
+    public FireableMetalAxisBlock(IMetal metalType, Properties properties) {
+        this(metalType, 400, false, null, properties);
+    }
+
+    public FireableMetalAxisBlock(IMetal metalType, int metalUnits, boolean hasSlag, RegistryObject<? extends Block> firedBlock, Properties properties) {
+        super(metalType, metalUnits, hasSlag, firedBlock, properties);
         registerDefaultState(defaultBlockState().setValue(AXIS, Direction.Axis.Z));
     }
 
