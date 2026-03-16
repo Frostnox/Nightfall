@@ -61,7 +61,7 @@ public class FurnaceChannelBlockEntity extends BlockEntity {
             visualDist = 0;
             visualTemp = 0;
             level.setBlockAndUpdate(getBlockPos(), getBlockState().setValue(FurnaceChannelBlock.SEALED, true));
-            level.playSound(null, getBlockPos(), SoundsNF.CERAMIC_OPEN_SMALL.get(), SoundSource.BLOCKS, 1F, 1F);
+            level.playSound(null, getBlockPos(), SoundsNF.CERAMIC_SCRAPE.get(), SoundSource.BLOCKS, 1F, 1F);
         }
         wasCasting = false;
     }

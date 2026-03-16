@@ -11,6 +11,7 @@ import frostnox.nightfall.entity.ai.pathfinding.NodeType;
 import frostnox.nightfall.registry.forge.BlockEntitiesNF;
 import frostnox.nightfall.registry.forge.BlocksNF;
 import frostnox.nightfall.registry.forge.FluidsNF;
+import frostnox.nightfall.registry.forge.SoundsNF;
 import frostnox.nightfall.util.LevelUtil;
 import frostnox.nightfall.util.MathUtil;
 import net.minecraft.core.BlockPos;
@@ -95,7 +96,7 @@ public class MeltedMetalBlock extends BaseEntityBlock implements IAdjustableNode
         double y = pos.getY();
         double z = (double)pos.getZ() + 0.5D;
         if(rand.nextInt(380) == 0) {
-            level.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.LAVA_AMBIENT, SoundSource.BLOCKS, 0.2F + rand.nextFloat() * 0.2F, 0.9F + rand.nextFloat() * 0.15F, false);
+            level.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), SoundsNF.MOLTEN_LIQUID_AMBIENT.get(), SoundSource.BLOCKS, 0.2F + rand.nextFloat() * 0.2F, 0.9F + rand.nextFloat() * 0.15F, false);
         }
         if(rand.nextDouble() < 0.55D) {
             BlockPos blockpos = pos.above();
@@ -120,6 +121,13 @@ public class MeltedMetalBlock extends BaseEntityBlock implements IAdjustableNode
             fluid.tick(level, pos, fluid.defaultFluidState());
         }
         return unstable;
+    }
+
+    @Override
+    public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @javax.annotation.Nullable BlockEntity pTe, ItemStack pStack) {
+        MeltedMetalFluid fluid = FluidsNF.MELTED_METAL.get(getHeat(state)).get();
+        level.setBlock(pos, fluid.defaultFluidState().createLegacyBlock().setValue(LiquidBlock.LEVEL, 3), 11);
+        fluid.tick(level, pos, fluid.defaultFluidState());
     }
 
     @Override

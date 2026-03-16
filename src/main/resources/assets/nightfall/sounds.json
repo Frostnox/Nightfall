@@ -62,6 +62,10 @@
     "subtitle": "nightfall.block.ceramic.open",
     "sounds": ["nightfall:block/ceramic/open_small"]
   },
+  "block.ceramic.scrape": {
+    "subtitle": "nightfall.block.ceramic.scrape",
+    "sounds": ["nightfall:block/ceramic/scrape_0", "nightfall:block/ceramic/scrape_1"]
+  },
   "block.sturdy_ceramic.break": {
     "subtitle": "subtitles.block.generic.break",
     "sounds": ["nightfall:block/ceramic/place_0", "nightfall:block/ceramic/place_1", "nightfall:block/ceramic/place_2", "nightfall:block/ceramic/place_3", "nightfall:block/ceramic/place_4"]
@@ -134,9 +138,33 @@
     "subtitle": "nightfall.block.stone_dislodge",
     "sounds": ["nightfall:block/stone_dislodge_0", "nightfall:block/stone_dislodge_1", "nightfall:block/stone_dislodge_2", "nightfall:block/stone_dislodge_3"]
   },
-  "block.molten_liquid_pour": {
-    "subtitle": "nightfall.block.molten_liquid_pour",
-    "sounds": ["nightfall:block/molten_liquid_pour"]
+  "block.molten_liquid.break": {
+    "subtitle": "subtitles.block.generic.break",
+    "sounds": ["nightfall:block/molten_liquid/step_0", "nightfall:block/molten_liquid/step_1", "nightfall:block/molten_liquid/step_2", "nightfall:block/molten_liquid/step_3", "nightfall:block/molten_liquid/step_4", "nightfall:block/molten_liquid/step_5"]
+  },
+  "block.molten_liquid.step": {
+    "subtitle": "subtitles.block.generic.footsteps",
+    "sounds": ["nightfall:block/molten_liquid/step_0", "nightfall:block/molten_liquid/step_1", "nightfall:block/molten_liquid/step_2", "nightfall:block/molten_liquid/step_3", "nightfall:block/molten_liquid/step_4", "nightfall:block/molten_liquid/step_5"]
+  },
+  "block.molten_liquid.place": {
+    "subtitle": "subtitles.block.generic.place",
+    "sounds": ["nightfall:block/molten_liquid/step_0", "nightfall:block/molten_liquid/step_1", "nightfall:block/molten_liquid/step_2", "nightfall:block/molten_liquid/step_3", "nightfall:block/molten_liquid/step_4", "nightfall:block/molten_liquid/step_5"]
+  },
+  "block.molten_liquid.hit": {
+    "subtitle": "subtitles.block.generic.hit",
+    "sounds": ["nightfall:block/molten_liquid/step_0", "nightfall:block/molten_liquid/step_1", "nightfall:block/molten_liquid/step_2", "nightfall:block/molten_liquid/step_3", "nightfall:block/molten_liquid/step_4", "nightfall:block/molten_liquid/step_5"]
+  },
+  "block.molten_liquid.fall": {
+    "subtitle": "subtitles.block.generic.footsteps",
+    "sounds": ["nightfall:block/molten_liquid/step_0", "nightfall:block/molten_liquid/step_1", "nightfall:block/molten_liquid/step_2", "nightfall:block/molten_liquid/step_3", "nightfall:block/molten_liquid/step_4", "nightfall:block/molten_liquid/step_5"]
+  },
+  "block.molten_liquid.pour": {
+    "subtitle": "nightfall.block.molten_liquid.pour",
+    "sounds": ["nightfall:block/molten_liquid/pour"]
+  },
+  "block.molten_liquid.ambient": {
+    "subtitle": "nightfall.block.molten_liquid.ambient",
+    "sounds": ["liquid/lava"]
   },
   "action.swing": {
     "subtitle": "nightfall.action.swing",

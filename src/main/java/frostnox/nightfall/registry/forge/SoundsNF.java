@@ -28,6 +28,7 @@ public class SoundsNF {
     public static final RegistryObject<SoundEvent> CERAMIC_FALL = generic("block.ceramic.fall");
     public static final RegistryObject<SoundEvent> CERAMIC_OPEN_LARGE = generic("block.ceramic.open_large");
     public static final RegistryObject<SoundEvent> CERAMIC_OPEN_SMALL = generic("block.ceramic.open_small");
+    public static final RegistryObject<SoundEvent> CERAMIC_SCRAPE = generic("block.ceramic.scrape");
     public static final RegistryObject<SoundEvent> STURDY_CERAMIC_BREAK = generic("block.sturdy_ceramic.break");
     public static final RegistryObject<SoundEvent> FIREWOOD_BREAK = generic("block.firewood.break");
     public static final RegistryObject<SoundEvent> FIREWOOD_STEP = generic("block.firewood.step");
@@ -45,7 +46,13 @@ public class SoundsNF {
     public static final RegistryObject<SoundEvent> FIRE_CRACKLE = generic("block.fire_crackle");
     public static final RegistryObject<SoundEvent> TROUGH_FILL = generic("block.trough.fill");
     public static final RegistryObject<SoundEvent> STONE_DISLODGE = generic("block.stone_dislodge");
-    public static final RegistryObject<SoundEvent> MOLTEN_LIQUID_POUR = generic("block.molten_liquid_pour");
+    public static final RegistryObject<SoundEvent> MOLTEN_LIQUID_BREAK = generic("block.molten_liquid.break");
+    public static final RegistryObject<SoundEvent> MOLTEN_LIQUID_STEP = generic("block.molten_liquid.step");
+    public static final RegistryObject<SoundEvent> MOLTEN_LIQUID_PLACE = generic("block.molten_liquid.place");
+    public static final RegistryObject<SoundEvent> MOLTEN_LIQUID_HIT = generic("block.molten_liquid.hit");
+    public static final RegistryObject<SoundEvent> MOLTEN_LIQUID_FALL = generic("block.molten_liquid.fall");
+    public static final RegistryObject<SoundEvent> MOLTEN_LIQUID_POUR = generic("block.molten_liquid.pour");
+    public static final RegistryObject<SoundEvent> MOLTEN_LIQUID_AMBIENT = generic("block.molten_liquid.ambient");
     public static final RegistryObject<SoundEvent> SWING = generic("action.swing");
     public static final RegistryObject<SoundEvent> SWING_CHARGED = generic("action.swing_charged");
     public static final RegistryObject<SoundEvent> BLADE_SWING = generic("action.blade_swing");
@@ -214,6 +221,7 @@ public class SoundsNF {
     public static final SoundType CERAMIC_DECORATION_TYPE = new ForgeSoundType(1F, 1F, () -> SoundEvents.STONE_BREAK, CERAMIC_STEP, () -> SoundEvents.STONE_PLACE, CERAMIC_HIT, CERAMIC_FALL);
     public static final SoundType CERAMIC_VESSEL_TYPE = new ForgeSoundType(1F, 1F, STURDY_CERAMIC_BREAK, CERAMIC_STEP, CERAMIC_PLACE, CERAMIC_HIT, CERAMIC_FALL);
     public static final SoundType FIREWOOD_TYPE = new ForgeSoundType(1F, 1F, FIREWOOD_BREAK, FIREWOOD_STEP, FIREWOOD_PLACE, FIREWOOD_HIT, FIREWOOD_FALL);
+    public static final SoundType MOLTEN_LIQUID_TYPE = new ForgeSoundType(1F, 1F, MOLTEN_LIQUID_BREAK, MOLTEN_LIQUID_STEP, MOLTEN_LIQUID_PLACE, MOLTEN_LIQUID_HIT, MOLTEN_LIQUID_FALL);
     public static final SoundType MUD_TYPE = new ForgeSoundType(1F, 1F, MUD_BREAK, MUD_STEP, MUD_PLACE, MUD_HIT, MUD_FALL);
     public static final SoundType MOON_ESSENCE_TYPE = new ForgeSoundType(1F, 1F, MOON_ESSENCE_BREAK, SILENT, MOON_ESSENCE_PLACE, SILENT, SILENT);
     public static final SoundType METEORITE_TYPE = new ForgeSoundType(1F, 1.22F, () -> SoundEvents.NETHERITE_BLOCK_BREAK, () -> SoundEvents.NETHERITE_BLOCK_STEP, () -> SoundEvents.NETHERITE_BLOCK_PLACE, () -> SoundEvents.NETHERITE_BLOCK_HIT, () -> SoundEvents.NETHERITE_BLOCK_FALL);

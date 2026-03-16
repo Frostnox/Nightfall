@@ -1,5 +1,6 @@
 package frostnox.nightfall.block.fluid;
 
+import frostnox.nightfall.registry.forge.SoundsNF;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -18,7 +19,7 @@ public abstract class MeltedMetalFluid extends SizedFluid {
     @Override
     public void animateTick(Level level, BlockPos pos, FluidState state, Random random) {
         if(random.nextInt(380) == 0) {
-            level.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.LAVA_AMBIENT, SoundSource.BLOCKS, 0.2F + random.nextFloat() * 0.2F, 0.9F + random.nextFloat() * 0.15F, false);
+            level.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), SoundsNF.MOLTEN_LIQUID_AMBIENT.get(), SoundSource.BLOCKS, 0.2F + random.nextFloat() * 0.2F, 0.9F + random.nextFloat() * 0.15F, false);
         }
     }
 

@@ -727,7 +727,7 @@ public class BlocksNF {
             MaterialColor.TERRACOTTA_BLACK).strength(8.0F, 16.0F).sound(SoundType.ANCIENT_DEBRIS)));
 
     public static final RegistryObject<MeltedMetalBlock> MELTED_METAL = register("melted_metal", () -> new MeltedMetalBlock(BlockBehaviour.Properties.of(Material.METAL, MaterialColor.FIRE)
-            .strength(12.0F, 20.0F).lightLevel(state -> 15).speedFactor(0.1F).jumpFactor(0.5F).noDrops().randomTicks().sound(SoundType.NETHER_ORE)));
+            .strength(12.0F, 20.0F).lightLevel(state -> 15).speedFactor(0.1F).jumpFactor(0.5F).noDrops().randomTicks().sound(SoundsNF.MOLTEN_LIQUID_TYPE)));
     public static final Map<TieredHeat, RegistryObject<SizedLiquidBlock>> LIQUID_MELTED_METAL = DataUtil.mapEnum(TieredHeat.class, heat -> heat == TieredHeat.NONE,
             (heat) -> register(heat.toString() + "_melted_metal", () -> new SizedLiquidBlock(FluidsNF.MELTED_METAL.get(heat),
             BlockBehaviour.Properties.of(Material.LAVA).noCollission().strength(100.0F).noDrops().randomTicks().lightLevel((state) -> 15))));

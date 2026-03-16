@@ -350,11 +350,13 @@ public class LanguageProviderNF extends LanguageProvider {
         addSound(SoundsNF.SIZZLE, "Something sizzles");
         addSound(SoundsNF.ICE_CRACKLE, "Ice crackles");
         addSound(SoundsNF.ANVIL_STRIKE, "Tool strikes anvil piece");
+        addSound(SoundsNF.CERAMIC_SCRAPE, "Ceramic scrapes");
         addSound(SoundsNF.WOODEN_BOWL_CRUSH, "Something crushes in wooden bowl");
         addSound(SoundsNF.FIRE_CRACKLE, "Fire crackles");
         addSound(SoundsNF.TROUGH_FILL, "Trough fills");
         addSound(SoundsNF.STONE_DISLODGE, "Stone dislodges");
         addSound(SoundsNF.MOLTEN_LIQUID_POUR, "Molten liquid pours");
+        addSound(SoundsNF.MOLTEN_LIQUID_AMBIENT, "Molten liquid bubbles");
         add("nightfall.block.ceramic.open", "Ceramic vessel opens");
         addSound(SoundsNF.SWING, "Weapon whooshes");
         addSound(SoundsNF.SWING_CHARGED, "Weapon whooshes forcefully");

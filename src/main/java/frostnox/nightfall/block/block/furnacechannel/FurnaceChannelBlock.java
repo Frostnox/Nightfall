@@ -92,7 +92,7 @@ public class FurnaceChannelBlock extends WaterloggedEntityBlock implements ICust
 
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult pHit) {
-        level.playSound(player, pos, SoundsNF.CERAMIC_OPEN_SMALL.get(), SoundSource.BLOCKS, 1F, 1F);
+        level.playSound(player, pos, SoundsNF.CERAMIC_SCRAPE.get(), SoundSource.BLOCKS, 1F, 1F);
         if(level.isClientSide) return InteractionResult.SUCCESS;
         else {
             if(!state.getValue(SEALED)) ((FurnaceChannelBlockEntity) level.getBlockEntity(pos)).stopCasting();
@@ -106,7 +106,7 @@ public class FurnaceChannelBlock extends WaterloggedEntityBlock implements ICust
     public void tick(BlockState state, ServerLevel level, BlockPos pos, Random random) {
         if(!state.getValue(SEALED) && level.getBlockEntity(pos) instanceof FurnaceChannelBlockEntity channel && !channel.wasCasting) {
             level.setBlockAndUpdate(pos, state.setValue(SEALED, true));
-            level.playSound(null, pos, SoundsNF.CERAMIC_OPEN_SMALL.get(), SoundSource.BLOCKS, 1F, 1F);
+            level.playSound(null, pos, SoundsNF.CERAMIC_SCRAPE.get(), SoundSource.BLOCKS, 1F, 1F);
         }
     }
 
