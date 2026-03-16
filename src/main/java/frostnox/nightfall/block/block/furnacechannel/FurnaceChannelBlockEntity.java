@@ -4,6 +4,7 @@ import frostnox.nightfall.block.TieredHeat;
 import frostnox.nightfall.block.block.meltedmetal.MeltedMetalBlockEntity;
 import frostnox.nightfall.block.block.mold.BlockMoldBlockEntity;
 import frostnox.nightfall.block.block.mold.ItemMoldBlock;
+import frostnox.nightfall.client.ClientEngine;
 import frostnox.nightfall.registry.forge.BlockEntitiesNF;
 import frostnox.nightfall.registry.forge.SoundsNF;
 import frostnox.nightfall.util.LevelUtil;
@@ -40,6 +41,10 @@ public class FurnaceChannelBlockEntity extends BlockEntity {
 
     protected FurnaceChannelBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
         super(pType, pPos, pBlockState);
+    }
+
+    public boolean wasCasting() {
+        return visualDist > 0;
     }
 
     public void startCasting(int dist, float temp) {
@@ -107,7 +112,9 @@ public class FurnaceChannelBlockEntity extends BlockEntity {
 
     @Override
     public void handleUpdateTag(CompoundTag tag) {
+        int oldDist = visualDist;
         visualDist = tag.getInt("dist");
+        if(oldDist == 0 && visualDist > 0) ClientEngine.get().playFurnaceChannelPourSound(this);
         visualTemp = tag.getFloat("temp");
     }
 

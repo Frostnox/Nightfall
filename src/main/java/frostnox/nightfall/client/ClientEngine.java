@@ -15,6 +15,7 @@ import frostnox.nightfall.block.IMicroGrid;
 import frostnox.nightfall.block.Metal;
 import frostnox.nightfall.block.Tree;
 import frostnox.nightfall.block.block.anvil.TieredAnvilBlockEntity;
+import frostnox.nightfall.block.block.furnacechannel.FurnaceChannelBlockEntity;
 import frostnox.nightfall.capability.*;
 import frostnox.nightfall.client.gui.CategoryToast;
 import frostnox.nightfall.client.gui.EntryToast;
@@ -28,6 +29,8 @@ import frostnox.nightfall.client.gui.screen.item.ModifiableScreen;
 import frostnox.nightfall.client.model.AnimatedItemModel;
 import frostnox.nightfall.client.render.BlockEntityAsItemRenderer;
 import frostnox.nightfall.client.render.entity.PlayerRendererNF;
+import frostnox.nightfall.client.sound.FurnaceChannelPourSoundInstance;
+import frostnox.nightfall.client.sound.PlayerCruciblePourSoundInstance;
 import frostnox.nightfall.data.TagsNF;
 import frostnox.nightfall.data.recipe.ToolIngredientRecipe;
 import frostnox.nightfall.encyclopedia.Entry;
@@ -1141,6 +1144,14 @@ public class ClientEngine {
             pEntity.level.playSound(mc.player, pEntity, sound, pCategory, pVolume, pPitch);
             soundsPlayedThisTick.add(sound);
         }
+    }
+
+    public void playFurnaceChannelPourSound(FurnaceChannelBlockEntity entity) {
+        Minecraft.getInstance().getSoundManager().play(new FurnaceChannelPourSoundInstance(entity, SoundsNF.MOLTEN_LIQUID_POUR.get(), SoundSource.BLOCKS));
+    }
+
+    public void playCruciblePourSound(Player entity) {
+        Minecraft.getInstance().getSoundManager().play(new PlayerCruciblePourSoundInstance(entity, SoundsNF.MOLTEN_LIQUID_POUR.get(), SoundSource.PLAYERS));
     }
 
     /**

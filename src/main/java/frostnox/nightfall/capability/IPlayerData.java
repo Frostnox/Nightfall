@@ -203,6 +203,10 @@ public interface IPlayerData {
 
     void setShivering(boolean shivering);
 
+    boolean isPouringCrucible();
+
+    void setPouringCrucible(boolean pouring);
+
     void advanceStage(ResourceLocation id);
 
     void unlockEntry(ResourceLocation id);
@@ -215,7 +219,7 @@ public interface IPlayerData {
 
     void addRevelatoryKnowledge(ResourceLocation id);
 
-    void tickRevelatoryKnowledge();
+    void tickServer();
 
     void removeKnowledge(ResourceLocation id);
 

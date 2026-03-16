@@ -64,7 +64,7 @@ public class BlockEntityFluidToClient {
             });
         }
         else if(sideReceived.isServer()) {
-            Nightfall.LOGGER.warn("BlockEntityFluidToClient received on server.");
+            Nightfall.LOGGER.warn(BlockEntityFluidToClient.class.getSimpleName() + " received on server.");
         }
     }
 }

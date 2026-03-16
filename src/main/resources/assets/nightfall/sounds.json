@@ -134,6 +134,10 @@
     "subtitle": "nightfall.block.stone_dislodge",
     "sounds": ["nightfall:block/stone_dislodge_0", "nightfall:block/stone_dislodge_1", "nightfall:block/stone_dislodge_2", "nightfall:block/stone_dislodge_3"]
   },
+  "block.molten_liquid_pour": {
+    "subtitle": "nightfall.block.molten_liquid_pour",
+    "sounds": ["nightfall:block/molten_liquid_pour"]
+  },
   "action.swing": {
     "subtitle": "nightfall.action.swing",
     "sounds": ["nightfall:action/swing_0", "nightfall:action/swing_1", "nightfall:action/swing_2"]

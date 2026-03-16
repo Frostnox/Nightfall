@@ -101,6 +101,8 @@ public class PlayerData implements IPlayerData {
     private int undeadKilled = 0;
     private float temperature = 0.5F, cachedHeatTemp = -1;
     private boolean shivering = false;
+    private boolean pouringCrucible = false; //Not saved
+    private int pouringCrucibleDecay = 0; //Not saved
     //Stamina
     private double stamina;
     private double lastStamina; //Last seen stamina value
@@ -712,6 +714,17 @@ public class PlayerData implements IPlayerData {
     }
 
     @Override
+    public boolean isPouringCrucible() {
+        return pouringCrucible;
+    }
+
+    @Override
+    public void setPouringCrucible(boolean pouring) {
+        pouringCrucible = pouring;
+        pouringCrucibleDecay = pouring ? 8 : 0;
+    }
+
+    @Override
     public String getMainUUID() {
         return mainUUID;
     }
@@ -802,13 +815,20 @@ public class PlayerData implements IPlayerData {
     }
 
     @Override
-    public void tickRevelatoryKnowledge() {
+    public void tickServer() {
         for(var entry : revelatoryKnowledge.object2IntEntrySet()) {
             if(entry.getIntValue() == 1) {
                 addKnowledge(entry.getKey());
                 revelatoryKnowledge.remove(entry.getKey(), entry.getIntValue());
             }
             else revelatoryKnowledge.put(entry.getKey(), entry.getIntValue() - 1);
+        }
+        if(pouringCrucible) {
+            pouringCrucibleDecay--;
+            if(pouringCrucibleDecay <= 0) {
+                pouringCrucible = false;
+                NetworkHandler.toAllTrackingAndSelf(player, new GenericEntityToClient(NetworkHandler.Type.STOP_CRUCIBLE_POUR_SOUND_CLIENT, player.getId()));
+            }
         }
     }
 

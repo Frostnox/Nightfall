@@ -6,7 +6,10 @@ import frostnox.nightfall.block.TieredHeat;
 import frostnox.nightfall.block.block.MenuContainerBlockEntity;
 import frostnox.nightfall.block.block.mold.BlockMoldBlockEntity;
 import frostnox.nightfall.block.fluid.MetalFluid;
+import frostnox.nightfall.capability.PlayerData;
 import frostnox.nightfall.data.recipe.CrucibleRecipe;
+import frostnox.nightfall.network.NetworkHandler;
+import frostnox.nightfall.network.message.GenericEntityToClient;
 import frostnox.nightfall.world.inventory.ItemStackHandlerNF;
 import frostnox.nightfall.registry.forge.BlockEntitiesNF;
 import frostnox.nightfall.registry.forge.SoundsNF;
@@ -317,7 +320,8 @@ public class CrucibleBlockEntity extends MenuContainerBlockEntity implements Men
             if(poured) {
                 removeEmptyFluids();
                 tryAlloying();
-                player.level.playSound(null, player, SoundsNF.CRUCIBLE_POUR.get(), SoundSource.PLAYERS, 0.75F, 1F);
+                PlayerData.get(player).setPouringCrucible(true);
+                NetworkHandler.toAllTrackingAndSelf(player, new GenericEntityToClient(NetworkHandler.Type.START_CRUCIBLE_POUR_SOUND_CLIENT, player.getId()));
             }
             return true;
         }

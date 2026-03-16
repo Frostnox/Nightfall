@@ -820,6 +820,7 @@ public class CommonEventHandler {
                     if(player.getFoodData().getFoodLevel() <= 0 && !player.hasEffect(EffectsNF.STARVATION.get()) && !player.hasEffect(EffectsNF.STARVATION_1.get())) {
                         player.addEffect(new MobEffectInstance(EffectsNF.STARVATION_1.get(), 5 * 20, 0));
                     }
+                    PlayerData.get(player).tickServer();
                 }
             }
             else if(player.deathTime == 20) LevelUtil.warpClientPlayer(player, false);
@@ -1100,7 +1101,6 @@ public class CommonEventHandler {
         if(!level.isClientSide()) {
             if(LevelUtil.isDay(level)) capP.setUndeadKilledThisNight(0);
             capP.tickStamina();
-            capP.tickRevelatoryKnowledge();
             //Make sure action startup is valid, very quick item swapping while trying to attack can trigger this
             if(!capA.isInactive() && !capA.isStunned() && capA.getState() == 0 && capA.getFrame() <= 2 && player.getItemInHand(capP.getActiveHand()).getItem() instanceof IActionableItem item) {
                 if(!item.hasAction(capA.getActionID(), player)) {

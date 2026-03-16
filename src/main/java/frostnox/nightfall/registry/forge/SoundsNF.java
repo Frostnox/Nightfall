@@ -42,10 +42,10 @@ public class SoundsNF {
     public static final RegistryObject<SoundEvent> MOON_ESSENCE_BREAK = generic("block.moon_essence.break");
     public static final RegistryObject<SoundEvent> MOON_ESSENCE_PLACE = generic("block.moon_essence.place");
     public static final RegistryObject<SoundEvent> WOODEN_BOWL_CRUSH = generic("block.bowl.wooden_crush");
-    public static final RegistryObject<SoundEvent> CRUCIBLE_POUR = generic("block.crucible.pour");
     public static final RegistryObject<SoundEvent> FIRE_CRACKLE = generic("block.fire_crackle");
     public static final RegistryObject<SoundEvent> TROUGH_FILL = generic("block.trough.fill");
     public static final RegistryObject<SoundEvent> STONE_DISLODGE = generic("block.stone_dislodge");
+    public static final RegistryObject<SoundEvent> MOLTEN_LIQUID_POUR = generic("block.molten_liquid_pour");
     public static final RegistryObject<SoundEvent> SWING = generic("action.swing");
     public static final RegistryObject<SoundEvent> SWING_CHARGED = generic("action.swing_charged");
     public static final RegistryObject<SoundEvent> BLADE_SWING = generic("action.blade_swing");

@@ -143,6 +143,11 @@ public class GenericEntityToClient {
                 case OPEN_ATTRIBUTE_SELECTION_SCREEN_CLIENT -> ClientEngine.get().openAttributeSelectionScreen();
                 case PUZZLE_EXPERIMENT_FAIL_CLIENT -> ClientEngine.get().playExperimentSound(false);
                 case PUZZLE_EXPERIMENT_SUCCESS_CLIENT -> ClientEngine.get().playExperimentSound(true);
+                case START_CRUCIBLE_POUR_SOUND_CLIENT -> {
+                    if(!capP.isPouringCrucible()) ClientEngine.get().playCruciblePourSound(player);
+                    capP.setPouringCrucible(true);
+                }
+                case STOP_CRUCIBLE_POUR_SOUND_CLIENT -> capP.setPouringCrucible(false);
                 default -> Nightfall.LOGGER.warn("No player handler in " + GenericEntityToClient.class.getSimpleName() + " for message " + msg.messageType);
             }
         }

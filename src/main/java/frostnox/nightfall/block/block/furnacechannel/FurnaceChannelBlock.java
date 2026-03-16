@@ -71,7 +71,7 @@ public class FurnaceChannelBlock extends WaterloggedEntityBlock implements ICust
     public FurnaceChannelBlock(TieredHeat maxHeat, Properties pProperties) {
         super(pProperties);
         this.maxHeat = maxHeat;
-        registerDefaultState(defaultBlockState().setValue(FACING, Direction.NORTH).setValue(SEALED, false));
+        registerDefaultState(defaultBlockState().setValue(FACING, Direction.NORTH).setValue(SEALED, true));
     }
 
     @Override
