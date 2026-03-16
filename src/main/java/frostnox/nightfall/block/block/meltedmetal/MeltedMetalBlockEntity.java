@@ -27,7 +27,7 @@ import java.util.Map;
 
 public class MeltedMetalBlockEntity extends BlockEntity {
     public float temperature = TieredHeat.ORANGE.getUpperTemp(), targetTemperature;
-    public BlockState originalState = BlocksNF.METAL_BLOCKS.get(Metal.COPPER).get().defaultBlockState();
+    public BlockState originalState = BlocksNF.RAW_COPPER.get().defaultBlockState();
     public IMetal metal = Metal.COPPER;
     public int units = 400, alloyTimer = 20 * 5;
     public boolean hasSlag = false, untouched = true;
