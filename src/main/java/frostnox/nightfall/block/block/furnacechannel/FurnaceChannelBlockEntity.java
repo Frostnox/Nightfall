@@ -1,12 +1,12 @@
 package frostnox.nightfall.block.block.furnacechannel;
 
 import frostnox.nightfall.block.TieredHeat;
+import frostnox.nightfall.block.block.fireable.FireableMetalBlock;
 import frostnox.nightfall.block.block.meltedmetal.MeltedMetalBlockEntity;
 import frostnox.nightfall.block.block.mold.BlockMoldBlockEntity;
 import frostnox.nightfall.block.block.mold.ItemMoldBlock;
 import frostnox.nightfall.client.ClientEngine;
 import frostnox.nightfall.registry.forge.BlockEntitiesNF;
-import frostnox.nightfall.registry.forge.SoundsNF;
 import frostnox.nightfall.util.LevelUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -15,7 +15,6 @@ import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -31,7 +30,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class FurnaceChannelBlockEntity extends BlockEntity {
     private static final VoxelShape FLUID_PASSAGE = Block.box(7, 0, 7, 9, 16, 9);
-    protected boolean wasCasting = false;
+    protected boolean wasCasting = false, lastForceChunk = true;
     public int visualDist;
     public float visualTemp;
 
@@ -60,40 +59,49 @@ public class FurnaceChannelBlockEntity extends BlockEntity {
         if(wasCasting) {
             visualDist = 0;
             visualTemp = 0;
-            level.setBlockAndUpdate(getBlockPos(), getBlockState().setValue(FurnaceChannelBlock.SEALED, true));
-            level.playSound(null, getBlockPos(), SoundsNF.CERAMIC_SCRAPE.get(), SoundSource.BLOCKS, 1F, 1F);
+            level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 2);
         }
         wasCasting = false;
     }
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, FurnaceChannelBlockEntity entity) {
+        boolean forceChunk = false, casting = false;
         if(state.getFluidState().isEmpty()) {
             BlockPos.MutableBlockPos mutPos = pos.mutable();
             if(LevelUtil.getBlockHeatResistanceTier(level.getBlockState(mutPos.move(state.getValue(FurnaceChannelBlock.FACING)))) > 0) {
                 if(level.getBlockEntity(mutPos.move(state.getValue(FurnaceChannelBlock.FACING))) instanceof MeltedMetalBlockEntity targetMetal) {
-                    mutPos.set(pos);
-                    LevelChunk chunk = level.getChunkAt(pos);
-                    BlockMoldBlockEntity mold = null;
-                    int i = 0;
-                    for(; i < 16; i++) {
-                        BlockState castTarget = chunk.getBlockState(mutPos.setY(mutPos.getY() - 1));
-                        if(castTarget.getBlock() instanceof ItemMoldBlock) mold = (BlockMoldBlockEntity) chunk.getBlockEntity(mutPos);
-                        else if(!castTarget.isAir() && Shapes.joinIsNotEmpty(castTarget.getShape(level, mutPos), FLUID_PASSAGE, BooleanOp.AND)) break;
-                    }
-                    if(mold != null) {
-                        if(mold.addFluid(new FluidStack(targetMetal.metal.getFluid().get(), 1), targetMetal.temperature)) {
-                            entity.startCasting(i, targetMetal.temperature);
-                            targetMetal.drain(1);
-                            if(TieredHeat.fromTemp(targetMetal.temperature).getTier() > ((FurnaceChannelBlock) state.getBlock()).maxHeat.getTier() && level.random.nextInt(4) == 0) {
-                                level.destroyBlock(pos, false);
+                    forceChunk = true;
+                    if(!targetMetal.untouched || targetMetal.alloyTimer <= 0) {
+                        mutPos.set(pos);
+                        LevelChunk chunk = level.getChunkAt(pos);
+                        BlockMoldBlockEntity mold = null;
+                        int i = 0;
+                        for(; i < 16; i++) {
+                            BlockState castTarget = chunk.getBlockState(mutPos.setY(mutPos.getY() - 1));
+                            if(castTarget.getBlock() instanceof ItemMoldBlock) mold = (BlockMoldBlockEntity) chunk.getBlockEntity(mutPos);
+                            else if(!castTarget.isAir() && Shapes.joinIsNotEmpty(castTarget.getShape(level, mutPos), FLUID_PASSAGE, BooleanOp.AND)) break;
+                        }
+                        if(mold != null) {
+                            if(mold.addFluid(new FluidStack(targetMetal.metal.getFluid().get(), 1), targetMetal.temperature)) {
+                                entity.startCasting(i, targetMetal.temperature);
+                                targetMetal.drain(1);
+                                if(TieredHeat.fromTemp(targetMetal.temperature).getTier() > ((FurnaceChannelBlock) state.getBlock()).maxHeat.getTier() && level.random.nextInt(4) == 0) {
+                                    level.destroyBlock(pos, false);
+                                }
+                                casting = true;
                             }
-                            return;
                         }
                     }
                 }
+                else {
+                    BlockState neighbor = level.getBlockState(mutPos);
+                    if(neighbor.getBlock() instanceof FireableMetalBlock && neighbor.getValue(FireableMetalBlock.LIT)) forceChunk = true;
+                }
             }
         }
-        entity.stopCasting();
+        if(!casting) entity.stopCasting();
+        if(forceChunk != entity.lastForceChunk) LevelUtil.forceTickingChunk(level, pos, forceChunk);
+        entity.lastForceChunk = forceChunk;
     }
 
     @Override

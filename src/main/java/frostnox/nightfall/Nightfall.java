@@ -99,6 +99,7 @@ import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.common.world.ForgeChunkManager;
 import net.minecraftforge.common.world.ForgeWorldPreset;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.RegistryEvent;
@@ -188,6 +189,14 @@ public class Nightfall {
             ActionsNF.init();
             FluidsNF.init();
             PlayerActionSet.init();
+            ForgeChunkManager.setForcedChunkLoadingCallback(MODID, (level, helper) -> {
+                for(var entry : helper.getBlockTickets().entrySet()) {
+                    boolean remove = true;
+                    BlockState state = level.getBlockState(entry.getKey());
+                    if(state.getBlock() instanceof IBlockChunkLoader loader && loader.keepForceChunk(state)) remove = false;
+                    if(remove) helper.removeAllTickets(entry.getKey());
+                }
+            });
         });
     }
 

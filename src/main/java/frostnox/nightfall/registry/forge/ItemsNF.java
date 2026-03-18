@@ -436,7 +436,7 @@ public class ItemsNF {
     public static final Map<Stone, RegistryObject<BlockItemNF>> STONE_BLOCKS = DataUtil.mapEnum(Stone.class, stone ->
             register(BlocksNF.STONE_BLOCKS.get(stone), 8, NATURAL_TAB));
     public static final Map<Stone, RegistryObject<BlockItemNF>> ROCK_CLUSTERS = DataUtil.mapEnum(Stone.class, stone ->
-            register(BlocksNF.ROCK_CLUSTERS.get(stone), NATURAL_TAB));
+            register(BlocksNF.ROCK_CLUSTERS.get(stone)));
     public static final RegistryObject<BlockItemNF> FLINT_CLUSTER = register(BlocksNF.FLINT_CLUSTER, NATURAL_TAB);
 
     public static final Map<Stone, RegistryObject<BlockItemNF>> TIN_ORES = DataUtil.mapEnum(Stone.class, stone -> !BlocksNF.TIN_ORES.containsKey(stone),

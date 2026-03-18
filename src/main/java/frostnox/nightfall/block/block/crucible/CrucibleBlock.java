@@ -19,6 +19,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -88,6 +89,7 @@ public class CrucibleBlock extends WaterloggedEntityBlock implements ICustomPath
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable BlockGetter pLevel, List<Component> pTooltip, TooltipFlag pFlag) {
         pTooltip.add(new TranslatableComponent("block.capacity", fluidCapacity).withStyle(ChatFormatting.DARK_GREEN));
+        pTooltip.add(new TranslatableComponent("block.heat_resistant." + TieredHeat.fromTemp(maxTemp).getTier()).withStyle(Style.EMPTY.withColor(TieredHeat.fromTemp(maxTemp).color.getRGB())));
         pTooltip.add(new TranslatableComponent("block.crucible.pour"));
     }
 

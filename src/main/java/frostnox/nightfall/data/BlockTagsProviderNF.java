@@ -129,6 +129,8 @@ public class BlockTagsProviderNF extends BlockTagsProvider {
         tag(TagsNF.CAN_IGNITE_ITEMS).add(BlocksNF.TORCH.get(), BlocksNF.WALL_TORCH.get());
         for(var block : BlocksNF.LANTERNS.values()) tag(TagsNF.CAN_IGNITE_ITEMS).add(block.get());
         tag(TagsNF.UNCLIMBABLE).addTags(TagsNF.BRANCHES_OR_LEAVES, BlockTags.FENCES, BlockTags.WALLS, BlockTags.FENCE_GATES);
+        for(var type : BlocksNF.METAL_BLOCKS.keySet()) if(type.getHeatResistantTag() != null) tag(type.getHeatResistantTag()).add(BlocksNF.METAL_BLOCKS.get(type).get());
+        for(var type : BlocksNF.METAL_PLATINGS.keySet()) if(type.getHeatResistantTag() != null) tag(type.getHeatResistantTag()).add(BlocksNF.METAL_PLATINGS.get(type).get());
         tag(TagsNF.HEAT_RESISTANT_2).add(BlocksNF.TERRACOTTA.get(), BlocksNF.TERRACOTTA_TILES.get(), BlocksNF.TERRACOTTA_MOSAIC.get(), BlocksNF.MUD_BRICKS.get());
         tag(TagsNF.HEAT_RESISTANT_3).add(BlocksNF.BRICKS.get());
         tag(TagsNF.HEAT_RESISTANT_4).add(BlocksNF.FIRE_BRICKS.get(), BlocksNF.OBSIDIAN.get());

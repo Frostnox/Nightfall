@@ -14,7 +14,7 @@ public class SimpleFireableBlock extends FireableBlock {
     public final RegistryObject<? extends Block> firedBlock;
 
     public SimpleFireableBlock(int cookTicks, TieredHeat cookHeat, RegistryObject<? extends Block> firedBlock, Properties properties) {
-        super(cookTicks, cookHeat, properties);
+        super(cookTicks, cookHeat, true, properties);
         this.firedBlock = firedBlock;
     }
 

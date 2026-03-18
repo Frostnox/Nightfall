@@ -9,12 +9,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraftforge.registries.RegistryObject;
 
-public abstract class FireableAxisBlock extends FireableBlock {
+public class FireablePartialAxisBlock extends FireablePartialBlock {
     public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.HORIZONTAL_AXIS;
 
-    public FireableAxisBlock(int cookTicks, TieredHeat cookHeat, Properties properties) {
-        super(cookTicks, cookHeat, properties);
+    public FireablePartialAxisBlock(int cookTicks, TieredHeat cookHeat, RegistryObject<? extends Block> firedBlock, int excludedWaterLevel, Properties properties) {
+        super(cookTicks, cookHeat, firedBlock, excludedWaterLevel, properties);
         registerDefaultState(defaultBlockState().setValue(AXIS, Direction.Axis.Z));
     }
 

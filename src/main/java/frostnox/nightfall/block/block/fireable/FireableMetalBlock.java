@@ -1,5 +1,6 @@
 package frostnox.nightfall.block.block.fireable;
 
+import frostnox.nightfall.block.IBlockChunkLoader;
 import frostnox.nightfall.block.IMetal;
 import frostnox.nightfall.block.Metal;
 import frostnox.nightfall.block.TieredHeat;
@@ -15,14 +16,17 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class FireableMetalBlock extends SimpleFireableBlock {
+public class FireableMetalBlock extends FireableBlock implements IBlockChunkLoader {
+    public final @Nullable RegistryObject<? extends Block> firedBlock;
     public final IMetal metalType;
     public final int metalUnits;
     public final boolean hasSlag;
@@ -32,8 +36,9 @@ public class FireableMetalBlock extends SimpleFireableBlock {
         this(metalType, 400, false, null, properties);
     }
 
-    public FireableMetalBlock(IMetal metalType, int metalUnits, boolean hasSlag, RegistryObject<? extends Block> firedBlock, Properties properties) {
-        super(20 * 60 * 8, TieredHeat.fromTier(Math.max(1, metalType.getWorkTier())), firedBlock, properties);
+    public FireableMetalBlock(IMetal metalType, int metalUnits, boolean hasSlag, @Nullable RegistryObject<? extends Block> firedBlock, Properties properties) {
+        super(20 * 60 * 8, TieredHeat.fromTier(Math.max(1, metalType.getWorkTier())), false, properties);
+        this.firedBlock = firedBlock;
         this.metalType = metalType;
         this.meltTemp = cookHeat.getTier() >= 5 ? Float.MAX_VALUE : TieredHeat.fromTier(metalType.getTier() + 1).getBaseTemp();
         this.metalUnits = metalUnits;
@@ -71,5 +76,27 @@ public class FireableMetalBlock extends SimpleFireableBlock {
             metal.hasSlag = hasSlag;
             metal.setChanged();
         }
+    }
+
+    @Override
+    public boolean isPathfindable(BlockState state, BlockGetter level, BlockPos pos, PathComputationType pType) {
+        return false;
+    }
+
+    @Override
+    public void onBlockStateChange(LevelReader levelReader, BlockPos pos, BlockState oldState, BlockState newState) {
+        Level level = (Level) levelReader;
+        if(!level.isClientSide && oldState.is(this) && oldState.getValue(LIT) != newState.getValue(LIT)) LevelUtil.forceTickingChunk(level, pos, newState.getValue(LIT));
+    }
+
+    @Override
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState pNewState, boolean pIsMoving) {
+        super.onRemove(state, level, pos, pNewState, pIsMoving);
+        if(!pNewState.is(this)) LevelUtil.forceTickingChunk(level, pos, false);
+    }
+
+    @Override
+    public boolean keepForceChunk(BlockState state) {
+        return state.getValue(LIT);
     }
 }

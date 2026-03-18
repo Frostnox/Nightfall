@@ -1,6 +1,7 @@
 package frostnox.nightfall.block;
 
 import frostnox.nightfall.block.fluid.MetalFluid;
+import frostnox.nightfall.data.TagsNF;
 import frostnox.nightfall.util.data.Vec2f;
 import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
@@ -8,6 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.ForgeRegistryEntry;
@@ -62,6 +64,15 @@ public interface IMetal extends IBlock {
             if(item.builtInRegistryHolder().is(tag) && item.builtInRegistryHolder().is(getTag())) return item;
         }
         return Items.AIR;
+    }
+
+    default TagKey<Block> getHeatResistantTag() {
+        int tier = getWorkTier();
+        if(tier < 2) return null;
+        else if(tier == 2) return TagsNF.HEAT_RESISTANT_2;
+        else if(tier == 3) return TagsNF.HEAT_RESISTANT_3;
+        else if(tier == 4) return TagsNF.HEAT_RESISTANT_4;
+        else return TagsNF.HEAT_RESISTANT_5;
     }
 
     default boolean canCreateFromFluids(Collection<FluidStack> fluids, float temperature) {

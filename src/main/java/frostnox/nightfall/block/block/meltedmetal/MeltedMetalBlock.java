@@ -1,19 +1,13 @@
 package frostnox.nightfall.block.block.meltedmetal;
 
 import frostnox.nightfall.block.*;
-import frostnox.nightfall.block.block.fuel.BurningFuelBlock;
-import frostnox.nightfall.block.block.fuel.BurningFuelBlockEntity;
 import frostnox.nightfall.block.fluid.MeltedMetalFluid;
-import frostnox.nightfall.capability.ChunkData;
-import frostnox.nightfall.capability.IChunkData;
-import frostnox.nightfall.capability.LevelData;
 import frostnox.nightfall.entity.ai.pathfinding.NodeType;
 import frostnox.nightfall.registry.forge.BlockEntitiesNF;
 import frostnox.nightfall.registry.forge.BlocksNF;
 import frostnox.nightfall.registry.forge.FluidsNF;
 import frostnox.nightfall.registry.forge.SoundsNF;
 import frostnox.nightfall.util.LevelUtil;
-import frostnox.nightfall.util.MathUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -38,18 +32,16 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.EntityCollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraft.world.ticks.TickPriority;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
 
-public class MeltedMetalBlock extends BaseEntityBlock implements IAdjustableNodeType, IHeatable, ITimeSimulatedBlock {
+public class MeltedMetalBlock extends BaseEntityBlock implements IAdjustableNodeType, IHeatable, IBlockChunkLoader {
     public static final IntegerProperty HEAT = BlockStatePropertiesNF.HEAT;
     public static final VoxelShape COLLISION_SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 12.0D, 16.0D);
 
@@ -187,70 +179,17 @@ public class MeltedMetalBlock extends BaseEntityBlock implements IAdjustableNode
     @Override
     public void onBlockStateChange(LevelReader levelReader, BlockPos pos, BlockState oldState, BlockState newState) {
         Level level = (Level) levelReader;
-        if(!level.isClientSide && !oldState.is(this) && LevelData.isPresent(level)) {
-            ChunkData.get(level.getChunkAt(pos)).addSimulatableBlock(TickPriority.HIGH, pos);
-        }
+        if(!level.isClientSide && !oldState.is(this)) LevelUtil.forceTickingChunk(level, pos, true);
     }
 
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState pNewState, boolean pIsMoving) {
         super.onRemove(state, level, pos, pNewState, pIsMoving);
-        if(!pNewState.is(this)) {
-            if(LevelData.isPresent(level)) ChunkData.get(level.getChunkAt(pos)).removeSimulatableBlock(TickPriority.HIGH, pos);
-        }
+        if(!pNewState.is(this)) LevelUtil.forceTickingChunk(level, pos, false);
     }
 
     @Override
-    public TickPriority getTickPriority() {
-        return TickPriority.HIGH;
-    }
-
-    @Override
-    public void simulateTime(ServerLevel level, LevelChunk chunk, IChunkData chunkData, BlockPos pos, BlockState state, long elapsedTime, long gameTime, long dayTime, long seasonTime, float seasonalTemp, double randomTickChance, Random random) {
-        if(level.getBlockEntity(pos) instanceof MeltedMetalBlockEntity entity) {
-            if(MathUtil.getRandomSuccesses(randomTickChance, elapsedTime, 1, random) >= 1 && tryDestabilize(state, level, pos)) return;
-            int ticks = (elapsedTime > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) elapsedTime);
-            BlockPos fuelPos = pos.below();
-            if(level.getBlockEntity(fuelPos) instanceof BurningFuelBlockEntity fuel) {
-                int burnTime = Math.min(ticks, fuel.burnTicks);
-                float fuelTemp = fuel.temperature;
-                float fuelTargetTemp = ((BurningFuelBlock) fuel.getBlockState().getBlock()).getTargetTemperature(level, fuel.getBlockState(), fuelPos);
-                float finalTemp;
-                if(fuelTemp < fuelTargetTemp) finalTemp = Math.min(fuelTargetTemp, fuelTemp + burnTime * 0.25F);
-                else if(fuelTemp > fuelTargetTemp) finalTemp = Math.max(fuelTargetTemp, fuelTemp - burnTime * 0.05F);
-                else finalTemp = fuelTemp;
-                float targetTemp = TieredHeat.fromTemp(finalTemp).getUpperTemp() + LevelUtil.getRainTempPenalty(level, pos);
-
-                entity.targetTemperature = targetTemp;
-                entity.temperature = Math.min(entity.temperature + 0.25F * burnTime, targetTemp);
-                int coolTime = ticks - burnTime;
-                if(coolTime > 0) {
-                    entity.targetTemperature = 0;
-                    entity.temperature = Math.max(entity.temperature - 0.05F * coolTime, 0);
-                }
-            }
-            else {
-                entity.targetTemperature = 0;
-                entity.temperature = Math.max(entity.temperature - 0.05F * ticks, 0);
-            }
-
-            if(entity.temperature < entity.metal.getMeltTemp()) {
-                if(entity.untouched) level.setBlockAndUpdate(pos, entity.originalState);
-                else {
-                    if(entity.hasSlag) level.setBlockAndUpdate(pos, BlocksNF.SLAG.get().defaultBlockState());
-                    else {
-                        MeltedMetalFluid fluid = FluidsNF.MELTED_METAL.get(TieredHeat.values()[(state.getValue(MeltedMetalBlock.HEAT))]).get();
-                        level.setBlock(pos, fluid.defaultFluidState().createLegacyBlock().setValue(LiquidBlock.LEVEL, 3), 11);
-                        fluid.tick(level, pos, fluid.defaultFluidState());
-                    }
-                }
-            }
-            else {
-                TieredHeat heat = TieredHeat.fromTemp(entity.temperature);
-                if(heat.getTier() != state.getValue(MeltedMetalBlock.HEAT)) level.setBlockAndUpdate(pos, state.setValue(MeltedMetalBlock.HEAT, heat.getTier()));
-            }
-            if(entity.alloyTimer > 0) entity.alloyTimer = Math.max(2, entity.alloyTimer - ticks); //Leave at 2 so surrounding blocks have a chance to update from simulation
-            entity.setChanged();
-        }
+    public boolean keepForceChunk(BlockState state) {
+        return true;
     }
 }

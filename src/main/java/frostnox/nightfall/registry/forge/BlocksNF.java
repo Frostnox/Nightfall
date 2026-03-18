@@ -553,7 +553,7 @@ public class BlocksNF {
 
     public static final RegistryObject<CauldronBlockNF> CAULDRON = BLOCKS.register("cauldron", () -> new CauldronBlockNF(
             BlockBehaviour.Properties.of(Material.STONE, MaterialColor.TERRACOTTA_BROWN).strength(2.0F).sound(SoundsNF.CERAMIC_VESSEL_TYPE)));
-    public static final RegistryObject<FireableAxisPartialBlock> UNFIRED_CAULDRON = BLOCKS.register("unfired_cauldron", () -> new FireableAxisPartialBlock(
+    public static final RegistryObject<FireablePartialAxisBlock> UNFIRED_CAULDRON = BLOCKS.register("unfired_cauldron", () -> new FireablePartialAxisBlock(
             20 * 60 * 8, TieredHeat.ORANGE, CAULDRON, 0,
             BlockBehaviour.Properties.of(Material.CLAY).strength(1F, 1F).sound(SoundType.GRAVEL)));
     public static final RegistryObject<PotBlock> POT = BLOCKS.register("pot", () -> new PotBlock(
@@ -669,24 +669,24 @@ public class BlocksNF {
         }
     });
 
-    public static final Map<Armament, RegistryObject<FireableFacingPartialBlock>> UNFIRED_ARMAMENT_MOLDS = DataUtil.mapEnum(Armament.class,
+    public static final Map<Armament, RegistryObject<FireablePartialFacingBlock>> UNFIRED_ARMAMENT_MOLDS = DataUtil.mapEnum(Armament.class,
             armament -> !ARMAMENT_MOLDS.containsKey(armament),
-            armament -> register("unfired_" + armament.getName() + "_mold", () -> new FireableFacingPartialBlock(
+            armament -> register("unfired_" + armament.getName() + "_mold", () -> new FireablePartialFacingBlock(
                     20 * 60 * 8, TieredHeat.ORANGE, ARMAMENT_MOLDS.get(armament), 0,
                     BlockBehaviour.Properties.of(Material.DECORATION).strength(0.3F).sound(SoundType.GRAVEL).noCollission())));
-    public static final RegistryObject<FireableFacingPartialBlock> UNFIRED_INGOT_MOLD = register("unfired_ingot_mold", () -> new FireableFacingPartialBlock(
+    public static final RegistryObject<FireablePartialFacingBlock> UNFIRED_INGOT_MOLD = register("unfired_ingot_mold", () -> new FireablePartialFacingBlock(
             20 * 60 * 8, TieredHeat.ORANGE, INGOT_MOLD, 0,
             BlockBehaviour.Properties.of(Material.DECORATION).strength(0.3F).sound(SoundType.GRAVEL).noCollission()));
-    public static final RegistryObject<FireableFacingPartialBlock> UNFIRED_ARROWHEAD_MOLD = register("unfired_arrowhead_mold", () -> new FireableFacingPartialBlock(
+    public static final RegistryObject<FireablePartialFacingBlock> UNFIRED_ARROWHEAD_MOLD = register("unfired_arrowhead_mold", () -> new FireablePartialFacingBlock(
             20 * 60 * 8, TieredHeat.ORANGE, ARROWHEAD_MOLD, 0,
             BlockBehaviour.Properties.of(Material.DECORATION).strength(0.3F).sound(SoundType.GRAVEL).noCollission()));
-    public static final RegistryObject<FireableFacingPartialBlock> UNFIRED_ROD_MOLD = register("unfired_rod_mold", () -> new FireableFacingPartialBlock(
+    public static final RegistryObject<FireablePartialFacingBlock> UNFIRED_ROD_MOLD = register("unfired_rod_mold", () -> new FireablePartialFacingBlock(
             20 * 60 * 8, TieredHeat.ORANGE, ROD_MOLD, 0,
             BlockBehaviour.Properties.of(Material.DECORATION).strength(0.3F).sound(SoundType.GRAVEL).noCollission()));
-    public static final RegistryObject<FireableFacingPartialBlock> UNFIRED_BLOCK_MOLD = register("unfired_block_mold", () -> new FireableFacingPartialBlock(
+    public static final RegistryObject<FireablePartialFacingBlock> UNFIRED_BLOCK_MOLD = register("unfired_block_mold", () -> new FireablePartialFacingBlock(
             20 * 60 * 8, TieredHeat.ORANGE, BLOCK_MOLD, 0,
             BlockBehaviour.Properties.of(Material.CLAY).strength(1F).sound(SoundType.GRAVEL)));
-    public static final RegistryObject<FireableFacingPartialBlock> UNFIRED_ANVIL_MOLD = register("unfired_anvil_mold", () -> new FireableFacingPartialBlock(
+    public static final RegistryObject<FireablePartialFacingBlock> UNFIRED_ANVIL_MOLD = register("unfired_anvil_mold", () -> new FireablePartialFacingBlock(
             20 * 60 * 8, TieredHeat.ORANGE, ANVIL_MOLD, 3,
             BlockBehaviour.Properties.of(Material.CLAY).strength(1F).sound(SoundType.GRAVEL)));
 
@@ -732,11 +732,11 @@ public class BlocksNF {
             (heat) -> register(heat.toString() + "_melted_metal", () -> new SizedLiquidBlock(FluidsNF.MELTED_METAL.get(heat),
             BlockBehaviour.Properties.of(Material.LAVA).noCollission().strength(100.0F).noDrops().randomTicks().lightLevel((state) -> 15))));
 
-    public static final RegistryObject<CrucibleBlock> CRUCIBLE = BLOCKS.register("crucible", () -> new CrucibleBlock(400, TieredHeat.WHITE.getBaseTemp() - 0.1F,
+    public static final RegistryObject<CrucibleBlock> CRUCIBLE = BLOCKS.register("crucible", () -> new CrucibleBlock(200, TieredHeat.ORANGE.getUpperTemp(),
             BlockBehaviour.Properties.of(Material.STONE, MaterialColor.TERRACOTTA_BROWN).strength(1.0F, 1F)
                     .sound(SoundsNF.CERAMIC_VESSEL_TYPE).emissiveRendering((state, level, pos) -> state.getValue(CrucibleBlock.HEAT) != 0)
                     .lightLevel((state) -> state.getValue(CrucibleBlock.HEAT) != 0 ? 2 : 0)));
-    public static final RegistryObject<FireableAxisPartialBlock> UNFIRED_CRUCIBLE = BLOCKS.register("unfired_crucible", () -> new FireableAxisPartialBlock(
+    public static final RegistryObject<FireablePartialAxisBlock> UNFIRED_CRUCIBLE = BLOCKS.register("unfired_crucible", () -> new FireablePartialAxisBlock(
             20 * 60 * 8, TieredHeat.ORANGE, CRUCIBLE, 0,
             BlockBehaviour.Properties.of(Material.CLAY).strength(1.0F, 20F).sound(SoundType.GRAVEL)));
 

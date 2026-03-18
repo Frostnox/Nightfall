@@ -2,6 +2,7 @@ package frostnox.nightfall.util;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.math.Vector3d;
+import frostnox.nightfall.Nightfall;
 import frostnox.nightfall.block.*;
 import frostnox.nightfall.capability.*;
 import frostnox.nightfall.client.ClientEngine;
@@ -77,6 +78,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.common.world.ForgeChunkManager;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -757,5 +759,12 @@ public class LevelUtil {
 
     public static float getRainTempPenalty(Level level, BlockPos pos) {
         return level.isRainingAt(pos.above()) ? -200 : 0;
+    }
+
+    public static void forceTickingChunk(Level level, BlockPos pos, boolean add) {
+        if(!level.isClientSide) {
+            ChunkPos chunkPos = new ChunkPos(pos);
+            ForgeChunkManager.forceChunk((ServerLevel) level, Nightfall.MODID, pos, chunkPos.x, chunkPos.z, add, true);
+        }
     }
 }

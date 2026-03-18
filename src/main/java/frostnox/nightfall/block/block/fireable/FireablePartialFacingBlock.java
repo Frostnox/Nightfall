@@ -14,10 +14,10 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraftforge.registries.RegistryObject;
 
-public class FireableFacingPartialBlock extends FireablePartialBlock {
+public class FireablePartialFacingBlock extends FireablePartialBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
-    public FireableFacingPartialBlock(int cookTicks, TieredHeat cookHeat, RegistryObject<? extends Block> firedBlock, int excludedWaterLevel, Properties properties) {
+    public FireablePartialFacingBlock(int cookTicks, TieredHeat cookHeat, RegistryObject<? extends Block> firedBlock, int excludedWaterLevel, Properties properties) {
         super(cookTicks, cookHeat, firedBlock, excludedWaterLevel, properties);
         registerDefaultState(defaultBlockState().setValue(FACING, Direction.NORTH));
     }

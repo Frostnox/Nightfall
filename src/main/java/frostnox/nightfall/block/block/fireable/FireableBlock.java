@@ -59,11 +59,13 @@ public abstract class FireableBlock extends BaseEntityBlock implements IAdjustab
     public static final VoxelShape COLLISION_SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 15.95D, 16.0D);
     public final int cookTicks;
     public final TieredHeat cookHeat;
+    protected final boolean simulateTime;
 
-    public FireableBlock(int cookTicks, TieredHeat cookHeat, Properties properties) {
+    public FireableBlock(int cookTicks, TieredHeat cookHeat, boolean simulateTime, Properties properties) {
         super(properties);
         this.cookTicks = cookTicks;
         this.cookHeat = cookHeat;
+        this.simulateTime = simulateTime;
         this.registerDefaultState(this.stateDefinition.any().setValue(LIT, false));
     }
 
@@ -79,7 +81,7 @@ public abstract class FireableBlock extends BaseEntityBlock implements IAdjustab
         FireableBlock fireable = (FireableBlock) state.getBlock();
         boolean updated = false;
         if(!state.getValue(LIT)) {
-            if(level.getGameTime() % 67L == 0L) {
+            if(level.getGameTime() % 60L == 0L) {
                 entity.setInStructure(fireable.isStructureValid(level, pos, state));
                 if(entity.inStructure() && level.getBlockEntity(pos.below()) instanceof BurningFuelBlockEntity fuel && fuel.temperature >= fireable.cookHeat.getBaseTemp()) {
                     updated = true;
@@ -88,7 +90,7 @@ public abstract class FireableBlock extends BaseEntityBlock implements IAdjustab
             }
         }
         if(updated || entity.getCookTicks() > 0) {
-            if(!updated && level.getGameTime() % 67L == 0L) {
+            if(!updated && level.getGameTime() % 60L == 0L) {
                 entity.setInStructure(fireable.isStructureValid(level, pos, state));
                 if(state.getValue(LIT) && !entity.inStructure()) level.setBlockAndUpdate(pos, state.setValue(LIT, false));
             }
@@ -243,7 +245,7 @@ public abstract class FireableBlock extends BaseEntityBlock implements IAdjustab
     @Override
     public void onBlockStateChange(LevelReader levelReader, BlockPos pos, BlockState oldState, BlockState newState) {
         Level level = (Level) levelReader;
-        if(!level.isClientSide && (!oldState.is(this) || oldState.getValue(LIT) != newState.getValue(LIT)) && LevelData.isPresent(level)) {
+        if(simulateTime && !level.isClientSide && (!oldState.is(this) || oldState.getValue(LIT) != newState.getValue(LIT)) && LevelData.isPresent(level)) {
             if(!newState.getValue(LIT)) ChunkData.get(level.getChunkAt(pos)).removeSimulatableBlock(TickPriority.HIGH, pos);
             else ChunkData.get(level.getChunkAt(pos)).addSimulatableBlock(TickPriority.HIGH, pos);
         }
@@ -252,7 +254,7 @@ public abstract class FireableBlock extends BaseEntityBlock implements IAdjustab
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState pNewState, boolean pIsMoving) {
         super.onRemove(state, level, pos, pNewState, pIsMoving);
-        if(!pNewState.is(this) && state.getValue(LIT) && LevelData.isPresent(level)) {
+        if(simulateTime && !pNewState.is(this) && state.getValue(LIT) && LevelData.isPresent(level)) {
             ChunkData.get(level.getChunkAt(pos)).removeSimulatableBlock(TickPriority.HIGH, pos);
         }
     }
