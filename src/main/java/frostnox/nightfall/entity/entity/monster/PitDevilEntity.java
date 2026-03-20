@@ -45,7 +45,7 @@ import java.util.EnumMap;
 public class PitDevilEntity extends HungryMonsterEntity implements IOrientedHitBoxes {
     public static final int GROWL_DURATION = 12 * 20;
     private static final EntityPart[] OBB_PARTS = new EntityPart[]{EntityPart.BODY, EntityPart.NECK, EntityPart.HEAD};
-    protected static final EntityDataAccessor<Boolean> SPECIAL = SynchedEntityData.defineId(CockatriceEntity.class, EntityDataSerializers.BOOLEAN);
+    protected static final EntityDataAccessor<Boolean> SPECIAL = SynchedEntityData.defineId(PitDevilEntity.class, EntityDataSerializers.BOOLEAN);
     public int growlTicks;
 
     public PitDevilEntity(EntityType<? extends HungryMonsterEntity> type, Level worldIn) {

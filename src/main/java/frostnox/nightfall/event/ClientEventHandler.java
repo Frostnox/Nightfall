@@ -1063,7 +1063,8 @@ public class ClientEventHandler {
         if(player == null || !player.isAlive()) return;
         //Reverse movement speed FoV changes (except for sprinting)
         event.setNewfov(event.getFov() - ((float) player.getAttribute(Attributes.MOVEMENT_SPEED).getValue() - 0.1F) * 5F);
-        if(player.isSprinting()) event.setNewfov(event.getNewfov() + 0.15F);
+        float scale = Minecraft.getInstance().options.fovEffectScale;
+        if(player.isSprinting()) event.setNewfov(event.getNewfov() + 0.15F * scale);
         IActionTracker capA = ActionTracker.get(player);
         //Bow-like zoom for charging actions
         if(capA.isCharging() && capA.getAction().hasChargeZoom()) {
@@ -1073,10 +1074,10 @@ public class ClientEventHandler {
                 float progress = Math.min(1F, Mth.lerp(capA.modifyPartialTick(ClientEngine.get().getPartialTick()), (frame - 1) / max, frame / max));
                 if(progress < 1F) progress *= progress;
                 else progress = 1F;
-                event.setNewfov(event.getNewfov() * Math.max(1F - progress * 0.15F, 0.15F));
+                event.setNewfov(event.getNewfov() * Math.max(1F - progress * 0.15F * scale, 0.15F * scale));
             }
         }
-        if(PlayerData.get(player).getStamina() == 0) event.setNewfov(event.getNewfov() * 0.9F);
+        if(PlayerData.get(player).getStamina() == 0) event.setNewfov(event.getNewfov() * (1F - 0.1F * scale));
     }
 
     private static void handleDodge(LocalPlayer p) {

@@ -38,7 +38,7 @@ import java.util.EnumMap;
 
 public class DrakefowlBabyEntity extends BabyAnimalEntity implements IOrientedHitBoxes {
     private static final EntityPart[] OBB_PARTS = new EntityPart[]{EntityPart.BODY, EntityPart.NECK, EntityPart.HEAD};
-    protected static final EntityDataAccessor<DrakefowlEntity.Type> TYPE = SynchedEntityData.defineId(DrakefowlEntity.class, DataSerializersNF.DRAKEFOWL_TYPE);
+    protected static final EntityDataAccessor<DrakefowlEntity.Type> TYPE = SynchedEntityData.defineId(DrakefowlBabyEntity.class, DataSerializersNF.DRAKEFOWL_TYPE);
 
     public DrakefowlBabyEntity(EntityType<? extends ActionableEntity> type, Level level) {
         super(type, level, (int) ContinentalWorldType.DAY_LENGTH * 3);

@@ -39,7 +39,7 @@ import java.util.EnumMap;
 
 public class MerborBabyEntity extends BabyAnimalEntity implements IOrientedHitBoxes {
     private static final EntityPart[] OBB_PARTS = new EntityPart[]{EntityPart.BODY, EntityPart.NECK, EntityPart.HEAD};
-    protected static final EntityDataAccessor<MerborEntity.Type> TYPE = SynchedEntityData.defineId(MerborEntity.class, DataSerializersNF.MERBOR_TYPE);
+    protected static final EntityDataAccessor<MerborEntity.Type> TYPE = SynchedEntityData.defineId(MerborBabyEntity.class, DataSerializersNF.MERBOR_TYPE);
 
     public MerborBabyEntity(EntityType<? extends ActionableEntity> type, Level level) {
         super(type, level, (int) ContinentalWorldType.DAY_LENGTH * 5);

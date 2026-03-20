@@ -43,7 +43,7 @@ import javax.annotation.Nullable;
 import java.util.EnumMap;
 
 public class EctoplasmEntity extends MonsterEntity {
-    protected static final EntityDataAccessor<Float> ESSENCE = SynchedEntityData.defineId(UndeadEntity.class, EntityDataSerializers.FLOAT);
+    protected static final EntityDataAccessor<Float> ESSENCE = SynchedEntityData.defineId(EctoplasmEntity.class, EntityDataSerializers.FLOAT);
     public enum Size {
         SMALL, MEDIUM, LARGE
     }
