@@ -22,7 +22,6 @@ import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.VineBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import org.apache.commons.compress.utils.Lists;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -464,7 +463,7 @@ public class TreeGenerator {
     }
 
     protected List<Direction> getBranchStartDirections(Data d, BlockPos centerPos, Random random, @Nullable List<Direction> lastDirections, @Nullable List<Direction> lastLastDirections) {
-        List<Direction> directions = Lists.newArrayList(Direction.Plane.HORIZONTAL.iterator());
+        List<Direction> directions = new ObjectArrayList<>(Direction.Plane.HORIZONTAL.iterator());
         Direction direction = directions.remove((random.nextInt() & Integer.MAX_VALUE) % directions.size());
         if(lastDirections != null) {
             while(lastDirections.contains(direction)) direction = directions.remove((random.nextInt() & Integer.MAX_VALUE) % directions.size());

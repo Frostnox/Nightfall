@@ -1,9 +1,9 @@
 package frostnox.nightfall.world.generation.tree;
 
 import frostnox.nightfall.util.math.OctalDirection;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import org.apache.commons.compress.utils.Lists;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -21,7 +21,7 @@ public class IronwoodTreeGenerator extends TreeGenerator {
 
     @Override
     protected List<Direction> getBranchStartDirections(Data d, BlockPos centerPos, Random random, @Nullable List<Direction> lastDirections, @Nullable List<Direction> lastLastDirections) {
-        List<Direction> directions = Lists.newArrayList(Direction.Plane.HORIZONTAL.iterator());
+        List<Direction> directions = new ObjectArrayList<>(Direction.Plane.HORIZONTAL.iterator());
         Direction direction = directions.remove((random.nextInt() & Integer.MAX_VALUE) % directions.size());
         if(lastDirections != null) {
             while(lastDirections.contains(direction)) direction = directions.remove((random.nextInt() & Integer.MAX_VALUE) % directions.size());

@@ -7,6 +7,7 @@ import frostnox.nightfall.entity.entity.MovingBlockEntity;
 import frostnox.nightfall.network.NetworkHandler;
 import frostnox.nightfall.network.message.entity.MovingBlockToClient;
 import frostnox.nightfall.util.LevelUtil;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -14,7 +15,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import org.apache.commons.compress.utils.Lists;
 
 import java.util.List;
 import java.util.Random;
@@ -48,7 +48,7 @@ public class UnstableBlock extends BlockNF implements IFallable {
     public boolean trySlide(Level level, BlockPos movingPos, MovingBlockEntity movingBlock) {
         Direction oppDir = movingBlock.slideDir.getOpposite();
         if(oppDir.getAxis() == Direction.Axis.Y) oppDir = null;
-        List<Direction> directions = Lists.newArrayList(Direction.Plane.HORIZONTAL.iterator());
+        List<Direction> directions = new ObjectArrayList<>(Direction.Plane.HORIZONTAL.iterator());
         directions.remove(oppDir);
         //Try sliding in any direction
         while(!directions.isEmpty() || oppDir != null) {

@@ -17,7 +17,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
-import org.apache.commons.lang3.text.WordUtils;
 
 import java.util.*;
 import java.util.function.BiConsumer;
@@ -226,14 +225,6 @@ public class DataUtil {
             case FEET -> "boots";
             default -> "";
         };
-    }
-
-    public static String getLocalName(EquipmentSlot slot) {
-        return WordUtils.capitalize(getName(slot));
-    }
-
-    public static String getLocalName(String name) {
-        return WordUtils.capitalize(name.replace("_", " "));
     }
 
     public static double getSimulatedWeatherPercentageAboveIntensity(int simulations, double intensity) {

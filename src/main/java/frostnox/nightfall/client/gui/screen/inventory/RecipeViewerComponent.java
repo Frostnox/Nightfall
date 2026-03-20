@@ -6,6 +6,7 @@ import frostnox.nightfall.Nightfall;
 import frostnox.nightfall.client.gui.screen.ScreenGuiComponent;
 import frostnox.nightfall.data.recipe.IRenderableRecipe;
 import frostnox.nightfall.util.RenderUtil;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
@@ -14,7 +15,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
-import org.apache.commons.compress.utils.Lists;
 
 import java.util.List;
 
@@ -26,7 +26,7 @@ public class RecipeViewerComponent extends ScreenGuiComponent {
     public static final int ARROW_HEIGHT = 11;
     private final Minecraft mc;
     private final List<Recipe<?>> allRecipes;
-    private List<Recipe<?>> recipes = Lists.newArrayList();
+    private List<Recipe<?>> recipes = new ObjectArrayList<>();
     private Item item;
     private int pages;
     private int page;
@@ -40,8 +40,7 @@ public class RecipeViewerComponent extends ScreenGuiComponent {
 
     public boolean setRecipeItem(Item item) {
         if(item == this.item) return false;
-        List<Recipe<?>> recipes = Lists.newArrayList();
-        recipes.clear();
+        List<Recipe<?>> recipes = new ObjectArrayList<>();
         allRecipes.forEach((recipe -> {
             if(recipe.getResultItem().getItem().equals(item)) recipes.add(recipe);
         }));

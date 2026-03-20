@@ -1,10 +1,10 @@
 package frostnox.nightfall.world.generation.tree;
 
 import frostnox.nightfall.block.block.tree.TreeStemBlock;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
-import org.apache.commons.compress.utils.Lists;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -79,7 +79,7 @@ public class CurvedTreeGenerator extends TreeGenerator {
 
     @Override
     protected List<Direction> getBranchStartDirections(Data d, BlockPos centerPos, Random random, @Nullable List<Direction> lastDirections, @Nullable List<Direction> lastLastDirections) {
-        List<Direction> directions = Lists.newArrayList(Direction.Plane.HORIZONTAL.iterator());
+        List<Direction> directions = new ObjectArrayList<>(Direction.Plane.HORIZONTAL.iterator());
         Direction direction = directions.remove((random.nextInt() & Integer.MAX_VALUE) % directions.size());
         BlockPos newPos = centerPos.relative(direction);
         while((lastDirections != null && lastDirections.contains(direction)) || d.hasTrunkWood(newPos.above()) ||  d.hasTrunkWood(newPos.below())) {

@@ -6,7 +6,6 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
-import org.apache.commons.compress.utils.Lists;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumMap;
@@ -45,7 +44,7 @@ public class SplitTreeGenerator extends TreeGenerator {
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(d.trunkPos.getX(), d.trunkPos.getY(), d.trunkPos.getZ());
         BlockState lastState = null;
         int splits = minSplits + random.nextInt(maxSplits - minSplits + 1);
-        List<Direction> splitDirections = Lists.newArrayList(Direction.Plane.HORIZONTAL.iterator());
+        List<Direction> splitDirections = new ObjectArrayList<>(Direction.Plane.HORIZONTAL.iterator());
         while(splitDirections.size() > splits) splitDirections.remove(random.nextInt(splitDirections.size()));
         Map<Direction, Random> splitRandoms = new EnumMap<>(Direction.class);
         for(Direction dir : Direction.Plane.HORIZONTAL) splitRandoms.put(dir, new Random(random.nextLong()));
@@ -148,7 +147,7 @@ public class SplitTreeGenerator extends TreeGenerator {
 
     @Override
     protected List<Direction> getBranchStartDirections(Data d, BlockPos centerPos, Random random, @Nullable List<Direction> lastDirections, @Nullable List<Direction> lastLastDirections) {
-        List<Direction> directions = Lists.newArrayList(Direction.Plane.HORIZONTAL.iterator());
+        List<Direction> directions = new ObjectArrayList<>(Direction.Plane.HORIZONTAL.iterator());
         Direction direction = directions.remove((random.nextInt() & Integer.MAX_VALUE) % directions.size());
         //Ensure branches don't take up future trunk spots
         Direction rootDir = Direction.getNearest(d.trunkPos.getX() - centerPos.getX(), 0, d.trunkPos.getZ() - centerPos.getZ());

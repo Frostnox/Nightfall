@@ -6,6 +6,7 @@ import frostnox.nightfall.Nightfall;
 import frostnox.nightfall.data.recipe.CauldronRecipe;
 import frostnox.nightfall.data.recipe.FurnaceRecipe;
 import frostnox.nightfall.data.recipe.MixtureRecipe;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -16,7 +17,6 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.Vec2;
 import net.minecraftforge.registries.ForgeRegistries;
-import org.apache.commons.compress.utils.Lists;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -27,8 +27,8 @@ public class MixtureRecipeBuilder {
     private static final HashMap<String, Integer> IDS = new HashMap<>();
     private final Item itemResult;
     private final Fluid fluidResult;
-    private final List<Ingredient> ingredients = Lists.newArrayList();
-    private final List<Vec2> ranges = Lists.newArrayList();
+    private final List<Ingredient> ingredients = new ObjectArrayList<>();
+    private final List<Vec2> ranges = new ObjectArrayList<>();
     private @Nullable ResourceLocation requirement;
     private int unitsPerOutput = 1, cookTime = 1, priority = 0;
 

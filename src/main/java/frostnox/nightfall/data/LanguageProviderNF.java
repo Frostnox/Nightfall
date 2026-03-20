@@ -127,6 +127,10 @@ public class LanguageProviderNF extends LanguageProvider {
         add(component.getKey(), text);
     }
 
+    private static String name(String name) {
+        return WordUtils.capitalize(name.replace("_", " "));
+    }
+
     @Override
     protected void addTranslations() {
         add("selectWorld.mapFeatures.info", "");
@@ -322,7 +326,7 @@ public class LanguageProviderNF extends LanguageProvider {
         }
         for(var attribute : AttributesNF.ATTRIBUTES.getEntries()) {
             if(attribute == AttributesNF.STAMINA_REDUCTION) add(attribute.get().getDescriptionId(), "Stamina Used");
-            else add(attribute.get().getDescriptionId(), DataUtil.getLocalName(attribute.getId().getPath()));
+            else add(attribute.get().getDescriptionId(), name(attribute.getId().getPath()));
         }
         addComponent(EncyclopediaScreen.LOCKED_ENTRY, "???");
         addComponent(EntryPuzzleScreen.MISSING_KNOWLEDGE, "Knowledge requirements not met");

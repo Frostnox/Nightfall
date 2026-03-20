@@ -106,7 +106,6 @@ import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.settings.IKeyConflictContext;
 import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.registries.RegistryObject;
-import org.apache.commons.compress.utils.Lists;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
@@ -135,7 +134,7 @@ public class ClientEngine {
     public final KeyMapping keyOffhand = new KeyMapping(Nightfall.MODID + ".key.offhand", GLFW_KEY_R, "key.categories.gameplay");
     public final KeyMapping keyEncyclopedia = new KeyMapping(Nightfall.MODID + ".key.encyclopedia", GLFW_KEY_C, "key.categories.gameplay");
     public final KeyMapping keyModify = new KeyMapping(Nightfall.MODID + ".key.modify", GLFW_KEY_Z, "key.categories.gameplay");
-    public final List<KeyMapping> movementConflictKeys = Lists.newArrayList(); //List of all keys with movement conflict type for convenience
+    public final List<KeyMapping> movementConflictKeys = new ObjectArrayList<>(); //List of all keys with movement conflict type for convenience
 
     //Caches
     public int atlasWidth, atlasHeight;

@@ -7,6 +7,7 @@ import it.unimi.dsi.fastutil.ints.Int2IntMap;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 import it.unimi.dsi.fastutil.ints.IntArraySet;
 import it.unimi.dsi.fastutil.ints.IntSet;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -14,7 +15,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.*;
 import net.minecraftforge.common.util.FakePlayer;
-import org.apache.commons.compress.utils.Lists;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
@@ -84,7 +84,7 @@ public class AudioSensing  {
     }
 
     public List<Entity> getHeardEntities() {
-        List<Entity> list = Lists.newArrayList();
+        List<Entity> list = new ObjectArrayList<>(heardEntities.size());
         for(int id : heardEntities.keySet()) {
             Entity heardEntity = entity.level.getEntity(id);
             if(heardEntity != null) list.add(heardEntity);
